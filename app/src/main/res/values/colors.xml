@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFF</color>
+    <color name="colorPrimaryDark">#FFF</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorPrimary1">#eeeef0</color>
+    <color name="colorPrimaryDark1">#EEEEEE</color>
+
+    <color name="colorBlack">#000</color>
+    <color name="colorWhite">#fff</color>
+    <color name="colorLightGrey">#E1E1E1</color>
+    <color name="colorBlue">#007BB6</color>
+
+    <color name="textColor_1">#2F2F2F</color>
+    <color name="textColor_2">#707070</color>
+    <color name="text_color_3">#8E8E8E</color>
+    <color name="text_color_4">#353535</color>
+    <color name="text_color_5">#4D4D4D</color>
+    <color name="text_color_6">#0F0F0F</color>
+    <color name="text_color_7">#D7D7D7</color>
+    <color name="text_color_8">#3E3E3e</color>
+    <color name="text_color_9">#747474</color>
+    <color name="text_color_10">#464646</color>
+    <color name="text_color_11">#3C3C3C</color>
+    <color name="text_color_12">#666666</color>
+    <color name="text_color_13">#595959</color>
+    <color name="text_color_14">#6D6D6D</color>
+    <color name="theme_color">#007BB6</color>
+
+    <color name="home_margin">#F1F2F4</color>
+    <color name="home_background">#F8F9FB</color>
+    <color name="bg_1">#F8F8F8</color>
+
+    <color name="color_1">#F99406</color>
+
+    <color name="shape_background_1">#01AD01</color>
+
+    <color name="view_1">#D7D7D7</color>
+    <color name="view_2">#EBEBEB</color>
+    <color name="view_3">#EFEFEF</color>
+    <color name="view_4">#C6C6C6</color>
+    <color name="view_5">#CCCCCC</color>
+
+
+</resources>

@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">ImCooking</string>
+
+    <!--activity login-->
+    <string name="txtUserName">USER NAME</string>
+    <string name="txtPassword">PASSWORD</string>
+    <string name="txtForgot">Forgot Password ?</string>
+    <string name="txtLogin">Log in</string>
+    <string name="txtDonthave">Don\'t have an account ?</string>
+    <string name="txtRegister">Register</string>
+    <!--activity signup-->
+    <string name="txtEmail">EMAIL</string>
+    <string name="txtConfirmPass">CONFIRM PASSWORD</string>
+    <string name="txtAlready">Already Member ?</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="retry">Retry</string>
+
+    <string name="other_dish_by_user"><u>Other dish by chef</u></string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string name="action_settings">Settings</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

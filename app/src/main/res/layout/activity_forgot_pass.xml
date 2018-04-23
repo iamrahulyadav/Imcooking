@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/colorWhite"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorWhite"
+        android:padding="15dp"
+        tools:context="com.imcooking.activity.main.setup.ForgotPassActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_msg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/layout_forgot_pass">
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forgot Your Password?"
+                android:textSize="20dp"
+                android:textColor="@color/textColor_1"
+                android:layout_gravity="center"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="14dp"
+                android:textColor="@color/textColor_2"
+                android:text="Enter Your Email below to Receive your Password reset instruction"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="EMAIL ADDRESS"
+                    android:singleLine="true"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:imeOptions="actionDone"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/forgot_pass_email"
+                    android:textColor="@color/colorBlack"
+                    android:drawableLeft="@drawable/ic_mail"
+                    android:drawablePadding="8dp"
+                    android:layout_marginBottom="20dp"/>
+
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorLightGrey"
+                android:layout_marginBottom="20dp"/>
+
+            <com.imcooking.customtext.CustomTextButtonTextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Reset password"
+                android:textColor="@color/colorWhite"
+                android:padding="10dp"
+                android:background="@drawable/button_bg"
+                android:gravity="center"/>
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back to in chef login page"
+                android:textSize="14dp"
+                android:textColor="@color/theme_color"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:onClick="forgot_to_login"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

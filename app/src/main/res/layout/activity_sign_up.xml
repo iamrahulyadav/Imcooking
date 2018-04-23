@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context="com.imcooking.activity.main.setup.SignUpActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/login"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/activity_signup_inputlayout">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/signup_radiogroup"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="15dp">
+
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signup_radiobutton1"
+                        android:text="Chef"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorBlack"
+                        android:buttonTint="@color/theme_color"/>
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signup_radiobutton2"
+                        android:text="Foodie"
+                        android:backgroundTint="@color/theme_color"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorBlack"
+                        android:buttonTint="@color/theme_color"/>
+
+                </RadioGroup>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabel">
+                    <com.imcooking.customtext.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtUserName"
+                        android:singleLine="true"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:imeOptions="actionNext"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/activity_signup_edtUserName"
+                        android:textColor="@color/colorBlack"
+                        android:drawableLeft="@drawable/ic_user"
+                        android:drawablePadding="8dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLightGrey"
+                    android:layout_margin="10dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabel">
+                    <com.imcooking.customtext.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtEmail"
+                        android:singleLine="true"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:inputType="textEmailAddress"
+                        android:imeOptions="actionNext"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/activity_signup_edtEmail"
+                        android:textColor="@color/colorBlack"
+                        android:drawableLeft="@drawable/ic_mail"
+                        android:drawablePadding="8dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLightGrey"
+                    android:layout_margin="10dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabel">
+                    <com.imcooking.customtext.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtPassword"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPassword"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/activity_signup_edtPass"
+                        android:textColor="@color/colorBlack"
+                        android:drawableLeft="@drawable/ic_locked"
+                        android:drawablePadding="8dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLightGrey"
+                    android:layout_margin="10dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabel">
+                    <com.imcooking.customtext.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtConfirmPass"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/activity_signup_edtConfirmPass"
+                        android:textColor="@color/colorBlack"
+                        android:drawableLeft="@drawable/ic_locked"
+                        android:drawablePadding="8dp" />
+
+                </android.support.design.widget.TextInputLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLightGrey"
+                    android:layout_margin="10dp"/>
+
+                <com.imcooking.customtext.CustomTextButtonTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/txtRegister"
+                    android:textColor="@color/colorWhite"
+                    android:padding="10dp"
+                    android:background="@drawable/button_bg"
+                    android:layout_marginTop="20dp"
+                    android:onClick="register"
+                    android:gravity="center"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtAlready"
+                        android:id="@+id/activity_signup_txtAlready"
+                        android:textColor="@color/colorBlack"
+                        android:paddingBottom="10dp"/>
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".5"
+                        android:gravity="right"
+                        android:id="@+id/activity_signup_txtLogin"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtLogin"
+                        android:textColor="@color/colorBlack"
+                        android:paddingBottom="10dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

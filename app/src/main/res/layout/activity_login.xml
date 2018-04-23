@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context="com.imcooking.activity.main.setup.LoginActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/login"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/activity_login_inputlayout">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabel">
+                    <com.imcooking.customtext.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtUserName"
+                        android:singleLine="true"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:imeOptions="actionNext"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/activity_login_edtUserName"
+                        android:textColor="@color/colorBlack"
+                        android:drawableLeft="@drawable/ic_user"
+                        android:drawablePadding="8dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLightGrey"
+                    android:layout_margin="10dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabel">
+                    <com.imcooking.customtext.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtPassword"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/activity_login_edtPass"
+                        android:textColor="@color/colorBlack"
+                        android:drawableLeft="@drawable/ic_locked"
+                        android:drawablePadding="8dp" />
+
+                </android.support.design.widget.TextInputLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLightGrey"
+                    android:layout_margin="10dp"/>
+
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtForgot"
+                    android:gravity="right"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:onClick="forgot_password"/>
+
+                <com.imcooking.customtext.CustomTextButtonTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/txtLogin"
+                    android:textColor="@color/colorWhite"
+                    android:padding="10dp"
+                    app:textAllCaps="true"
+                    android:background="@drawable/button_bg"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/activity_login_txtlogin"
+                    android:gravity="center"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp">
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:paddingBottom="10dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtDonthave"
+                        android:textColor="@color/colorBlack" />
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".5"
+                        android:gravity="right"
+                        android:id="@+id/activity_login_txtregister"
+                        android:textSize="@dimen/extra_smallsize"
+                        android:paddingBottom="10dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txtRegister"
+                        android:textColor="@color/colorBlack"
+                       />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
