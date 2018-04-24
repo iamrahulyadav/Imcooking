@@ -83,7 +83,8 @@
                 android:textColor="@color/colorWhite"
                 android:padding="10dp"
                 android:background="@drawable/button_bg"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:onClick="reset_my_password"/>
 
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"

@@ -109,7 +109,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
-        ((MainActivity) getActivity()).iv_profile.setImageResource(R.drawable.ic_home_1);
+        ((MainActivity) getActivity()).iv_profile.setImageResource(R.drawable.ic_user_name_1);
 
     }
 }

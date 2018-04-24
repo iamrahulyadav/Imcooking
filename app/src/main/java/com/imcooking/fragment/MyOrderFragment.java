@@ -34,7 +34,7 @@ public class MyOrderFragment extends Fragment {
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
-        ((MainActivity) getActivity()).iv_my_order.setImageResource(R.drawable.ic_home_1);
+        ((MainActivity) getActivity()).iv_my_order.setImageResource(R.drawable.ic_salad_1);
 
     }
 }

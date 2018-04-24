@@ -12,9 +12,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.imcooking.R;
+import com.imcooking.activity.Sub.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.activity.main.setup.SignUpActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,14 +48,23 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     }
 
 
-    private ImageView iv_share;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        init();
+    }
+
+    private ImageView iv_share;
+    private LinearLayout chef_profile;
+
+    private void init(){
         iv_share = getView().findViewById(R.id.home_details_share);
         iv_share.setOnClickListener(this);
+
+        chef_profile = getView().findViewById(R.id.home_details_chef_profile);
+        chef_profile.setOnClickListener(this);
     }
 
     @Override
@@ -69,11 +82,9 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
 
         super.onDestroyView();
-//        ((MainActivity) getActivity()).toolbar.setVisibility(View.VISIBLE);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
-//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
@@ -89,6 +100,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 //            sendIntent.putExtra(Intent.EXTRA_TEXT, "Shared");
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, "Share Using"));
-        }
+        } else if(id == R.id.home_details_chef_profile) {
+            startActivity(new Intent(getContext(), ChefProfile.class));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
+        } else {}
     }
 }

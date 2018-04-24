@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.imcooking.activity.Sub.EditProfile">
 
     <RelativeLayout
@@ -130,7 +131,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1120 Followers"/>
+                    android:text="1120 Followers"
+                    android:textSize="10sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 

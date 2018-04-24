@@ -275,36 +275,44 @@
             android:layout_margin="10dp"
             android:gravity="center">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/home_details_user_icon"
-                android:src="@drawable/details_profile"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="10dp"/>
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_toRightOf="@+id/home_details_user_icon"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:id="@+id/home_details_chef_profile"
+                android:orientation="horizontal"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true">
 
-                <TextView
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/home_details_user_icon"
+                    android:src="@drawable/details_profile"
+                    android:layout_marginRight="10dp"/>
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/home_details_chef"
-                    android:text="Chef"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_toRightOf="@+id/home_details_user_icon"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Vaibhav Khandelwal"
-                    android:textColor="@color/text_color_11"
-                    android:textSize="14sp"/>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_toRightOf="@+id/home_details_user_icon"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/home_details_chef"
+                        android:text="Chef"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_toRightOf="@+id/home_details_user_icon"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vaibhav Khandelwal"
+                        android:textColor="@color/text_color_11"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
             <TextView

@@ -34,7 +34,7 @@ public class NotificationFragment extends Fragment {
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
-        ((MainActivity) getActivity()).iv_notification.setImageResource(R.drawable.ic_home_1);
+        ((MainActivity) getActivity()).iv_notification.setImageResource(R.drawable.ic_ring_1);
 
     }
 }
