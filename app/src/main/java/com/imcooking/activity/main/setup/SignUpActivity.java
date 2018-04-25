@@ -1,5 +1,6 @@
 package com.imcooking.activity.main.setup;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -54,6 +55,8 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
     private RadioGroup radioGroup;
     private String radio = "";
 
+    private Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,27 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
             }
         });
 
+        createMyDialog();
+    }
+
+    private void createMyDialog(){
+
+        dialog = new Dialog(SignUpActivity.this);
+        dialog.setContentView(R.layout.dialog_signup);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+//        edt_passcode = dialog.findViewById(R.id.dialog_verification_edit);
+    }
+
+    public void signup_okay(View view){
+//        dialog.dismiss();
+        finish();
+    }
+
+    public void dialog_signup_cancel(View view){
+        dialog.dismiss();
     }
 
     public void register(View view) {
@@ -129,12 +153,25 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                                                 Log.d("ShowResponse", apiResponse.getMsg());
 //                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
 
-                                                BaseClass.showToast(getApplicationContext(), apiResponse.getMsg());
+                                                if(apiResponse.isStatus()) {
+                                                    if (apiResponse.getMsg().equals("Foodie successfully registered and send verification code your email!")) {
+//                                                    BaseClass.showToast(getApplicationContext(), apiResponse.getMsg());
 
-                                                edt_uname.setText("");
-                                                edt_email.setText("");
-                                                edt_pass.setText("");
-                                                edt_conf_pass.setText("");
+                                                        edt_uname.setText("");
+                                                        edt_email.setText("");
+                                                        edt_pass.setText("");
+                                                        edt_conf_pass.setText("");
+
+                                                        dialog.show();
+//                                                        finish();
+                                                    }
+                                                    else {
+                                                        BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
+                                                    }
+                                                }
+                                                else{
+                                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
+                                                }
                                             }
                                         });
                                     }
@@ -155,7 +192,6 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
             BaseClass.showToast(getApplicationContext(), "Please select an option.");
         }
     }
-
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

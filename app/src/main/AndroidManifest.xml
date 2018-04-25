@@ -63,7 +63,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.Sub.Help1" />
         <activity android:name=".activity.Sub.EditProfile" />
-        <activity android:name=".activity.Sub.ChefProfile"></activity>
+        <activity android:name=".activity.Sub.ChefProfile" />
     </application>
 
 </manifest>

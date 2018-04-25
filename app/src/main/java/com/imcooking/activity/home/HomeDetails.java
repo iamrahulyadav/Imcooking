@@ -1,6 +1,7 @@
 package com.imcooking.activity.home;
 
 import android.os.Build;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -20,6 +21,8 @@ public class HomeDetails extends AppBaseActivity {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-
+        TabLayout tabLayout= (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Reci"));
+//        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.previous)));
     }
 }

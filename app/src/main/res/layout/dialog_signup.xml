@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/shape_background_white"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thank you for joining IM'Cooking. Your account has been successfully created and we have sent a verification code on your registered email id that will help to verify your account while login"
+            android:textColor="@color/text_color_10"
+            android:textSize="@dimen/extra_smallsize"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:onClick="signup_okay"
+            android:text="Okay"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:background="@drawable/shape_background_theme"
+            android:gravity="center"
+            android:layout_margin="10dp"/>
+
+
+        <!--        <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dialog_verification_edit"
+                    android:hint="Enter your verification code"
+                    android:textColorHint="@color/text_color_10"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    android:imeOptions="actionDone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/text_color_10"
+                    android:drawableLeft="@drawable/ic_locked"
+                    android:drawablePadding="8dp" />-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:background="@color/view_2"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/wrong_passcode"
+            android:visibility="gone"
+            android:text="Sorry, the verification code you provided is not correct, to check your passcode please check your registred email."
+            android:textColor="@color/text_color_10"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:layout_margin="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom">
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="dialog_signup_cancel"
+        android:text="X"
+        android:textColor="@color/colorWhite"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/shape_circle_theme"/>
+</RelativeLayout>
