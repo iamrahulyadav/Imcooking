@@ -6,34 +6,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="280dp"
         android:layout_margin="20dp"
         android:background="@drawable/shape_background_white"
         android:orientation="vertical"
         android:padding="15dp">
 
-        <com.imcooking.customtext.CustomTextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thank you for joining IM'Cooking. Your account has been successfully created and we have sent a verification code on your registered email id that will help to verify your account while login"
             android:textColor="@color/text_color_10"
-            android:textSize="@dimen/extra_smallsize"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:layout_margin="10dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:onClick="signup_okay"
-            android:text="Okay"
-            android:textColor="@color/colorWhite"
-            android:textSize="14sp"
-            android:background="@drawable/shape_background_theme"
-            android:gravity="center"
-            android:layout_margin="10dp"/>
-
 
         <!--        <com.imcooking.customtext.CustomEditText
                     android:layout_width="match_parent"
@@ -49,13 +37,12 @@
                     android:drawableLeft="@drawable/ic_locked"
                     android:drawablePadding="8dp" />-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:visibility="gone"
-            android:background="@color/view_2"
-            android:layout_marginTop="20dp"/>
-
+        <!--   <View
+               android:layout_width="match_parent"
+               android:layout_height=".5dp"
+               android:background="@color/view_2"
+               android:layout_marginTop="20dp"/>
+   -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,10 +56,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="bottom">
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:onClick="signup_okay"
+                android:text="Okay"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:background="@drawable/shape_background_theme"
+                android:gravity="center"
+                android:layout_margin="10dp"/>
 
         </LinearLayout>
 

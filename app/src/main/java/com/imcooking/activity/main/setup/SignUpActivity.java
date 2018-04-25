@@ -103,7 +103,7 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
     }
 
     public void signup_okay(View view){
-//        dialog.dismiss();
+        dialog.dismiss();
         finish();
     }
 
