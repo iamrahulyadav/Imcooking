@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -63,7 +65,13 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.Sub.Help1" />
         <activity android:name=".activity.Sub.EditProfile" />
-        <activity android:name=".activity.Sub.ChefProfile"></activity>
+        <activity android:name=".activity.Sub.ChefProfile"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/API_KEY" />
     </application>
 
 </manifest>

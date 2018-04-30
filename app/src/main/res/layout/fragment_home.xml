@@ -125,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:text="London"
                     android:textSize="13sp"
+                    android:id="@+id/fragment_home_txtcity"
                     android:layout_gravity="center"
                     android:textColor="@color/text_color_8"
                     android:drawableRight="@drawable/ic_drop_down_arrow"

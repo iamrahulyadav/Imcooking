@@ -13,7 +13,7 @@
     <string name="txtConfirmPass">CONFIRM PASSWORD</string>
     <string name="txtAlready">Already Member ?</string>
     <string name="title_activity_main">MainActivity</string>
-
+    <string name="API_KEY">AIzaSyD6s-Dnu0QwVRtwDfcO9jz2OKb5kk8JgT8</string>
     <string name="retry">Retry</string>
 
     <string name="other_dish_by_user"><u>Other dish by chef</u></string>

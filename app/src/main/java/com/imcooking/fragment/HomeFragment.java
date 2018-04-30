@@ -3,10 +3,12 @@ package com.imcooking.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         init();
     }
 
-    private TextView tv_cusine, arrow_show_detail;
+    private TextView tv_cusine, arrow_show_detail, txtCityName;
     private LinearLayout cusine_list;
 
     private void init(){
@@ -68,8 +70,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         tv_cusine.setOnClickListener(this);
 
         arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
+        txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
+
         arrow_show_detail.setOnClickListener(this);
     }
+
 
     private boolean cuisine_status = false;
 
@@ -99,10 +104,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                txtCityName.setText(MainActivity.stringBuffer.toString());
+            }
+        },2000);
 
     }
 }
