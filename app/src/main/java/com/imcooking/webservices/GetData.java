@@ -43,7 +43,7 @@ public class GetData {
 
     private static final MediaType JSON = MediaType.parse("application/json");
     private final static String BASE_URL = "http://webdevelopmentreviews.net/imcooking/api/";
-
+    public final static String IMG_BASE_URL = "http://webdevelopmentreviews.net/imcooking/upload/";
     public void getResponse(String jsonString, String api_name, final MyCallback callback) {
 
         if(BaseClass.isNetworkConnected(context)) {

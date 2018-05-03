@@ -1,4 +1,4 @@
-package com.imcooking.Model.ApiRequest;
+package com.imcooking.Model.api.response;
 
 public class ApiResponse {
     /**
@@ -10,6 +10,7 @@ public class ApiResponse {
     private boolean status;
     private String msg;
     private UserDataBean user_data;
+    public HomeData homeData;
 
     public boolean isStatus() {
         return status;
