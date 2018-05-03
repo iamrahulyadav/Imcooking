@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.R;
 import com.imcooking.activity.home.HomeDetails;
 import com.imcooking.activity.home.MainActivity;
@@ -26,6 +27,7 @@ import org.w3c.dom.Text;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
+    SearchHomeRequest searchHomeRequest = new SearchHomeRequest();
 
 
     public HomeFragment() {
@@ -113,7 +115,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void run() {
                 txtCityName.setText(MainActivity.stringBuffer.toString());
             }
-        },2000);
+        },3000);
 
     }
 }

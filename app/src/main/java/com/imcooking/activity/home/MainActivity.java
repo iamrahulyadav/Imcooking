@@ -55,8 +55,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private GoogleMap googleMap;
     MapView mMapView;
+    public static StringBuffer stringBuffer  = new StringBuffer();
     Context mContext;
     private FrameLayout frame;
+    double latitude, longitude;
     private float lastTranslate = 0.0f;
     private LinearLayout frame_view;
 //    public static Toolbar toolbar;
@@ -158,9 +160,8 @@ public class MainActivity extends AppCompatActivity
 //        toggle.syncState();
 
         init();
-        BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
+        BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
     }
-    public static   StringBuffer stringBuffer  = new StringBuffer();
 
     private GoogleMap.OnMyLocationChangeListener onMyLocationChangeListener= new GoogleMap.OnMyLocationChangeListener() {
         @Override
@@ -168,13 +169,13 @@ public class MainActivity extends AppCompatActivity
             LatLng loc = new LatLng(location.getLatitude(),location.getLongitude());
             try {
                 stringBuffer=getAddress(new LatLng(location.getLatitude(),location.getLongitude()));
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
             Log.d("TAG", "onMyLocationChange: "+stringBuffer+ "lat:  "+ location.getLatitude()+"\n"+"long: "+location.getLongitude());
             googleMap.clear();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(loc).zoom(19f).tilt(70).build();
             googleMap.addMarker(new MarkerOptions().position(loc).icon(bitmapDescriptorFromVector(MainActivity.this)));
