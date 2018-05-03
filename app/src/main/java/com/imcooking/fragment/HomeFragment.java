@@ -191,8 +191,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             tv_dish_delivery.setText("No Home Delivery");
         } else {tv_dish_delivery.setText("Home Delivery");}
         tv_dish_price.setText("$" + homeData.getChef_dish().get(0).getDish_price());
-        Log.d(TAG, "setMyData: "+GetData.IMG_BASE_URL+homeData.getFavourite_data().get(0));
-      //  Picasso.with(getContext()).load(GetData.IMG_BASE_URL+homeData.getFavourite_data().get(0).getImage()).into(imgBottom);
+        Log.d(TAG, "setMyData: "+GetData.IMG_BASE_URL+homeData.getFavourite_data().get(0).getImage());
+        Picasso.with(getContext()).load(GetData.IMG_BASE_URL+homeData.getFavourite_data().get(0).getImage()).into(imgBottom);
 
 
     }
