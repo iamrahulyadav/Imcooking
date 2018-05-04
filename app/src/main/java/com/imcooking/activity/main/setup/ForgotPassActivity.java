@@ -1,9 +1,6 @@
 package com.imcooking.activity.main.setup;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -12,10 +9,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
-import com.imcooking.Model.ApiRequest.ApiResponse;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.ApiRequest.ForgotPassword;
 import com.imcooking.R;
-import com.imcooking.activity.home.MainActivity;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;

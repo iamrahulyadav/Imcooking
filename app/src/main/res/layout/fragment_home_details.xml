@@ -8,6 +8,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/home_details_layout"
         android:fitsSystemWindows="true"
         android:background="@color/home_background"
         android:orientation="vertical"
@@ -23,6 +24,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/details_home"
                 android:scaleType="fitXY"
+                android:id="@+id/fragment_home_details_img_top"
                 android:layout_marginBottom="17dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,12 +37,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="17dp">
+<!--
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_left_arrow_white"
                         android:layout_alignParentLeft="true"/>
+-->
 
 
                     <ImageView
@@ -92,7 +96,9 @@
                 android:layout_height="34dp"
                 android:text="BUTTER CHICKEN"
                 android:textColor="@color/colorWhite"
+                android:textAllCaps="true"
                 android:textSize="12sp"
+                android:id="@+id/fragment_home_details_txtDishName"
                 android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -114,12 +120,15 @@
                 android:layout_height="wrap_content"
                 android:text="Available"
                 android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:id="@+id/fragment_home_details_txtAvailable"
                 android:textColor="@color/shape_background_1"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="11:00AM - 16:00PM"
                 android:textSize="14sp"
+                android:id="@+id/fragment_home_details_txtTime"
                 android:textColor="@color/colorBlack"
                 android:layout_marginTop="10dp"/>
 
@@ -169,6 +178,7 @@
                         android:text="2.7 miles"
                         android:textSize="11sp"
                         android:textStyle="bold"
+                        android:id="@+id/fragment_home_details_txtDistance"
                         android:textColor="@color/colorBlack"/>
 
                 </LinearLayout>
@@ -213,6 +223,7 @@
                         android:text="Home Delivery"
                         android:textSize="11sp"
                         android:textStyle="bold"
+                        android:id="@+id/fragment_home_details_txtDeliveryType"
                         android:textColor="@color/colorBlack"/>
 
                 </LinearLayout>
@@ -249,6 +260,7 @@
                         android:text="$24"
                         android:textSize="11sp"
                         android:textStyle="bold"
+                        android:id="@+id/fragment_home_details_txtdishPrice"
                         android:textColor="@color/colorBlack"/>
 
                 </LinearLayout>
@@ -309,6 +321,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Vaibhav Khandelwal"
+                        android:id="@+id/fragment_home_details_txtChefName"
                         android:textColor="@color/text_color_11"
                         android:textSize="14sp"/>
 
@@ -329,8 +342,36 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"></LinearLayout>
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
 
+            <com.imcooking.customtext.CustomTextViewBold
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="45dp"
+                android:text="Ingredients of Recipe"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+            <com.imcooking.customtext.CustomTextViewBold
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="45dp"
+                android:text="Know Chef"
+                android:textSize="14sp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorWhite"></LinearLayout>
 
 
     </LinearLayout>

@@ -19,12 +19,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.imcooking.R;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.utils.AppBaseActivity;
+import com.mukesh.tinydb.TinyDB;
 
 public class SplashActivity extends AppBaseActivity {
     ImageView imgSplash, imgLogo;
     private Scene scene0;
+    TinyDB tinyDB;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -33,6 +36,7 @@ public class SplashActivity extends AppBaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        tinyDB = new TinyDB(getApplicationContext());
 
 //        find id
         imgSplash = findViewById(R.id.splashbg);
@@ -48,9 +52,15 @@ public class SplashActivity extends AppBaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                overridePendingTransition(R.anim.enter, R.anim.exit);
-                finish();
+                if (tinyDB.contains("login_data")){
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                    finish();
+                } else {
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                    finish();
+                }
             }
         }, 3000);
     }

@@ -4,7 +4,6 @@ package com.imcooking.activity.main.setup;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.imcooking.Model.ApiRequest.ApiResponse;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.ApiRequest.Login;
 import com.imcooking.Model.ApiRequest.Verification;
 import com.imcooking.R;
@@ -23,6 +22,7 @@ import com.imcooking.activity.home.MainActivity;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 
 public class LoginActivity extends AppBaseActivity implements View.OnClickListener{
     LinearLayout layout;
@@ -31,6 +31,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     private Dialog dialog;
     private EditText edt_passcode;
     private String user_id;
+    TinyDB tinyDB ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
+        tinyDB = new TinyDB(getApplicationContext());
 
 //        find id
         txtRegister = findViewById(R.id.activity_login_txtregister);
@@ -131,6 +134,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
                             if (apiResponse.isStatus()) {
                                 if (apiResponse.getMsg().equals("Successfully login")) {
+                                    tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
                                     BaseClass.showToast(getApplicationContext(), "Login Successfull");
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
@@ -189,6 +193,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                             if (apiResponse.isStatus()) {
                                 if (apiResponse.getMsg().equals("Successfully varification")) {
                                     BaseClass.showToast(getApplicationContext(), "Login Successfull");
+                                    tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 } else {
                                     BaseClass.showToast(getApplicationContext(), "Something Went Wrong");

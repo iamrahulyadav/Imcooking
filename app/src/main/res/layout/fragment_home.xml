@@ -28,6 +28,7 @@
             android:id="@+id/toolbar_left"
             android:layout_alignParentLeft="true"
             android:gravity="center">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,6 +94,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/home_layout"
         android:background="@color/home_background"
         android:orientation="vertical"
         tools:context="com.imcooking.fragment.HomeFragment">
@@ -123,8 +125,8 @@
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="London"
                     android:textSize="13sp"
+                    android:id="@+id/fragment_home_txtcity"
                     android:layout_gravity="center"
                     android:textColor="@color/text_color_8"
                     android:drawableRight="@drawable/ic_drop_down_arrow"
@@ -196,6 +198,10 @@
             android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:visibility="gone">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_home_cuisine_recycler"/>
 
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="0dp"
@@ -279,7 +285,9 @@
                     android:background="@color/view_1"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:layout_toRightOf="@+id/home_latest_dish_text"/>
+                    android:layout_toRightOf="@+id/home_latest_dish_text"
+                    android:layout_toEndOf="@+id/home_latest_dish_text"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
             <LinearLayout
@@ -294,12 +302,17 @@
             </LinearLayout>
 
         </LinearLayout>
+        <com.imcooking.utils.CustomViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_viewPager"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingRight="10dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -315,6 +328,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:id="@+id/home_image"
                         android:layout_marginBottom="17dp"
                         android:src="@drawable/home_1"
                         android:background="@drawable/shape_home_image"
@@ -363,6 +377,7 @@
                 <com.imcooking.customtext.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/home_chef_name"
                     android:text="Vaibhav Khandelwal"
                     android:textStyle="bold"
                     android:textSize="14sp"
@@ -420,6 +435,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/home_chef_like"
                         android:text="200"
                         android:textStyle="bold"
                         android:textSize="10sp"
@@ -443,6 +459,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/home_chef_follow"
                         android:text="400"
                         android:textStyle="bold"
                         android:textSize="10sp"
@@ -506,6 +523,7 @@
                             <com.imcooking.customtext.CustomTextViewBold
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/home_dish_distance"
                                 android:text="2.7 miles"
                                 android:textSize="11sp"
                                 android:textStyle="bold"
@@ -549,6 +567,7 @@
                             <com.imcooking.customtext.CustomTextViewBold
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/home_dish_home_delivery"
                                 android:text="Home Delivery"
                                 android:textSize="11sp"
                                 android:textStyle="bold"
@@ -585,6 +604,7 @@
                             <com.imcooking.customtext.CustomTextViewBold
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/home_dish_price"
                                 android:text="$24"
                                 android:textSize="11sp"
                                 android:textStyle="bold"
@@ -658,6 +678,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/home_2"
+                    android:id="@+id/fragment_home_bottom_img"
                     android:scaleType="fitXY"/>
                 <ImageView
                     android:layout_width="wrap_content"
