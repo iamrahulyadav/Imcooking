@@ -4,7 +4,6 @@ package com.imcooking.activity.main.setup;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.imcooking.Model.ApiRequest.ApiResponse;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.ApiRequest.Login;
 import com.imcooking.Model.ApiRequest.Verification;
 import com.imcooking.R;

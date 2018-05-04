@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/shape_background_white"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_signup_text"
+            android:textColor="@color/text_color_10"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_margin="10dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:onClick="register_okay"
+                android:text="OKAY"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:background="@drawable/shape_background_theme"
+                android:gravity="center"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="register_okay"
+        android:text="X"
+        android:textColor="@color/colorWhite"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/shape_circle_theme"/>
+</RelativeLayout>
