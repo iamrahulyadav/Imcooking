@@ -68,12 +68,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private TextView tv_cusine, arrow_show_detail, txtCityName;
     private LinearLayout cusine_list;
-    ImageView imgBottom;
+    ImageView imgBottom, iv_dish_image;
     private TextView tv_dish_name, tv_chef_name, tv_chef_likes, tv_chef_followers, tv_dish_distance, tv_dish_delivery,
                         tv_dish_price;
 
+    private LinearLayout layout;
+
     private void init(){
 
+        layout = getView().findViewById(R.id.home_layout);
         cusine_list = getView().findViewById(R.id.home_cuisine_list);
         tv_cusine = getView().findViewById(R.id.home_cuisine);
         tv_cusine.setOnClickListener(this);
@@ -85,6 +88,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         arrow_show_detail.setOnClickListener(this);
 
+        iv_dish_image = getView().findViewById(R.id.home_image);
         tv_dish_name = getView().findViewById(R.id.home_show_detail_1);
         tv_chef_name = getView().findViewById(R.id.home_chef_name);
         tv_chef_likes = getView().findViewById(R.id.home_chef_like);
@@ -111,7 +115,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 cuisine_status = false;
             }
         } else if(v.getId() == R.id.home_show_detail_1){
-            BaseClass.callFragment(new com.imcooking.fragment.HomeDetails(), new com.imcooking.fragment.HomeDetails()
+
+            HomeDetails fragment = new HomeDetails();
+            Bundle bundle = new Bundle();
+            bundle.putString("dish_id", homeData.getChef_dish().get(0).getDish_id() + "");
+            fragment.setArguments(bundle);
+
+            BaseClass.callFragment(fragment, fragment
                     .getClass().getName(), getFragmentManager());
 
         }
@@ -123,9 +133,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+
+        layout.setVisibility(View.GONE);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -166,8 +179,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
 
+
                         homeData = new Gson().fromJson(response, HomeData.class);
                         if (homeData.isStatus()) {
+                            layout.setVisibility(View.VISIBLE);
 
                             setMyData();
                         } else{
@@ -182,6 +197,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String TAG = HomeFragment.class.getName();
     private void setMyData(){
 
+        Picasso.with(getContext()).load(GetData.IMG_BASE_URL + homeData
+                .getChef_dish().get(0).getDish_image().get(0))
+//                                .placeholder( R.drawable.progress_animation )
+                .into(iv_dish_image);
         tv_dish_name.setText(homeData.getChef_dish().get(0).getDish_name());
         tv_chef_name.setText(homeData.getChef_dish().get(0).getChef_name());
         tv_chef_likes.setText(String.valueOf(homeData.getChef_dish().get(0).getLike()));

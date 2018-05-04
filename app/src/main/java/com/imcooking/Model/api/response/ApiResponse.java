@@ -11,6 +11,7 @@ public class ApiResponse {
     private String msg;
     private UserDataBean user_data;
     public HomeData homeData;
+    public DishDetails dish_details;
 
     public boolean isStatus() {
         return status;
