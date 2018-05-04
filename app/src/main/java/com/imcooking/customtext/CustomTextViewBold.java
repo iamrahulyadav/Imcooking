@@ -2,6 +2,7 @@ package com.imcooking.customtext;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.InputType;
 import android.util.AttributeSet;
 
 /**

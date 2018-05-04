@@ -148,7 +148,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                         }
                         txtTime.setText(dishDetails.getDish_details().getDish_from()+"-"+dishDetails.getDish_details().getDish_to());
                         if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
-                            txtDeliverytype.setText("No Home Delivery");
+                            txtDeliverytype.setText("Pickup");
+                        } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
+                                && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
+                            txtDeliverytype.setText("Home Delivery / Pickup");
                         } else {
                             txtDeliverytype.setText("Home Delivery");
                         }

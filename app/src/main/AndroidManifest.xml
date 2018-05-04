@@ -41,11 +41,6 @@
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.home.HomeDetails"
-            android:screenOrientation="portrait"
-            android:theme="@style/Trans_Status_Bar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".activity.Sub.ManageAddress"
             android:screenOrientation="portrait" />
         <activity

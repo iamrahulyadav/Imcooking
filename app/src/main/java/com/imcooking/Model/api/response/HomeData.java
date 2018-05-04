@@ -43,8 +43,10 @@ public class HomeData {
          * chef_id : 8
          * chef_name : shalu
          * like : 0
+         * dishlike : 0
          * follow : 0
          * rating : 0
+         * ratingno : 0
          * dish_id : 7
          * dish_name : sdfsdf
          * dish_cuisine_id : 32
@@ -62,14 +64,17 @@ public class HomeData {
          * dish_homedelivery : No
          * dish_pickup : Yes
          * dish_deliverymiles : 10
+         * distance : 0
          * dish_image : ["1524488146alugobi.jpg","1524488146chilichecken.jpg","1524488146chapati.jpg","1524488146barfi.jpg","1524488146gulabjamun.jpg"]
          */
 
         private int chef_id;
         private String chef_name;
         private int like;
+        private int dishlike;
         private int follow;
         private int rating;
+        private int ratingno;
         private int dish_id;
         private String dish_name;
         private int dish_cuisine_id;
@@ -87,7 +92,41 @@ public class HomeData {
         private String dish_homedelivery;
         private String dish_pickup;
         private int dish_deliverymiles;
+        private float distance;
+        private String address;
         private List<String> dish_image;
+
+        public int getDishlike() {
+            return dishlike;
+        }
+
+        public void setDishlike(int dishlike) {
+            this.dishlike = dishlike;
+        }
+
+        public int getRatingno() {
+            return ratingno;
+        }
+
+        public void setRatingno(int ratingno) {
+            this.ratingno = ratingno;
+        }
+
+        public float getDistance() {
+            return distance;
+        }
+
+        public void setDistance(float distance) {
+            this.distance = distance;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
 
         public int getChef_id() {
             return chef_id;

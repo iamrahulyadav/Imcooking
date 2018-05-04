@@ -198,6 +198,10 @@
             android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:visibility="gone">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_home_cuisine_recycler"/>
 
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="0dp"
@@ -281,7 +285,9 @@
                     android:background="@color/view_1"
                     android:layout_alignParentRight="true"
                     android:layout_centerInParent="true"
-                    android:layout_toRightOf="@+id/home_latest_dish_text"/>
+                    android:layout_toRightOf="@+id/home_latest_dish_text"
+                    android:layout_toEndOf="@+id/home_latest_dish_text"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
             <LinearLayout
@@ -296,12 +302,17 @@
             </LinearLayout>
 
         </LinearLayout>
+        <com.imcooking.utils.CustomViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_viewPager"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingRight="10dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
