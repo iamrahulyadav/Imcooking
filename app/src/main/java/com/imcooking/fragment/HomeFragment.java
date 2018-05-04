@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CuisionAdatper;
+import com.imcooking.adapters.HomeBottomPagerAdapter;
 import com.imcooking.adapters.HomeDishPagerAdapter;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomViewPager;
@@ -61,11 +63,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private Toolbar toolbar;
     CustomViewPager viewPager;
     HomeDishPagerAdapter adapter;
-    private void setMyViewPager() {
-        adapter = new HomeDishPagerAdapter(getContext(), getFragmentManager(),chefDishBeans);
-        viewPager = (CustomViewPager) getView().findViewById(R.id.home_viewPager);
-        viewPager.setAdapter(adapter);
-    }
+    HomeBottomPagerAdapter homeBottomPagerAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -87,37 +85,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private TextView tv_cusine, arrow_show_detail, txtCityName;
     private LinearLayout cusine_list;
     private RecyclerView cuisinRecycler;
-    ImageView imgBottom, iv_dish_image;
-    private TextView tv_dish_name, tv_chef_name, tv_chef_likes, tv_chef_followers, tv_dish_distance, tv_dish_delivery,
-                        tv_dish_price;
-
     private LinearLayout layout;
+    ViewPager bottomViewPager;
     CuisionAdatper cuisionAdatper;
 
     private CuisionAdatper.OnItemClickListenerCategory listener;
+
+    private Spinner sp;
+
+
     private void init(){
 
+        sp = getView().findViewById(R.id.home_spiner);
         layout = getView().findViewById(R.id.home_layout);
         cusine_list = getView().findViewById(R.id.home_cuisine_list);
         tv_cusine = getView().findViewById(R.id.home_cuisine);
+        bottomViewPager = getView().findViewById(R.id.fragment_home_bottom);
         tv_cusine.setOnClickListener(this);
 
         arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
-        imgBottom = getView().findViewById(R.id.fragment_home_bottom_img);
-
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
 
         arrow_show_detail.setOnClickListener(this);
-
-        iv_dish_image = getView().findViewById(R.id.home_image);
-        tv_dish_name = getView().findViewById(R.id.home_show_detail_1);
-        tv_chef_name = getView().findViewById(R.id.home_chef_name);
-        tv_chef_likes = getView().findViewById(R.id.home_chef_like);
-        tv_chef_followers = getView().findViewById(R.id.home_chef_follow);
-        tv_dish_distance = getView().findViewById(R.id.home_dish_distance);
-        tv_dish_delivery = getView().findViewById(R.id.home_dish_home_delivery);
-        tv_dish_price = getView().findViewById(R.id.home_dish_price);
-
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -232,7 +221,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                         if (homeData.isStatus()) {
                             layout.setVisibility(View.VISIBLE);
                             setMyData();
-                            adapter.notifyDataSetChanged();
+//                            adapter.notifyDataSetChanged();
+//                            homeBottomPagerAdapter.notifyDataSetChanged();
+
                         } else{
                             BaseClass.showToast(getContext(), "Something Went Wrong");
                         }
@@ -244,17 +235,34 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     private String TAG = HomeFragment.class.getName();
     List<HomeData.ChefDishBean>chefDishBeans = new ArrayList<>();
+    List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
     private void setMyData(){
         if (chefDishBeans!=null){
             chefDishBeans.clear();
         }
-
+        if (favouriteDataBeans!=null){
+            favouriteDataBeans.clear();
+        }
         chefDishBeans.addAll(homeData.getChef_dish());
-        Picasso.with(getContext()).load(GetData.IMG_BASE_URL+homeData.getFavourite_data().get(0).getImage()).into(imgBottom);
-        setMyViewPager();
+        favouriteDataBeans.addAll(homeData.getFavourite_data());
 
+        setMyViewPager();
+        setBottomViewPager();
 
     }
+
+    private void setMyViewPager() {
+        adapter = new HomeDishPagerAdapter(getContext(), getFragmentManager(),chefDishBeans);
+        viewPager = (CustomViewPager) getView().findViewById(R.id.home_viewPager);
+        viewPager.setAdapter(adapter);
+    }
+
+    private void setBottomViewPager() {
+        Log.d("Debug", favouriteDataBeans.size() + "");
+        homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(),favouriteDataBeans);
+        bottomViewPager.setAdapter(homeBottomPagerAdapter);
+    }
+
 
     @Override
     public void onItemClickCategory(int position) {

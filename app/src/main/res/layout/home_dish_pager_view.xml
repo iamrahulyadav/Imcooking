@@ -273,6 +273,7 @@
                             android:id="@+id/home_dish_home_delivery"
                             android:text="Home Delivery"
                             android:textSize="11sp"
+                            android:gravity="center"
                             android:textStyle="bold"
                             android:textColor="@color/colorBlack"/>
 

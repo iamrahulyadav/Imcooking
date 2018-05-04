@@ -147,6 +147,12 @@
                     android:textSize="12sp"
                     android:layout_gravity="center"
                     android:textColor="@color/text_color_7"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/home_spiner"></Spinner>
+
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -667,30 +673,11 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_right_arrow"/>
             </LinearLayout>
+            <com.imcooking.utils.CustomViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_home_bottom"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@drawable/shape_home_image"
-                android:layout_marginTop="10dp"
-                android:paddingTop="1dp">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/home_2"
-                    android:id="@+id/fragment_home_bottom_img"
-                    android:scaleType="fitXY"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_heart"
-                    android:scaleType="fitXY"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"/>
-
-            </RelativeLayout>
 
         </LinearLayout>
 
