@@ -79,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_filter"
+                android:id="@+id/fragment_home_img_filter"
                 android:layout_alignParentLeft="true"/>
 
         </LinearLayout>
@@ -683,7 +684,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fragment_home_bottom"/>
-
 
         </LinearLayout>
 

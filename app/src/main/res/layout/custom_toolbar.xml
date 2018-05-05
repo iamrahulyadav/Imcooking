@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/custom_toolbar"
+    android:background="@color/colorPrimary">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_left_arrow_1"
+        android:id="@+id/custom_toolbar_imgback"/>
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Main"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:id="@+id/custom_toolbar_txtTitle"
+        android:textSize="@dimen/largesize"
+        android:textColor="#464646"/>
+
+</android.support.v7.widget.Toolbar>

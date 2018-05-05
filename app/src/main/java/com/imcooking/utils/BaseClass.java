@@ -2,8 +2,10 @@ package com.imcooking.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -41,6 +43,19 @@ public class BaseClass {
         t = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         t.show();
     }
+
+    public static void setLightStatusBar(View view, Activity activity){
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+            activity.getWindow().setStatusBarColor(Color.WHITE);
+        }
+    }
+
 
     public static void callFragment(Fragment fragment, String tag, FragmentManager manager){
 

@@ -23,6 +23,9 @@ import com.android.volley.toolbox.Volley;
 import com.imcooking.activity.main.setup.SignUpActivity;
 import com.imcooking.utils.BaseClass;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -92,8 +95,22 @@ public class GetData {
                         if (request.body() != null) {
                             String msg = response.body().string();
                             Log.d("CallBack", msg);
-                            callback.onSuccess(msg);
-
+                            try {
+                                JSONObject jsonObject  = new JSONObject(msg);
+                                if (jsonObject.has("status")){
+                                    callback.onSuccess(msg);
+                                } else {
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d("TAG", "run: "+"Server error ");
+                                          //  Toast.makeText(context, "Server error ", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

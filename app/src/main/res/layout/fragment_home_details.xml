@@ -201,12 +201,16 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/home_pager_imgHomeDelivery"
+                        android:visibility="gone"
                         android:src="@drawable/ic_logistics_delivery_truck_in_movement"
                         android:layout_gravity="bottom"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_pickup"
+                        android:visibility="gone"
+                        android:id="@+id/home_pager_imgPick"
                         android:layout_marginLeft="5dp"
                         android:layout_gravity="bottom"/>
 

@@ -69,7 +69,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         init();
     }
 
-    private ImageView iv_share, imgTop;
+    private ImageView iv_share, imgTop,imgPickUp, imgDeliviery;
     TextView txtDishName, txtChefName, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
     private LinearLayout chef_profile, layout;
     private String TAG  = HomeDetails.class.getName();
@@ -85,6 +85,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         txtDistance = getView().findViewById(R.id.fragment_home_details_txtDistance);
         txtAvailable = getView().findViewById(R.id.fragment_home_details_txtAvailable);
         txtTime = getView().findViewById(R.id.fragment_home_details_txtTime);
+        imgDeliviery =  getView().findViewById(R.id.home_pager_imgHomeDelivery);
+        imgPickUp =  getView().findViewById(R.id.home_pager_imgPick);
         iv_share.setOnClickListener(this);
 
         chef_profile = getView().findViewById(R.id.home_details_chef_profile);
@@ -155,6 +157,20 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                         } else {
                             txtDeliverytype.setText("Home Delivery");
                         }
+
+                        if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
+                            txtDeliverytype.setText("Pickup");
+                            imgPickUp.setVisibility(View.VISIBLE);
+                        } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
+                                && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
+                            txtDeliverytype.setText("Home Delivery / Pickup");
+                            imgDeliviery.setVisibility(View.VISIBLE);
+                            imgPickUp.setVisibility(View.VISIBLE);
+                        } else {
+                            imgDeliviery.setVisibility(View.VISIBLE);
+                            txtDeliverytype.setText("Home Delivery");
+                        }
+
                         txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
                         Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
                                 .getDish_details().getDish_image().get(0))

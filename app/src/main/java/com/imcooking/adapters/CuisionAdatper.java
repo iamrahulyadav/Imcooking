@@ -76,7 +76,7 @@ public class CuisionAdatper extends RecyclerView.Adapter<CuisionAdatper.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.txtName.setText(cuisineDataBeans.get(position).getCuisine_name());
-      //  holder.bindListener(position, listener);
+        holder.bindListener(position, listener);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.imcooking.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -29,6 +30,7 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.FilterHomeActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
@@ -36,6 +38,7 @@ import com.imcooking.adapters.HomeDishPagerAdapter;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomViewPager;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -49,7 +52,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     SearchHomeRequest searchHomeRequest = new SearchHomeRequest();
     private HomeData homeData = new HomeData();
     private ArrayList<String>spinnerData =new ArrayList<>();
-
+    private TinyDB tinyDB;
+    private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+    private Gson gson = new Gson();
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -89,6 +94,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private RecyclerView cuisinRecycler;
     private LinearLayout layout;
     ViewPager bottomViewPager;
+    ImageView imgFilter;
     CuisionAdatper cuisionAdatper;
 
     private CuisionAdatper.OnItemClickListenerCategory listener;
@@ -103,26 +109,34 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         cusine_list = getView().findViewById(R.id.home_cuisine_list);
         tv_cusine = getView().findViewById(R.id.home_cuisine);
         bottomViewPager = getView().findViewById(R.id.fragment_home_bottom);
+        imgFilter = getView().findViewById(R.id.fragment_home_img_filter);
         tv_cusine.setOnClickListener(this);
 
         arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
 
+        imgFilter.setOnClickListener(this);
         arrow_show_detail.setOnClickListener(this);
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         cuisinRecycler.setLayoutManager(horizontalLayoutManagaer);
-        spinnerData.add("0mile - 10miles");
-        spinnerData.add("10miles - 20miles");
-        spinnerData.add("20miles - 30miles");
-        spinnerData.add("30miles - 40miles");
-
-
+        if (spinnerData!=null){
+            spinnerData.clear();
+        }
+        spinnerData.add("10miles ");
+        spinnerData.add("20miles ");
+        spinnerData.add("30miles ");
+        spinnerData.add("40miles ");
+        tinyDB = new TinyDB(getContext());
+        String s = tinyDB.getString("login_data");
+        userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
+        foodie_id = userDataBean.getUser_id()+"";
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
 
     //    cuisinRecycler.setAdapter(cuisionAdatper);
 
+        milesSpinner();
     }
     String s;
     String selectedmiles;
@@ -141,9 +155,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-
-//                str_licence_origin= (String) getKeyFromValue(SplashActivity.country,item);
-
+                switch (position){
+                    case 0:
+                        min_miles = "0";
+                        max_miles = "10";
+                        getHomeData();
+                        break;
+                    case 1:
+                        min_miles = "0";
+                        max_miles = "20";
+                        getHomeData();
+                        break;
+                    case 2:
+                        min_miles = "0";
+                        max_miles = "30";
+                        getHomeData();
+                        break;
+                    case 3:
+                        min_miles = "0";
+                        max_miles = "40";
+                        getHomeData();
+                        break;
+                        default:
+                            break;
+                }
             }
 
             @Override
@@ -180,8 +215,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                     .getClass().getName(), getFragmentManager());
 
         }
-        else{
-
+        else if (v.getId()==R.id.fragment_home_img_filter){
+            startActivity(new Intent(getContext(), FilterHomeActivity.class));
         }
     }
 
@@ -201,11 +236,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                 txtCityName.setText(MainActivity.stringBuffer.toString());
             }
         },3000);
-        getHomeData();
         getCuisone();
+        getHomeData();
 
     }
 
+    String latitude = "28.5748119";
+    String longitude = "7.0869837" ;
+    String min_miles = "0";
+    String max_miles = "10";
+    String foodie_id = "4";
+    String country = "101";
     private CuisineData cuisineData = new CuisineData();
     private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
     private void getCuisone(){
@@ -228,19 +269,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     private void getHomeData(){
 
-        String latitude = "28.5748119";
-        String longitude = "7.0869837" ;
-        String min_miles = "1";
-        String max_miles = "50";
-        String foodie_id = "4";
-        String country = "101";
-
         Home data = new Home();
-        data.setLatitude("28.5748119");
-        data.setLongitude("77.0869837");
-        data.setMin_miles("1");
-        data.setMax_miles("50");
-        data.setCountry("101");
+        data.setLatitude("51.5198117");
+        data.setLongitude("-0.0939186");
+        data.setMin_miles(min_miles);
+        data.setMax_miles(max_miles);
+        data.setCountry("230");
         data.setFoodie_id("4");
 
         Log.d("MyRequest", new Gson().toJson(data));
@@ -253,13 +287,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Log.d(TAG, "run: data"+response.toString());
                         homeData = new Gson().fromJson(response, HomeData.class);
                         if (homeData.isStatus()) {
                             layout.setVisibility(View.VISIBLE);
                             setMyData();
 //                            adapter.notifyDataSetChanged();
 //                            homeBottomPagerAdapter.notifyDataSetChanged();
-
                         } else{
                             BaseClass.showToast(getContext(), "Something Went Wrong");
                         }
@@ -284,7 +318,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
         setMyViewPager();
         setBottomViewPager();
-        milesSpinner();
+
     }
 
     private void setMyViewPager() {
@@ -298,7 +332,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(),favouriteDataBeans);
         bottomViewPager.setAdapter(homeBottomPagerAdapter);
     }
-
 
     @Override
     public void onItemClickCategory(int position) {
