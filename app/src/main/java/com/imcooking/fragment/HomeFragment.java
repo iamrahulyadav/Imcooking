@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -46,7 +48,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     SearchHomeRequest searchHomeRequest = new SearchHomeRequest();
     private HomeData homeData = new HomeData();
-
+    private ArrayList<String>spinnerData =new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -111,12 +113,46 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         cuisinRecycler.setLayoutManager(horizontalLayoutManagaer);
+        spinnerData.add("0mile - 10miles");
+        spinnerData.add("10miles - 20miles");
+        spinnerData.add("20miles - 30miles");
+        spinnerData.add("30miles - 40miles");
+
 
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
 
     //    cuisinRecycler.setAdapter(cuisionAdatper);
 
     }
+    String s;
+    String selectedmiles;
+    private void milesSpinner() {
+        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
+                R.layout.spinner_row, spinnerData);
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
+        sp.setAdapter(arrayAdapter);
+        if (selectedmiles != null) {
+
+            int spinnerPosition = arrayAdapter.getPosition(s);
+            sp.setSelection(spinnerPosition);
+        }
+
+        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+
+//                str_licence_origin= (String) getKeyFromValue(SplashActivity.country,item);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
 
     private boolean cuisine_status = false;
 
@@ -248,7 +284,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
         setMyViewPager();
         setBottomViewPager();
-
+        milesSpinner();
     }
 
     private void setMyViewPager() {

@@ -149,15 +149,21 @@
                     android:textColor="@color/text_color_7"/>
 
                 <Spinner
+                    style="@style/SpinnerTheme"
+                    android:spinnerMode="dropdown"
+                    android:id="@+id/home_spiner"
+                    android:paddingRight="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/home_spiner"></Spinner>
+                    android:layout_gravity="right"
+                    android:layout_marginTop="5dp" />
 
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5miles - 10miles"
                     android:textSize="13sp"
+                    android:visibility="gone"
                     android:drawableRight="@drawable/ic_drop_down_arrow"
                     android:drawablePadding="10dp"
                     android:layout_gravity="center"

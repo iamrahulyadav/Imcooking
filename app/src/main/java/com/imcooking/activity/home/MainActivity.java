@@ -11,6 +11,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -26,6 +28,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -44,6 +47,7 @@ import com.imcooking.fragment.HomeFragment;
 import com.imcooking.fragment.MyOrderFragment;
 import com.imcooking.fragment.NotificationFragment;
 import com.imcooking.fragment.ProfileFragment;
+import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 
 import java.io.IOException;
@@ -51,7 +55,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private GoogleMap googleMap;
     MapView mMapView;
@@ -69,8 +73,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         drawerLayout1 = findViewById(R.id.drawer_layout);
+        checkGPSStatus();
+
         mMapView = (MapView) findViewById(R.id.ride_now_mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
@@ -161,6 +166,28 @@ public class MainActivity extends AppCompatActivity
 
         init();
         BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                     @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            1);
+                    return;
+                }
+                googleMap.setMyLocationEnabled(true);
+                googleMap.setOnMyLocationChangeListener(onMyLocationChangeListener);
+                break;
+        }
     }
 
     private GoogleMap.OnMyLocationChangeListener onMyLocationChangeListener= new GoogleMap.OnMyLocationChangeListener() {
@@ -284,7 +311,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
 //        tv_home.setTextColor(getResources().getColor(R.color.theme_color));
 //        iv_home.setImageResource(R.drawable.ic_home_1);
     }
@@ -293,8 +319,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.openDrawer(GravityCompat.START);
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -307,8 +331,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

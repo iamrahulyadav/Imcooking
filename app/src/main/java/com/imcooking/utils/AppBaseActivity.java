@@ -52,6 +52,7 @@ public class AppBaseActivity extends AppCompatActivity {
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                checkGPSStatus();
             }
         });
         // Showing Alert Message
