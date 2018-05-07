@@ -1,6 +1,8 @@
 package com.imcooking.fragment;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -95,9 +97,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private LinearLayout layout;
     ViewPager bottomViewPager;
     ImageView imgFilter;
+    boolean isApplyFiltered;
     CuisionAdatper cuisionAdatper;
-
-
     private Spinner sp;
 
 
@@ -110,6 +111,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         bottomViewPager = getView().findViewById(R.id.fragment_home_bottom);
         imgFilter = getView().findViewById(R.id.fragment_home_img_filter);
         tv_cusine.setOnClickListener(this);
+        viewPager =  getView().findViewById(R.id.home_viewPager);
 
         arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
@@ -123,10 +125,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if (spinnerData!=null){
             spinnerData.clear();
         }
-        spinnerData.add("10miles ");
-        spinnerData.add("20miles ");
-        spinnerData.add("30miles ");
-        spinnerData.add("40miles ");
+        spinnerData.add("10 km ");
+        spinnerData.add("20 km ");
+        spinnerData.add("30 km ");
+        spinnerData.add("40 km ");
         tinyDB = new TinyDB(getContext());
         String s = tinyDB.getString("login_data");
         userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
@@ -134,9 +136,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
 
     //    cuisinRecycler.setAdapter(cuisionAdatper);
+        layout.setVisibility(View.GONE);
 
+        getCuisone();
+        getHomeData();
         milesSpinner();
     }
+
     String s;
     String selectedmiles;
     private void milesSpinner() {
@@ -196,10 +202,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if(v.getId() == R.id.home_cuisine){
             if(!cuisine_status){
                 cusine_list.setVisibility(View.VISIBLE);
+                cusine_list.setAlpha(0.0f);
+                cusine_list.animate()
+                        .translationY(0)
+                        .alpha(1.0f)
+                        .setListener(null)
+                .setDuration(1000);
                 tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_aarrow, 0);
                 cuisine_status = true;
             }else{
-                cusine_list.setVisibility(View.GONE);
+                cusine_list.animate()
+                        .translationY(0)
+                        .alpha(0.0f)
+                        .setDuration(1000)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                cusine_list.setVisibility(View.GONE);
+                            }
+                        });
                 tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_arrow, 0);
                 cuisine_status = false;
             }
@@ -215,7 +237,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
         }
         else if (v.getId()==R.id.fragment_home_img_filter){
-            startActivity(new Intent(getContext(), FilterHomeActivity.class));
+            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
         }
     }
 
@@ -227,7 +249,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
 
-        layout.setVisibility(View.GONE);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -235,8 +256,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                 txtCityName.setText(MainActivity.stringBuffer.toString());
             }
         },3000);
-        getCuisone();
-        getHomeData();
 
     }
 
@@ -326,7 +345,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     private void setMyViewPager() {
         adapter = new HomeDishPagerAdapter(getContext(), getFragmentManager(),chefDishBeans);
-        viewPager = (CustomViewPager) getView().findViewById(R.id.home_viewPager);
         viewPager.setAdapter(adapter);
     }
 
@@ -341,5 +359,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data!=null){
+            if(resultCode== FilterHomeActivity.FILTER_RESPONSE_CODE)
+            {
+                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

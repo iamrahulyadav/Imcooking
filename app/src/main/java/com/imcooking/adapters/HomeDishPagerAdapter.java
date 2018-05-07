@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.imcooking.Model.api.response.HomeData;
@@ -54,8 +55,10 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         ImageView iv_dish_image, imgPickUp, imgDeliviery;
         TextView tv_dish_name, tv_chef_name, tv_chef_likes, tv_chef_followers, tv_dish_distance, tv_dish_delivery,
                 tv_dish_price;
+        RatingBar ratingBar;
         TextView tv_dish_likes, tv_chef_rating, tv_dish_address;
 
+        ratingBar = view.findViewById(R.id.home_dish_pager_rating);
         iv_dish_image = view.findViewById(R.id.home_image);
         tv_dish_name =view.findViewById(R.id.home_show_detail_1);
         tv_chef_name = view.findViewById(R.id.home_chef_name);
@@ -71,7 +74,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_dish_address = view.findViewById(R.id.home_dish_address);
 
         tv_dish_likes.setText(chefDishBeans.get(position).getDishlike() + "");
-        tv_chef_rating.setText(chefDishBeans.get(position).getRatingno() + "");
+        tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
         tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
         Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
@@ -117,6 +120,8 @@ public class HomeDishPagerAdapter extends PagerAdapter{
 
             }
         });
+
+        ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()));
         container.addView(view);
         return view;
     }

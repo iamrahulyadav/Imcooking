@@ -1,5 +1,6 @@
 package com.imcooking.activity.Sub;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Dimension;
@@ -9,16 +10,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.imcooking.R;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 
-public class FilterHomeActivity extends AppBaseActivity {
-    private TextView tv_title,txtCancel,txtSave, txtName ;
+public class FilterHomeActivity extends AppBaseActivity implements View.OnClickListener{
+    private TextView tv_title,txtReset, txtFilter ;
     private ImageView btnHome ;
     RatingBar ratingBar;
+    SeekBar seekBar;
+    int price;
+    float ratingvalue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +36,39 @@ public class FilterHomeActivity extends AppBaseActivity {
             BaseClass.setLightStatusBar(getWindow().getDecorView(),FilterHomeActivity.this);
         }
         setupToolBar();
+//        find id
+        init();
+    }
+    int progressChangedValue = 0;
 
-        }
+    private void init(){
+        txtReset = findViewById(R.id.actvity_filter_txtReset);
+        txtFilter = findViewById(R.id.actvity_filter_txtFilter);
+        ratingBar = findViewById(R.id.activity_filter_ratingbar);
+        seekBar = findViewById(R.id.actvity_filter_seekbar);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                progressChangedValue = i;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(FilterHomeActivity.this, "Seek bar progress is :" + progressChangedValue,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        set onclick on button
+        txtReset.setOnClickListener(this);
+        txtFilter.setOnClickListener(this);
+    }
 
 
     private void setupToolBar() {
@@ -44,5 +82,28 @@ public class FilterHomeActivity extends AppBaseActivity {
         tv_title.setText("Filter");
         setSupportActionBar(myToolbar);
     }
+    public static String FILTER_RESPONSE = "filter_response";
+    public static int FILTER_RESPONSE_CODE = 220;
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.actvity_filter_txtReset:
+                ratingvalue=0;
+                progressChangedValue = 0;
+                ratingBar.setRating(ratingvalue);
+                seekBar.setProgress(progressChangedValue);
+                break;
+            case R.id.actvity_filter_txtFilter:
+                ratingvalue = ratingBar.getRating();
+                Intent filrestintent=new Intent();
+                filrestintent.putExtra("ratingvalue",ratingvalue);
+                filrestintent.putExtra("progressChangedValue", progressChangedValue);
+                setResult(FILTER_RESPONSE_CODE,filrestintent);
+//                Log.d("VKK", gson.toJson(listModel));
+                finish();
+                Toast.makeText(this, ""+ratingvalue, Toast.LENGTH_SHORT).show();
 
+                break;
+        }
+    }
 }

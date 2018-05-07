@@ -216,50 +216,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/fragment_home_cuisine_recycler"/>
 
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:layout_marginRight="5dp"
-                android:text="ASIAN"
-                android:textStyle="bold"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:gravity="center"
-                android:background="@drawable/shape_theme_border"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:text="BRITISH"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_theme_border"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:text="CHINESE"
-                android:textSize="9sp"
-                android:textStyle="bold"
-                android:textColor="@color/theme_color"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_theme_border"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:text="FRENCH"
-                android:textStyle="bold"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_theme_border"/>
 
         </LinearLayout>
         <LinearLayout

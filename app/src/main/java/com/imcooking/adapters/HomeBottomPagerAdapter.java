@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,8 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         TextView tv_dish_name, tv_chef_name, tv_chef_likes, tv_chef_followers, tv_dish_distance, tv_dish_delivery,
                 tv_dish_price;
         TextView tv_dish_likes, tv_chef_rating, tv_dish_address;
+        RatingBar ratingBar;
+        ratingBar = view.findViewById(R.id.home_dish_pager_rating);
 
         iv_dish_image = view.findViewById(R.id.home_image);
         tv_dish_name =view.findViewById(R.id.home_show_detail_1);
@@ -73,7 +76,7 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_dish_address = view.findViewById(R.id.home_dish_address);
         tv_dish_address.setVisibility(View.GONE);
         tv_dish_likes.setText(chefDishBeans.get(position).getDishlike() + "");
-        tv_chef_rating.setText(chefDishBeans.get(position).getRatingno() + "");
+        tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
 //        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
         Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
@@ -119,6 +122,8 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
 
             }
         });
+        ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()));
+
         container.addView(view);
         return view;
     }

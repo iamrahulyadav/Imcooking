@@ -41,6 +41,7 @@
     <color name="view_3">#EFEFEF</color>
     <color name="view_4">#C6C6C6</color>
     <color name="view_5">#CCCCCC</color>
+    <color name="colorYellow">#eff200</color>
 
 
 </resources>
