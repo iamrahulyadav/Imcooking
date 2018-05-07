@@ -2,11 +2,13 @@ package com.imcooking.activity.Sub;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.Dimension;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.imcooking.R;
@@ -16,6 +18,7 @@ import com.imcooking.utils.BaseClass;
 public class FilterHomeActivity extends AppBaseActivity {
     private TextView tv_title,txtCancel,txtSave, txtName ;
     private ImageView btnHome ;
+    RatingBar ratingBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +30,7 @@ public class FilterHomeActivity extends AppBaseActivity {
         }
         setupToolBar();
 
-
-    }
+        }
 
 
     private void setupToolBar() {

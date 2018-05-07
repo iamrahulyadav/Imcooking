@@ -98,13 +98,23 @@
                     android:layout_height="wrap_content"
                     android:text="@string/activity_filter_txtRating"
                     android:textColor="@color/colorBlack"/>
-                <RatingBar
-                    android:theme="@style/MyRatingBar"
-                    android:id="@+id/ratingBar2"
+                <android.support.v7.widget.AppCompatRatingBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:rating="3.6"
+                    android:layout_gravity="center"
+                    android:numStars="5"
+                    android:rating="3.2"
+                    android:progressTint="#eff200"/>
+
+                <RatingBar
+                    style="@style/customRatingBar"                    android:id="@+id/ratingBar2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rating="1.3"
+                    android:numStars="5"
+                    android:visibility="gone"
+                    android:max="5"
+                    android:layout_margin="10dp"
                     android:layout_gravity="center"/>
                 <View
                     android:layout_width="match_parent"

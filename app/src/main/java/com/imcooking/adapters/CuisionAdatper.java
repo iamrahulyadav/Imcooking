@@ -25,40 +25,39 @@ import java.util.List;
  */
 public class CuisionAdatper extends RecyclerView.Adapter<CuisionAdatper.MyViewHolder> {
 
-    OnItemClickListenerCategory listener;
+//    OnItemClickListenerCategory listener;
     private Context context;
+    CuisionInterface cuisionInterface;
+
     private List<CuisineData.CuisineDataBean>cuisineDataBeans = new ArrayList<>();
 
     public CuisionAdatper( Context context,
                           List<CuisineData.CuisineDataBean> cuisineDataBeans) {
-        this.listener = listener;
         this.context = context;
         this.cuisineDataBeans = cuisineDataBeans;
     }
-
-    public interface  OnItemClickListenerCategory {
-        void onItemClickCategory(int position);
+    public interface CuisionInterface {
+        void CuisionInterfaceMethod(View view, int position);
+    }
+    public void CuisionInterfaceMethod(CuisionInterface quoteInterface) {
+        this.cuisionInterface = quoteInterface;
     }
 
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView txtName;
 
         public MyViewHolder(View view) {
             super(view);
 
             txtName = (TextView) view.findViewById(R.id.txtCuisionName);
+            txtName.setOnClickListener(this);
         }
-        void bindListener(final int position, final OnItemClickListenerCategory listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    row_index=position;
-                    notifyDataSetChanged();
-                    listener.onItemClickCategory(position);
 
-                }
-            });
+        @Override
+        public void onClick(View view) {
+            if (cuisionInterface != null) {
+                cuisionInterface.CuisionInterfaceMethod(view, getPosition());
+            }
         }
     }
 
@@ -76,7 +75,6 @@ public class CuisionAdatper extends RecyclerView.Adapter<CuisionAdatper.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.txtName.setText(cuisineDataBeans.get(position).getCuisine_name());
-        holder.bindListener(position, listener);
     }
 
     @Override

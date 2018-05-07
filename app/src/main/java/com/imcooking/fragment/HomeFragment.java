@@ -47,7 +47,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements View.OnClickListener, CuisionAdatper.OnItemClickListenerCategory {
+public class HomeFragment extends Fragment implements View.OnClickListener, CuisionAdatper.CuisionInterface {
 
     SearchHomeRequest searchHomeRequest = new SearchHomeRequest();
     private HomeData homeData = new HomeData();
@@ -97,7 +97,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     ImageView imgFilter;
     CuisionAdatper cuisionAdatper;
 
-    private CuisionAdatper.OnItemClickListenerCategory listener;
 
     private Spinner sp;
 
@@ -260,11 +259,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                 final String response = result;
                 cuisineData = new Gson().fromJson(result,CuisineData.class);
                 cuisionList.addAll(cuisineData.getCuisine_data());
-
-                cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
-                cuisinRecycler.setAdapter(cuisionAdatper);
+                setCuisionAdapter();
             }
         });
+    }
+
+    private void setCuisionAdapter(){
+        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
+        cuisinRecycler.setAdapter(cuisionAdatper);
+        cuisionAdatper.CuisionInterfaceMethod(this);
     }
 
     private void getHomeData(){
@@ -331,10 +334,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         Log.d("Debug", favouriteDataBeans.size() + "");
         homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(),favouriteDataBeans);
         bottomViewPager.setAdapter(homeBottomPagerAdapter);
+
     }
 
+
     @Override
-    public void onItemClickCategory(int position) {
+    public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
     }
 }
