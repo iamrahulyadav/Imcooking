@@ -70,7 +70,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-        <activity android:name=".activity.Sub.FilterHomeActivity"></activity>
+        <activity android:name=".activity.Sub.FilterHomeActivity" />
+        <activity android:name=".activity.Sub.OtherDishActivity"></activity>
     </application>
 
 </manifest>

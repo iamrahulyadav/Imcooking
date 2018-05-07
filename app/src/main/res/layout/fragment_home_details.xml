@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,6 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20"
+                        android:id="@+id/home_details_like"
                         android:textSize="14dp"
                         android:textColor="@color/colorWhite"
                         android:layout_alignParentRight="true"
@@ -339,6 +341,7 @@
                 android:text="@string/other_dish_by_user"
                 android:textSize="14sp"
                 android:gravity="center"
+                android:id="@+id/home_details_txtOtherDish"
                 android:textColor="@color/shape_background_1"
                 android:layout_alignParentRight="true"/>
 
@@ -348,7 +351,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorWhite"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="0dp"
@@ -375,8 +379,24 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/colorWhite"></LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorWhite">
+            <android.support.design.widget.TabLayout
+                android:id="@+id/cardet_Tab"
+                android:layout_height="50dp"
+                app:tabTextColor="@color/colorBlack"
+                app:tabSelectedTextColor="@color/colorBlue"
+                android:layout_width="match_parent">
+            </android.support.design.widget.TabLayout>
+
+            <com.imcooking.utils.CustomViewPager
+                android:id="@+id/cardet_viewpager"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+            </com.imcooking.utils.CustomViewPager>
+        </LinearLayout>
 
 
     </LinearLayout>
