@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
@@ -24,14 +26,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeDishPagerAdapter extends PagerAdapter{
+public class HomeBottomPagerAdapter extends PagerAdapter{
 
     LayoutInflater mLayoutInflater;
     Context context;
-    List<HomeData.ChefDishBean> chefDishBeans = new ArrayList<>();
+    List<HomeData.FavouriteDataBean> chefDishBeans = new ArrayList<>();
     FragmentManager manager;
 
-    public HomeDishPagerAdapter( Context context, FragmentManager manager,List<HomeData.ChefDishBean> chefDishBeans ) {
+    public HomeBottomPagerAdapter(Context context, FragmentManager manager, List<HomeData.FavouriteDataBean> chefDishBeans ) {
         this.context = context;
         this.manager = manager;
         this.chefDishBeans = chefDishBeans;
@@ -55,10 +57,10 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         ImageView iv_dish_image, imgPickUp, imgDeliviery;
         TextView tv_dish_name, tv_chef_name, tv_chef_likes, tv_chef_followers, tv_dish_distance, tv_dish_delivery,
                 tv_dish_price;
-        RatingBar ratingBar;
         TextView tv_dish_likes, tv_chef_rating, tv_dish_address;
-
+        RatingBar ratingBar;
         ratingBar = view.findViewById(R.id.home_dish_pager_rating);
+
         iv_dish_image = view.findViewById(R.id.home_image);
         tv_dish_name =view.findViewById(R.id.home_show_detail_1);
         tv_chef_name = view.findViewById(R.id.home_chef_name);
@@ -72,10 +74,10 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_dish_likes = view.findViewById(R.id.home_dish_likes);
         tv_chef_rating = view.findViewById(R.id.home_chef_rating);
         tv_dish_address = view.findViewById(R.id.home_dish_address);
-
+        tv_dish_address.setVisibility(View.GONE);
         tv_dish_likes.setText(chefDishBeans.get(position).getDishlike() + "");
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
-        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
+//        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
         Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                 .get(position).getDish_image().get(0))
@@ -91,11 +93,11 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_chef_likes.setText(String.valueOf(chefDishBeans
                 .get(position).getLike()));
         tv_chef_followers.setText(chefDishBeans.get(position).getFollow()+"");
-        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles()+" miles");
-        if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("No")){
+//        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles()+" miles");
+        if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("No")){
             tv_dish_delivery.setText("Pickup");
             imgPickUp.setVisibility(View.VISIBLE);
-        } else if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("YES")
+        } else if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("YES")
                 && chefDishBeans.get(position).getDish_pickup().equalsIgnoreCase("YES")){
             tv_dish_delivery.setText("Home Delivery / Pickup");
             imgDeliviery.setVisibility(View.VISIBLE);
@@ -120,8 +122,8 @@ public class HomeDishPagerAdapter extends PagerAdapter{
 
             }
         });
-
         ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()));
+
         container.addView(view);
         return view;
     }

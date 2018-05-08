@@ -8,10 +8,12 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context="com.imcooking.activity.Sub.EditProfile">
-
+    <include layout="@layout/custom_toolbar"
+        android:visibility="gone"/>
     <RelativeLayout
+        android:id="@+id/chef_dish"
         android:layout_width="match_parent"
-        android:layout_height="284dp"
+        android:layout_height="280dp"
         android:fitsSystemWindows="true">
 
         <ImageView
@@ -29,10 +31,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="10dp"
                 android:padding="10dp">
 
                 <ImageView
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_left_arrow_white"
@@ -49,10 +52,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Jamie Malone"
+                        android:id="@+id/activity_other_dish_txtChefName"
                         android:textColor="@color/colorWhite"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
                     <TextView
+                        android:id="@+id/activity_other_dish_txtChefAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Narangi Byepass Road, Y K Nagar, Vihar West India"
@@ -74,29 +79,28 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:orientation="vertical">
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/chef_profile_image"
+                    android:id="@+id/other_dish_profile_image"
                     android:layout_width="96dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
                     android:layout_height="96dp"
                     android:src="@drawable/details_profile"
                     app:civ_border_width="3dp"
                     app:civ_border_color="@color/colorBlue"/>
-                <ImageView
-                    android:visibility="gone"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/details_profile"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:text="Call"
+                    android:layout_gravity="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp"
                     android:gravity="center"
+                    android:id="@+id/activity_other_dish_txtCall"
                     android:textStyle="bold"
                     android:background="@drawable/shape_background_theme"
                     android:layout_marginTop="5dp"
@@ -139,15 +143,31 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1120 Followers"
+                    android:text="1120 Likes"
+                    android:layout_gravity="center"
+                    android:id="@+id/activity_other_dish_txtChefLike"
                     android:textSize="10sp"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"/>
-
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1120 Followers"
+                    android:textSize="10sp"
+                    android:id="@+id/activity_other_dish_txtChefFollower"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:paddingBottom="5dp"/>
             </LinearLayout>
+
 
         </LinearLayout>
 
     </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_other_dish_recycler"/>
 
 </LinearLayout>

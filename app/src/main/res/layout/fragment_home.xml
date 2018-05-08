@@ -79,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_filter"
+                android:id="@+id/fragment_home_img_filter"
                 android:layout_alignParentLeft="true"/>
 
         </LinearLayout>
@@ -147,11 +148,23 @@
                     android:textSize="12sp"
                     android:layout_gravity="center"
                     android:textColor="@color/text_color_7"/>
+
+                <Spinner
+                    style="@style/SpinnerTheme"
+                    android:spinnerMode="dropdown"
+                    android:id="@+id/home_spiner"
+                    android:paddingRight="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="5dp" />
+
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5miles - 10miles"
                     android:textSize="13sp"
+                    android:visibility="gone"
                     android:drawableRight="@drawable/ic_drop_down_arrow"
                     android:drawablePadding="10dp"
                     android:layout_gravity="center"
@@ -203,50 +216,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/fragment_home_cuisine_recycler"/>
 
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:layout_marginRight="5dp"
-                android:text="ASIAN"
-                android:textStyle="bold"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:gravity="center"
-                android:background="@drawable/shape_theme_border"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:text="BRITISH"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_theme_border"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:text="CHINESE"
-                android:textSize="9sp"
-                android:textStyle="bold"
-                android:textColor="@color/theme_color"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_theme_border"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="35dp"
-                android:text="FRENCH"
-                android:textStyle="bold"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_theme_border"/>
 
         </LinearLayout>
         <LinearLayout
@@ -667,30 +636,10 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_right_arrow"/>
             </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@drawable/shape_home_image"
-                android:layout_marginTop="10dp"
-                android:paddingTop="1dp">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/home_2"
-                    android:id="@+id/fragment_home_bottom_img"
-                    android:scaleType="fitXY"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_heart"
-                    android:scaleType="fitXY"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"/>
-
-            </RelativeLayout>
+            <com.imcooking.utils.CustomViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_home_bottom"/>
 
         </LinearLayout>
 

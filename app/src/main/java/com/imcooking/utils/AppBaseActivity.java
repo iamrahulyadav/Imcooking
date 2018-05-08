@@ -1,8 +1,10 @@
 package com.imcooking.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.imcooking.R;
 
@@ -52,6 +55,7 @@ public class AppBaseActivity extends AppCompatActivity {
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                checkGPSStatus();
             }
         });
         // Showing Alert Message
@@ -66,6 +70,7 @@ public class AppBaseActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
         }
     }
+
 
     @Override
     public void onBackPressed() {

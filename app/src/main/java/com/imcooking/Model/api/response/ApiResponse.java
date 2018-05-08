@@ -10,7 +10,6 @@ public class ApiResponse {
     private boolean status;
     private String msg;
     private UserDataBean user_data;
-    public HomeData homeData;
     public DishDetails dish_details;
 
     public boolean isStatus() {
