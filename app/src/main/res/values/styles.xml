@@ -9,6 +9,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Trans_Status_Bar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFF</item>

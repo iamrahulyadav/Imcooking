@@ -71,7 +71,7 @@
             android:value="@string/API_KEY" />
 
         <activity android:name=".activity.Sub.FilterHomeActivity" />
-        <activity android:name=".activity.Sub.OtherDishActivity"></activity>
+        <activity android:name=".activity.Sub.OtherDishActivity"/>
     </application>
 
 </manifest>

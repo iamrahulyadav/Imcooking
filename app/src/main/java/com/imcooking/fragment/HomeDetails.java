@@ -1,6 +1,7 @@
 package com.imcooking.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -28,6 +29,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.ChefProfile;
+import com.imcooking.activity.Sub.OtherDishActivity;
 import com.imcooking.adapters.HomeDishPagerAdapter;
 import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.adapters.Pager1;
@@ -139,6 +141,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     }
 
     Gson gson = new Gson();
+    String chef_id;
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
     ArrayList<String>nameList = new ArrayList<>();
@@ -158,6 +161,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                 apiResponse.dish_details = gson.fromJson(result, DishDetails.class);
                 dishDetails = apiResponse.dish_details;
                 getActivity().runOnUiThread(new Runnable() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
                         layout.setVisibility(View.VISIBLE);
@@ -165,12 +169,13 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                         txtDishName.setText(dishDetails.getDish_details().getDish_name());
                         txtChefName.setText(dishDetails.getDish_details().getChef_name());
                         txtPrice.setText("$"+dishDetails.getDish_details().getDish_price());
+                        chef_id = dishDetails.getDish_details().getChef_id()+"";
                         if (dishDetails.getDish_details().getDish_available().equalsIgnoreCase("yes")){
                             txtAvailable.setText("Available ");
                             txtAvailable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_circle, 0);
                         } else {
                             txtAvailable.setText("No");
-                        }
+                        }//248340568282
                         txtTime.setText(dishDetails.getDish_details().getDish_from()+"-"+dishDetails.getDish_details().getDish_to());
                         if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
                             txtDeliverytype.setText("Pickup");
@@ -246,7 +251,9 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.home_details_txtOtherDish){
-            
+            startActivity(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
         }{
 
         }
