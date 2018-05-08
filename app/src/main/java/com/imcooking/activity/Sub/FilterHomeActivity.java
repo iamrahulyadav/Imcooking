@@ -39,6 +39,7 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
 //        find id
         init();
     }
+
     int progressChangedValue = 0;
 
     private void init(){
@@ -84,10 +85,47 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
     }
     public static String FILTER_RESPONSE = "filter_response";
     public static int FILTER_RESPONSE_CODE = 220;
+
+
+    public void filter_reset(View view){
+        ratingvalue=0;
+        progressChangedValue = 0;
+        ratingBar.setRating(ratingvalue);
+        seekBar.setProgress(progressChangedValue);
+    }
+
+    public void filter(View view){
+        ratingvalue = ratingBar.getRating();
+        Intent filrestintent=new Intent();
+        filrestintent.putExtra("ratingvalue",ratingvalue);
+        filrestintent.putExtra("progressChangedValue", progressChangedValue);
+        setResult(FILTER_RESPONSE_CODE,filrestintent);
+//                Log.d("VKK", gson.toJson(listModel));
+        finish();
+        Toast.makeText(this, ""+ratingvalue, Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.actvity_filter_txtReset:
+         /*   case R.id.actvity_filter_txtReset:
                 ratingvalue=0;
                 progressChangedValue = 0;
                 ratingBar.setRating(ratingvalue);
@@ -103,7 +141,7 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
                 finish();
                 Toast.makeText(this, ""+ratingvalue, Toast.LENGTH_SHORT).show();
 
-                break;
+                break;*/
         }
     }
 }

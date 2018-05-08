@@ -197,51 +197,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private boolean cuisine_status = false;
 
     @Override
-    public void onClick(View v) {
-
-        if(v.getId() == R.id.home_cuisine){
-            if(!cuisine_status){
-                cusine_list.setVisibility(View.VISIBLE);
-                cusine_list.setAlpha(0.0f);
-                cusine_list.animate()
-                        .translationY(0)
-                        .alpha(1.0f)
-                        .setListener(null)
-                .setDuration(1000);
-                tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_aarrow, 0);
-                cuisine_status = true;
-            }else{
-                cusine_list.animate()
-                        .translationY(0)
-                        .alpha(0.0f)
-                        .setDuration(1000)
-                        .setListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                cusine_list.setVisibility(View.GONE);
-                            }
-                        });
-                tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_arrow, 0);
-                cuisine_status = false;
-            }
-        } else if(v.getId() == R.id.home_show_detail_1){
-
-            HomeDetails fragment = new HomeDetails();
-            Bundle bundle = new Bundle();
-            bundle.putString("dish_id", homeData.getChef_dish().get(0).getDish_id() + "");
-            fragment.setArguments(bundle);
-
-            BaseClass.callFragment(fragment, fragment
-                    .getClass().getName(), getFragmentManager());
-
-        }
-        else if (v.getId()==R.id.fragment_home_img_filter){
-            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
@@ -327,6 +282,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     private String TAG = HomeFragment.class.getName();
     List<HomeData.ChefDishBean>chefDishBeans = new ArrayList<>();
+    List<HomeData.ChefDishBean>favoriteDishBeans = new ArrayList<>();
     List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
     private void setMyData(){
         if (chefDishBeans!=null){
@@ -361,6 +317,55 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
     }
 
+
+
+    @Override
+    public void onClick(View v) {
+
+        if(v.getId() == R.id.home_cuisine){
+            if(!cuisine_status){
+                cusine_list.setVisibility(View.VISIBLE);
+                cusine_list.setAlpha(0.0f);
+                cusine_list.animate()
+                        .translationY(0)
+                        .alpha(1.0f)
+                        .setListener(null)
+                        .setDuration(1000);
+                tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_aarrow, 0);
+                cuisine_status = true;
+            }else{
+                cusine_list.animate()
+                        .translationY(0)
+                        .alpha(0.0f)
+                        .setDuration(1000)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                cusine_list.setVisibility(View.GONE);
+                            }
+                        });
+                tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_arrow, 0);
+                cuisine_status = false;
+            }
+        } else if(v.getId() == R.id.home_show_detail_1){
+
+            HomeDetails fragment = new HomeDetails();
+            Bundle bundle = new Bundle();
+            bundle.putString("dish_id", homeData.getChef_dish().get(0).getDish_id() + "");
+            fragment.setArguments(bundle);
+
+            BaseClass.callFragment(fragment, fragment
+                    .getClass().getName(), getFragmentManager());
+
+        }
+        else if (v.getId()==R.id.fragment_home_img_filter){
+            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
+
+
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -368,9 +373,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
             if(resultCode== FilterHomeActivity.FILTER_RESPONSE_CODE)
             {
                 Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
-
                 Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
+                filter_data(data.getFloatExtra("ratingvalue", 0),
+                        data.getIntExtra("progressChangedValue", 0));
             }
         }
     }
+
+    private void filter_data(Float rating, int price){
+        for(int i=0; i<chefDishBeans.size(); i++){
+            HomeData.ChefDishBean list = new HomeData.ChefDishBean();
+        }
+    }
+
+
+
 }

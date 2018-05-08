@@ -92,7 +92,8 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                                 chefDishBeans.addAll(otherDish.getChef_dish());
                                 txtfollower.setText(otherDish.getChef().getFollow()+" Followers");
                                 txtchecfName.setText(otherDish.getChef().getChef_name());
-
+                                txtAddress.setText(otherDish.getChef().getAddress()+"\n"+otherDish.getChef().getChef_phone());
+                                txtLike.setText(otherDish.getChef().getLike()+" Likes ");
                                 Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL+otherDish.getChef().getChef_image())
                                         .into(imgPic);
                                 setDishAdapter();
@@ -101,7 +102,6 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                     }
                 });
             }
-
         });
 
     }

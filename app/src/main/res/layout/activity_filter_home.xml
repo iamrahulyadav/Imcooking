@@ -195,7 +195,8 @@
             android:id="@+id/actvity_filter_txtReset"
             android:background="@color/colorBlue"
             android:textColor="@color/colorPrimary"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="filter_reset"/>
         <com.imcooking.customtext.CustomTextView
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -206,7 +207,8 @@
             android:layout_marginLeft="5dp"
             android:background="@color/colorBlue"
             android:textColor="@color/colorPrimary"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:onClick="filter"/>
 
     </LinearLayout>
 </RelativeLayout>

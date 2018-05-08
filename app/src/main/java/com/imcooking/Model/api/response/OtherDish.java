@@ -6,7 +6,7 @@ public class OtherDish {
 
     /**
      * status : true
-     * chef : {"chef_name":"Patrick","chef_image":null,"rating":0,"ratingno":0,"follow":0}
+     * chef : {"chef_name":"Patrick","chef_phone":96325874112,"chef_image":"1525759957234.jpg","rating":0,"ratingno":0,"follow":0,"like":0,"address":"United Kingdom West Lothian, "}
      * chef_dish : [{"dish_like":0,"dish_id":10,"dish_name":"Cobba salad","dish_price":80,"dish_video":"1525170327How to make a Cobb Salad.mp4","dish_description":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_special_note":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_from":"8:00 AM","dish_to":"12:00 PM","dish_quantity":"12","dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["1520916866chaatpapri.jpg","1520916894alumatar.jpg","1525170327cccoba.jpg","1525170327cobbaa.jpg","1525170327cobba.jpg"]},{"dish_like":0,"dish_id":16,"dish_name":"smash tometo wth bhati","dish_price":120,"dish_video":null,"dish_description":"sdad","dish_special_note":"asdsa","dish_from":"11:30 AM","dish_to":"1:30 PM","dish_quantity":"10","dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"No","dish_deliverymiles":17,"dish_image":["1525511259chaatpapri.jpg"]}]
      */
 
@@ -41,17 +41,23 @@ public class OtherDish {
     public static class ChefBean {
         /**
          * chef_name : Patrick
-         * chef_image : null
+         * chef_phone : 96325874112
+         * chef_image : 1525759957234.jpg
          * rating : 0
          * ratingno : 0
          * follow : 0
+         * like : 0
+         * address : United Kingdom West Lothian,
          */
 
         private String chef_name;
-        private Object chef_image;
+        private long chef_phone;
+        private String chef_image;
         private int rating;
         private int ratingno;
         private int follow;
+        private int like;
+        private String address;
 
         public String getChef_name() {
             return chef_name;
@@ -61,11 +67,19 @@ public class OtherDish {
             this.chef_name = chef_name;
         }
 
-        public Object getChef_image() {
+        public long getChef_phone() {
+            return chef_phone;
+        }
+
+        public void setChef_phone(long chef_phone) {
+            this.chef_phone = chef_phone;
+        }
+
+        public String getChef_image() {
             return chef_image;
         }
 
-        public void setChef_image(Object chef_image) {
+        public void setChef_image(String chef_image) {
             this.chef_image = chef_image;
         }
 
@@ -92,6 +106,22 @@ public class OtherDish {
         public void setFollow(int follow) {
             this.follow = follow;
         }
+
+        public int getLike() {
+            return like;
+        }
+
+        public void setLike(int like) {
+            this.like = like;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
     }
 
     public static class ChefDishBean {
@@ -116,7 +146,7 @@ public class OtherDish {
         private int dish_like;
         private int dish_id;
         private String dish_name;
-        private int dish_price;
+        private String dish_price;
         private String dish_video;
         private String dish_description;
         private String dish_special_note;
@@ -153,11 +183,11 @@ public class OtherDish {
             this.dish_name = dish_name;
         }
 
-        public int getDish_price() {
+        public String getDish_price() {
             return dish_price;
         }
 
-        public void setDish_price(int dish_price) {
+        public void setDish_price(String dish_price) {
             this.dish_price = dish_price;
         }
 
