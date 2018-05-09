@@ -125,7 +125,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-        getDetails();
+        getDetails(id);
 
     }
 
@@ -145,7 +145,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
     ArrayList<String>nameList = new ArrayList<>();
-    private void getDetails(){
+    private void getDetails(String id){
         layout.setVisibility(View.GONE);
         if (nameList!=null){
             nameList.clear();
@@ -256,6 +256,17 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 
         }{
 
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data!=null){
+            if (requestCode==OtherDishActivity.OTHER_DISH_CODE){
+                id = data.getStringExtra("dish_id");
+                getDetails(id);
+            }
         }
     }
 }

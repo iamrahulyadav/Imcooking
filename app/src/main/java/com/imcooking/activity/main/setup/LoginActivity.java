@@ -142,16 +142,12 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                                     BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                 }
                             } else {
+                                dialog.show();
                                 if (apiResponse.getMsg().equals("User name and password wrong")) {
                                     BaseClass.showToast(getApplicationContext(), "Wrong User Name and Password");
                                 }else if (apiResponse.getMsg().equals("Passcode Required")) {
                                     user_id = apiResponse.getUser_data().getUser_id() + "";
-                                    BaseClass.showToast(getApplicationContext(), "Please Enter your verification code");
                                     dialog.findViewById(R.id.wrong_passcode).setVisibility(View.GONE);
-                                    dialog.show();
-
-                                } else {
-                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                 }
                             }
                         }
@@ -203,7 +199,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                                   //  BaseClass.showToast(getApplicationContext(), apiResponse.getMsg());
                                     dialog.findViewById(R.id.wrong_passcode).setVisibility(View.VISIBLE);
                                 } else {
-                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                    BaseClass.showToast(getApplicationContext(), apiResponse.getMsg()  );
                                 }
                             }
                         }

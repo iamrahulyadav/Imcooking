@@ -372,8 +372,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if (data!=null){
             if(resultCode== FilterHomeActivity.FILTER_RESPONSE_CODE)
             {
-                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
             }
