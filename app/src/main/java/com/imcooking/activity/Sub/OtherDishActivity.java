@@ -1,7 +1,9 @@
 package com.imcooking.activity.Sub;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
@@ -18,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,6 +44,7 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
     private ImageView btnHome ;
     RelativeLayout layout;
     RecyclerView recyclerView;
+    RatingBar ratingBar;
     ImageView imgPic;
     OtherDishAdatper otherDishAdatper;
     List<OtherDish.ChefDishBean>chefDishBeans = new ArrayList<>();
@@ -65,11 +69,13 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
         txtfollower = findViewById(R.id.activity_other_dish_txtChefFollower);
         txtcall = findViewById(R.id.activity_other_dish_txtCall);
         imgPic = findViewById(R.id.other_dish_profile_image);
+        ratingBar = findViewById(R.id.activity_other_dish_rating);
         chef_id = getIntent().getStringExtra("chef_id");
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
         getChefOtherList(chef_id);
+
     }
 
     String TAG = OtherDishActivity.class.getName();
@@ -94,8 +100,22 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                                 txtchecfName.setText(otherDish.getChef().getChef_name());
                                 txtAddress.setText(otherDish.getChef().getAddress()+"\n"+otherDish.getChef().getChef_phone());
                                 txtLike.setText(otherDish.getChef().getLike()+" Likes ");
-                                Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL+otherDish.getChef().getChef_image())
-                                        .into(imgPic);
+                                ratingBar.setRating(otherDish.getChef().getRating());
+                                txtcall.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (otherDish.getChef().getChef_phone()!=null){
+                                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                                            intent.setData(Uri.parse("tel:"+otherDish.getChef().getChef_phone()));
+                                            startActivity(intent);
+                                        }
+
+                                    }
+                                });
+                                if (otherDish.getChef().getChef_image()!=null){
+                                    Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL+otherDish.getChef().getChef_image())
+                                            .into(imgPic);
+                                }
                                 setDishAdapter();
                             }
                         }

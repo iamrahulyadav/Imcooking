@@ -51,7 +51,7 @@ public class OtherDish {
          */
 
         private String chef_name;
-        private long chef_phone;
+        private String chef_phone;
         private String chef_image;
         private int rating;
         private int ratingno;
@@ -67,11 +67,11 @@ public class OtherDish {
             this.chef_name = chef_name;
         }
 
-        public long getChef_phone() {
+        public String getChef_phone() {
             return chef_phone;
         }
 
-        public void setChef_phone(long chef_phone) {
+        public void setChef_phone(String chef_phone) {
             this.chef_phone = chef_phone;
         }
 

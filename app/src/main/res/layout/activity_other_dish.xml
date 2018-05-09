@@ -63,12 +63,14 @@
                         android:text="Narangi Byepass Road, Y K Nagar, Vihar West India"
                         android:textColor="@color/colorWhite"
                         android:textSize="10sp"
+                        android:gravity="center"
                         android:layout_marginTop="3dp"
                         android:layout_marginBottom="3dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+91-777888999"
+                        android:visibility="gone"
                         android:textColor="@color/colorWhite"
                         android:textSize="10sp"/>
 
@@ -86,7 +88,6 @@
                     android:id="@+id/other_dish_profile_image"
                     android:layout_width="96dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
                     android:layout_height="96dp"
                     android:src="@drawable/details_profile"
                     app:civ_border_width="3dp"
@@ -106,40 +107,15 @@
                     android:layout_marginTop="5dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp" />
-
-                <LinearLayout
+                <RatingBar
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:id="@+id/activity_other_dish_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_marginRight="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_marginRight="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_marginRight="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_marginRight="3dp" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_marginRight="5dp"/>
+                    android:layout_marginTop="3dp"
+                    android:progressTint="@color/colorYellow"
+                    android:layout_gravity="center"/>
 
-                </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,14 +136,28 @@
                     android:textStyle="bold"
                     android:paddingBottom="5dp"/>
             </LinearLayout>
-
-
         </LinearLayout>
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All dishes"
+        android:textSize="@dimen/largesize"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:padding="5dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGrey"/>
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:id="@+id/activity_other_dish_recycler"/>
 
 </LinearLayout>

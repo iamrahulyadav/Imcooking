@@ -32,6 +32,7 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.FavoriteCusine;
 import com.imcooking.activity.Sub.FilterHomeActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CuisionAdatper;
@@ -282,8 +283,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     private String TAG = HomeFragment.class.getName();
     List<HomeData.ChefDishBean>chefDishBeans = new ArrayList<>();
-    List<HomeData.ChefDishBean>favoriteDishBeans = new ArrayList<>();
+    List<HomeData.ChefDishBean>favorite_1 = new ArrayList<>();
     List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
+    List<HomeData.FavouriteDataBean>favorite_2 = new ArrayList<>();
     private void setMyData(){
         if (chefDishBeans!=null){
             chefDishBeans.clear();
@@ -294,19 +296,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         chefDishBeans.addAll(homeData.getChef_dish());
         favouriteDataBeans.addAll(homeData.getFavourite_data());
 
-        setMyViewPager();
-        setBottomViewPager();
+        setMyViewPager(chefDishBeans);
+        setBottomViewPager(favouriteDataBeans);
 
     }
 
-    private void setMyViewPager() {
-        adapter = new HomeDishPagerAdapter(getContext(), getFragmentManager(),chefDishBeans);
+    private void setMyViewPager(List<HomeData.ChefDishBean> mylist) {
+        adapter = new HomeDishPagerAdapter(getContext(), getFragmentManager(), mylist);
         viewPager.setAdapter(adapter);
     }
 
-    private void setBottomViewPager() {
+    private void setBottomViewPager(List<HomeData.FavouriteDataBean> mylist) {
         Log.d("Debug", favouriteDataBeans.size() + "");
-        homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(),favouriteDataBeans);
+        homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(), mylist);
         bottomViewPager.setAdapter(homeBottomPagerAdapter);
 
     }
@@ -361,8 +363,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
         else if (v.getId()==R.id.fragment_home_img_filter){
             startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
-
-
         }
     }
 
@@ -381,9 +381,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     }
 
     private void filter_data(Float rating, int price){
+//        int rating_ = (int) rating;
+        favorite_1.clear();
         for(int i=0; i<chefDishBeans.size(); i++){
-            HomeData.ChefDishBean list = new HomeData.ChefDishBean();
+            HomeData.ChefDishBean list = chefDishBeans.get(i);
+
+            if(list.getRating().equals((rating.intValue() + "")) /*&& list.getDish_price().equals(price + "")*/){
+                favorite_1.add(list);
+            }
         }
+
+        setMyViewPager(favorite_1);
+
+
+        favorite_2.clear();
+        for(int i=0; i<favouriteDataBeans.size(); i++){
+            HomeData.FavouriteDataBean list = favouriteDataBeans.get(i);
+
+            if(list.getRating().equals((rating.intValue() + "")) /*&& list.getDish_price().equals(price + "")*/){
+                favorite_2.add(list);
+            }
+        }
+
+        setBottomViewPager(favorite_2);
+
+
     }
 
 
