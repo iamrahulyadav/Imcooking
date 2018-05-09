@@ -115,7 +115,6 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                                             public void run() {
 
                                                 ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
-
                                                 Log.d("ShowResponse", apiResponse.isStatus() + "");
                                                 Log.d("ShowResponse", apiResponse.getMsg());
 //                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());

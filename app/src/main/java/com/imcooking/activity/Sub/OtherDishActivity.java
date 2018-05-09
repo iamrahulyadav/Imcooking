@@ -42,7 +42,7 @@ import java.util.List;
 public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatper.CuisionInterface{
     private TextView tv_title,txtReset, txtFilter,txtLike, txtchecfName,txtcall, txtAddress, txtfollower ;
     private ImageView btnHome ;
-    RelativeLayout layout;
+    LinearLayout layout;
     RecyclerView recyclerView;
     RatingBar ratingBar;
     ImageView imgPic;
@@ -98,7 +98,7 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                                 chefDishBeans.addAll(otherDish.getChef_dish());
                                 txtfollower.setText(otherDish.getChef().getFollow()+" Followers");
                                 txtchecfName.setText(otherDish.getChef().getChef_name());
-                                txtAddress.setText(otherDish.getChef().getAddress()+"\n"+otherDish.getChef().getChef_phone());
+                                txtAddress.setText(otherDish.getChef().getAddress());
                                 txtLike.setText(otherDish.getChef().getLike()+" Likes ");
                                 ratingBar.setRating(otherDish.getChef().getRating());
                                 txtcall.setOnClickListener(new View.OnClickListener() {
