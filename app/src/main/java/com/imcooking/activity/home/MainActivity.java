@@ -2,6 +2,7 @@ package com.imcooking.activity.home;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -43,12 +44,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.imcooking.R;
+import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.HomeFragment;
 import com.imcooking.fragment.MyOrderFragment;
 import com.imcooking.fragment.NotificationFragment;
 import com.imcooking.fragment.ProfileFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
+import com.mukesh.tinydb.TinyDB;
 
 import java.io.IOException;
 import java.util.List;
@@ -337,6 +340,13 @@ public class MainActivity extends AppBaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        switch (id){
+            case R.id.navigation_logout:
+                new TinyDB(getApplicationContext()).remove("login_data");
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+                break;
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
