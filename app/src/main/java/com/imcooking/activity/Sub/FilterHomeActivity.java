@@ -19,7 +19,7 @@ import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 
 public class FilterHomeActivity extends AppBaseActivity implements View.OnClickListener{
-    private TextView tv_title,txtReset, txtFilter ;
+    private TextView tv_title,txtReset, txtFilter, tv_selected_price ;
     private ImageView btnHome ;
     RatingBar ratingBar;
     SeekBar seekBar;
@@ -43,10 +43,9 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
     int progressChangedValue = 0;
 
     private void init(){
-        txtReset = findViewById(R.id.actvity_filter_txtReset);
-        txtFilter = findViewById(R.id.actvity_filter_txtFilter);
         ratingBar = findViewById(R.id.activity_filter_ratingbar);
         seekBar = findViewById(R.id.actvity_filter_seekbar);
+        tv_selected_price = findViewById(R.id.filter_selected_price);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -57,6 +56,8 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
+//                tv_selected_price.setText("Price\t\t" + progressChangedValue);
+
             }
 
             @Override
@@ -65,10 +66,6 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-//        set onclick on button
-        txtReset.setOnClickListener(this);
-        txtFilter.setOnClickListener(this);
     }
 
 
@@ -83,6 +80,7 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
         tv_title.setText("Filter");
         setSupportActionBar(myToolbar);
     }
+
     public static String FILTER_RESPONSE = "filter_response";
     public static int FILTER_RESPONSE_CODE = 220;
 
@@ -102,7 +100,7 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
         setResult(FILTER_RESPONSE_CODE,filrestintent);
 //                Log.d("VKK", gson.toJson(listModel));
         finish();
-        Toast.makeText(this, ""+ratingvalue, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, ""+ratingvalue, Toast.LENGTH_SHORT).show();
 
     }
 

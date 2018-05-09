@@ -127,6 +127,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/filter_selected_price"
                         android:text="@string/activity_filter_txtPrice"
                         android:textColor="@color/colorBlack"/>
 
@@ -202,7 +203,6 @@
             android:layout_weight="1"
             android:text="Filter"
             android:gravity="center"
-            android:id="@+id/actvity_filter_txtFilter"
             android:padding="10dp"
             android:layout_marginLeft="5dp"
             android:background="@color/colorBlue"
