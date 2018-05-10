@@ -139,7 +139,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="Min \n100"
+                            android:text="Min \n10"
                             android:gravity="left|center_vertical"
                             android:paddingTop="10dp"
                             android:id="@+id/actvity_filter_txtmin"
@@ -149,7 +149,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="Max \n2000 "
+                            android:text="Max \n100 "
                             android:gravity="right|center_vertical"
                             android:paddingTop="10dp"
                             android:id="@+id/actvity_filter_txtmax"
@@ -162,7 +162,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:max="2000"
+                        android:max="100"
                         android:id="@+id/actvity_filter_seekbar"
                         android:progressBackgroundTint="@color/text_color_5"
                         android:theme="@style/AppThemeSkeekbar"
@@ -172,6 +172,40 @@
                         android:layout_height="1dp"
                         android:background="@color/colorLightGrey"
                         android:layout_marginTop="5dp"/>
+
+                </LinearLayout>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_DeliveryType"
+                    android:text="Delivery type"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorBlack"/>
+
+                <LinearLayout
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Home Delivery"
+                        android:paddingLeft="5dp"
+                        android:id="@+id/filter_Home"
+                        android:buttonTint="@color/colorAccent"
+                        android:textColor="@color/colorBlack"/>
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:id="@+id/filter_Pickup"
+                        android:layout_height="wrap_content"
+                        android:text="Pick-up"
+                        android:paddingLeft="5dp"
+                        android:buttonTint="@color/colorAccent"
+                        android:textColor="@color/colorBlack"/>
 
                 </LinearLayout>
 

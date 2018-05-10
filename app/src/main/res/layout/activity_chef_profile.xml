@@ -12,7 +12,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="284dp"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        >
 
         <ImageView
             android:layout_width="match_parent"
@@ -35,6 +36,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/imgBack"
                     android:src="@drawable/ic_left_arrow_white"
                     android:layout_alignParentLeft="true"/>
 
@@ -49,6 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Jamie Malone"
+                        android:id="@+id/activity_chef_txtname"
                         android:textColor="@color/colorWhite"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
@@ -58,15 +61,9 @@
                         android:text="Narangi Byepass Road, Y K Nagar, Vihar West India"
                         android:textColor="@color/colorWhite"
                         android:textSize="10sp"
+                        android:id="@+id/activity_chef_txtAdderss"
                         android:layout_marginTop="3dp"
                         android:layout_marginBottom="3dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+91-777888999"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="10sp"/>
-
                 </LinearLayout>
 
             </RelativeLayout>
@@ -84,16 +81,12 @@
                     android:src="@drawable/details_profile"
                     app:civ_border_width="3dp"
                     app:civ_border_color="@color/colorBlue"/>
-                <ImageView
-                    android:visibility="gone"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/details_profile"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:text="Call"
+                    android:id="@+id/activity_chef_txtCall"
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp"
                     android:gravity="center"
@@ -141,13 +134,50 @@
                     android:layout_height="wrap_content"
                     android:text="1120 Followers"
                     android:textSize="10sp"
+                    android:id="@+id/activity_chef_txtFollower"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"/>
 
-            </LinearLayout>
+               </LinearLayout>
 
         </LinearLayout>
 
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_dark_background"
+        android:orientation="vertical">
 
+
+        <android.support.design.widget.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            app:tabTextColor="@color/colorBlack"
+            app:tabSelectedTextColor="@color/colorBlue">
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About chef" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dish" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Request a dish" />
+        </android.support.design.widget.TabLayout>
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <include layout="@layout/fragment_about_chef"/>
+</LinearLayout>
 </LinearLayout>

@@ -73,6 +73,7 @@
 
         <activity android:name=".activity.Sub.FilterHomeActivity" />
         <activity android:name=".activity.Sub.OtherDishActivity"/>
+        <activity android:name=".activity.Sub.Cart_activity"/>
     </application>
 
 </manifest>

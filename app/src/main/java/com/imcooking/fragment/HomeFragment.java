@@ -298,7 +298,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
         chefDishBeans.addAll(homeData.getChef_dish());
         favouriteDataBeans.addAll(homeData.getFavourite_data());
-
         setMyViewPager(chefDishBeans);
         setBottomViewPager(favouriteDataBeans);
 
@@ -321,8 +320,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
     }
-
-
 
     @Override
     public void onClick(View v) {

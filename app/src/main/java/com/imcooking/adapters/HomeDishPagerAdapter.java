@@ -107,7 +107,12 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         }
         tv_dish_price.setText("$" + chefDishBeans
                 .get(position).getDish_price());
-
+        imgLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dishlike();
+            }
+        });
         tv_dish_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,12 +126,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
 
             }
         });
-        imgLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              //  dishlike();
-            }
-        });
+
         ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()));
         container.addView(view);
         return view;

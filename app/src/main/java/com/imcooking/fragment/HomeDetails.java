@@ -145,11 +145,11 @@ Context mc;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         getDetails(id);
 
     }
-
 
     @Override
     public void onDestroyView() {
@@ -248,8 +248,8 @@ Context mc;
                         });
                     }
                 });
-
                 }
+
         });
 
     }
@@ -270,9 +270,9 @@ Context mc;
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.home_details_txtOtherDish){
-            startActivity(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id));
+            startActivityForResult(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id)
+                    ,OtherDishActivity.OTHER_DISH_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-
         }
         else if (id == R.id.tv_add_to_cart){
 
@@ -281,7 +281,6 @@ Context mc;
         }
 
     }
-
 
     public void addCart(View view) {
 
