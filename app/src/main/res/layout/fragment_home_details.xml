@@ -284,7 +284,6 @@
             android:id="@+id/tv_add_to_cart"
             android:textColor="@color/colorWhite"
             android:gravity="center"
-            android:id="@+id/tv_add_to_cart"
             android:background="@drawable/shape_background_theme"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"

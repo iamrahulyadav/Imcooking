@@ -74,6 +74,7 @@ public class ChefProfile extends AppBaseActivity {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
                 pager.setCurrentItem(tab.getPosition());
             }
 

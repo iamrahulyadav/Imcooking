@@ -22,6 +22,9 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,12 +51,12 @@ public class HomeDishPagerAdapter extends PagerAdapter{
     public boolean isViewFromObject(View view, Object object) {
         return view==object;
     }
-
+    ImageView imgLike;
     @SuppressLint("SetTextI18n")
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View view = mLayoutInflater.inflate(R.layout.home_dish_pager_view, container, false);
-        ImageView iv_dish_image,imgLike, imgPickUp, imgDeliviery;
+        ImageView iv_dish_image, imgPickUp, imgDeliviery;
         TextView tv_dish_name, tv_chef_name, tv_chef_likes, tv_chef_followers, tv_dish_distance, tv_dish_delivery,
                 tv_dish_price;
         RatingBar ratingBar;
@@ -137,6 +140,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         container.removeView((LinearLayout) object);
     }
 
+    String dish_id;
     String TAG = HomeDishPagerAdapter.class.getName();
     private void dishlike(){
         String s ="{\"chef_id\":\"2\",\"foodie_id\":\"21\",\"dish_id\":\"6\"}";
@@ -144,6 +148,21 @@ public class HomeDishPagerAdapter extends PagerAdapter{
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "onSuccess: "+result);
+                if (result!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("status")){
+                            if (jsonObject.getString("msg").equalsIgnoreCase("Successfully dish like")){
+                                imgLike.setBackgroundResource(R.drawable.ic_heart_red);
+                            } else {
+                                imgLike.setBackgroundResource(R.drawable.ic_heart);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
         });
     }

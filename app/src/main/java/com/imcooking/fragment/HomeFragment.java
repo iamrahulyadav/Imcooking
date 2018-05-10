@@ -312,9 +312,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         Log.d("Debug", favouriteDataBeans.size() + "");
         homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(), mylist);
         bottomViewPager.setAdapter(homeBottomPagerAdapter);
-
     }
-
 
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
