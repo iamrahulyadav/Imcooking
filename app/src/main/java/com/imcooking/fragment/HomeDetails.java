@@ -310,16 +310,6 @@ Context mc;
 //                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
                                         //tv.setText(apiResponse.getMsg());
 
-                                      /*  if (apiResponse.isStatus()) {
-                                            if (apiResponse.getMsg().equals("Foodie successfully registered and send verification code your email!")) {
-
-//                                                        dialog.show();
-                                            } else {
-                                                BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
-                                            }
-                                        } else {
-//                                                    dialog.show();
-                                        }*/
                                         dialog.show();
                                     }
                                 });
