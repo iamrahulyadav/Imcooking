@@ -118,6 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="Jamie Malone"
                     android:textSize="20sp"
+                    android:id="@+id/chef_name"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"/>
                 <TextView

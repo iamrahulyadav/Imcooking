@@ -17,6 +17,7 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="80dp"
+            android:id="@+id/img_dish"
             android:src="@drawable/details_home"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,6 +51,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:text="-"
+                        android:id="@+id/tv_minus"
                         android:textColor="@color/colorBlue"
                         android:gravity="center"
                         android:textSize="16sp"/>
@@ -57,6 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="00"
+                        android:id="@+id/tv_dish_count"
                         android:textSize="16sp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -66,6 +69,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:text="+"
+                        android:id="@+id/tv_plus"
                         android:gravity="center"
                         android:textColor="@color/colorBlue"
                         android:textSize="16sp"/>
@@ -93,11 +97,13 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginBottom="5dp"
+            android:id="@+id/delete_added_dish_from_cart"
             android:src="@drawable/ic_drop_down_aarrow"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$100"
+            android:id="@+id/tv_dish_price"
             android:textSize="16sp"
             android:textColor="@color/colorBlue"/>
 
