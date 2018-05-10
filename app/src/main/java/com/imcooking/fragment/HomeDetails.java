@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.imcooking.Model.ApiRequest.AddToCart;
+import com.imcooking.Model.ApiRequest.SignUp;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
@@ -34,10 +36,13 @@ import com.imcooking.activity.Sub.Cart_activity;
 import com.imcooking.activity.Sub.ChefProfile;
 import com.imcooking.activity.Sub.OtherDishActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.activity.main.setup.SignUpActivity;
 import com.imcooking.adapters.HomeDishPagerAdapter;
 import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.adapters.Pager1;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -49,6 +54,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     TabLayout tabLayout;
     Pager1 adapter;
 Dialog dialog ;
+int foodie_id;
+    ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+    Gson gson = new Gson();
+    TinyDB tinyDB;
 Context mc;
     public HomeDetails() {
         // Required empty public constructor
@@ -61,7 +70,10 @@ Context mc;
         super.onCreate(savedInstanceState);
 
         id = getArguments().getString("dish_id");
-
+        tinyDB = new TinyDB(getContext());
+        String login_data= tinyDB.getString("login_data");
+        userDataBean  = gson.fromJson(login_data, ApiResponse.UserDataBean.class);
+        foodie_id = userDataBean.getUser_id();
 /*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -149,8 +161,6 @@ Context mc;
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
-
-    Gson gson = new Gson();
     String chef_id;
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
@@ -162,7 +172,8 @@ Context mc;
         }
         String detailRequest = "{\"dish_id\":" + id + "}";
         Log.d("MyRequest", detailRequest);
-        new GetData(getContext(), getActivity()).getResponse(detailRequest, "dishdetails", new GetData.MyCallback() {
+        new GetData(getContext(), getActivity()).getResponse(detailRequest, "dishdetails",
+                new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
 
@@ -175,7 +186,6 @@ Context mc;
                     @Override
                     public void run() {
                         layout.setVisibility(View.VISIBLE);
-
                         txtDishName.setText(dishDetails.getDish_details().getDish_name());
                         txtChefName.setText(dishDetails.getDish_details().getChef_name());
                         txtPrice.setText("$"+dishDetails.getDish_details().getDish_price());
@@ -240,7 +250,6 @@ Context mc;
                 });
 
                 }
-
         });
 
     }
@@ -266,14 +275,68 @@ Context mc;
 
         }
         else if (id == R.id.tv_add_to_cart){
-            dialog.show();
+
+            addCart(v);
 
         }
 
     }
+
+
+    public void addCart(View view) {
+
+        int chef_id=dishDetails.getDish_details().getChef_id();
+        String dishId=dishDetails.getDish_details().getDish_id();
+        AddToCart addToCart=new AddToCart();
+        addToCart.setChef_id(chef_id);
+        addToCart.setFoodie_id(foodie_id);
+        addToCart.setDish_id(dishId);
+        addToCart.setAddcart_id("");
+        Log.d(TAG, "addCart: "+new Gson().toJson(addToCart));
+        new GetData(getContext(), getActivity())
+                .getResponse(new Gson().toJson(addToCart), "addcart",
+                        new GetData.MyCallback() {
+                            @Override
+                            public void onSuccess(String result) {
+                                final String response = result;
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.show();
+
+                                        ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
+                                        Log.d("ShowResponse", apiResponse.isStatus() + "");
+                                        Log.d("ShowResponse", apiResponse.getMsg());
+//                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
+                                        //tv.setText(apiResponse.getMsg());
+
+                                      /*  if (apiResponse.isStatus()) {
+                                            if (apiResponse.getMsg().equals("Foodie successfully registered and send verification code your email!")) {
+
+//                                                        dialog.show();
+                                            } else {
+                                                BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                            }
+                                        } else {
+//                                                    dialog.show();
+                                        }*/
+                                        dialog.show();
+                                    }
+                                });
+                            }
+                        });
+    }
+
     private void createMyDialog(){
         dialog= new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_add_to_cart);
+
+     dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             dialog.dismiss();
+         }
+     });
         dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;

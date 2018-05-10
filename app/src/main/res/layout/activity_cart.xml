@@ -177,6 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tax"
+
                 android:textSize="14sp"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/colorBlack"/>
@@ -185,6 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$100"
+                android:id="@+id/tv_tax"
                 android:textSize="16sp"
                 android:textColor="@color/colorBlue"/>
         </LinearLayout>
@@ -207,6 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$100"
+                android:id="@+id/tv_total"
                 android:textSize="16sp"
                 android:textColor="@color/colorBlue"/>
         </LinearLayout>

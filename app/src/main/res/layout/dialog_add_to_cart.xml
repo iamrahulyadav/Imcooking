@@ -25,17 +25,18 @@
     android:layout_width="150dp"
     android:layout_height="150dp"
     android:layout_margin="10dp"
-    android:src="@drawable/details_home"/>
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="55dp"
-                android:onClick="verify_user"
-                android:text="Food has been added in your order list"
-                android:textColor="@color/colorBlack"
-                android:textSize="20sp"
-              android:gravity="center"
-               />
+    android:src="@drawable/shahi_paneer"/>
 
+<com.imcooking.customtext.CustomTextView
+    android:layout_width="200dp"
+    android:layout_height="55dp"
+    android:onClick="verify_user"
+    android:text="Food has been added in your order list"
+    android:textColor="@color/colorBlack"
+    android:textSize="20sp"
+
+    android:gravity="center"
+    />
         </LinearLayout>
 
     </LinearLayout>

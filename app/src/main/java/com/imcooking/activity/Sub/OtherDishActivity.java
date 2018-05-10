@@ -84,7 +84,8 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
         layout.setVisibility(View.GONE);
 
         String detailRequest = "{\"chef_id\":" + chef_id + "}";
-        new GetData(getApplicationContext(),OtherDishActivity.this).getResponse(detailRequest, "dishchef",
+        new GetData(getApplicationContext(),OtherDishActivity.this).getResponse(detailRequest,
+                "dishchef",
                 new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
