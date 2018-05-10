@@ -32,6 +32,7 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Cart_activity;
 import com.imcooking.activity.Sub.FavoriteCusine;
 import com.imcooking.activity.Sub.FilterHomeActivity;
 import com.imcooking.activity.home.MainActivity;
@@ -97,7 +98,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private RecyclerView cuisinRecycler;
     private LinearLayout layout;
     ViewPager bottomViewPager;
-    ImageView imgFilter;
+    ImageView imgCart,imgFilter;
     boolean isApplyFiltered;
     CuisionAdatper cuisionAdatper;
     private Spinner sp;
@@ -116,6 +117,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
         arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
+        imgCart = getView().findViewById(R.id.fragment_home_img_cart);
+        imgCart.setOnClickListener(this);
 
         imgFilter.setOnClickListener(this);
         arrow_show_detail.setOnClickListener(this);
@@ -363,6 +366,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
         else if (v.getId()==R.id.fragment_home_img_filter){
             startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
+        }
+        else if (v.getId() == R.id.fragment_home_img_cart)
+        {
+            startActivity(new Intent(getContext(), Cart_activity.class));
+           getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
     }
 

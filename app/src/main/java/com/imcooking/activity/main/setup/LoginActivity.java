@@ -40,7 +40,6 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
-
         tinyDB = new TinyDB(getApplicationContext());
 
 //        find id

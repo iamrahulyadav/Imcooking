@@ -24,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.Sub.Cart_activity"/>
         <activity
             android:name=".activity.main.setup.LoginActivity"
             android:screenOrientation="portrait"

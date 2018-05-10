@@ -2,6 +2,8 @@ package com.imcooking.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -28,8 +30,10 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Cart_activity;
 import com.imcooking.activity.Sub.ChefProfile;
 import com.imcooking.activity.Sub.OtherDishActivity;
+import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.adapters.HomeDishPagerAdapter;
 import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.adapters.Pager1;
@@ -44,7 +48,8 @@ import java.util.ArrayList;
 public class HomeDetails extends Fragment implements View.OnClickListener {
     TabLayout tabLayout;
     Pager1 adapter;
-
+Dialog dialog ;
+Context mc;
     public HomeDetails() {
         // Required empty public constructor
     }
@@ -77,10 +82,11 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
 
         init();
+        createMyDialog();
     }
 
     private ImageView iv_share, imgTop,imgPickUp, imgDeliviery;
-    TextView txtDishName, txtChefName, txtLike,txtOtherDish, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
+    TextView txtDishName, txtChefName,txtAddToCart, txtLike,txtOtherDish, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
     private LinearLayout chef_profile, layout;
     ViewPager pager;
 
@@ -90,6 +96,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         iv_share = getView().findViewById(R.id.home_details_share);
         imgTop = getView().findViewById(R.id.fragment_home_details_img_top);
         txtOtherDish = getView().findViewById(R.id.home_details_txtOtherDish);
+        txtAddToCart = getView().findViewById(R.id.tv_add_to_cart);
         txtDishName = getView().findViewById(R.id.fragment_home_details_txtDishName);
         txtChefName = getView().findViewById(R.id.fragment_home_details_txtChefName);
         txtDistance = getView().findViewById(R.id.fragment_home_details_txtDistance);
@@ -101,6 +108,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         imgDeliviery =  getView().findViewById(R.id.home_pager_imgHomeDelivery);
         imgPickUp =  getView().findViewById(R.id.home_pager_imgPick);
         iv_share.setOnClickListener(this);
+
         tabLayout= (TabLayout)getView(). findViewById(R.id.cardet_Tab);
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Recipe"));
         tabLayout.addTab(tabLayout.newTab().setText("Know Chef"));
@@ -112,6 +120,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         chef_profile.setOnClickListener(this);
         layout = getView().findViewById(R.id.home_details_layout);
         txtOtherDish.setOnClickListener(this);
+        txtAddToCart.setOnClickListener(this);
 
 
     }
@@ -128,6 +137,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         getDetails(id);
 
     }
+
 
     @Override
     public void onDestroyView() {
@@ -254,9 +264,19 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             startActivity(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
-        }{
+        }
+        else if (id == R.id.tv_add_to_cart){
+            dialog.show();
 
         }
+
+    }
+    private void createMyDialog(){
+        dialog= new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_add_to_cart);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
     }
 
     @Override
