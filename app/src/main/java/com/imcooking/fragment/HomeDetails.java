@@ -2,6 +2,8 @@ package com.imcooking.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -25,15 +27,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.imcooking.Model.ApiRequest.AddToCart;
+import com.imcooking.Model.ApiRequest.SignUp;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Cart_activity;
 import com.imcooking.activity.Sub.ChefProfile;
 import com.imcooking.activity.Sub.OtherDishActivity;
+import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.activity.main.setup.SignUpActivity;
 import com.imcooking.adapters.HomeDishPagerAdapter;
 import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.adapters.Pager1;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -44,7 +53,12 @@ import java.util.ArrayList;
 public class HomeDetails extends Fragment implements View.OnClickListener {
     TabLayout tabLayout;
     Pager1 adapter;
-
+    Dialog dialog ;
+    int foodie_id;
+    ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+    Gson gson = new Gson();
+    TinyDB tinyDB;
+Context mc;
     public HomeDetails() {
         // Required empty public constructor
     }
@@ -56,7 +70,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         id = getArguments().getString("dish_id");
-
+        tinyDB = new TinyDB(getContext());
+        String login_data= tinyDB.getString("login_data");
+        userDataBean  = gson.fromJson(login_data, ApiResponse.UserDataBean.class);
+        foodie_id = userDataBean.getUser_id();
 /*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -77,10 +94,11 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
 
         init();
+        createMyDialog();
     }
 
     private ImageView iv_share, imgTop,imgPickUp, imgDeliviery;
-    TextView txtDishName, txtChefName, txtLike,txtOtherDish, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
+    TextView txtDishName, txtChefName,txtAddToCart, txtLike,txtOtherDish, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
     private LinearLayout chef_profile, layout;
     ViewPager pager;
 
@@ -90,6 +108,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         iv_share = getView().findViewById(R.id.home_details_share);
         imgTop = getView().findViewById(R.id.fragment_home_details_img_top);
         txtOtherDish = getView().findViewById(R.id.home_details_txtOtherDish);
+        txtAddToCart = getView().findViewById(R.id.tv_add_to_cart);
         txtDishName = getView().findViewById(R.id.fragment_home_details_txtDishName);
         txtChefName = getView().findViewById(R.id.fragment_home_details_txtChefName);
         txtDistance = getView().findViewById(R.id.fragment_home_details_txtDistance);
@@ -101,6 +120,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         imgDeliviery =  getView().findViewById(R.id.home_pager_imgHomeDelivery);
         imgPickUp =  getView().findViewById(R.id.home_pager_imgPick);
         iv_share.setOnClickListener(this);
+
         tabLayout= (TabLayout)getView(). findViewById(R.id.cardet_Tab);
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Recipe"));
         tabLayout.addTab(tabLayout.newTab().setText("Know Chef"));
@@ -112,6 +132,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         chef_profile.setOnClickListener(this);
         layout = getView().findViewById(R.id.home_details_layout);
         txtOtherDish.setOnClickListener(this);
+        txtAddToCart.setOnClickListener(this);
 
 
     }
@@ -124,8 +145,9 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
-        getDetails();
+        getDetails(id);
 
     }
 
@@ -139,20 +161,19 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
-
-    Gson gson = new Gson();
     String chef_id;
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
     ArrayList<String>nameList = new ArrayList<>();
-    private void getDetails(){
+    private void getDetails(String id){
         layout.setVisibility(View.GONE);
         if (nameList!=null){
             nameList.clear();
         }
         String detailRequest = "{\"dish_id\":" + id + "}";
         Log.d("MyRequest", detailRequest);
-        new GetData(getContext(), getActivity()).getResponse(detailRequest, "dishdetails", new GetData.MyCallback() {
+        new GetData(getContext(), getActivity()).getResponse(detailRequest, "dishdetails",
+                new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
 
@@ -165,7 +186,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         layout.setVisibility(View.VISIBLE);
-
                         txtDishName.setText(dishDetails.getDish_details().getDish_name());
                         txtChefName.setText(dishDetails.getDish_details().getChef_name());
                         txtPrice.setText("$"+dishDetails.getDish_details().getDish_price());
@@ -228,7 +248,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                         });
                     }
                 });
-
                 }
 
         });
@@ -251,11 +270,75 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.home_details_txtOtherDish){
-            startActivity(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id));
+            startActivityForResult(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id)
+                    ,OtherDishActivity.OTHER_DISH_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+        }
+        else if (id == R.id.tv_add_to_cart){
 
-        }{
+            addCart(v);
 
+        }
+
+    }
+
+    public void addCart(View view) {
+
+        int chef_id=dishDetails.getDish_details().getChef_id();
+        String dishId=dishDetails.getDish_details().getDish_id();
+        AddToCart addToCart=new AddToCart();
+        addToCart.setChef_id(chef_id);
+        addToCart.setFoodie_id(foodie_id);
+        addToCart.setDish_id(dishId);
+        addToCart.setAddcart_id("");
+        Log.d(TAG, "addCart: "+new Gson().toJson(addToCart));
+        new GetData(getContext(), getActivity())
+                .getResponse(new Gson().toJson(addToCart), "addcart",
+                        new GetData.MyCallback() {
+                            @Override
+                            public void onSuccess(String result) {
+                                final String response = result;
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dialog.show();
+
+                                        ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
+                                        Log.d("ShowResponse", apiResponse.isStatus() + "");
+                                        Log.d("ShowResponse", apiResponse.getMsg());
+//                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
+                                        //tv.setText(apiResponse.getMsg());
+
+                                        dialog.show();
+                                    }
+                                });
+                            }
+                        });
+    }
+
+    private void createMyDialog(){
+        dialog= new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_add_to_cart);
+
+     dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             dialog.dismiss();
+         }
+     });
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data!=null){
+            if (requestCode==OtherDishActivity.OTHER_DISH_CODE){
+                id = data.getStringExtra("dish_id");
+                getDetails(id);
+            }
         }
     }
 }

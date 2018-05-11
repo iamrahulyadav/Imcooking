@@ -32,6 +32,7 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Cart_activity;
 import com.imcooking.activity.Sub.FavoriteCusine;
 import com.imcooking.activity.Sub.FilterHomeActivity;
 import com.imcooking.activity.home.MainActivity;
@@ -72,7 +73,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     private Toolbar toolbar;
     CustomViewPager viewPager;
-    HomeDishPagerAdapter adapter;
     HomeBottomPagerAdapter homeBottomPagerAdapter;
 
     @Override
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private RecyclerView cuisinRecycler;
     private LinearLayout layout;
     ViewPager bottomViewPager;
-    ImageView imgFilter;
+    ImageView imgCart,imgFilter;
     boolean isApplyFiltered;
     CuisionAdatper cuisionAdatper;
     private Spinner sp;
@@ -116,6 +116,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
         arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
+        imgCart = getView().findViewById(R.id.fragment_home_img_cart);
+        imgCart.setOnClickListener(this);
 
         imgFilter.setOnClickListener(this);
         arrow_show_detail.setOnClickListener(this);
@@ -219,7 +221,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     String longitude = "7.0869837" ;
     String min_miles = "0";
     String max_miles = "10";
-    String foodie_id = "4";
+    public static String foodie_id = "4";
     String country = "101";
     private CuisineData cuisineData = new CuisineData();
     private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
@@ -295,14 +297,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
         chefDishBeans.addAll(homeData.getChef_dish());
         favouriteDataBeans.addAll(homeData.getFavourite_data());
-
         setMyViewPager(chefDishBeans);
         setBottomViewPager(favouriteDataBeans);
 
     }
 
     private void setMyViewPager(List<HomeData.ChefDishBean> mylist) {
-        adapter = new HomeDishPagerAdapter(getContext(), getFragmentManager(), mylist);
+        HomeDishPagerAdapter adapter = new HomeDishPagerAdapter(getActivity(),getContext(), getFragmentManager(), mylist);
         viewPager.setAdapter(adapter);
     }
 
@@ -310,16 +311,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         Log.d("Debug", favouriteDataBeans.size() + "");
         homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(), mylist);
         bottomViewPager.setAdapter(homeBottomPagerAdapter);
-
     }
-
 
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -364,6 +361,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         else if (v.getId()==R.id.fragment_home_img_filter){
             startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
         }
+        else if (v.getId() == R.id.fragment_home_img_cart)
+        {
+            startActivity(new Intent(getContext(), Cart_activity.class));
+           getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+        }
     }
 
     @Override
@@ -372,8 +374,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if (data!=null){
             if(resultCode== FilterHomeActivity.FILTER_RESPONSE_CODE)
             {
-                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
             }

@@ -281,6 +281,7 @@
             android:layout_height="45dp"
             android:text="Add to cart"
             android:textSize="14sp"
+            android:id="@+id/tv_add_to_cart"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:background="@drawable/shape_background_theme"

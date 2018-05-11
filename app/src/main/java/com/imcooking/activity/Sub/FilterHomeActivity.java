@@ -104,22 +104,6 @@ public class FilterHomeActivity extends AppBaseActivity implements View.OnClickL
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){

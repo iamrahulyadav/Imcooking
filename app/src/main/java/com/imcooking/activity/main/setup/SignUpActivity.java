@@ -104,7 +104,8 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                         data.setPassword(pass);
                         data.setConfirmpassword(conf_pass);
 
-                        new GetData(getApplicationContext(), SignUpActivity.this).getResponse(new Gson().toJson(data), "signup",
+                        new GetData(getApplicationContext(), SignUpActivity.this)
+                                .getResponse(new Gson().toJson(data), "signup",
                                 new GetData.MyCallback() {
                                     @Override
                                     public void onSuccess(String result) {

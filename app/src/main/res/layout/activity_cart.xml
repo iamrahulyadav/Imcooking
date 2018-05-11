@@ -16,11 +16,11 @@
         >
 
         <ImageView
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/details_home"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:alpha="0.8"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,10 +35,9 @@
                 android:padding="10dp">
 
                 <ImageView
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imgBack"
+                    android:visibility="gone"
                     android:src="@drawable/ic_left_arrow_white"
                     android:layout_alignParentLeft="true"/>
 
@@ -52,20 +51,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Jamie Malone"
-                        android:id="@+id/activity_chef_txtname"
+                        android:text="Cart"
                         android:textColor="@color/colorWhite"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Narangi Byepass Road, Y K Nagar, Vihar West India"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="10sp"
-                        android:id="@+id/activity_chef_txtAdderss"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"/>
+
                 </LinearLayout>
 
             </RelativeLayout>
@@ -83,20 +73,13 @@
                     android:src="@drawable/details_profile"
                     app:civ_border_width="3dp"
                     app:civ_border_color="@color/colorBlue"/>
+                <ImageView
+                    android:visibility="gone"
+                    android:layout_width="10dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/details_profile"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:text="Call"
-                    android:id="@+id/activity_chef_txtCall"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:background="@drawable/shape_background_theme"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp" />
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -134,12 +117,29 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1120 Followers"
-                    android:textSize="10sp"
-                    android:id="@+id/activity_chef_txtFollower"
+                    android:text="Jamie Malone"
+                    android:textSize="20sp"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"/>
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1120 Followers"
+                    android:textSize="10sp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:text="follow"
+                    android:drawableLeft="@drawable/ic_drop_up_aarrow"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp" />
                </LinearLayout>
 
         </LinearLayout>
@@ -151,35 +151,96 @@
         android:background="@color/cardview_dark_background"
         android:orientation="vertical">
 
-
-        <android.support.design.widget.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            app:tabTextColor="@color/colorBlack"
-            app:tabSelectedTextColor="@color/colorBlue">
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About chef" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dish" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Request a dish" />
-        </android.support.design.widget.TabLayout>
-
     </LinearLayout>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <include layout="@layout/fragment_about_chef"/>
+   <include layout="@layout/fragment_cart"/>
+
 </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical"
+        android:gravity="right|bottom"
+
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tax"
+
+                android:textSize="14sp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$100"
+                android:id="@+id/tv_tax"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlue"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total"
+                android:textSize="14sp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$100"
+                android:id="@+id/tv_total"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlue"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add new item"
+                android:textSize="14sp"
+                android:padding="8dp"
+                android:background="@drawable/button_bg"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/colorWhite"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Place order"
+                android:textSize="14sp"
+                android:padding="8dp"
+                android:background="@drawable/button_bg"
+                android:textColor="@color/colorWhite"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

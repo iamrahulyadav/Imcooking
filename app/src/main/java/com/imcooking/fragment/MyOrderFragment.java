@@ -15,11 +15,9 @@ import com.imcooking.activity.home.MainActivity;
  */
 public class MyOrderFragment extends Fragment {
 
-
     public MyOrderFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

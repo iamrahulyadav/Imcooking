@@ -84,7 +84,8 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
         layout.setVisibility(View.GONE);
 
         String detailRequest = "{\"chef_id\":" + chef_id + "}";
-        new GetData(getApplicationContext(),OtherDishActivity.this).getResponse(detailRequest, "dishchef",
+        new GetData(getApplicationContext(),OtherDishActivity.this).getResponse(detailRequest,
+                "dishchef",
                 new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
@@ -109,7 +110,6 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                                             intent.setData(Uri.parse("tel:"+otherDish.getChef().getChef_phone()));
                                             startActivity(intent);
                                         }
-
                                     }
                                 });
                                 if (otherDish.getChef().getChef_image()!=null){
@@ -123,7 +123,6 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                 });
             }
         });
-
     }
 
     private void setDishAdapter(){
@@ -143,9 +142,13 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
         tv_title.setText("Other Dish by chef ");
         setSupportActionBar(myToolbar);
     }
-
+    public static int OTHER_DISH_CODE = 2;
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
-
+        Intent filrestintent=new Intent();
+        filrestintent.putExtra("dish_id", chefDishBeans.get(position).getDish_id() + "");
+        setResult(OTHER_DISH_CODE,filrestintent);
+//                Log.d("VKK", gson.toJson(listModel));
+        finish();
     }
 }

@@ -70,7 +70,8 @@ public class MainActivity extends AppBaseActivity
     private LinearLayout frame_view;
 //    public static Toolbar toolbar;
     public static DrawerLayout drawerLayout1;
-//    public static NavigationView navigationView;
+    public NavigationView navigationView;
+    TextView txtChefUserName, txtMobile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +108,9 @@ public class MainActivity extends AppBaseActivity
             }
         });
 
-/*
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        
         navigationView.setNavigationItemSelectedListener(this);
-*/
 /*
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
