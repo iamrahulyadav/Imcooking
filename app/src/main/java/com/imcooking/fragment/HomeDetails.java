@@ -310,7 +310,6 @@ Context mc;
 //                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
                                         //tv.setText(apiResponse.getMsg());
 
-                                        dialog.show();
                                     }
                                 });
                             }
