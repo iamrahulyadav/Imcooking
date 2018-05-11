@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class Cart_activity extends AppCompatActivity implements View.OnClickListener {
 TextView txtPlus,txtMinus,txt_DishCount,txtDishPrice,txtTax,txtTotalprice,txtChef_Name,txt_chef_follow;
 ImageView imgDish,imgChefImg;
-String dishname,dishimage,price;
 static int count=0;
 int foodie_id;
 RecyclerView recyclerView;
