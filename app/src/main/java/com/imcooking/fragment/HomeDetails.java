@@ -53,8 +53,8 @@ import java.util.ArrayList;
 public class HomeDetails extends Fragment implements View.OnClickListener {
     TabLayout tabLayout;
     Pager1 adapter;
-Dialog dialog ;
-int foodie_id;
+    Dialog dialog ;
+    int foodie_id;
     ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     Gson gson = new Gson();
     TinyDB tinyDB;

@@ -42,6 +42,7 @@ public class HomeData {
          * chef_id : 73
          * chef_name : Tomos
          * like : 2
+         * dishlikeno : 0
          * dishlike : 1
          * follow : 2
          * rating : 4
@@ -71,6 +72,7 @@ public class HomeData {
         private String chef_id;
         private String chef_name;
         private String like;
+        private String dishlikeno;
         private String dishlike;
         private String follow;
         private String rating;
@@ -118,6 +120,14 @@ public class HomeData {
 
         public void setLike(String like) {
             this.like = like;
+        }
+
+        public String getDishlikeno() {
+            return dishlikeno;
+        }
+
+        public void setDishlikeno(String dishlikeno) {
+            this.dishlikeno = dishlikeno;
         }
 
         public String getDishlike() {

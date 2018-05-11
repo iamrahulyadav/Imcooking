@@ -73,7 +73,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     private Toolbar toolbar;
     CustomViewPager viewPager;
-    HomeDishPagerAdapter adapter;
     HomeBottomPagerAdapter homeBottomPagerAdapter;
 
     @Override
@@ -222,7 +221,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     String longitude = "7.0869837" ;
     String min_miles = "0";
     String max_miles = "10";
-    String foodie_id = "4";
+    public static String foodie_id = "4";
     String country = "101";
     private CuisineData cuisineData = new CuisineData();
     private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
@@ -304,7 +303,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     }
 
     private void setMyViewPager(List<HomeData.ChefDishBean> mylist) {
-        adapter = new HomeDishPagerAdapter(getContext(), getFragmentManager(), mylist);
+        HomeDishPagerAdapter adapter = new HomeDishPagerAdapter(getActivity(),getContext(), getFragmentManager(), mylist);
         viewPager.setAdapter(adapter);
     }
 
