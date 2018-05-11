@@ -11,6 +11,8 @@ public class ApiResponse {
     private String msg;
     private UserDataBean user_data;
     public DishDetails dish_details;
+    public AddCart add_cart;
+
 
     public boolean isStatus() {
         return status;
@@ -34,6 +36,22 @@ public class ApiResponse {
 
     public void setUser_data(UserDataBean user_data) {
         this.user_data = user_data;
+    }
+
+    public DishDetails getDish_details() {
+        return dish_details;
+    }
+
+    public void setDish_details(DishDetails dish_details) {
+        this.dish_details = dish_details;
+    }
+
+    public AddCart getAdd_cart() {
+        return add_cart;
+    }
+
+    public void setAdd_cart(AddCart add_cart) {
+        this.add_cart = add_cart;
     }
 
     public static class UserDataBean {
