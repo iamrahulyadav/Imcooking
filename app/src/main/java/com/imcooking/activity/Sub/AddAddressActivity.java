@@ -119,6 +119,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             return false;
         }
         return true;
+
     }
 
     private void changeMap(Location location) {
