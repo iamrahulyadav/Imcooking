@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -141,12 +142,17 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                                     BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                 }
                             } else {
-                                dialog.show();
                                 if (apiResponse.getMsg().equals("User name and password wrong")) {
+                                    dialog.show();
                                     BaseClass.showToast(getApplicationContext(), "Wrong User Name and Password");
                                 }else if (apiResponse.getMsg().equals("Passcode Required")) {
+                                    dialog.show();
                                     user_id = apiResponse.getUser_data().getUser_id() + "";
                                     dialog.findViewById(R.id.wrong_passcode).setVisibility(View.GONE);
+                                } else if (apiResponse.getMsg().equals("Your account is yet not verfied by Admin, please contact app admin.")){
+                                    edt_pass.setText("");
+                                    edt_uname.setText("");
+                                    Toast.makeText(LoginActivity.this, "Your account is yet not verfied by Admin, please contact app admin.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

@@ -122,13 +122,19 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                                                 tv.setText(apiResponse.getMsg());
 
                                                 if (apiResponse.isStatus()) {
-                                                    if (apiResponse.getMsg().equals("Foodie successfully registered and send verification code your email!")) {
+                                                    if (apiResponse.getMsg().equals("Foodie successfully registered and sent verification code your email!")) {
                                                         edt_uname.setText("");
                                                         edt_email.setText("");
                                                         edt_pass.setText("");
                                                         edt_conf_pass.setText("");
 //                                                        dialog.show();
-                                                    } else {
+                                                    } else if (apiResponse.getMsg().equals("Chef successfully registered and Account wating for admin approval!")){
+                                                        edt_uname.setText("");
+                                                        edt_email.setText("");
+                                                        edt_pass.setText("");
+                                                        edt_conf_pass.setText("");
+                                                    }
+                                                    else {
                                                         BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                                     }
                                                 } else {
@@ -157,11 +163,13 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
     }
 
     public void register_okay(View view){
-
-        if(tv.getText().toString().equals("Foodie successfully registered and send verification code your email!")){
+        if(tv.getText().toString().equals("Foodie successfully registered and sent verification code your email!")){
             dialog.dismiss();
             finish();
-        } else{
+        } else if (tv.getText().toString().equals("Chef successfully registered and Account wating for admin approval!")){
+            dialog.dismiss();
+            finish();
+        } else {
             dialog.dismiss();
         }
     }

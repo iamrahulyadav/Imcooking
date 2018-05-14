@@ -167,13 +167,43 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
 
 
     }
+    String title;
     public void dialog_address_cancel(View view){
         dialog.dismiss();
     }
     public void dialog_addressSave(View view){
-        dialog.dismiss();
+        if (title!=null){
+
+        } else {
+            Toast.makeText(mContext, "Please select address type", Toast.LENGTH_SHORT).show();
+        }
     }
 
+    public void dialog_radioClick(View view){
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.dialog_address_radioHome:
+                if (checked){
+                    edtMsg.setVisibility(View.GONE);
+                    title= "Home";
+                }
+                    break;
+            case R.id.dialog_address_radioOffice:
+                if (checked){
+                    edtMsg.setVisibility(View.GONE);
+                    title= "Office";
+                }
+                break;
+            case R.id.dialog_address_radioOther:
+                if (checked){
+                    edtMsg.setVisibility(View.VISIBLE);
+                    title= edtMsg.getText().toString().trim();
+                }
+                    break;
+        }
+    }
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());

@@ -37,11 +37,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:id="@+id/dialog_address_radiogroup"
             android:layout_margin="15dp">
             <RadioButton
+                android:onClick="dialog_radioClick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
                 android:layout_weight="1"
                 android:text="Home"
                 android:id="@+id/dialog_address_radioHome"
@@ -49,6 +50,7 @@
                 android:backgroundTint="@color/colorBlack"
                 android:buttonTint="@color/colorBlue"/>
             <RadioButton
+                android:onClick="dialog_radioClick"
                 android:id="@+id/dialog_address_radioOffice"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -58,6 +60,7 @@
                 android:backgroundTint="@color/colorBlack"
                 android:buttonTint="@color/colorBlue"/>
             <RadioButton
+                android:onClick="dialog_radioClick"
                 android:id="@+id/dialog_address_radioOther"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -79,6 +82,7 @@
             android:layout_margin="15dp"
             android:padding="10dp"
             android:singleLine="true"
+            android:visibility="gone"
             android:imeOptions="actionDone"
             android:id="@+id/dialog_address_edtMsg"
             android:background="@drawable/edt_bg"/>
