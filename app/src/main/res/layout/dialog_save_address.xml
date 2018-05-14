@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
-            android:background="@color/colorLightGrey"/>
+            android:background="#f7f6f6"/>
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -44,10 +44,12 @@
                 android:checked="true"
                 android:layout_weight="1"
                 android:text="Home"
+                android:id="@+id/dialog_address_radioHome"
                 android:textColor="@color/colorBlack"
                 android:backgroundTint="@color/colorBlack"
                 android:buttonTint="@color/colorBlue"/>
             <RadioButton
+                android:id="@+id/dialog_address_radioOffice"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,6 +58,7 @@
                 android:backgroundTint="@color/colorBlack"
                 android:buttonTint="@color/colorBlue"/>
             <RadioButton
+                android:id="@+id/dialog_address_radioOther"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
-            android:background="@color/colorLightGrey"/>
+            android:background="#f7f6f6"/>
         <com.imcooking.customtext.CustomEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,6 +80,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:imeOptions="actionDone"
+            android:id="@+id/dialog_address_edtMsg"
             android:background="@drawable/edt_bg"/>
 
         <LinearLayout
@@ -93,6 +97,7 @@
                 android:layout_marginRight="5dp"
                 android:padding="10dp"
                 android:gravity="center"
+                android:onClick="dialog_addressSave"
                 android:id="@+id/dialog_address_txtSave"
                 android:background="@drawable/button_bg" />
             <com.imcooking.customtext.CustomTextView
@@ -101,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
                 android:text="Cancel"
+                android:onClick="dialog_address_cancel"
                 android:gravity="center"
                 android:layout_marginLeft="5dp"
                 android:padding="10dp"
@@ -116,6 +122,7 @@
         android:textColor="@color/colorWhite"
         android:textSize="25dp"
         android:gravity="center"
+        android:onClick="dialog_address_cancel"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/shape_circle_theme"/>

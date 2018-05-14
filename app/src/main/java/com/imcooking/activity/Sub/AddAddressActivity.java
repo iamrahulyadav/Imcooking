@@ -25,6 +25,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -144,15 +146,32 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             }
         });
     }
+
     Dialog dialog;
+    EditText edtMsg;
+    RadioButton radioHome, radioOffice,radioOther;
+    TextView txtCanel, txtSave;
     private void createMyDialog(){
 
         dialog = new Dialog(AddAddressActivity.this);
         dialog.setContentView(R.layout.dialog_save_address);
-        dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        edtMsg = dialog.findViewById(R.id.dialog_address_edtMsg);
+        radioHome = dialog.findViewById(R.id.dialog_address_radioHome);
+        radioOther = dialog.findViewById(R.id.dialog_address_radioOther);
+        radioOffice = dialog.findViewById(R.id.dialog_address_radioOffice);
+        txtSave = dialog.findViewById(R.id.dialog_address_txtSave);
+        txtCanel = dialog.findViewById(R.id.dialog_address_txtCancel);
         dialog.show();
+
+
+    }
+    public void dialog_address_cancel(View view){
+        dialog.dismiss();
+    }
+    public void dialog_addressSave(View view){
+        dialog.dismiss();
     }
 
 
