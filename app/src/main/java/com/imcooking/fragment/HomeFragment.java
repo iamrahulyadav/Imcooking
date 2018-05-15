@@ -363,7 +363,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
         else if (v.getId() == R.id.fragment_home_img_cart)
         {
-            startActivity(new Intent(getContext(), Cart_activity.class));
+            startActivity(new Intent(getContext(), Cart_activity.class).putExtra("foodie_id",
+                    userDataBean.getUser_id()));
            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
     }

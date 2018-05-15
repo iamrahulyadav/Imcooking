@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:padding="5dp"
+    android:background="@drawable/shape_shadaw">
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:textColor="@color/colorBlack"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"/>
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="@dimen/smallsize"
+        android:ellipsize="end"
+        android:textColor="@color/colorBlack"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:id="@+id/activity_add_aaddres_txtLoc"
+        android:paddingBottom="15dp"
+        android:paddingTop="5dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGrey"/>
+    <com.imcooking.customtext.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/colorBlack"
+        android:padding="15dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/add_address_edtHouse"
+        android:textSize="@dimen/smallsize"
+        android:hint="House/Flat no"
+        android:textColorHint="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFEFEDED"/>
+    <com.imcooking.customtext.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/colorBlack"
+        android:padding="15dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/add_address_edtLandMark"
+        android:textSize="@dimen/smallsize"
+        android:hint="Landmark"
+        android:textColorHint="@color/colorBlack"/>
+
+</LinearLayout>
