@@ -46,12 +46,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.imcooking.Model.ApiRequest.AddressRequest;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.adapters.PlacesAutoCompleteAdapter;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.AppUtils;
 import com.imcooking.utils.BaseClass;
+import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 
 import java.io.IOException;
 import java.util.List;
@@ -66,8 +71,9 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     Context mContext;
     private LatLng mCenterLatLong;
     private MapView mMapView;
+    private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private TextView txtPlaceName, txtLocatName, txtConfirm;
-
+    TinyDB  tinyDB ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,10 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             BaseClass.setLightStatusBar(getWindow().getDecorView(),AddAddressActivity.this);
         }
         mContext = this;
+        tinyDB = new TinyDB(mContext);
+        String  login_data = tinyDB.getString("login_data");
+        userDataBean = gson.fromJson(login_data, ApiResponse.UserDataBean.class);
+        foodie_id = userDataBean.getUser_id()+"";
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -163,20 +173,49 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         radioOffice = dialog.findViewById(R.id.dialog_address_radioOffice);
         txtSave = dialog.findViewById(R.id.dialog_address_txtSave);
         txtCanel = dialog.findViewById(R.id.dialog_address_txtCancel);
+        txtCanel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        txtSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (title!=null){
+                    address = txtLocatName.getText().toString().trim();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            addAddress(title,address);
+                        }
+                    });
+                } else {
+                    Toast.makeText(mContext, "Please select address type", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         dialog.show();
-
-
     }
-    String title;
-    public void dialog_address_cancel(View view){
-        dialog.dismiss();
-    }
-    public void dialog_addressSave(View view){
-        if (title!=null){
 
-        } else {
-            Toast.makeText(mContext, "Please select address type", Toast.LENGTH_SHORT).show();
-        }
+    String title,foodie_id,address;
+
+    private Gson gson = new Gson();
+    private void addAddress(String title, String address){
+        AddressRequest addressRequest = new AddressRequest();
+        addressRequest.setTitle(title);
+        addressRequest.setFoodie_id(foodie_id);
+        addressRequest.setAddress(address);
+        addressRequest.setAddress_id("");
+        String s = gson.toJson(addressRequest);
+        Log.d(TAG, "addAddress: "+s);
+        new GetData(mContext, AddAddressActivity.this).getResponse(s,
+                "address", new GetData.MyCallback() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+        });
     }
 
     public void dialog_radioClick(View view){

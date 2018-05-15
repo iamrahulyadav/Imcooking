@@ -101,7 +101,6 @@
                 android:layout_marginRight="5dp"
                 android:padding="10dp"
                 android:gravity="center"
-                android:onClick="dialog_addressSave"
                 android:id="@+id/dialog_address_txtSave"
                 android:background="@drawable/button_bg" />
             <com.imcooking.customtext.CustomTextView
@@ -110,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
                 android:text="Cancel"
-                android:onClick="dialog_address_cancel"
                 android:gravity="center"
                 android:layout_marginLeft="5dp"
                 android:padding="10dp"

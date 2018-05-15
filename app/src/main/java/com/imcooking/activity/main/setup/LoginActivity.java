@@ -131,13 +131,11 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
                             Log.d("ShowResponse", apiResponse.isStatus() + "");
                             Log.d("ShowResponse", apiResponse.getMsg());
-
                             if (apiResponse.isStatus()) {
                                 if (apiResponse.getMsg().equals("Successfully login")) {
                                     tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
                                     BaseClass.showToast(getApplicationContext(), "Login Successfull");
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
                                 } else {
                                     BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                 }
@@ -169,11 +167,9 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         String passcode = edt_passcode.getText().toString().trim();
 
         if(!passcode.isEmpty()) {
-
             Verification data = new Verification();
             data.setUser_id(user_id);
             data.setPasscode(passcode);
-
             new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data),
                     "varification", new GetData.MyCallback() {
                 @Override

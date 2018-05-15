@@ -1,13 +1,17 @@
 package com.imcooking.activity.Sub;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.adapters.CartAdatper;
 import com.imcooking.webservices.GetData;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -28,6 +33,8 @@ ImageView imgDish,imgChefImg;
 String dishname,dishimage,price;
 static int count=0;
 int foodie_id;
+    RatingBar ratingBar;
+
 RecyclerView recyclerView;
    // ArrayList<AddCart> dishlist = new ArrayList<>();
     @SuppressLint("WrongViewCast")
@@ -35,11 +42,15 @@ RecyclerView recyclerView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
        // adapter = new CartAdatper(this, dishlist);
+        ratingBar = findViewById(R.id.actvity_cart_rating);
 
         if (extras != null) {
             foodie_id = extras.getInt("foodie_id");
@@ -51,7 +62,8 @@ RecyclerView recyclerView;
         txtPlus.setOnClickListener(this);
         txtMinus.setOnClickListener(this);
         txtMinus=findViewById(R.id.tv_minus);
- */       txt_DishCount=findViewById(R.id.tv_dish_count);
+ */
+        txt_DishCount=findViewById(R.id.tv_dish_count);
         txtDishPrice=findViewById(R.id.tv_dish_price);
         txtTax=findViewById(R.id.tv_tax);
         txtTotalprice=findViewById(R.id.tv_total);
@@ -76,28 +88,23 @@ RecyclerView recyclerView;
                                                 ApiResponse.class);
 
                                         if(apiResponse.isStatus()){
-
                                            txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
                                          // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
-                                           txt_chef_follow.setText(apiResponse.getAdd_cart().getFollow()+"Followers");
+                                           txt_chef_follow.setText(apiResponse.getAdd_cart().getFollow()+" Followers");
                                           // txtDishPrice.setText(apiResponse.getAdd_cart().get);
-
                                             CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish());
                                             recyclerView.setAdapter(cartAdatper);
+                                            ratingBar.setRating(Float.parseFloat(apiResponse.getAdd_cart().getRating()+""));
+
+                                            Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL+apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
                                         }
-
 //                                        apiResponse.isStatus();
-
 //                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
-
-
-
                                     }
                                 });
                             }
                         });
-
     }
 
     @Override
