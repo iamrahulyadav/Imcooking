@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -147,13 +148,18 @@ RecyclerView recyclerView;
         final String request="{\"chef_id\":"+chef_id+",\"foodie_id\":"+foodie_id+"}";
         new GetData(getApplicationContext(), Cart_activity.this).getResponse(request, "follow", new GetData.MyCallback() {
             @Override
-            public void onSuccess(String result) {
-                setdetails();
-                ApiResponse apiResponse = new ApiResponse();
-                apiResponse = gson.fromJson(result, ApiResponse.class);
-                String s = apiResponse.getMsg();
-                Log.d("TAG", "onSuccess: "+result);
-                Toast.makeText(Cart_activity.this, result, Toast.LENGTH_SHORT).show();
+            public void onSuccess(final String result) {
+             runOnUiThread(new Runnable() {
+                 @Override
+                 public void run() {
+                     setdetails();
+                     ApiResponse apiResponse = new ApiResponse();
+                     apiResponse = gson.fromJson(result, ApiResponse.class);
+                     String s = apiResponse.getMsg();
+                     Log.d("TAG", "onSuccess: "+result);
+                     Toast.makeText(Cart_activity.this, result, Toast.LENGTH_SHORT).show();
+                 }
+             });
             }
         });
     }

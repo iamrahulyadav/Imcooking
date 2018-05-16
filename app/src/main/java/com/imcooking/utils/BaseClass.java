@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.imcooking.R;
 import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.fragment.chef.ChefHome;
 
 import java.util.regex.Pattern;
 
@@ -74,7 +75,7 @@ public class BaseClass {
     public static void callFragment(Fragment fragment, String tag, FragmentManager manager){
 
 
-        if(tag.equals(new HomeFragment().getClass().getName()))
+        if(tag.equals(new HomeFragment().getClass().getName())&& tag.equals(new ChefHome().getClass().getName()))
         {
             manager.beginTransaction().replace(R.id.frame, fragment)/*.addToBackStack("home")*/.commit();
         }

@@ -1,4 +1,4 @@
-package com.imcooking.activity.Sub;
+package com.imcooking.activity.Sub.Foodie;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -41,16 +41,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddressRequest;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
-import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.adapters.PlacesAutoCompleteAdapter;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.AppUtils;
@@ -162,7 +157,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     Dialog dialog;
     EditText edtMsg;
     RadioButton radioHome, radioOffice,radioOther;
-    TextView txtCanel, txtSave;
+    TextView txtCanel, txtSave, txtCancleIcon;
     private void createMyDialog(){
 
         dialog = new Dialog(AddAddressActivity.this);
@@ -175,6 +170,13 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         radioOffice = dialog.findViewById(R.id.dialog_address_radioOffice);
         txtSave = dialog.findViewById(R.id.dialog_address_txtSave);
         txtCanel = dialog.findViewById(R.id.dialog_address_txtCancel);
+        txtCancleIcon = dialog.findViewById(R.id.cancel_icon);
+        txtCancleIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
         txtCanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

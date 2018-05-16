@@ -48,7 +48,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
             tv_dishcount = view.findViewById(R.id.tv_dish_count);
             tv_plus = view.findViewById(R.id.tv_plus);
             tv_minus = view.findViewById(R.id.tv_minus);
-            //txtDishName.setOnClickListener(this);
+            //txtChefName.setOnClickListener(this);
         }
     }
 

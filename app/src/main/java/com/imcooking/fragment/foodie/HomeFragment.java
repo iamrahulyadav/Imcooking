@@ -1,4 +1,4 @@
-package com.imcooking.fragment;
+package com.imcooking.fragment.foodie;
 
 
 import android.animation.Animator;
@@ -25,7 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.ApiRequest.Home;
@@ -33,11 +32,9 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.AddAddressActivity;
-import com.imcooking.activity.Sub.Cart_activity;
-import com.imcooking.activity.Sub.FavoriteCusine;
-import com.imcooking.activity.Sub.FilterHomeActivity;
-import com.imcooking.activity.Sub.SelectLocActivity;
+import com.imcooking.activity.Sub.Foodie.Cart_activity;
+import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
+import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
@@ -46,7 +43,6 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomViewPager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -321,6 +317,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
+
+       /* if (cuisineData.getCuisine_data().get(position).getCuisine_name().equals(chefDishBeans.get(position).getDish_cuisine())){
+            List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
+            chefDishBeans1.addAll(chefDishBeans);
+            if (chefDishBeans1!=null&&chefDishBeans1.size()>0){
+                setMyViewPager(chefDishBeans1);
+            } else {
+                Toast.makeText(getContext(), "Not record found", Toast.LENGTH_SHORT).show();
+            }
+        }*/
     }
 
     @Override
@@ -407,18 +413,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
 
         setMyViewPager(favorite_1);
-
-
-        favorite_2.clear();
+       /* favorite_2.clear();
         for(int i=0; i<favouriteDataBeans.size(); i++){
             HomeData.FavouriteDataBean list = favouriteDataBeans.get(i);
 
-            if(list.getRating().equals((rating.intValue() + "")) /*&& list.getDish_price().equals(price + "")*/){
+            if(list.getRating().equals((rating.intValue() + "")) *//*&& list.getDish_price().equals(price + "")*//*){
                 favorite_2.add(list);
             }
         }
 
-        setBottomViewPager(favorite_2);
+        setBottomViewPager(favorite_2);*/
 
 
     }

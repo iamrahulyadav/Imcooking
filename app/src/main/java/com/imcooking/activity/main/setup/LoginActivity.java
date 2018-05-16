@@ -141,7 +141,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                                 }
                             } else {
                                 if (apiResponse.getMsg().equals("User name and password wrong")) {
-                                    dialog.show();
+
                                     BaseClass.showToast(getApplicationContext(), "Wrong User Name and Password");
                                 }else if (apiResponse.getMsg().equals("Passcode Required")) {
                                     dialog.show();

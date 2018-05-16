@@ -125,7 +125,7 @@
         android:textColor="@color/colorWhite"
         android:textSize="25dp"
         android:gravity="center"
-        android:onClick="dialog_address_cancel"
+        android:id="@+id/cancel_icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/shape_circle_theme"/>

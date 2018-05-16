@@ -22,7 +22,6 @@ import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
 import com.imcooking.fragment.foodie.HomeDetails;
-import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;

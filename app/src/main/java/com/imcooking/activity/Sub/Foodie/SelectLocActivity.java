@@ -1,8 +1,7 @@
-package com.imcooking.activity.Sub;
+package com.imcooking.activity.Sub.Foodie;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,8 +22,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,14 +44,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.imcooking.Model.ApiRequest.AddressRequest;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.adapters.PlacesAutoCompleteAdapter;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.AppUtils;
 import com.imcooking.utils.BaseClass;
-import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
 import org.json.JSONArray;

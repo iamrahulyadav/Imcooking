@@ -24,7 +24,12 @@
         android:layout_height="1dp"
         android:background="@color/view_4"/>
 
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/activity_chef_ilove_recycler"/>
+
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:padding="15dp">
@@ -255,7 +260,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height=".5dp"
-        android:background="@color/view_5"/>
+        android:background="@color/view_5"/>-->
 
 
 
