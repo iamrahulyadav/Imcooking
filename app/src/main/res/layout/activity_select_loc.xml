@@ -11,6 +11,11 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
@@ -75,7 +80,8 @@
                     android:layout_height="match_parent"
                     android:id="@+id/autocomplete"
                     android:background="@drawable/shape_white"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="10dp"
+                    android:textSize="@dimen/smallsize"
                     android:visibility="visible"
                     android:textColorHint="@color/colorBlack"
                     android:textColor="@color/colorBlack"
@@ -125,10 +131,6 @@
                     tools:ignore="VectorDrawableCompat" />
 
             </RelativeLayout>
-
-            <include layout="@layout/add_address_details_view"
-              android:visibility="gone" />
-
 
         </LinearLayout>
 

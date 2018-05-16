@@ -12,7 +12,6 @@ public class ChefILove extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_ilove);
-
         getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
     }
 }

@@ -83,6 +83,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:visibility="gone"
+            android:textColor="@color/colorBlack"
             android:imeOptions="actionDone"
             android:id="@+id/dialog_address_edtMsg"
             android:background="@drawable/edt_bg"/>

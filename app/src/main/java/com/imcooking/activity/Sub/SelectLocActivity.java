@@ -3,23 +3,21 @@ package com.imcooking.activity.Sub;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
-import android.os.Handler;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +29,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,16 +45,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddressRequest;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
-import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.adapters.PlacesAutoCompleteAdapter;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.AppUtils;
@@ -58,11 +57,15 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -71,6 +74,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     Context mContext;
     private LatLng mCenterLatLong;
     private MapView mMapView;
+    AutoCompleteTextView autocompleteView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private TextView txtPlaceName, txtLocatName, txtConfirm;
     TinyDB  tinyDB ;
@@ -84,7 +88,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            BaseClass.setLightStatusBar(getWindow().getDecorView(),AddAddressActivity.this);
+            BaseClass.setLightStatusBar(getWindow().getDecorView(),SelectLocActivity.this);
         }
         mContext = this;
         tinyDB = new TinyDB(mContext);
@@ -95,7 +99,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
-            ActivityCompat.requestPermissions(AddAddressActivity.this,
+            ActivityCompat.requestPermissions(SelectLocActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     1);
             return;
@@ -139,7 +143,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         } else {
             Toast.makeText(mContext, "Location not supported in this device", Toast.LENGTH_SHORT).show();
         }
-        AutoCompleteTextView autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
+       autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
         autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
         autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -148,107 +152,87 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 // in the list (AdapterView)
                 String description = (String) parent.getItemAtPosition(position);
                 Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
+
+              getLatLong(description);
+
             }
         });
 
         txtConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createMyDialog();
+
             }
         });
     }
+    LatLng latLng;
+    JSONObject jsonObject2;
 
-    Dialog dialog;
-    EditText edtMsg;
-    RadioButton radioHome, radioOffice,radioOther;
-    TextView txtCanel, txtSave;
-    private void createMyDialog(){
+    public LatLng getLatLong(String place){
+        final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setMessage("Loading...");
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+place+"&key=AIzaSyD8rFBw_mmTdTCVQ4IdjhzcXt5P1trKrYw";
+        url = url.replace(" ", "+");
 
-        dialog = new Dialog(AddAddressActivity.this);
-        dialog.setContentView(R.layout.dialog_save_address);
-        dialog.getWindow().setBackgroundDrawable(null);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        edtMsg = dialog.findViewById(R.id.dialog_address_edtMsg);
-        radioHome = dialog.findViewById(R.id.dialog_address_radioHome);
-        radioOther = dialog.findViewById(R.id.dialog_address_radioOther);
-        radioOffice = dialog.findViewById(R.id.dialog_address_radioOffice);
-        txtSave = dialog.findViewById(R.id.dialog_address_txtSave);
-        txtCanel = dialog.findViewById(R.id.dialog_address_txtCancel);
-        txtCanel.setOnClickListener(new View.OnClickListener() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        txtSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title!=null){
-                    address = txtLocatName.getText().toString().trim();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addAddress(title,address);
+            public void onResponse(JSONObject response) {
+                if (response!=null){
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("results");
+                        for (int i=0; i<jsonArray.length();i++){
+                            JSONObject jsonObject ;
+                            jsonObject = jsonArray.getJSONObject(i);
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("geometry");
+                            jsonObject2 = jsonObject1.getJSONObject("location");
+                            double pickUplat = jsonObject2.getDouble("lat");
+                            double pickUplang = jsonObject2.getDouble("lng");
+                            latLng = new LatLng(pickUplat,pickUplang);
+//                    Log.d(TAG, "onResponse:d "+lat +"\n" +longi );
+                            if (latLng!=null){
+                                CameraPosition cameraPosition = new CameraPosition.Builder()
+                                        .target(latLng).zoom(19f).tilt(70).build();
+                                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    // TODO: Consider calling
+                                    //    ActivityCompat#requestPermissions
+                                    // here to request the missing permissions, and then overriding
+                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                    //                                          int[] grantResults)
+                                    // to handle the case where the user grants the permission. See the documentation
+                                    // for ActivityCompat#requestPermissions for more details.
+                                    return;
+                                }
+                                mMap.setMyLocationEnabled(true);
+                                mMap.animateCamera(CameraUpdateFactory
+                                        .newCameraPosition(cameraPosition));
+                            }
+                            Log.d(TAG, "onActivityResult: "+pickUplat+"\n"+pickUplang);
+                            progressDialog.dismiss();
                         }
-                    });
-                } else {
-                    Toast.makeText(mContext, "Please select address type", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        });
-        dialog.show();
-    }
-
-
-    private void addAddress(String title, String address){
-        AddressRequest addressRequest = new AddressRequest();
-        addressRequest.setTitle(title);
-        addressRequest.setFoodie_id(foodie_id);
-        addressRequest.setAddress(address);
-        addressRequest.setAddress_id("");
-        String s = gson.toJson(addressRequest);
-        Log.d(TAG, "addAddress: "+s);
-        new GetData(mContext, AddAddressActivity.this).getResponse(s,
-                "address", new GetData.MyCallback() {
+        }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(String result) {
-
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: "+error);
+                progressDialog.dismiss();
             }
         });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsonObjectRequest);
+        return  latLng;
     }
 
-    public void dialog_radioClick(View view){
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.dialog_address_radioHome:
-                if (checked){
-                    edtMsg.setVisibility(View.GONE);
-                    title= "Home";
-                }
-                    break;
-            case R.id.dialog_address_radioOffice:
-                if (checked){
-                    edtMsg.setVisibility(View.GONE);
-                    title= "Office";
-                }
-                break;
-            case R.id.dialog_address_radioOther:
-                if (checked){
-                    edtMsg.setVisibility(View.VISIBLE);
-                    title= edtMsg.getText().toString().trim();
-                }
-                    break;
-        }
-    }
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, AddAddressActivity.this,
+                GooglePlayServicesUtil.getErrorDialog(resultCode, SelectLocActivity.this,
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 //finish();
@@ -256,7 +240,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             return false;
         }
         return true;
-
     }
 
     private void changeMap(Location location) {
@@ -337,7 +320,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             String country = addresses.get(0).getCountryName();
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();
-            result.append(address);
+            result.append(city);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -457,7 +440,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                     try {
                         stringBuffer=getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
                         txtPlaceName.setText(stringBuffer);
-                        txtLocatName.setText(stringBuffer);
+                        autocompleteView.setText(stringBuffer);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

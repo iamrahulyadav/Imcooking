@@ -32,9 +32,11 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.AddAddressActivity;
 import com.imcooking.activity.Sub.Cart_activity;
 import com.imcooking.activity.Sub.FavoriteCusine;
 import com.imcooking.activity.Sub.FilterHomeActivity;
+import com.imcooking.activity.Sub.SelectLocActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
@@ -121,6 +123,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
         imgFilter.setOnClickListener(this);
         arrow_show_detail.setOnClickListener(this);
+        txtCityName.setOnClickListener(this);
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -128,16 +131,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if (spinnerData!=null){
             spinnerData.clear();
         }
-        spinnerData.add("10 km ");
-        spinnerData.add("20 km ");
-        spinnerData.add("30 km ");
-        spinnerData.add("40 km ");
+        spinnerData.add("10 miles ");
+        spinnerData.add("20 miles ");
+        spinnerData.add("30 miles ");
+        spinnerData.add("50 miles ");
         tinyDB = new TinyDB(getContext());
         String s = tinyDB.getString("login_data");
         userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id()+"";
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
-
     //    cuisinRecycler.setAdapter(cuisionAdatper);
         layout.setVisibility(View.GONE);
 
@@ -181,7 +183,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                         break;
                     case 3:
                         min_miles = "0";
-                        max_miles = "40";
+                        max_miles = "50";
                         getHomeData();
                         break;
                         default:
@@ -366,6 +368,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
             startActivity(new Intent(getContext(), Cart_activity.class).putExtra("foodie_id",
                     userDataBean.getUser_id()));
            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+        } else if (v.getId()==R.id.fragment_home_txtcity){
+            startActivity(new Intent(getActivity(), SelectLocActivity.class));
         }
     }
 

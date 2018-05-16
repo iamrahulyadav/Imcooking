@@ -47,8 +47,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
             imgDish=view.findViewById(R.id.img_dish);
             //txtDishName.setOnClickListener(this);
         }
-
-
     }
 
     int row_index=-1;
