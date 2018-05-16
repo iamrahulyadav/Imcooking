@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.ApiRequest.Home;
@@ -209,13 +210,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                txtCityName.setText(MainActivity.stringBuffer.toString());
-            }
-        },3000);
+        if (txtCityName.getText().toString().isEmpty()){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    txtCityName.setText(MainActivity.stringBuffer.toString());
+                }
+            },3000);
+        }
 
     }
 
@@ -290,6 +292,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     List<HomeData.ChefDishBean>favorite_1 = new ArrayList<>();
     List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
     List<HomeData.FavouriteDataBean>favorite_2 = new ArrayList<>();
+
     private void setMyData(){
         if (chefDishBeans!=null){
             chefDishBeans.clear();
@@ -369,7 +372,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                     userDataBean.getUser_id()));
            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (v.getId()==R.id.fragment_home_txtcity){
-            startActivity(new Intent(getActivity(), SelectLocActivity.class));
+            startActivityForResult(new Intent(getActivity(), SelectLocActivity.class),2);
         }
     }
 
@@ -383,6 +386,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 //                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
+            } else if (requestCode==2){
+                latitude = data.getDoubleExtra("latitude",0)+"";
+                longitude = data.getDoubleExtra("longitude",0)+"";
+                txtCityName.setText(data.getStringExtra("name"));
+                Log.d(TAG, "onActivityResult: "+latitude+"\n"+longitude+"\n");
             }
         }
     }

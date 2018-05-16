@@ -84,7 +84,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_address);
+        setContentView(R.layout.activity_select_loc);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -162,10 +162,18 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent();
+                intent.putExtra("latitude",latLng.latitude);
+                intent.putExtra("longitude", latLng.longitude);
+                intent.putExtra("name", autocompleteView.getText().toString().trim());
+                setResult(2,intent);
+//                Log.d("VKK", gson.toJson(listModel));
+                finish();
             }
         });
     }
-    LatLng latLng;
+
+    LatLng latLng=mCenterLatLong;
     JSONObject jsonObject2;
 
     public LatLng getLatLong(String place){

@@ -18,7 +18,7 @@
             android:layout_height="match_parent" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_marginTop="24dp"
@@ -76,7 +76,7 @@
                     android:id="@+id/autocomplete"
                     android:background="@drawable/shape_white"
                     android:paddingLeft="5dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:textColorHint="@color/colorBlack"
                     android:textColor="@color/colorBlack"
                     android:hint="Type in your Location" />
@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:textSize="14sp"
                     android:text="Search"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_weight="1"
                     android:id="@+id/activity_add_aaddres_txtLocaname"
                     android:background="@drawable/shape_white"
@@ -112,23 +112,25 @@
                     android:textColor="@color/text_color_7" />
 
             </LinearLayout>
-            <RelativeLayout
+            <include layout="@layout/add_address_details_view"
+               />
+
+            <LinearLayout
+                android:layout_below="@+id/drop_layout"
+                android:id="@+id/locationMarker"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical" >
+
                 <ImageView
-                    android:layout_centerInParent="true"
                     android:id="@+id/imageMarker"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_placeholder"
                     tools:ignore="VectorDrawableCompat" />
-
-            </RelativeLayout>
-
-            <include layout="@layout/add_address_details_view"
-              android:visibility="gone" />
-
+            </LinearLayout>
 
         </LinearLayout>
 
