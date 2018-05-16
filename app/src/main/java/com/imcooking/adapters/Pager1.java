@@ -2,27 +2,16 @@ package com.imcooking.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
-import com.imcooking.fragment.HomeDetails;
-import com.imcooking.utils.BaseClass;
-import com.imcooking.webservices.GetData;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Pager1 extends PagerAdapter{
 

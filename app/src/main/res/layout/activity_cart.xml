@@ -7,7 +7,7 @@
     android:background="@color/colorWhite"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.imcooking.activity.Sub.EditProfile">
+    tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context="com.imcooking.activity.Sub.ManageAddress">
+    tools:context="com.imcooking.activity.Sub.Foodie.ManageAddress">
 
 
     <TextView

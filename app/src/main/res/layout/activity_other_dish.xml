@@ -7,7 +7,7 @@
     android:background="@color/colorWhite"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.imcooking.activity.Sub.EditProfile">
+    tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
     <include layout="@layout/custom_toolbar"
         android:visibility="gone"/>
     <android.support.design.widget.CoordinatorLayout

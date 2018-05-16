@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Sub.Cart_activity" />
+        <activity android:name=".activity.Sub.Foodie.Cart_activity" />
         <activity
             android:name=".activity.main.setup.LoginActivity"
             android:screenOrientation="portrait"
@@ -44,26 +44,26 @@
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Sub.ManageAddress"
+            android:name=".activity.Sub.Foodie.ManageAddress"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.Sub.ChefILove"
+            android:name=".activity.Sub.Foodie.ChefILove"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.Sub.PaymentMethod"
+            android:name=".activity.Sub.Foodie.PaymentMethod"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.Sub.FavoriteCusine"
+            android:name=".activity.Sub.Foodie.FavoriteCusine"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.Sub.Setting"
+            android:name=".activity.Sub.Foodie.Setting"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.Sub.Help"
+            android:name=".activity.Sub.Foodie.Help"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.Sub.Help1" />
-        <activity android:name=".activity.Sub.EditProfile" />
-        <activity android:name=".activity.Sub.ChefProfile" />
+        <activity android:name=".activity.Sub.Foodie.Help1" />
+        <activity android:name=".activity.Sub.Foodie.EditProfile" />
+        <activity android:name=".activity.Sub.Foodie.ChefProfile" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -72,10 +72,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-        <activity android:name=".activity.Sub.FilterHomeActivity" />
-        <activity android:name=".activity.Sub.OtherDishActivity" />
-        <activity android:name=".activity.Sub.Cart_activity" />
-        <activity android:name=".activity.Sub.AddAddressActivity"></activity>
+        <activity android:name=".activity.Sub.Foodie.FilterHomeActivity" />
+        <activity android:name=".activity.Sub.Foodie.OtherDishActivity" />
+        <activity android:name=".activity.Sub.Foodie.Cart_activity" />
+        <activity android:name=".activity.Sub.Foodie.AddAddressActivity" />
+        <activity android:name=".activity.Sub.Chef.ChefEditDish"></activity>
     </application>
 
 </manifest>

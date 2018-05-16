@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +20,11 @@ import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.DishLikeRequest;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
-import com.imcooking.fragment.HomeDetails;
-import com.imcooking.fragment.HomeFragment;
+import com.imcooking.fragment.foodie.HomeDetails;
+import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +132,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
 
         imgLike.setTag(position);
 
-        BaseClass.showToast(context, position+"");
+//        BaseClass.showToast(context, position+"");
 
         if (chefDishBeans.get(position).getDishlike().equals("0")){
             arr[position] = false;

@@ -1,4 +1,4 @@
-package com.imcooking.fragment;
+package com.imcooking.fragment.foodie;
 
 
 import android.animation.Animator;
@@ -32,9 +32,8 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.Cart_activity;
-import com.imcooking.activity.Sub.FavoriteCusine;
-import com.imcooking.activity.Sub.FilterHomeActivity;
+import com.imcooking.activity.Sub.Foodie.Cart_activity;
+import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
@@ -43,7 +42,6 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomViewPager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -410,7 +408,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
 
     }
-
-
 
 }
