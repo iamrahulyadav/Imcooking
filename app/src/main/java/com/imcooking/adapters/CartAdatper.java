@@ -37,7 +37,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtDishName;
+        public TextView txtDishName, tv_dishcount, tv_plus, tv_minus;
         public ImageView imgDish;
 
         public MyViewHolder(View view) {
@@ -45,6 +45,9 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
             txtDishName = view.findViewById(R.id.tv_dish_name);
             imgDish=view.findViewById(R.id.img_dish);
+            tv_dishcount = view.findViewById(R.id.tv_dish_count);
+            tv_plus = view.findViewById(R.id.tv_plus);
+            tv_minus = view.findViewById(R.id.tv_minus);
             //txtDishName.setOnClickListener(this);
         }
     }
@@ -64,6 +67,24 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL + dishDetails.get(position).getDish_image()).into(holder.imgDish);
+
+        holder.tv_dishcount.setTag(position);
+        holder.tv_plus.setTag(position);
+        holder.tv_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        holder.tv_minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                MyViewHolder holder1 = (MyViewHolder)view.getTag();
+                holder1.tv_dishcount.setText((Integer.parseInt(holder1.tv_dishcount.getText().toString()) + 1) + "");
+            }
+        });
+
     }
 
     @Override

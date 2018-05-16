@@ -1,4 +1,4 @@
-package com.imcooking.activity.Sub;
+package com.imcooking.activity.Sub.Foodie;
 
 import android.os.Bundle;
 

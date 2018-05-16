@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.imcooking.R;
-import com.imcooking.fragment.HomeFragment;
+import com.imcooking.fragment.foodie.HomeFragment;
 
 import java.util.regex.Pattern;
 

@@ -1,9 +1,8 @@
-package com.imcooking.activity.Sub;
+package com.imcooking.activity.Sub.Foodie;
 
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,13 +14,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
-import com.imcooking.adapters.HomeDishPagerAdapter;
 import com.imcooking.adapters.Page_Adapter;
-import com.imcooking.fragment.chefprofile.AboutChefFragment;
-import com.imcooking.fragment.chefprofile.ChefDishListFragment;
-import com.imcooking.fragment.chefprofile.RequestDishFragment;
 import com.imcooking.utils.AppBaseActivity;
-import com.imcooking.utils.CustomViewPager;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -38,9 +32,10 @@ public class ChefProfile extends AppBaseActivity {
 //        find id
         init();
     }
+
     ViewPager pager;
     private void init(){
-      pager=  findViewById(R.id.cardet_viewpager);
+        pager=  findViewById(R.id.cardet_viewpager);
         txtName = findViewById(R.id.activity_chef_txtname);
         txtAddress = findViewById(R.id.activity_chef_txtAdderss);
         txtCall = findViewById(R.id.activity_chef_txtCall);
@@ -59,37 +54,6 @@ public class ChefProfile extends AppBaseActivity {
     }
 
     TabLayout tabLayout;
-    private void setupTab(){
-        AboutChefFragment tab1Fragment=new AboutChefFragment();
-        ChefDishListFragment tab2Fragment=new ChefDishListFragment();
-        RequestDishFragment tab3Fragment=new RequestDishFragment();
-        tabLayout.addTab(tabLayout.newTab().setText("About"));
-        tabLayout.addTab(tabLayout.newTab().setText("Dish List"));
-        tabLayout.addTab(tabLayout.newTab().setText("Request"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        adapter=new Page_Adapter(getSupportFragmentManager(),tabLayout.getTabCount(),tab1Fragment,tab2Fragment,tab3Fragment);
-        pager.setAdapter(adapter);
-//        pager.setOffscreenPageLimit(2);
-        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                pager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }
-
     @Override
     protected void onResume() {
         super.onResume();

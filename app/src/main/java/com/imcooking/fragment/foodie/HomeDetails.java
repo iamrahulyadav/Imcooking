@@ -1,20 +1,16 @@
-package com.imcooking.fragment;
+package com.imcooking.fragment.foodie;
 
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,23 +20,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
-import com.imcooking.Model.ApiRequest.SignUp;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.Cart_activity;
-import com.imcooking.activity.Sub.ChefProfile;
-import com.imcooking.activity.Sub.OtherDishActivity;
-import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.activity.main.setup.SignUpActivity;
-import com.imcooking.adapters.HomeDishPagerAdapter;
-import com.imcooking.adapters.Page_Adapter;
+import com.imcooking.activity.Sub.Foodie.ChefProfile;
+import com.imcooking.activity.Sub.Foodie.OtherDishActivity;
 import com.imcooking.adapters.Pager1;
-import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;

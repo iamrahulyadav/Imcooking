@@ -22,17 +22,13 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -43,12 +39,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.fragment.HomeFragment;
-import com.imcooking.fragment.MyOrderFragment;
-import com.imcooking.fragment.NotificationFragment;
-import com.imcooking.fragment.ProfileFragment;
+import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.fragment.foodie.MyOrderFragment;
+import com.imcooking.fragment.foodie.NotificationFragment;
+import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.mukesh.tinydb.TinyDB;
@@ -72,6 +71,7 @@ public class MainActivity extends AppBaseActivity
     public static DrawerLayout drawerLayout1;
     public NavigationView navigationView;
     TextView txtChefUserName, txtMobile;
+    private TinyDB tinyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class MainActivity extends AppBaseActivity
         });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        
+
         navigationView.setNavigationItemSelectedListener(this);
 /*
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -139,7 +139,7 @@ public class MainActivity extends AppBaseActivity
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
 
             @Override
@@ -147,12 +147,9 @@ public class MainActivity extends AppBaseActivity
                 super.onDrawerSlide(drawerView, slideOffset);
                 float moveFactor = (navigationView.getWidth() * slideOffset);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     frame_view.setTranslationX(moveFactor);
-                }
-                else
-                {
+                } else {
                     TranslateAnimation anim = new TranslateAnimation(lastTranslate, moveFactor, 0.0f, 0.0f);
                     anim.setDuration(0);
                     anim.setFillAfter(true);
@@ -168,7 +165,138 @@ public class MainActivity extends AppBaseActivity
 //        toggle.syncState();
 
         init();
-        BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
+        getUserData();
+        if (user_type.equals("1")) {
+            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
+        } else {
+            BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
+        }
+    }
+
+    public static ImageView iv_home, iv_profile, iv_my_order, iv_notification;
+    public static TextView tv_home, tv_profile, tv_my_order, tv_notification;
+
+    private String loginData;
+    private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+    private String user_type;
+
+    private void init(){
+
+        tinyDB = new TinyDB(getApplicationContext());
+
+        iv_home = findViewById(R.id.bottom_home_image);
+        iv_profile = findViewById(R.id.bottom_profile_image);
+        iv_my_order = findViewById(R.id.bottom_my_order_image);
+        iv_notification = findViewById(R.id.bottom_notification_image);
+
+        tv_home = findViewById(R.id.bottom_home_text);
+        tv_profile = findViewById(R.id.bottom_profile_text);
+        tv_my_order = findViewById(R.id.bottom_my_order_text);
+        tv_notification = findViewById(R.id.bottom_notification_text);
+    }
+
+    private void getUserData(){
+
+        loginData = tinyDB.getString("login_data");
+        userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
+        user_type = userDataBean.getUser_type();
+    }
+
+    public void bottom_click(View view) {
+
+        int id = view.getId();
+        setBottomColor();
+
+        if (id ==R.id.bottom_home_layout){
+            tv_home.setTextColor(getResources().getColor(R.color.theme_color));
+            iv_home.setImageResource(R.drawable.ic_home_1);
+            if(user_type.equals("2")) {
+                BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
+            } else{
+                BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
+            }
+
+        } else if (id ==R.id.bottom_profile_layout){
+            tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
+            iv_profile.setImageResource(R.drawable.ic_user_name_1);
+
+            if(user_type.equals("2")) {
+                BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
+            } else{
+                BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
+            }
+        } else if (id ==R.id.bottom_my_order_layout){
+            tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
+            iv_my_order.setImageResource(R.drawable.ic_salad_1);
+            BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(), getSupportFragmentManager());
+
+        } else if (id ==R.id.bottom_notification_layout){
+            tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
+            iv_notification.setImageResource(R.drawable.ic_ring_1);
+            BaseClass.callFragment(new NotificationFragment(), new NotificationFragment().getClass().getName(), getSupportFragmentManager());
+
+        } else{
+
+        }
+    }
+
+    public void setBottomColor(){
+        tv_home.setTextColor(getResources().getColor(R.color.text_color_10));
+        iv_home.setImageResource(R.drawable.ic_home);
+
+        tv_profile.setTextColor(getResources().getColor(R.color.text_color_10));
+        iv_profile.setImageResource(R.drawable.ic_user_name);
+
+        tv_my_order.setTextColor(getResources().getColor(R.color.text_color_10));
+        iv_my_order.setImageResource(R.drawable.ic_salad);
+
+        tv_notification.setTextColor(getResources().getColor(R.color.text_color_10));
+        iv_notification.setImageResource(R.drawable.ic_ring);
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        tv_home.setTextColor(getResources().getColor(R.color.theme_color));
+//        iv_home.setImageResource(R.drawable.ic_home_1);
+    }
+
+    public void open_menu(View view){
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if(getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finishAffinity();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        switch (id){
+            case R.id.navigation_logout:
+                new TinyDB(getApplicationContext()).remove("login_data");
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+                break;
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -247,111 +375,6 @@ public class MainActivity extends AppBaseActivity
         Canvas canvas = new Canvas(bitmap);
         background.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    public static ImageView iv_home, iv_profile, iv_my_order, iv_notification;
-    public static TextView tv_home, tv_profile, tv_my_order, tv_notification;
-
-    private void init(){
-
-        iv_home = findViewById(R.id.bottom_home_image);
-        iv_profile = findViewById(R.id.bottom_profile_image);
-        iv_my_order = findViewById(R.id.bottom_my_order_image);
-        iv_notification = findViewById(R.id.bottom_notification_image);
-
-        tv_home = findViewById(R.id.bottom_home_text);
-        tv_profile = findViewById(R.id.bottom_profile_text);
-        tv_my_order = findViewById(R.id.bottom_my_order_text);
-        tv_notification = findViewById(R.id.bottom_notification_text);
-    }
-
-    public void bottom_click(View view) {
-
-        int id = view.getId();
-        setBottomColor();
-
-        if (id ==R.id.bottom_home_layout){
-            tv_home.setTextColor(getResources().getColor(R.color.theme_color));
-            iv_home.setImageResource(R.drawable.ic_home_1);
-            BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
-
-        } else if (id ==R.id.bottom_profile_layout){
-            tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
-            iv_profile.setImageResource(R.drawable.ic_user_name_1);
-            BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
-
-        } else if (id ==R.id.bottom_my_order_layout){
-            tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
-            iv_my_order.setImageResource(R.drawable.ic_salad_1);
-            BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(), getSupportFragmentManager());
-
-        } else if (id ==R.id.bottom_notification_layout){
-            tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
-            iv_notification.setImageResource(R.drawable.ic_ring_1);
-            BaseClass.callFragment(new NotificationFragment(), new NotificationFragment().getClass().getName(), getSupportFragmentManager());
-
-        } else{
-
-        }
-    }
-
-    public void setBottomColor(){
-        tv_home.setTextColor(getResources().getColor(R.color.text_color_10));
-        iv_home.setImageResource(R.drawable.ic_home);
-
-        tv_profile.setTextColor(getResources().getColor(R.color.text_color_10));
-        iv_profile.setImageResource(R.drawable.ic_user_name);
-
-        tv_my_order.setTextColor(getResources().getColor(R.color.text_color_10));
-        iv_my_order.setImageResource(R.drawable.ic_salad);
-
-        tv_notification.setTextColor(getResources().getColor(R.color.text_color_10));
-        iv_notification.setImageResource(R.drawable.ic_ring);
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        tv_home.setTextColor(getResources().getColor(R.color.theme_color));
-//        iv_home.setImageResource(R.drawable.ic_home_1);
-    }
-
-    public void open_menu(View view){
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if(getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            finishAffinity();
-        }else {
-            super.onBackPressed();
-        }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        switch (id){
-            case R.id.navigation_logout:
-                new TinyDB(getApplicationContext()).remove("login_data");
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-                break;
-        }
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.imcooking.fragment;
+package com.imcooking.fragment.foodie;
 
 
 import android.content.Intent;
@@ -11,16 +11,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.imcooking.R;
-import com.imcooking.activity.Sub.ChefILove;
-import com.imcooking.activity.Sub.EditProfile;
-import com.imcooking.activity.Sub.FavoriteCusine;
-import com.imcooking.activity.Sub.Help;
-import com.imcooking.activity.Sub.ManageAddress;
-import com.imcooking.activity.Sub.PaymentMethod;
-import com.imcooking.activity.Sub.Setting;
+import com.imcooking.activity.Sub.Foodie.ChefILove;
+import com.imcooking.activity.Sub.Foodie.EditProfile;
+import com.imcooking.activity.Sub.Foodie.FavoriteCusine;
+import com.imcooking.activity.Sub.Foodie.Help;
+import com.imcooking.activity.Sub.Foodie.ManageAddress;
+import com.imcooking.activity.Sub.Foodie.PaymentMethod;
+import com.imcooking.activity.Sub.Foodie.Setting;
 import com.imcooking.activity.home.MainActivity;
-import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.activity.main.setup.SignUpActivity;
 
 /**
  * A simple {@link Fragment} subclass.

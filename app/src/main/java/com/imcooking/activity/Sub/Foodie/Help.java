@@ -1,13 +1,10 @@
-package com.imcooking.activity.Sub;
+package com.imcooking.activity.Sub.Foodie;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.imcooking.R;
-import com.imcooking.activity.main.setup.ForgotPassActivity;
-import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.utils.AppBaseActivity;
 
 public class Help extends AppBaseActivity {
