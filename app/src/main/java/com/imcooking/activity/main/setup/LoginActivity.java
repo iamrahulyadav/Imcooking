@@ -131,22 +131,17 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
                             Log.d("ShowResponse", apiResponse.isStatus() + "");
                             Log.d("ShowResponse", apiResponse.getMsg());
-
                             if (apiResponse.isStatus()) {
                                 if (apiResponse.getMsg().equals("Successfully login")) {
                                     tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
                                     BaseClass.showToast(getApplicationContext(), "Login Successfull");
-                                    if(apiResponse.getUser_data().getUser_type().equals("1")) {
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    } else { // 2
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    }
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 } else {
                                     BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                 }
                             } else {
                                 if (apiResponse.getMsg().equals("User name and password wrong")) {
-                                    dialog.show();
+
                                     BaseClass.showToast(getApplicationContext(), "Wrong User Name and Password");
                                 }else if (apiResponse.getMsg().equals("Passcode Required")) {
                                     dialog.show();
@@ -172,11 +167,9 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         String passcode = edt_passcode.getText().toString().trim();
 
         if(!passcode.isEmpty()) {
-
             Verification data = new Verification();
             data.setUser_id(user_id);
             data.setPasscode(passcode);
-
             new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data),
                     "varification", new GetData.MyCallback() {
                 @Override

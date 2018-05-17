@@ -43,8 +43,9 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.fragment.chef.ChefHome;
+
 import com.imcooking.fragment.foodie.MyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
