@@ -191,6 +191,9 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (!edtMsg.getText().toString().trim().isEmpty()){
+                             title= edtMsg.getText().toString().trim();
+                            }
                             addAddress(title,address);
                         }
                     });
@@ -214,8 +217,15 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         new GetData(mContext, AddAddressActivity.this).getResponse(s,
                 "address", new GetData.MyCallback() {
             @Override
-            public void onSuccess(String result) {
-
+            public void onSuccess(final String result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ApiResponse apiResponse = new ApiResponse();
+                        apiResponse = new Gson().fromJson(result, ApiResponse.class);
+                        Toast.makeText(mContext, ""+apiResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -241,6 +251,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 if (checked){
                     edtMsg.setVisibility(View.VISIBLE);
                     title= edtMsg.getText().toString().trim();
+
                 }
                     break;
         }
@@ -287,25 +298,11 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
            /* mMap.addMarker(new MarkerOptions().position(latLong)
                     .icon(BaseClass.bitmapDescriptorFromVectorR(getApplicationContext())));*/
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(latLong).zoom(21f).tilt(60).build();
-         /*   CircleOptions circleOptions = new CircleOptions()
-                    .center(latLong)
-                    .strokeWidth(2)
-                    .radius(100)
-                    .strokeColor(Color.BLUE)
-                    .fillColor(Color.parseColor("#500084d3"));*/
-            // Supported formats are: #RRGGBB #AARRGGBB
-            //   #AA is the alpha, or amount of transparency
-
-//            mMap.addCircle(circleOptions);
-
+                    .target(latLong).zoom(19f).build();
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-          /*  mLocationMarkerText.setText("Lat : " + location.getLatitude() + "," + "Long : " + location.getLongitude());
-            startIntentService(location);*/
-
         } else {
             Toast.makeText(getApplicationContext(),
                     "Sorry! unable to create maps", Toast.LENGTH_SHORT)

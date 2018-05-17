@@ -2,6 +2,7 @@ package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,14 +37,21 @@ public class Cart_activity extends AppCompatActivity implements View.OnClickList
 
 RecyclerView recyclerView;
    // ArrayList<AddCart> dishlist = new ArrayList<>();
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            /*424346*/
+            getWindow().setStatusBarColor(getResources().getColor(R.color.coloCart));
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+/*
             Window w = getWindow(); // in Activity's onCreate() for instance
+
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+*/
         }
         tinyDB = new TinyDB(getApplicationContext());
         String login_data = tinyDB.getString("login_data");
