@@ -61,7 +61,8 @@
             android:name=".activity.Sub.Foodie.Help"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.Sub.Foodie.Help1" />
-        <activity android:name=".activity.Sub.Foodie.EditProfile" />
+        <activity android:name=".activity.Sub.Foodie.EditProfile"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity android:name=".activity.Sub.Foodie.ChefProfile" />
 
         <meta-data

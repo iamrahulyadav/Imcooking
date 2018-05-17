@@ -68,7 +68,6 @@ RecyclerView recyclerView;
         txtTotalprice=findViewById(R.id.tv_total);
         imgDish=findViewById(R.id.img_dish);
         imgChefImg=findViewById(R.id.chef_profile_image);
-
         txtCartFollow.setOnClickListener(this);
        setdetails();
     }
@@ -163,4 +162,5 @@ RecyclerView recyclerView;
             }
         });
     }
+
 }
