@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -62,7 +61,8 @@
             android:name=".activity.Sub.Foodie.Help"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.Sub.Foodie.Help1" />
-        <activity android:name=".activity.Sub.Foodie.EditProfile" />
+        <activity android:name=".activity.Sub.Foodie.EditProfile"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity android:name=".activity.Sub.Foodie.ChefProfile" />
 
         <meta-data
@@ -75,8 +75,8 @@
         <activity android:name=".activity.Sub.Foodie.FilterHomeActivity" />
         <activity android:name=".activity.Sub.Foodie.OtherDishActivity" />
         <activity android:name=".activity.Sub.Foodie.Cart_activity" />
-        <activity android:name=".activity.Sub.Foodie.AddAddressActivity" />
-        <activity android:name=".activity.Sub.Chef.ChefEditDish"></activity>
+        <activity android:name=".activity.Sub.Foodie.AddAddressActivity"
+/>        <activity android:name=".activity.Sub.Foodie.SelectLocActivity"/>
     </application>
 
 </manifest>

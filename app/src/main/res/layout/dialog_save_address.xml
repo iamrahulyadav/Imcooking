@@ -83,6 +83,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:visibility="gone"
+            android:textColor="@color/colorBlack"
             android:imeOptions="actionDone"
             android:id="@+id/dialog_address_edtMsg"
             android:background="@drawable/edt_bg"/>
@@ -101,7 +102,6 @@
                 android:layout_marginRight="5dp"
                 android:padding="10dp"
                 android:gravity="center"
-                android:onClick="dialog_addressSave"
                 android:id="@+id/dialog_address_txtSave"
                 android:background="@drawable/button_bg" />
             <com.imcooking.customtext.CustomTextView
@@ -110,7 +110,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
                 android:text="Cancel"
-                android:onClick="dialog_address_cancel"
                 android:gravity="center"
                 android:layout_marginLeft="5dp"
                 android:padding="10dp"
@@ -126,7 +125,7 @@
         android:textColor="@color/colorWhite"
         android:textSize="25dp"
         android:gravity="center"
-        android:onClick="dialog_address_cancel"
+        android:id="@+id/cancel_icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/shape_circle_theme"/>

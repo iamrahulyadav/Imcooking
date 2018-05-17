@@ -34,6 +34,7 @@ import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.Cart_activity;
 import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
+import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
@@ -119,6 +120,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
         imgFilter.setOnClickListener(this);
         arrow_show_detail.setOnClickListener(this);
+        txtCityName.setOnClickListener(this);
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -126,16 +128,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if (spinnerData!=null){
             spinnerData.clear();
         }
-        spinnerData.add("10 km ");
-        spinnerData.add("20 km ");
-        spinnerData.add("30 km ");
-        spinnerData.add("40 km ");
+        spinnerData.add("10 miles ");
+        spinnerData.add("20 miles ");
+        spinnerData.add("30 miles ");
+        spinnerData.add("50 miles ");
         tinyDB = new TinyDB(getContext());
         String s = tinyDB.getString("login_data");
         userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id()+"";
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
-
     //    cuisinRecycler.setAdapter(cuisionAdatper);
         layout.setVisibility(View.GONE);
 
@@ -179,7 +180,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                         break;
                     case 3:
                         min_miles = "0";
-                        max_miles = "40";
+                        max_miles = "50";
                         getHomeData();
                         break;
                         default:
@@ -205,13 +206,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                txtCityName.setText(MainActivity.stringBuffer.toString());
-            }
-        },3000);
+        if (txtCityName.getText().toString().isEmpty()){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    txtCityName.setText(MainActivity.stringBuffer.toString());
+                }
+            },3000);
+        }
 
     }
 
@@ -286,6 +288,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     List<HomeData.ChefDishBean>favorite_1 = new ArrayList<>();
     List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
     List<HomeData.FavouriteDataBean>favorite_2 = new ArrayList<>();
+
     private void setMyData(){
         if (chefDishBeans!=null){
             chefDishBeans.clear();
@@ -314,6 +317,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
+
+       /* if (cuisineData.getCuisine_data().get(position).getCuisine_name().equals(chefDishBeans.get(position).getDish_cuisine())){
+            List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
+            chefDishBeans1.addAll(chefDishBeans);
+            if (chefDishBeans1!=null&&chefDishBeans1.size()>0){
+                setMyViewPager(chefDishBeans1);
+            } else {
+                Toast.makeText(getContext(), "Not record found", Toast.LENGTH_SHORT).show();
+            }
+        }*/
     }
 
     @Override
@@ -364,6 +377,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
             startActivity(new Intent(getContext(), Cart_activity.class).putExtra("foodie_id",
                     userDataBean.getUser_id()));
            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+        } else if (v.getId()==R.id.fragment_home_txtcity){
+            startActivityForResult(new Intent(getActivity(), SelectLocActivity.class),2);
         }
     }
 
@@ -377,6 +392,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 //                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
+            } else if (requestCode==2){
+                latitude = data.getDoubleExtra("latitude",0)+"";
+                longitude = data.getDoubleExtra("longitude",0)+"";
+                txtCityName.setText(data.getStringExtra("name"));
+                Log.d(TAG, "onActivityResult: "+latitude+"\n"+longitude+"\n");
             }
         }
     }
@@ -393,20 +413,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
 
         setMyViewPager(favorite_1);
-
-
-        favorite_2.clear();
+       /* favorite_2.clear();
         for(int i=0; i<favouriteDataBeans.size(); i++){
             HomeData.FavouriteDataBean list = favouriteDataBeans.get(i);
 
-            if(list.getRating().equals((rating.intValue() + "")) /*&& list.getDish_price().equals(price + "")*/){
+            if(list.getRating().equals((rating.intValue() + "")) *//*&& list.getDish_price().equals(price + "")*//*){
                 favorite_2.add(list);
             }
         }
 
-        setBottomViewPager(favorite_2);
+        setBottomViewPager(favorite_2);*/
 
 
     }
+
+
 
 }
