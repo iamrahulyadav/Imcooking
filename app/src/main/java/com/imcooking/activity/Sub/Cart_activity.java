@@ -33,7 +33,7 @@ RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_cart_3);
 
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
@@ -80,7 +80,6 @@ RecyclerView recyclerView;
                                          // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
                                            txt_chef_follow.setText(apiResponse.getAdd_cart().getFollow()+"Followers");
                                           // txtDishPrice.setText(apiResponse.getAdd_cart().get);
-
                                             CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish());
                                             recyclerView.setAdapter(cartAdatper);

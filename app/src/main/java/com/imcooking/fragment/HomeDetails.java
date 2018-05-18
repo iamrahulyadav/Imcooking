@@ -302,14 +302,21 @@ Context mc;
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        dialog.show();
+
 
                                         ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
-                                        Log.d("ShowResponse", apiResponse.isStatus() + "");
+                                        if (apiResponse.getMsg().equals("Already add this dish")){
+                                            Toast.makeText(getContext(), "This dish is already added ", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else {
+
+                                            dialog.show();
+                                        }
+                                   /*     Log.d("ShowResponse", apiResponse.isStatus() + "");
                                         Log.d("ShowResponse", apiResponse.getMsg());
 //                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
                                         //tv.setText(apiResponse.getMsg());
-
+*/
                                     }
                                 });
                             }
