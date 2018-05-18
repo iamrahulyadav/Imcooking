@@ -77,10 +77,14 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
 //        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
-        Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
-                .get(position).getDish_image().get(0))
+
+        if (chefDishBeans.get(position).getDish_image()!=null&&chefDishBeans.get(position).getDish_image().size()>0){
+            Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
+                    .get(position).getDish_image().get(0))
 //                                .placeholder( R.drawable.progress_animation )
-                .into(iv_dish_image);
+                    .into(iv_dish_image);
+        }
+
         tv_dish_name.setText(chefDishBeans
                 .get(position).getDish_name());
         tv_chef_name.setText(chefDishBeans
@@ -92,18 +96,23 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
                 .get(position).getLike()));
         tv_chef_followers.setText(chefDishBeans.get(position).getFollow()+"");
 //        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles()+" miles");
-        if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("No")){
-            tv_dish_delivery.setText("Pickup");
-            imgPickUp.setVisibility(View.VISIBLE);
-        } else if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("YES")
-                && chefDishBeans.get(position).getDish_pickup().equalsIgnoreCase("YES")){
-            tv_dish_delivery.setText("Home Delivery / Pickup");
-            imgDeliviery.setVisibility(View.VISIBLE);
-            imgPickUp.setVisibility(View.VISIBLE);
-        } else {
-            imgDeliviery.setVisibility(View.VISIBLE);
-            tv_dish_delivery.setText("Home Delivery");
+
+        if (chefDishBeans.get(position).getDish_homedeliver()!=null){
+
+            if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("No")){
+                tv_dish_delivery.setText("Pickup");
+                imgPickUp.setVisibility(View.VISIBLE);
+            } else if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("YES")
+                    && chefDishBeans.get(position).getDish_pickup().equalsIgnoreCase("YES")){
+                tv_dish_delivery.setText("Home Delivery / Pickup");
+                imgDeliviery.setVisibility(View.VISIBLE);
+                imgPickUp.setVisibility(View.VISIBLE);
+            } else {
+                imgDeliviery.setVisibility(View.VISIBLE);
+                tv_dish_delivery.setText("Home Delivery");
+            }
         }
+
         tv_dish_price.setText("$" + chefDishBeans
                 .get(position).getDish_price());
 
@@ -120,8 +129,9 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
 
             }
         });
-        ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()));
-
+        if (chefDishBeans.get(position).getRating()!=null){
+            ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()));
+        }
         container.addView(view);
         return view;
     }

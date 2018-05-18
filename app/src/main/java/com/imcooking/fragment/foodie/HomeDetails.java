@@ -85,7 +85,7 @@ Context mc;
         createMyDialog();
     }
 
-    private ImageView iv_share, imgTop,imgPickUp, imgDeliviery;
+    private ImageView iv_share, imgTop,imgPickUp, imgDeliviery, imgChef;
     TextView txtDishName, txtChefName,txtAddToCart, txtLike,txtOtherDish, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
     private LinearLayout chef_profile, layout;
     ViewPager pager;
@@ -94,6 +94,7 @@ Context mc;
 
     private void init(){
         iv_share = getView().findViewById(R.id.home_details_share);
+        imgChef = getView().findViewById(R.id.home_details_user_icon);
         imgTop = getView().findViewById(R.id.fragment_home_details_img_top);
         txtOtherDish = getView().findViewById(R.id.home_details_txtOtherDish);
         txtAddToCart = getView().findViewById(R.id.tv_add_to_cart);
@@ -210,6 +211,7 @@ Context mc;
                             txtDeliverytype.setText("Home Delivery");
                         }
                         txtLike.setText(dishDetails.getDish_details().getLike()+"");
+
 
                         txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
                         Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails

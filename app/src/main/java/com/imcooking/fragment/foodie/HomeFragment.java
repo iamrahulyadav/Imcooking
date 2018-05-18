@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Api;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.ApiRequest.Home;
@@ -44,7 +45,12 @@ import com.imcooking.utils.CustomViewPager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.imcooking.activity.home.MainActivity.stringBuffer;
@@ -60,6 +66,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private TinyDB tinyDB;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private Gson gson = new Gson();
+    private LinearLayout layout_no_record_found;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -105,6 +112,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
 
     private void init(){
+        layout_no_record_found = getView().findViewById(R.id.home_no_record_image);
 
         sp = getView().findViewById(R.id.home_spiner);
         layout = getView().findViewById(R.id.home_layout);
@@ -151,7 +159,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                     txtCityName.setText(stringBuffer.toString());
                     latitudeq = MainActivity.latitude+"";
                     longitudeq = MainActivity.longitude+"";
-                    getHomeData();
 
                 }
             },3000);
@@ -213,10 +220,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     public void onResume() {
         super.onResume();
 
+        layout_no_record_found.setVisibility(View.GONE);
+
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
-
+        getHomeData();
 
     }
 
@@ -251,14 +260,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     }
 
     private void getHomeData(){
-        Home data = new Home();
+      /*  Home data = new Home();
         data.setLatitude(latitudeq);
         data.setLongitude(longitudeq);
         data.setMin_miles(min_miles);
         data.setMax_miles(max_miles);
         data.setCountry("");
-        data.setFoodie_id(foodie_id);
-
+        data.setFoodie_id(foodie_id);*/
+        Home data = new Home();
+        data.setLatitude("51.5198117");
+        data.setLongitude("-0.0939186");
+        data.setMin_miles(min_miles);
+        data.setMax_miles(max_miles);
+        data.setCountry("");
+        data.setFoodie_id("4");
         Log.d("MyRequest", new Gson().toJson(data));
         new GetData(getContext(), getActivity()).getResponse(new Gson().toJson(data), "home", new GetData.MyCallback() {
             @Override
@@ -277,7 +292,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 //                            adapter.notifyDataSetChanged();
 //                            homeBottomPagerAdapter.notifyDataSetChanged();
                         } else{
-                            BaseClass.showToast(getContext(), "Something Went Wrong");
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (jsonObject.getString("msg").equals("Not record found")){
+                                    BaseClass.showToast(getContext(), "No record found");
+                                    layout_no_record_found.setVisibility(View.VISIBLE);
+
+                                    JSONArray jar = jsonObject.getJSONArray("favourite_data");
+                                    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
+
+                                    list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
+
+
+
+
+
+/*
+                                    homeData.setFavourite_data((List<HomeData.FavouriteDataBean>) jar);
+
+                                    if (favouriteDataBeans!=null){
+                                        favouriteDataBeans.clear();
+                                    }
+                                    if (homeData.getFavourite_data()!=null){
+                                        favouriteDataBeans.addAll(homeData.getFavourite_data());
+                                    }
+*/
+                                    setBottomViewPager(list);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
