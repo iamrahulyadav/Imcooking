@@ -268,7 +268,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         data.setCountry("");
         data.setFoodie_id(foodie_id);*/
         Home data = new Home();
-        data.setLatitude("51.5198117");
+        data.setLatitude("-51.5198117");
         data.setLongitude("-0.0939186");
         data.setMin_miles(min_miles);
         data.setMax_miles(max_miles);
@@ -297,12 +297,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                                 if (jsonObject.getString("msg").equals("Not record found")){
                                     BaseClass.showToast(getContext(), "No record found");
                                     layout_no_record_found.setVisibility(View.VISIBLE);
+                                    layout.setVisibility(View.VISIBLE);
 
                                     JSONArray jar = jsonObject.getJSONArray("favourite_data");
+                                    Log.d("VK", jar.toString());
+
+
+
+
+
+
+
+
+
+
+
+
                                     List<HomeData.FavouriteDataBean> list = new ArrayList<>();
-
+//
                                     list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
-
+//
 
 
 
