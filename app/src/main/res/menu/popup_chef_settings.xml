@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="Edit Profile"
+        app:showAsAction="always" />
+    <item
+        android:title="Change Password"
+        app:showAsAction="always" />
+    <item
+        android:title="Deactivate"
+        app:showAsAction="always" />
+    <item
+        android:title="Logout"
+        app:showAsAction="always" />
+</menu>
