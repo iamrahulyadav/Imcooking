@@ -74,7 +74,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         myHolder=holder;
-        final int[] count = {0};
+        final int[] count = {1};
         final String[] cnt = new String[1];
         final  String[] cnt2 = new String[1];
         final int[] price = {(dishDetails.get(position).getDish_price())};
@@ -106,12 +106,14 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
                 //cartAdatperslist.add(cnt2);
                holder.txt_DishPrice.setText("$"+cnt2[0]);
 
+
             }
         });
 
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 dishDetails.get(position).getDish_image()).into(holder.imgDish);
+        holder.txt_DishPrice.setText(String.valueOf(dishDetails.get(position).getDish_price()));
         //holder.txtTotal.setText(String.valueOf(getprice()));
 
 
