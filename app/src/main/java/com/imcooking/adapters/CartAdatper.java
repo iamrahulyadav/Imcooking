@@ -36,6 +36,10 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         this.dishDetails = dishDetails;
     }
 
+    public CartAdatper() {
+        getItemCount();
+
+    }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -116,8 +120,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
                 dishDetails.get(position).getDish_image()).into(holder.imgDish);
         holder.txt_DishPrice.setText("$"+String.valueOf(dishDetails.get(position).getDish_price()));
         //holder.txtTotal.setText(String.valueOf(getprice()));
-
-
 
     }
 
