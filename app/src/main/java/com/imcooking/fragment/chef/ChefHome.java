@@ -169,9 +169,13 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
-        ((MainActivity) getActivity()).setBottomColor();
-        ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
-        ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+        if (getActivity().getClass().getName().equals(MainActivity.class.getName())) {
+            ((MainActivity) getActivity()).setBottomColor();
+            ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
+            ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+        } else{
+
+        }
     }
 
     @Override

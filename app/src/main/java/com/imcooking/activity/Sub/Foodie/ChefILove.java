@@ -48,20 +48,25 @@ public class ChefILove extends AppBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        getChefLove();
-        setChefLove();
+        getChefLove(foodie_id);
+//        setChefLove();
     }
     ChefIloveData chefIloveData = new ChefIloveData();
 
-    private void getChefLove(){
-        String request = "{\"foodie_id\":\"21\"}";
+    private void getChefLove(String foodie_id){
+        String request = "{\"foodie_id\":"+foodie_id+"}";
         new GetData(getApplicationContext(), ChefILove.this).getResponse(request, "cheflove", new GetData.MyCallback() {
             @Override
-            public void onSuccess(String result) {
-                chefIloveData = gson.fromJson(result, ChefIloveData.class);
-                chefloveBeanList.addAll(chefIloveData.getCheflove());
-                Log.d("TAG", "onSuccess: "+result);
-                setChefLove();
+            public void onSuccess(final String result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        chefIloveData = gson.fromJson(result, ChefIloveData.class);
+                        chefloveBeanList.addAll(chefIloveData.getCheflove());
+                        Log.d("TAG", "onSuccess: "+result);
+                        setChefLove();
+                    }
+                });
             }
         }
         );

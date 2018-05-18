@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
+import com.imcooking.activity.Sub.Foodie.ChefProfile;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.adapters.AdapterChefHomeViewPager;
 import com.imcooking.fragment.chef.ChefHome;
@@ -41,7 +43,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
     private ViewPager viewPager_1, viewPager_2;
     private TextView tv_add_dish;
-
+    List<ChefProfileData.ChefDishBean> chef_dish_list=new ArrayList<>();
     private void init(){
 
         tv_add_dish = getView().findViewById(R.id.chef_dish_list_add_dish);
@@ -52,7 +54,12 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         viewPager_1.setPageMargin(10);
         viewPager_2.setPageMargin(10);
 
-        List<ChefProfileData.ChefDishBean> chef_dish_list = ChefHome.chefProfileData.getChef_dish();
+//        if (getActivity().getClass().getName().equals(MainActivity.class.getName())){
+            chef_dish_list = ChefHome.chefProfileData.getChef_dish();
+
+//        } else {
+//            chef_dish_list = ChefProfile.chefProfileData.getChef_dish();
+//        }
         List<ChefProfileData.ChefDishBean> chef_dish_list_current = new ArrayList<>();
         List<ChefProfileData.ChefDishBean> chef_dish_list_old = new ArrayList<>();
 

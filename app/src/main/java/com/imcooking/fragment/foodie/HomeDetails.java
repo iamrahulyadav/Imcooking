@@ -254,7 +254,7 @@ Context mc;
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, "Share Using"));
         } else if(id == R.id.home_details_chef_profile) {
-            startActivity(new Intent(getContext(), ChefProfile.class));
+            startActivity(new Intent(getContext(), ChefProfile.class).putExtra("chef_id", chef_id));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.home_details_txtOtherDish){
