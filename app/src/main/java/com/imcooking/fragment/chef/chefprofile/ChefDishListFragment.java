@@ -70,8 +70,10 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
                 chef_dish_list_old.add(chef_dish_list.get(i));
             } else{}
         }
-        AdapterChefDishList adapterChefDishListCurrent = new AdapterChefDishList(getParentFragment().getFragmentManager(), getContext(), chef_dish_list_current);
-        AdapterChefDishList adapterChefDishListOld = new AdapterChefDishList(getParentFragment().getFragmentManager(), getContext(), chef_dish_list_old);
+        AdapterChefDishList adapterChefDishListCurrent = new AdapterChefDishList(getParentFragment().getFragmentManager(),
+                getContext(), getActivity(), chef_dish_list_current);
+        AdapterChefDishList adapterChefDishListOld = new AdapterChefDishList(getParentFragment().getFragmentManager(),
+                getContext(), getActivity(), chef_dish_list_old);
         viewPager_1.setAdapter(adapterChefDishListCurrent);
         viewPager_2.setAdapter(adapterChefDishListOld);
     }
@@ -83,8 +85,6 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         if(id == R.id.chef_dish_list_add_dish){
             startActivity(new Intent(getContext(), ChefEditDish.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        } else{
-
-        }
+        } else { }
     }
 }

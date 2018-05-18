@@ -21,7 +21,10 @@ import com.imcooking.Model.ApiRequest.DishLikeRequest;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.ChefProfile;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.fragment.chef.ChefDishDetail;
+import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.HomeDetails;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -35,11 +38,13 @@ public class AdapterChefDishList extends PagerAdapter{
     private LayoutInflater mLayoutInflater;
     private FragmentManager manager;
     private Context context;
+    private Activity activity;
     private List<ChefProfileData.ChefDishBean> chef_dish_list = new ArrayList<>();
 
-    public AdapterChefDishList(FragmentManager manager, Context context, List<ChefProfileData.ChefDishBean> chef_dish_list) {
+    public AdapterChefDishList(FragmentManager manager, Context context, Activity activity, List<ChefProfileData.ChefDishBean> chef_dish_list) {
         this.manager = manager;
         this.context = context;
+        this.activity = activity;
         this.chef_dish_list = chef_dish_list;
         mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -110,7 +115,29 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
                 bundle.putString("cuisine", chef_dish_list.get(position).getDish_cuisine());
                 fragment.setArguments(bundle);
-                BaseClass.callFragment(fragment, fragment.getClass().getName(), manager);
+
+                if (manager.findFragmentByTag(new ChefDishDetail().getTag()) == null) {
+                    //fragment not in back stack, create it.
+                    if(activity.getClass().getName().equals(MainActivity.class.getName())) {
+                        manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack(fragment.getClass().getName())
+                                .commit();
+                    } else if(activity.getClass().getName().equals(ChefProfile.class.getName())){
+                        manager.beginTransaction().replace(R.id.frame_chef_profile, fragment).addToBackStack(fragment.getClass()
+                                .getName()).commit();
+                    } else {}
+
+//                manager.executePendingTransactions();
+                } else {
+                    if(activity.getClass().getName().equals(MainActivity.class.getName())) {
+                        manager.beginTransaction().replace(R.id.frame, fragment).commit();
+                    } else if(activity.getClass().getName().equals(ChefProfile.class.getName())){
+                        manager.beginTransaction().replace(R.id.frame_chef_profile, fragment).commit();
+                    } else {}
+                    //              manager.executePendingTransactions();
+                }
+
+//                BaseClass.callFragment(fragment, fragment.getClass().getName(), manager);
+
             }
         });
 

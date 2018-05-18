@@ -41,8 +41,7 @@ public class ChefProfile extends AppBaseActivity {
 //        find id
 //        init();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_chef_profile, new ChefHome())
-                .addToBackStack(new ChefHome().getClass().getName()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_chef_profile, new ChefHome()).commit();
 //        BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
     }
 

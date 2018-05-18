@@ -149,10 +149,12 @@ Context mc;
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
+
     String chef_id;
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
     ArrayList<String>nameList = new ArrayList<>();
+
     private void getDetails(String id){
         layout.setVisibility(View.GONE);
         if (nameList!=null){
