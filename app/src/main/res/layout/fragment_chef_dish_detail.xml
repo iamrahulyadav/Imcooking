@@ -362,12 +362,21 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/view_2"/>
+<!--
+
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chef_dish_details_description"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"/>
+-->
+
         <com.imcooking.customtext.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/chef_dish_details_description"
-            android:text="Description About Chef"
-            android:textSize="10dp"
+            android:text="Description About Dish"
             android:textColor="@color/colorBlack"
             android:padding="10dp"/>
 
