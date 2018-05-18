@@ -365,8 +365,6 @@
                         android:textColor="@color/colorBlack"/>
             -->
 
-
-
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -381,13 +379,6 @@
             android:padding="10dp"
             android:text="sdewefwefwefwewfeef"
             android:textColor="@color/colorBlack"/>
-
-        <com.imcooking.customtext.CustomTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description About Dish"
-            android:textColor="@color/text_color_4"
-            android:padding="10dp"/>
 
         <TextView
             android:layout_width="match_parent"

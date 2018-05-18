@@ -1,12 +1,15 @@
 package com.imcooking.fragment.foodie;
 
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -26,6 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Api;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.ApiRequest.Home;
@@ -33,7 +40,7 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.Foodie.Cart_activity;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
 import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
 import com.imcooking.activity.home.MainActivity;
@@ -110,8 +117,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     CuisionAdatper cuisionAdatper;
     private Spinner sp;
 
+    public static TextView cart_icon;
 
     private void init(){
+
+        cart_icon = getView().findViewById(R.id.home_cart_text_count);
         layout_no_record_found = getView().findViewById(R.id.home_no_record_image);
 
         sp = getView().findViewById(R.id.home_spiner);
@@ -138,6 +148,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if (spinnerData!=null){
             spinnerData.clear();
         }
+        try {
+            MapsInitializer.initialize(this.getContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         spinnerData.add("10 miles ");
         spinnerData.add("20 miles ");
         spinnerData.add("30 miles ");
@@ -165,6 +182,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
 
     }
+
 
     String s;
     String selectedmiles;
@@ -229,8 +247,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     }
 
-    String latitudeq;
-    String longitudeq ;
+    String latitudeq="51.5198117";
+    String longitudeq="-0.0939186" ;
     String min_miles = "0";
     String max_miles = "10";
     public static String foodie_id = "4";
@@ -268,8 +286,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         data.setCountry("");
         data.setFoodie_id(foodie_id);*/
         Home data = new Home();
-        data.setLatitude("-51.5198117");
-        data.setLongitude("-0.0939186");
+        data.setLatitude(latitudeq);
+        data.setLongitude(longitudeq);
         data.setMin_miles(min_miles);
         data.setMax_miles(max_miles);
         data.setCountry("");
@@ -298,29 +316,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                                     BaseClass.showToast(getContext(), "No record found");
                                     layout_no_record_found.setVisibility(View.VISIBLE);
                                     layout.setVisibility(View.VISIBLE);
+                                    viewPager.setVisibility(View.GONE);
 
                                     JSONArray jar = jsonObject.getJSONArray("favourite_data");
                                     Log.d("VK", jar.toString());
-
-
-
-
-
-
-
-
-
-
-
 
                                     List<HomeData.FavouriteDataBean> list = new ArrayList<>();
 //
                                     list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
 //
-
-
-
-
 /*
                                     homeData.setFavourite_data((List<HomeData.FavouriteDataBean>) jar);
 
@@ -428,7 +432,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
         else if (v.getId() == R.id.fragment_home_img_cart)
         {
-            startActivity(new Intent(getContext(), Cart_activity.class).putExtra("foodie_id",
+            startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
                     userDataBean.getUser_id()));
            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (v.getId()==R.id.fragment_home_txtcity){

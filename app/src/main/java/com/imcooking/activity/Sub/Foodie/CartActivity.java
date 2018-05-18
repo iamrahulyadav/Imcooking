@@ -1,29 +1,23 @@
-package com.imcooking.activity.Sub;
+package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
-import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.Model.api.response.ApiResponse;
-import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.adapters.CartAdatper;
-import com.imcooking.fragment.HomeFragment;
+import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.webservices.GetData;
 
-import java.util.ArrayList;
-
-public class Cart_activity extends AppCompatActivity implements View.OnClickListener {
+public class CartActivity extends AppCompatActivity implements View.OnClickListener {
 TextView txtPlus,txtMinus,txt_DishCount,txtDishPrice,txtTax,txtTotalprice,txtChef_Name,txt_chef_follow;
 ImageView imgDish,imgChefImg;
 static int count=0;
@@ -63,7 +57,7 @@ RecyclerView recyclerView;
     private void setdetails() {
         AddToCart addToCart=new AddToCart();
         addToCart.setFoodie_id(foodie_id);
-        new GetData(getApplicationContext(), Cart_activity.this)
+        new GetData(getApplicationContext(), CartActivity.this)
                 .getResponse(new Gson().toJson(addToCart), "cart",
                         new GetData.MyCallback() {
                             @Override
@@ -80,7 +74,7 @@ RecyclerView recyclerView;
                                            txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
                                          // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
                                            txt_chef_follow.setText(apiResponse.getAdd_cart().getFollow()+"Followers");
-                                            HomeFragment.tv_cart_item.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
+                                            HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
                                           // txtDishPrice.setText(apiResponse.getAdd_cart().get);
                                             CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish());
