@@ -107,7 +107,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private void setupViewPager(ViewPager viewPager) {
         AdapterChefHomeViewPager adapter = new AdapterChefHomeViewPager(getChildFragmentManager());
         adapter.addFragment(new AboutChefFragment(), "ABOUT CHEF");
-        adapter.addFragment(new ChefDishListFragment(), "DISH");
+        adapter.addFragment(new ChefDishListFragment(), "DISHES");
         adapter.addFragment(new RequestDishFragment(), "DISH REQUESTS");
         viewPager.setAdapter(adapter);
     }
@@ -153,11 +153,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                 }
             }
         });
-    }
-
-    private void setMyData(){
-
-
     }
 
     @Override

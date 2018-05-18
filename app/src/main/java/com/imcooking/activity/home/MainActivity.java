@@ -216,7 +216,6 @@ public class MainActivity extends AppBaseActivity
             } else{
                 BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
             }
-
         } else if (id ==R.id.bottom_profile_layout){
             tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
             iv_profile.setImageResource(R.drawable.ic_user_name_1);
