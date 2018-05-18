@@ -10,8 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.imcooking.Model.ApiRequest.Home;
+import com.imcooking.Model.api.response.AddDelRequest;
 import com.imcooking.Model.api.response.AddressListData;
 import com.imcooking.R;
 
@@ -19,13 +22,14 @@ import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.AddAddressActivity;
 import com.imcooking.adapters.AddListAdatper;
 import com.imcooking.adapters.ChefILoveAdatper;
+import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.webservices.GetData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageAddress extends AppBaseActivity {
+public class ManageAddress extends AppBaseActivity implements AddListAdatper.AddInterfaceMethod{
    private TextView txtAddress;
    private List<AddressListData.AddressBean>addressBeanList = new ArrayList<>();
    private RecyclerView savedAddress;
@@ -68,7 +72,8 @@ public class ManageAddress extends AppBaseActivity {
         if (addressBeanList!=null){
             addressBeanList.clear();
         }
-        new GetData(getApplicationContext(), ManageAddress.this).getResponse("{\"foodie_id\": \"4\"}", "addresslist", new GetData.MyCallback() {
+        new GetData(getApplicationContext(), ManageAddress.this).getResponse("{\"foodie_id\":" +
+                HomeFragment.foodie_id + "}", "addresslist", new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
               runOnUiThread(new Runnable() {
@@ -88,10 +93,49 @@ public class ManageAddress extends AppBaseActivity {
             }
         });
     }
-
+    private AddListAdatper chefILoveAdatper;
     private void setAddList(){
-        AddListAdatper chefILoveAdatper = new AddListAdatper(getApplicationContext(), addressBeanList);
+        chefILoveAdatper = new AddListAdatper(getApplicationContext(), addressBeanList);
         savedAddress.setAdapter(chefILoveAdatper);
+        chefILoveAdatper.AddInterfaceMethod(this);
 
     }
+
+
+    @Override
+    public void AddressInterfaceMethod(View view, int position, String tag) {
+        if (tag.equals("edit")){
+            Toast.makeText(this, ""+position, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ManageAddress.this, AddAddressActivity.class)
+                    .putExtra("address_id",addressBeanList.get(position).getAddress_id()+"")
+            .putExtra("name", addressBeanList.get(position).getAddress_address())
+                    .putExtra("edit",true));
+        } else if (tag.equals("delete")){
+            deleteAdd(HomeFragment.foodie_id+"", addressBeanList.get(position).getAddress_id()+"", position);
+        }
+    }
+
+    private void deleteAdd(String foodieid, String address_id, final int pos){
+        AddDelRequest addDelRequest = new AddDelRequest();
+        addDelRequest.setAddress_id(address_id);
+        addDelRequest.setFoodie_id(foodieid);
+        String request = new Gson().toJson(addDelRequest);
+        new GetData(getApplicationContext(),ManageAddress.this).getResponse(request, "addressdelete", new GetData.MyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d("TAG", "data "+result);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addressBeanList.remove(pos);
+                        chefILoveAdatper.notifyItemRemoved(pos);
+                        savedAddress.removeViewAt(pos);
+                        chefILoveAdatper.notifyDataSetChanged();
+                    //    getAddress();
+                    }
+                });
+            }
+        });
+    }
+
 }

@@ -2,15 +2,21 @@ package com.imcooking.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.imcooking.Model.api.response.AddDelRequest;
 import com.imcooking.Model.api.response.AddressListData;
 import com.imcooking.Model.api.response.ChefIloveData;
 import com.imcooking.R;
+import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.webservices.GetData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +25,9 @@ import java.util.List;
  * Created by Rakhi.
  * Contact Number : +91 9958187463
  */
+
 public class AddListAdatper extends RecyclerView.Adapter<AddListAdatper.MyViewHolder> {
+    AddInterfaceMethod addInterfaceMethod;
     private Context context;
     private List<AddressListData.AddressBean>addressBeanList = new ArrayList<>();
 
@@ -28,20 +36,42 @@ public class AddListAdatper extends RecyclerView.Adapter<AddListAdatper.MyViewHo
         this.addressBeanList = addressBeanList;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtChefName, tv_distance;
-        public ImageView imgDish;
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public TextView title, address, txtEdit, txtDelete;
 
         public MyViewHolder(View view) {
             super(view);
 
-//            txtChefName = view.findViewById(R.id.chef_love_txtName);
-//            imgDish=view.findViewById(R.id.chef_love_img_profile);
-//            tv_distance = view.findViewById(R.id.chef_i_love_txtDistance);
+            title = view.findViewById(R.id.manage_address_title);
+            address = view.findViewById(R.id.manage_address_address);
+            txtEdit = view.findViewById(R.id.manage_address_txtEdit);
+            txtDelete = view.findViewById(R.id.manage_address_txtDelete);
+            txtEdit.setOnClickListener(this);
+            txtDelete.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.manage_address_txtEdit:
+                    if (addInterfaceMethod != null) {
+                        addInterfaceMethod.AddressInterfaceMethod(view, getPosition(), "edit");
+                    }
+                    break;
+                case R.id.manage_address_txtDelete:
+                    if (addInterfaceMethod != null) {
+                        addInterfaceMethod.AddressInterfaceMethod(view, getPosition(), "delete");
+                    }
+                    break;
+            }
         }
     }
-
+    public interface AddInterfaceMethod {
+        void AddressInterfaceMethod(View view, int position, String tag);
+    }
+    public void AddInterfaceMethod(AddListAdatper.AddInterfaceMethod quoteInterface) {
+        this.addInterfaceMethod = quoteInterface;
+    }
     int row_index=-1;
 
     @Override
@@ -55,16 +85,28 @@ public class AddListAdatper extends RecyclerView.Adapter<AddListAdatper.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-       /* holder.txtChefName.setText(dishDetails.get(position).getChef_name());
-        Picasso.with(context).load(GetData.IMG_BASE_URL + dishDetails.get(position).getChef_image()).into(holder.imgDish);
+        holder.title.setText(addressBeanList.get(position).getAddress_title());
+        holder.address.setText(addressBeanList.get(position).getAddress_address());
 
-        holder.tv_distance.setTag(position);
+      /*  holder.txtDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
+                deleteAdd(HomeFragment.foodie_id+"", addressBeanList.get(position).getAddress_id()+"");
+            }
+        });*/
 
-*/
+        /*holder.txtEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
+            }
+        });*/
     }
 
     @Override
     public int getItemCount() {
         return addressBeanList.size();
     }
+
 }

@@ -12,6 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/manage_address_title"
             android:drawableLeft="@drawable/ic_home"
             android:drawablePadding="13dp"
             android:text="Home"
@@ -22,6 +23,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/manage_address_address"
             android:text="B-91, Ground Floor, Near Noida Authority, Sector-6, Noida, Uttar Pradesh 201301"
             android:textColor="@color/colorBlack"
             android:textSize="13sp"
@@ -42,6 +44,7 @@
                 android:text="Edit"
                 android:textColor="@color/colorWhite"
                 android:textSize="13sp"
+                android:id="@+id/manage_address_txtEdit"
                 android:background="@drawable/shape_background_theme"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
@@ -52,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete"
+                android:id="@+id/manage_address_txtDelete"
                 android:textColor="@color/colorWhite"
                 android:textSize="13sp"
                 android:background="@drawable/shape_background_theme"

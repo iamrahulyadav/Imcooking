@@ -324,15 +324,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
 
-       /* if (cuisineData.getCuisine_data().get(position).getCuisine_name().equals(chefDishBeans.get(position).getDish_cuisine())){
-            List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
-            chefDishBeans1.addAll(chefDishBeans);
-            if (chefDishBeans1!=null&&chefDishBeans1.size()>0){
-                setMyViewPager(chefDishBeans1);
-            } else {
-                Toast.makeText(getContext(), "Not record found", Toast.LENGTH_SHORT).show();
-            }
-        }*/
+        
     }
 
     @Override

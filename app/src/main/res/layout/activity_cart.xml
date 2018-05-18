@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,9 +7,16 @@
     android:background="@color/colorWhite"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.imcooking.activity.Sub.EditProfile">
+    tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/activity_cart_progress_bar"/>
    <ScrollView
+       android:id="@+id/activity_cart_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -32,7 +39,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/details_home"
+                        android:src="@drawable/cart_bg"
                         android:scaleType="fitXY"
                         android:alpha="0.8"/>
 
@@ -51,6 +58,7 @@
                             android:padding="10dp">
 
                             <ImageView
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
@@ -89,51 +97,15 @@
                                 app:civ_border_color="@color/colorBlue"
                                 app:civ_border_width="3dp" />
 
-                            <ImageView
-                                android:layout_width="10dp"
-                                android:layout_height="120dp"
-                                android:src="@drawable/details_profile"
-                                android:visibility="gone" />
 
-
-                            <LinearLayout
+                            <RatingBar
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:id="@+id/actvity_cart_rating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="5dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                            </LinearLayout>
+                                android:progressTint="@color/colorYellow"
+                                android:visibility="visible"
+                                android:layout_gravity="center"/>
 
                             <TextView
                                 android:id="@+id/chef_name"
@@ -154,15 +126,18 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/tv_follow"
+                                android:layout_margin="3dp"
+                                android:background="@drawable/edt_bg"
+                                android:id="@+id/activity_cart_tv_follow"
                                 android:layout_width="wrap_content"
-                                android:layout_height="25dp"
-                                android:layout_marginTop="0dp"
-                                android:drawableLeft="@drawable/ic_drop_up_aarrow"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="2dp"
                                 android:gravity="center"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
-                                android:text="follow"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:text="Follow"
+                                android:drawablePadding="8dp"
+                                android:drawableLeft="@drawable/ic_plus"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -267,4 +242,4 @@
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>
