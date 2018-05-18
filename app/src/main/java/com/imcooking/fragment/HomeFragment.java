@@ -35,6 +35,7 @@ import com.imcooking.R;
 import com.imcooking.activity.Sub.Cart_activity;
 import com.imcooking.activity.Sub.FilterHomeActivity;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.adapters.CartAdatper;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
 import com.imcooking.adapters.HomeDishPagerAdapter;
@@ -50,7 +51,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment implements View.OnClickListener, CuisionAdatper.CuisionInterface {
-
+    CartAdatper cartAdatper=new CartAdatper();
     SearchHomeRequest searchHomeRequest = new SearchHomeRequest();
     private HomeData homeData = new HomeData();
     private ArrayList<String>spinnerData =new ArrayList<>();
@@ -72,6 +73,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private Toolbar toolbar;
     CustomViewPager viewPager;
     HomeDishPagerAdapter adapter;
+
     HomeBottomPagerAdapter homeBottomPagerAdapter;
 
     @Override
@@ -91,7 +93,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         init();
     }
 
-    private TextView tv_cusine, arrow_show_detail, txtCityName;
+    private TextView tv_cusine ,arrow_show_detail, txtCityName;
+    public static TextView tv_cart_item;
     private LinearLayout cusine_list;
     private RecyclerView cuisinRecycler;
     private LinearLayout layout;
@@ -105,6 +108,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     private void init(){
 
         sp = getView().findViewById(R.id.home_spiner);
+        tv_cart_item = getView().findViewById(R.id.tv_itemcart);
+        //tv_cart_item.setText(""+cartAdatper.getItemCount());
         layout = getView().findViewById(R.id.home_layout);
         cusine_list = getView().findViewById(R.id.home_cuisine_list);
         tv_cusine = getView().findViewById(R.id.home_cuisine);

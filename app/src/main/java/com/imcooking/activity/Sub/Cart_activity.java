@@ -18,6 +18,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.adapters.CartAdatper;
+import com.imcooking.fragment.HomeFragment;
 import com.imcooking.webservices.GetData;
 
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ RecyclerView recyclerView;
                                            txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
                                          // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
                                            txt_chef_follow.setText(apiResponse.getAdd_cart().getFollow()+"Followers");
+                                            HomeFragment.tv_cart_item.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
                                           // txtDishPrice.setText(apiResponse.getAdd_cart().get);
                                             CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish());
