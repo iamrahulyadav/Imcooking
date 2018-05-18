@@ -163,7 +163,7 @@ public class Cart_activity extends AppCompatActivity implements View.OnClickList
                      apiResponse = gson.fromJson(result, ApiResponse.class);
                      String s = apiResponse.getMsg();
                      Log.d("TAG", "onSuccess: "+result);
-                     Toast.makeText(Cart_activity.this, result, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(Cart_activity.this, result, Toast.LENGTH_SHORT).show();
                  }
              });
             }
