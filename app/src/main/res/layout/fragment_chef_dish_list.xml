@@ -28,6 +28,7 @@
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/chef_dish_list_add_dish"
                 android:text="Add a dish"
                 android:textSize="13sp"
                 android:textColor="@color/theme_color"

@@ -62,16 +62,15 @@ public class ChefILoveAdatper extends RecyclerView.Adapter<ChefILoveAdatper.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-       /* holder.txtChefName.setText(dishDetails.get(position).getChef_name());
+        holder.txtChefName.setText(dishDetails.get(position).getChef_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL + dishDetails.get(position).getChef_image()).into(holder.imgDish);
 
-        holder.tv_distance.setTag(position);
+        holder.tv_distance.setText(dishDetails.get(position).getMiles()+" miles");
 
-*/
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return dishDetails.size();
     }
 }

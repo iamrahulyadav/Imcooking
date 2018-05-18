@@ -14,8 +14,16 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
+import com.imcooking.adapters.AdapterChefHomeViewPager;
 import com.imcooking.adapters.Page_Adapter;
+import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
+import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
+import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
+import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.fragment.foodie.RequestADishFragment;
 import com.imcooking.utils.AppBaseActivity;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -23,14 +31,18 @@ public class ChefProfile extends AppBaseActivity {
     TextView txtName, txtAddress,txtFollowers, txtCall;
     ImageView imgChef, imgBack;
     Page_Adapter adapter;
+    String chefId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_profile);
-
+        chefId = getIntent().getStringExtra("chef_id");
 //        find id
-        init();
+//        init();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_chef_profile, new ChefHome()).commit();
+//        BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
     }
 
     ViewPager pager;
@@ -54,6 +66,8 @@ public class ChefProfile extends AppBaseActivity {
     }
 
     TabLayout tabLayout;
+    private ViewPager viewPager;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -63,7 +77,7 @@ public class ChefProfile extends AppBaseActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
-        getchefProfile();
+//        getchefProfile();
     }
 
     @Override
@@ -99,10 +113,10 @@ public class ChefProfile extends AppBaseActivity {
     }
 
     String TAG = ChefProfile.class.getName();
-    ChefProfileData chefProfileData = new ChefProfileData();
+    public static ChefProfileData chefProfileData = new ChefProfileData();
 
     private void getchefProfile(){
-        String s ="{\"chef_id\":\"72\"}";
+        String s ="{\"chef_id\":"+chefId+"}";
         new GetData(getApplicationContext(),ChefProfile.this).getResponse(s, "chefdetails", new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
@@ -119,11 +133,28 @@ public class ChefProfile extends AppBaseActivity {
                                    .getChef_data().getChef_image())
 //                                .placeholder( R.drawable.progress_animation )
                                    .into(imgChef);
-                           txtFollowers.setText(chefProfileData.getChef_data().getFollow()+" Followers");
+                           if (chefProfileData.getChef_data().getFollow()==1){
+                               txtFollowers.setText(chefProfileData.getChef_data().getFollow()+" Follower");
+                           } else {
+                               txtFollowers.setText(chefProfileData.getChef_data().getFollow()+" Followers");
+                           }
+                           viewPager = findViewById(R.id.chef_home_viewpager);
+                           setupViewPager(viewPager);
+
+                           tabLayout = (TabLayout) findViewById(R.id.chef_home_tablayout);
+                           tabLayout.setupWithViewPager(viewPager);
                        }
                    });
                 }
             }
         });
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        AdapterChefHomeViewPager adapter = new AdapterChefHomeViewPager(getSupportFragmentManager());
+        adapter.addFragment(new AboutChefFragment(), "ABOUT CHEF");
+        adapter.addFragment(new ChefDishListFragment(), "DISH");
+        adapter.addFragment(new RequestADishFragment(), "REQUEST A DISH");
+        viewPager.setAdapter(adapter);
     }
 }

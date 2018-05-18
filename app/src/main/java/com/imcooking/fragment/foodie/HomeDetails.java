@@ -149,10 +149,12 @@ Context mc;
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
+
     String chef_id;
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
     ArrayList<String>nameList = new ArrayList<>();
+
     private void getDetails(String id){
         layout.setVisibility(View.GONE);
         if (nameList!=null){
@@ -254,7 +256,7 @@ Context mc;
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, "Share Using"));
         } else if(id == R.id.home_details_chef_profile) {
-            startActivity(new Intent(getContext(), ChefProfile.class));
+            startActivity(new Intent(getContext(), ChefProfile.class).putExtra("chef_id", chef_id));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.home_details_txtOtherDish){

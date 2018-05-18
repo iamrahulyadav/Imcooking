@@ -38,7 +38,7 @@
                     android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imgBack"
+                    android:id="@+id/chef_home_settings"
                     android:src="@drawable/ic_settings_white"
                     android:layout_alignParentRight="true"/>
 

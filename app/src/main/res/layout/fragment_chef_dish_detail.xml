@@ -51,11 +51,11 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/home_details_heart"
+                        android:id="@+id/chef_dish_detalis_heart"
                         android:src="@drawable/ic_heart"
                         android:layout_alignParentRight="true"/>
 
-                    <TextView
+<!--                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Today"
@@ -64,17 +64,17 @@
                         android:layout_toLeftOf="@+id/home_details_heart"
                         android:layout_toStartOf="@+id/home_details_heart"
                         android:layout_alignParentTop="true"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginRight="10dp"/>-->
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="20"
-                        android:id="@+id/home_details_like"
+                        android:id="@+id/chef_dish_detalis_dish_likes"
                         android:textSize="14dp"
                         android:textColor="@color/colorWhite"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@+id/home_details_heart"
+                        android:layout_below="@+id/chef_dish_detalis_heart"
                         android:layout_marginTop="5dp"/>
 
                     <ImageView
@@ -100,7 +100,7 @@
                 android:textColor="@color/colorWhite"
                 android:textAllCaps="true"
                 android:textSize="12sp"
-                android:id="@+id/fragment_home_details_txtDishName"
+                android:id="@+id/chef_dish_detalis_dish_name"
                 android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -123,14 +123,14 @@
                 android:text="Available"
                 android:textSize="14sp"
                 android:gravity="center_vertical"
-                android:id="@+id/fragment_home_details_txtAvailable"
+                android:id="@+id/chef_dish_detalis_dish_available"
                 android:textColor="@color/shape_background_1"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="11:00AM - 16:00PM"
                 android:textSize="14sp"
-                android:id="@+id/fragment_home_details_txtTime"
+                android:id="@+id/chef_dish_detalis_dish_time"
                 android:textColor="@color/colorBlack"
                 android:layout_marginTop="10dp"/>
 
@@ -180,7 +180,7 @@
                         android:text="4"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:id="@+id/fragment_home_details_txtDistance"
+                        android:id="@+id/chef_dish_detalis_dish_count"
                         android:textColor="@color/colorBlack"/>
 
                 </LinearLayout>
@@ -203,7 +203,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/home_pager_imgHomeDelivery"
+                        android:id="@+id/chef_dish_detalis_icon_home_delivery"
                         android:visibility="visible"
                         android:src="@drawable/ic_logistics_delivery_truck_in_movement"
                         android:layout_gravity="bottom"/>
@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_pickup"
                         android:visibility="gone"
-                        android:id="@+id/home_pager_imgPick"
+                        android:id="@+id/chef_dish_detalis_icon_pickup"
                         android:layout_marginLeft="5dp"
                         android:layout_gravity="bottom"/>
 
@@ -230,7 +230,7 @@
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:gravity="center"
-                        android:id="@+id/fragment_home_details_txtDeliveryType"
+                        android:id="@+id/chef_dish_detalis_dish_home_deliveryery"
                         android:textColor="@color/colorBlack"/>
 
                 </LinearLayout>
@@ -267,7 +267,7 @@
                         android:text="$24"
                         android:textSize="11sp"
                         android:textStyle="bold"
-                        android:id="@+id/fragment_home_details_txtdishPrice"
+                        android:id="@+id/chef_dish_details_dish_price"
                         android:textColor="@color/colorBlack"/>
 
                 </LinearLayout>
@@ -276,19 +276,8 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:text="Edit Dish"
-            android:textSize="14sp"
-            android:id="@+id/chef_home_details_edit_dish"
-            android:textColor="@color/colorWhite"
-            android:gravity="center"
-            android:background="@drawable/shape_background_theme"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="10dp"/>
 
+<!--
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -336,7 +325,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-<!--
+&lt;!&ndash;
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -346,9 +335,10 @@
                 android:id="@+id/home_details_txtOtherDish"
                 android:textColor="@color/shape_background_1"
                 android:layout_alignParentRight="true"/>
--->
+&ndash;&gt;
 
         </RelativeLayout>
+-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -356,8 +346,7 @@
             android:background="@color/colorWhite"
             android:orientation="horizontal"
             android:visibility="visible"
-            android:paddingLeft="10dp"
-            android:gravity="center_vertical">
+            android:paddingLeft="10dp">
 
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="0dp"
@@ -365,21 +354,35 @@
                 android:layout_height="45dp"
                 android:text="Ingredients of Recipe"
                 android:textSize="14sp"
-                android:textColor="@color/colorBlack"/>
+                android:textColor="@color/colorBlack"
+                android:gravity="center_vertical"/>
 
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/view_2"/>
-
         <com.imcooking.customtext.CustomTextView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/chef_dish_details_description"
             android:text="Description About Chef"
             android:textSize="10dp"
+            android:textColor="@color/colorBlack"
             android:padding="10dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="Edit Dish"
+            android:textSize="14sp"
+            android:id="@+id/chef_home_details_edit_dish"
+            android:textColor="@color/colorWhite"
+            android:gravity="center"
+            android:background="@drawable/shape_background_theme"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
 

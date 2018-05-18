@@ -7,8 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -34,7 +37,7 @@ import com.squareup.picasso.Picasso;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChefHome extends Fragment {
+public class ChefHome extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     public ChefHome() {
         // Required empty public constructor
@@ -63,7 +66,6 @@ public class ChefHome extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         init();
-
         getchefProfile();
 
 
@@ -72,6 +74,7 @@ public class ChefHome extends Fragment {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private ImageView iv_settings;
 
     private void init(){
         layout = getView().findViewById(R.id.layout_chef_home);
@@ -84,6 +87,8 @@ public class ChefHome extends Fragment {
         imgBack = getView().findViewById(R.id.imgBack);
 
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
+        iv_settings = getView().findViewById(R.id.chef_home_settings);
+        iv_settings.setOnClickListener(this);
 
 
 
@@ -164,9 +169,13 @@ public class ChefHome extends Fragment {
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
-        ((MainActivity) getActivity()).setBottomColor();
-        ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
-        ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+        if (getActivity().getClass().getName().equals(MainActivity.class.getName())) {
+            ((MainActivity) getActivity()).setBottomColor();
+            ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
+            ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+        } else{
+
+        }
     }
 
     @Override
@@ -180,4 +189,25 @@ public class ChefHome extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(View view) {
+
+        int id = view.getId();
+        if(id == R.id.chef_home_settings){
+            showMyPopupMenu(view);
+        } else{}
+    }
+
+    private void showMyPopupMenu(View v){
+        PopupMenu popup = new PopupMenu(getContext(), v);
+        popup.setOnMenuItemClickListener(this);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_chef_settings, popup.getMenu());
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        return false;
+    }
 }

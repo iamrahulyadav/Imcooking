@@ -208,9 +208,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         });
     }
 
-
     private boolean cuisine_status = false;
-
     @Override
     public void onResume() {
         super.onResume();
