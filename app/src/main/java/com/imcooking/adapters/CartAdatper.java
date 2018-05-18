@@ -114,7 +114,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 dishDetails.get(position).getDish_image()).into(holder.imgDish);
-        holder.txt_DishPrice.setText(String.valueOf(dishDetails.get(position).getDish_price()));
+        holder.txt_DishPrice.setText("$"+String.valueOf(dishDetails.get(position).getDish_price()));
         //holder.txtTotal.setText(String.valueOf(getprice()));
 
 

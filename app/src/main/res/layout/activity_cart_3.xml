@@ -114,113 +114,118 @@
 
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
-        <LinearLayout
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_below="@+id/cart_top"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycler_cart_item">
-
-            </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_below="@+id/cart_top"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/cart_bottom"
-                android:background="@drawable/shape_home_image"
-                android:layout_marginBottom="5dp">
+                android:orientation="vertical">
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/cart_top"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recycler_cart_item">
 
+                </android.support.v7.widget.RecyclerView>
                 <LinearLayout
+                    android:layout_below="@+id/cart_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right|bottom"
-
                     android:orientation="vertical"
-                    android:background="@color/colorWhite">
+                    android:id="@+id/cart_bottom"
+                    android:background="@drawable/shape_home_image"
+                    android:layout_marginBottom="5dp">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:gravity="right|bottom"
 
-                        <TextView
+                        android:orientation="vertical"
+                        android:background="@color/colorWhite">
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="Tax"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="14sp" />
+                            android:orientation="horizontal"
+                            android:padding="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_tax"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:text="Tax"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_tax"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$100"
+                                android:textColor="@color/colorBlue"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$100"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="16sp" />
+                            android:orientation="horizontal"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:text="Total"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_total"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$100"
+                                android:textColor="@color/colorBlue"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:background="@drawable/button_bg"
+                                android:padding="8dp"
+                                android:text="Add new item"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/button_bg"
+                                android:padding="8dp"
+                                android:text="Place order"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="Total"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tv_total"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$100"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/button_bg"
-                            android:padding="8dp"
-                            android:text="Add new item"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_bg"
-                            android:padding="8dp"
-                            android:text="Place order"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                    <!--<include layout="@layout/fragment_cart"/>-->
 
                 </LinearLayout>
-
-                <!--<include layout="@layout/fragment_cart"/>-->
-
             </LinearLayout>
-        </LinearLayout>
+        </ScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
 
