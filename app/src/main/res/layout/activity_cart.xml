@@ -9,132 +9,151 @@
     android:fitsSystemWindows="true"
     tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
 
-    <android.support.design.widget.CoordinatorLayout
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/activity_cart_progress_bar"/>
+   <ScrollView
+       android:id="@+id/activity_cart_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:id="@+id/cart_top"
-                android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:fitsSystemWindows="true">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/cart_bg"
-                    android:scaleType="fitXY"
-                    android:alpha="0.8"/>
-                <TextView
-                    android:padding="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="My Cart"
-                    android:textSize="16dp"
-                    android:id="@+id/actvity_cart_txtTitle"
-                    android:layout_marginTop="24dp"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="@color/colorWhite" />
-
-                <LinearLayout
-                    android:layout_below="@+id/actvity_cart_txtTitle"
-                    android:id="@+id/linearlayout_prof"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:layout_alignParentLeft="true">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                            android:id="@+id/chef_profile_image"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
-                            android:src="@drawable/details_profile"
-                            app:civ_border_color="@color/colorBlue"
-                            app:civ_border_width="3dp" />
-
-                        <RatingBar
-                            style="?android:attr/ratingBarStyleSmall"
-                            android:id="@+id/actvity_cart_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:progressTint="@color/colorYellow"
-                            android:visibility="visible"
-                            android:layout_gravity="center"/>
-
-                        <TextView
-                            android:id="@+id/chef_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Jamie Malone"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/activity_cart_tv_chef_followers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1120 Followers"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_margin="3dp"
-                            android:padding="8dp"
-                            android:background="@drawable/edt_bg"
-                            android:id="@+id/activity_cart_tv_follow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
-                            android:gravity="center"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            android:text="Follow"
-                            android:drawablePadding="5dp"
-                            android:drawableLeft="@drawable/ic_plus"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-        </android.support.design.widget.AppBarLayout>
         <LinearLayout
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/linearlayout_prof">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="284dp"
+                    android:fitsSystemWindows="true"
+                    >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/cart_bg"
+                        android:scaleType="fitXY"
+                        android:alpha="0.8"/>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_prof"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:padding="10dp">
+
+                            <ImageView
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:src="@drawable/ic_left_arrow_white" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Cart"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/chef_profile_image"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:src="@drawable/details_profile"
+                                app:civ_border_color="@color/colorBlue"
+                                app:civ_border_width="3dp" />
+
+
+                            <RatingBar
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:id="@+id/actvity_cart_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:progressTint="@color/colorYellow"
+                                android:visibility="visible"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:id="@+id/chef_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Jamie Malone"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/activity_cart_tv_chef_followers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1120 Followers"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_margin="3dp"
+                                android:background="@drawable/edt_bg"
+                                android:id="@+id/activity_cart_tv_follow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="2dp"
+                                android:gravity="center"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:text="Follow"
+                                android:drawablePadding="8dp"
+                                android:drawableLeft="@drawable/ic_plus"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_below="@+id/cart_top"
                 android:layout_height="wrap_content"
                 android:id="@+id/recycler_cart_item">
 
             </android.support.v7.widget.RecyclerView>
-            <LinearLayout
-                android:layout_below="@+id/cart_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/cart_bottom"
-                android:background="@drawable/shape_home_image"
-                android:layout_marginBottom="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -142,7 +161,8 @@
                     android:gravity="right|bottom"
 
                     android:orientation="vertical"
-                    android:background="@color/colorWhite">
+                    android:background="@color/colorWhite"
+                    >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -154,6 +174,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
+
                             android:text="Tax"
                             android:textColor="@color/colorBlack"
                             android:textSize="14sp" />
@@ -218,14 +239,7 @@
 
                 </LinearLayout>
 
-                <!--<include layout="@layout/fragment_cart"/>-->
-
-            </LinearLayout>
         </LinearLayout>
-
-    </android.support.design.widget.CoordinatorLayout>
-
-
-
+    </ScrollView>
 
 </RelativeLayout>

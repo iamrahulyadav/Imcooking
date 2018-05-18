@@ -17,9 +17,19 @@ public class AddCart {
     private int chef_id;
     private String chef_name;
     private String chef_image;
-    private int rating;
+    private String rating;
     private int follow;
     private List<AddDishBean> add_dish;
+
+    public List<AddDishBean> getItemprice() {
+        return itemprice;
+    }
+
+    public void setItemprice(List<AddDishBean> itemprice) {
+        this.itemprice = itemprice;
+    }
+
+    private List<AddDishBean> itemprice;
 
     public int getChef_id() {
         return chef_id;
@@ -45,11 +55,11 @@ public class AddCart {
         this.chef_image = chef_image;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -80,7 +90,18 @@ public class AddCart {
         private int addcart_id;
         private int dish_id;
         private String dish_image;
+
         private String dish_name;
+        private int dish_price;
+
+        public int getDish_price() {
+            return dish_price;
+        }
+
+        public void setDish_price(int dish_price) {
+            this.dish_price = dish_price;
+        }
+
 
         public int getAddcart_id() {
             return addcart_id;
@@ -115,3 +136,5 @@ public class AddCart {
         }
     }
 }
+
+

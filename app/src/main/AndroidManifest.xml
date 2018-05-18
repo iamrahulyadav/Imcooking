@@ -74,10 +74,9 @@
 
         <activity android:name=".activity.Sub.Foodie.FilterHomeActivity" />
         <activity android:name=".activity.Sub.Foodie.OtherDishActivity" />
-        <activity android:name=".activity.Sub.Foodie.Cart_activity" />
         <activity android:name=".activity.Sub.Foodie.AddAddressActivity"
-/>        <activity android:name=".activity.Sub.Foodie.SelectLocActivity"/>
-        <activity android:name=".activity.Sub.Chef.ChefEditDish"/>
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name=".activity.Sub.Foodie.SelectLocActivity"/>
     </application>
 
 </manifest>

@@ -47,6 +47,8 @@ import com.mukesh.tinydb.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.imcooking.activity.home.MainActivity.stringBuffer;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -141,8 +143,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         layout.setVisibility(View.GONE);
 
         getCuisone();
-        getHomeData();
         milesSpinner();
+        if (txtCityName.getText().toString().isEmpty()){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    txtCityName.setText(stringBuffer.toString());
+                    latitudeq = MainActivity.latitude+"";
+                    longitudeq = MainActivity.longitude+"";
+                    getHomeData();
+
+                }
+            },3000);
+        }
+
     }
 
     String s;
@@ -166,7 +180,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                     case 0:
                         min_miles = "0";
                         max_miles = "10";
-                        getHomeData();
                         break;
                     case 1:
                         min_miles = "0";
@@ -204,19 +217,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
 
-        if (txtCityName.getText().toString().isEmpty()){
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    txtCityName.setText(MainActivity.stringBuffer.toString());
-                }
-            },3000);
-        }
 
     }
 
-    String latitude = "28.5748119";
-    String longitude = "7.0869837" ;
+    String latitudeq;
+    String longitudeq ;
     String min_miles = "0";
     String max_miles = "10";
     public static String foodie_id = "4";
@@ -246,17 +251,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     }
 
     private void getHomeData(){
-
         Home data = new Home();
-        data.setLatitude("51.5198117");
-        data.setLongitude("-0.0939186");
+        data.setLatitude(latitudeq);
+        data.setLongitude(longitudeq);
         data.setMin_miles(min_miles);
         data.setMax_miles(max_miles);
-        data.setCountry("230");
-        data.setFoodie_id("4");
+        data.setCountry("");
+        data.setFoodie_id(foodie_id);
 
         Log.d("MyRequest", new Gson().toJson(data));
-        new GetData(getContext(), getActivity()).getResponse(new Gson().toJson(data), "search", new GetData.MyCallback() {
+        new GetData(getContext(), getActivity()).getResponse(new Gson().toJson(data), "home", new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
 
@@ -295,7 +299,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
             favouriteDataBeans.clear();
         }
         chefDishBeans.addAll(homeData.getChef_dish());
-        favouriteDataBeans.addAll(homeData.getFavourite_data());
+        if (homeData.getFavourite_data()!=null){
+            favouriteDataBeans.addAll(homeData.getFavourite_data());
+        }
         setMyViewPager(chefDishBeans);
         setBottomViewPager(favouriteDataBeans);
 
@@ -316,15 +322,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
 
-       /* if (cuisineData.getCuisine_data().get(position).getCuisine_name().equals(chefDishBeans.get(position).getDish_cuisine())){
-            List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
-            chefDishBeans1.addAll(chefDishBeans);
-            if (chefDishBeans1!=null&&chefDishBeans1.size()>0){
-                setMyViewPager(chefDishBeans1);
-            } else {
-                Toast.makeText(getContext(), "Not record found", Toast.LENGTH_SHORT).show();
-            }
-        }*/
+        
     }
 
     @Override
@@ -391,10 +389,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
             } else if (requestCode==2){
-                latitude = data.getDoubleExtra("latitude",0)+"";
-                longitude = data.getDoubleExtra("longitude",0)+"";
+                latitudeq = data.getDoubleExtra("latitude",0)+"";
+                longitudeq = data.getDoubleExtra("longitude",0)+"";
                 txtCityName.setText(data.getStringExtra("name"));
-                Log.d(TAG, "onActivityResult: "+latitude+"\n"+longitude+"\n");
+                Log.d(TAG, "onActivityResult: "+latitudeq+"\n"+longitudeq+"\n");
+                getHomeData();
             }
         }
     }

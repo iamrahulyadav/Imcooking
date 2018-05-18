@@ -163,6 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:max="100"
+                        android:progress="10"
                         android:id="@+id/actvity_filter_seekbar"
                         android:progressBackgroundTint="@color/text_color_5"
                         android:theme="@style/AppThemeSkeekbar"

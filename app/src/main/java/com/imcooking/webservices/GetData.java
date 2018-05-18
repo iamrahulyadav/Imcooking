@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -47,8 +48,8 @@ public class GetData {
         this.context = context;
     }
 
-    private static final MediaType JSON = MediaType.parse("application/json");
-    private final static String BASE_URL = "http://webdevelopmentreviews.net/imcooking/api/";
+    public static final MediaType JSON = MediaType.parse("application/json");
+    public final static String BASE_URL = "http://webdevelopmentreviews.net/imcooking/api/";
     public final static String IMG_BASE_URL = "http://webdevelopmentreviews.net/imcooking/upload/";
     public void getResponse(String jsonString, String api_name, final MyCallback callback) {
 

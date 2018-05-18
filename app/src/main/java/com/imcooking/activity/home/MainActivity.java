@@ -65,7 +65,7 @@ public class MainActivity extends AppBaseActivity
     public static StringBuffer stringBuffer  = new StringBuffer();
     Context mContext;
     private FrameLayout frame;
-    double latitude, longitude;
+   public static double latitude, longitude;
     private float lastTranslate = 0.0f;
     private LinearLayout frame_view;
 //    public static Toolbar toolbar;

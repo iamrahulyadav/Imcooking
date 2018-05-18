@@ -3,6 +3,7 @@ package com.imcooking.activity.Sub.Foodie;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,6 +60,10 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +82,8 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     TinyDB  tinyDB ;
     String title,foodie_id,address;
     private Gson gson = new Gson();
+    private String name="", address_id;
+    private boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +97,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         mContext = this;
         tinyDB = new TinyDB(mContext);
         String  login_data = tinyDB.getString("login_data");
+
         userDataBean = gson.fromJson(login_data, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id()+"";
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -99,6 +113,14 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         txtLocatName = findViewById(R.id.activity_add_aaddres_txtLocaname);
         txtPlaceName = findViewById(R.id.activity_add_aaddres_txtLoc);
         txtConfirm = findViewById(R.id.add_address_btnConfirm);
+        if (getIntent().hasExtra("address_id")){
+            address_id = getIntent().getStringExtra("address_id");
+            name = getIntent().getStringExtra("name");
+            txtPlaceName.setText(name);
+            txtLocatName.setText(name);
+            isEdit = getIntent().getBooleanExtra("edit",false);
+        }
+
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
         View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
@@ -191,7 +213,15 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            addAddress(title,address);
+                            if (!edtMsg.getText().toString().trim().isEmpty()){
+                             title= edtMsg.getText().toString().trim();
+                            }
+                            if (address_id!=null){
+                                addAddress(title,address,address_id);
+                            } else {
+                                addAddress(title,address,"");
+                            }
+
                         }
                     });
                 } else {
@@ -202,20 +232,97 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         dialog.show();
     }
 
+    LatLng latLng=mCenterLatLong;
+    JSONObject jsonObject2;
 
-    private void addAddress(String title, String address){
+    public LatLng getLatLong(String place){
+        final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setMessage("Loading...");
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+place+"&key=AIzaSyD8rFBw_mmTdTCVQ4IdjhzcXt5P1trKrYw";
+        url = url.replace(" ", "+");
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response!=null){
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("results");
+                        for (int i=0; i<jsonArray.length();i++){
+                            JSONObject jsonObject ;
+                            jsonObject = jsonArray.getJSONObject(i);
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("geometry");
+                            jsonObject2 = jsonObject1.getJSONObject("location");
+                            double pickUplat = jsonObject2.getDouble("lat");
+                            double pickUplang = jsonObject2.getDouble("lng");
+                            latLng = new LatLng(pickUplat,pickUplang);
+//                    Log.d(TAG, "onResponse:d "+lat +"\n" +longi );
+                            if (latLng!=null){
+                                CameraPosition cameraPosition = new CameraPosition.Builder()
+                                        .target(latLng).zoom(19f).tilt(70).build();
+                                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    // TODO: Consider calling
+                                    //    ActivityCompat#requestPermissions
+                                    // here to request the missing permissions, and then overriding
+                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                    //                                          int[] grantResults)
+                                    // to handle the case where the user grants the permission. See the documentation
+                                    // for ActivityCompat#requestPermissions for more details.
+                                    return;
+                                }
+                               if (mMap!=null){
+                                   mMap.setMyLocationEnabled(true);
+                                   mMap.animateCamera(CameraUpdateFactory
+                                           .newCameraPosition(cameraPosition));
+                               }
+                            }
+                            Log.d(TAG, "onActivityResult: "+pickUplat+"\n"+pickUplang);
+                            progressDialog.dismiss();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "onErrorResponse: "+error);
+                progressDialog.dismiss();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsonObjectRequest);
+        return  latLng;
+    }
+
+
+    private void addAddress(String title, String address, String address_id){
         AddressRequest addressRequest = new AddressRequest();
         addressRequest.setTitle(title);
         addressRequest.setFoodie_id(foodie_id);
         addressRequest.setAddress(address);
-        addressRequest.setAddress_id("");
+        if (address_id!=null){
+            addressRequest.setAddress_id(address_id);
+        } else {
+            addressRequest.setAddress_id("");
+        }
         String s = gson.toJson(addressRequest);
         Log.d(TAG, "addAddress: "+s);
         new GetData(mContext, AddAddressActivity.this).getResponse(s,
                 "address", new GetData.MyCallback() {
             @Override
-            public void onSuccess(String result) {
-
+            public void onSuccess(final String result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ApiResponse apiResponse = new ApiResponse();
+                        apiResponse = new Gson().fromJson(result, ApiResponse.class);
+                        Toast.makeText(mContext, ""+apiResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
             }
         });
     }
@@ -241,6 +348,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 if (checked){
                     edtMsg.setVisibility(View.VISIBLE);
                     title= edtMsg.getText().toString().trim();
+
                 }
                     break;
         }
@@ -287,25 +395,11 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
            /* mMap.addMarker(new MarkerOptions().position(latLong)
                     .icon(BaseClass.bitmapDescriptorFromVectorR(getApplicationContext())));*/
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(latLong).zoom(21f).tilt(60).build();
-         /*   CircleOptions circleOptions = new CircleOptions()
-                    .center(latLong)
-                    .strokeWidth(2)
-                    .radius(100)
-                    .strokeColor(Color.BLUE)
-                    .fillColor(Color.parseColor("#500084d3"));*/
-            // Supported formats are: #RRGGBB #AARRGGBB
-            //   #AA is the alpha, or amount of transparency
-
-//            mMap.addCircle(circleOptions);
-
+                    .target(latLong).zoom(19f).build();
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-          /*  mLocationMarkerText.setText("Lat : " + location.getLatitude() + "," + "Long : " + location.getLongitude());
-            startIntentService(location);*/
-
         } else {
             Toast.makeText(getApplicationContext(),
                     "Sorry! unable to create maps", Toast.LENGTH_SHORT)
@@ -451,15 +545,22 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 //   mMap.clear();
 
                 try {
-
                     Location mLocation = new Location("");
                     mLocation.setLatitude(mCenterLatLong.latitude);
                     mLocation.setLongitude(mCenterLatLong.longitude);
                     StringBuffer stringBuffer  = new StringBuffer();
                     try {
                         stringBuffer=getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
-                        txtPlaceName.setText(stringBuffer);
-                        txtLocatName.setText(stringBuffer);
+                        if (isEdit){
+                            txtPlaceName.setText(name);
+                            txtLocatName.setText(name);
+                            getLatLong(name);
+                            isEdit = false;
+                        } else {
+                            txtPlaceName.setText(stringBuffer);
+                            txtLocatName.setText(stringBuffer);
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -468,6 +569,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 }
             }
         });
+
     }
 }
 

@@ -89,10 +89,13 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
         tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
-        Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
-                .get(position).getDish_image().get(0))
+        if (chefDishBeans.get(position).getDish_image()!=null&&chefDishBeans.get(position).getDish_image().size()>0){
+            Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
+                    .get(position).getDish_image().get(0)) .into(iv_dish_image);
+        }
+
 //                                .placeholder( R.drawable.progress_animation )
-                .into(iv_dish_image);
+
         tv_dish_name.setText(chefDishBeans
                 .get(position).getDish_name());
         tv_chef_name.setText(chefDishBeans
@@ -141,7 +144,6 @@ public class HomeDishPagerAdapter extends PagerAdapter{
             arr[position] = true;
             imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
         } else {}
-
 
         imgLike.setOnClickListener(new View.OnClickListener() {
             @Override

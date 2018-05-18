@@ -2,6 +2,7 @@ package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,34 +35,35 @@ public class Cart_activity extends AppCompatActivity implements View.OnClickList
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     static int count=0;
     RatingBar ratingBar;
-
-RecyclerView recyclerView;
+    RecyclerView recyclerView;
+    private ProgressBar progressBar;
    // ArrayList<AddCart> dishlist = new ArrayList<>();
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.coloCart));
         }
         tinyDB = new TinyDB(getApplicationContext());
         String login_data = tinyDB.getString("login_data");
         userDataBean = gson.fromJson(login_data, ApiResponse.UserDataBean.class);
         foodieid = userDataBean.getUser_id()+"";
         Bundle extras = getIntent().getExtras();
+
+       init();
+    }
+
+
+    private void init(){
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-       // adapter = new CartAdatper(this, dishlist);
         ratingBar = findViewById(R.id.actvity_cart_rating);
         txtChef_Name=findViewById(R.id.chef_name);
         txt_chef_follow=findViewById(R.id.activity_cart_tv_chef_followers);
- /*       txtPlus=findViewById(R.id.tv_plus);
-        txtPlus.setOnClickListener(this);
-        txtMinus.setOnClickListener(this);
-        txtMinus=findViewById(R.id.tv_minus);
- */
+        progressBar = findViewById(R.id.activity_cart_progress_bar);
         txtCartFollow = findViewById(R.id.activity_cart_tv_follow);
         txt_DishCount=findViewById(R.id.tv_dish_count);
         txtDishPrice=findViewById(R.id.tv_dish_price);
@@ -69,10 +72,12 @@ RecyclerView recyclerView;
         imgDish=findViewById(R.id.img_dish);
         imgChefImg=findViewById(R.id.chef_profile_image);
         txtCartFollow.setOnClickListener(this);
-       setdetails();
+        setdetails();
     }
 
     private void setdetails() {
+        progressBar.setVisibility(View.VISIBLE);
+
         AddToCart addToCart=new AddToCart();
         addToCart.setFoodie_id(Integer.parseInt(foodieid));
         new GetData(getApplicationContext(), Cart_activity.this)
@@ -84,6 +89,7 @@ RecyclerView recyclerView;
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        progressBar.setVisibility(View.GONE);
                                         ApiResponse apiResponse = new Gson().fromJson(response,
                                                 ApiResponse.class);
 
@@ -96,8 +102,9 @@ RecyclerView recyclerView;
                                             CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish());
                                             recyclerView.setAdapter(cartAdatper);
-                                            ratingBar.setRating(Float.parseFloat(apiResponse.getAdd_cart().getRating()+""));
-
+                                            if (apiResponse.getAdd_cart().getRating()!=null){
+                                                ratingBar.setRating(Float.parseFloat(apiResponse.getAdd_cart().getRating()+""));
+                                            }
                                             Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL+apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
                                         }
 //                                        apiResponse.isStatus();

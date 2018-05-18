@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.R;
@@ -26,7 +27,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 //    OnItemClickListenerCategory listener;
     private Context context;
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
-
+    List<String[]> cartAdatperslist = new ArrayList<String[]>();
     //private List<CuisineData.CuisineDataBean>cuisineDataBeans = new ArrayList<>();
 
     public CartAdatper(Context context,
@@ -36,23 +37,30 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     }
 
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtDishName, tv_dishcount, tv_plus, tv_minus;
+        public TextView txtPlus,txtMinus,txt_DishPrice,txt_DishCount,txtDishName,txtTotal,txtTax;
         public ImageView imgDish;
+
+        //String dishname,dishimage,price;
 
         public MyViewHolder(View view) {
             super(view);
 
             txtDishName = view.findViewById(R.id.tv_dish_name);
+            txt_DishCount=view.findViewById(R.id.tv_dish_count);
+            txtTotal=view.findViewById(R.id.tv_total);
+            txtTax=view.findViewById(R.id.tv_tax);
+            txt_DishPrice=view.findViewById(R.id.tv_dish_price);
             imgDish=view.findViewById(R.id.img_dish);
-            tv_dishcount = view.findViewById(R.id.tv_dish_count);
-            tv_plus = view.findViewById(R.id.tv_plus);
-            tv_minus = view.findViewById(R.id.tv_minus);
-            //txtChefName.setOnClickListener(this);
+            txtPlus=view.findViewById(R.id.tv_plus);
+            txtMinus=view.findViewById(R.id.tv_minus);
+            //txtDishName.setOnClickListener(this);
         }
+
+
     }
 
-    int row_index=-1;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,28 +70,54 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         return new MyViewHolder(itemView);
     }
 
+    MyViewHolder myHolder;
+    int pos;
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        myHolder=holder;
+        final int[] count = {1};
+        final String[] cnt = new String[1];
+        final  String[] cnt2 = new String[1];
+        final int[] price = {(dishDetails.get(position).getDish_price())};
+
+        holder.txtMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+
+            public void onClick(View v) {
+
+                //String cnt= String.valueOf(--count);
+                if(count[0] >0)
+                {   cnt[0] = String.valueOf(--count[0]);
+                    holder.txt_DishCount.setText(cnt[0]);
+                    cnt2[0] = String.valueOf(count[0]* price[0]);
+                    //cartAdatperslist.add(cnt2);
+              holder.txt_DishPrice.setText("$"+cnt2[0]);
+                }
+                else{
+                    Toast.makeText(context, "no item added", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        holder.txtPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               cnt[0] = String.valueOf(++count[0]);
+                holder.txt_DishCount.setText(cnt[0]);
+               cnt2[0] = String.valueOf(count[0]* price[0]);
+                //cartAdatperslist.add(cnt2);
+               holder.txt_DishPrice.setText("$"+cnt2[0]);
+
+
+            }
+        });
 
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
-        Picasso.with(context).load(GetData.IMG_BASE_URL + dishDetails.get(position).getDish_image()).into(holder.imgDish);
+        Picasso.with(context).load(GetData.IMG_BASE_URL +
+                dishDetails.get(position).getDish_image()).into(holder.imgDish);
+        holder.txt_DishPrice.setText(String.valueOf(dishDetails.get(position).getDish_price()));
+        //holder.txtTotal.setText(String.valueOf(getprice()));
 
-        holder.tv_dishcount.setTag(position);
-        holder.tv_plus.setTag(position);
-        holder.tv_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
-        holder.tv_minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                MyViewHolder holder1 = (MyViewHolder)view.getTag();
-                holder1.tv_dishcount.setText((Integer.parseInt(holder1.tv_dishcount.getText().toString()) + 1) + "");
-            }
-        });
 
     }
 
@@ -91,4 +125,13 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     public int getItemCount() {
         return dishDetails.size();
     }
+    public String[] getprice(){
+        String[] sum = {};
+        for(int i=0;i<=getItemCount();i++){
+            //sum=sum[0]+;
+
+        }
+        return sum;
+    }
+
 }
