@@ -1,6 +1,5 @@
 package com.imcooking.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,9 +25,8 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
 //    OnItemClickListenerCategory listener;
     private Context context;
-    static int count=0;
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
-
+    List<String[]> cartAdatperslist = new ArrayList<String[]>();
     //private List<CuisineData.CuisineDataBean>cuisineDataBeans = new ArrayList<>();
 
     public CartAdatper(Context context,
@@ -40,8 +38,9 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtPlus,txtMinus,txt_DishCount,txtDishName;
+        public TextView txtPlus,txtMinus,txt_DishPrice,txt_DishCount,txtDishName,txtTotal,txtTax;
         public ImageView imgDish;
+
         //String dishname,dishimage,price;
 
         public MyViewHolder(View view) {
@@ -49,6 +48,9 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
             txtDishName = view.findViewById(R.id.tv_dish_name);
             txt_DishCount=view.findViewById(R.id.tv_dish_count);
+            txtTotal=view.findViewById(R.id.tv_total);
+            txtTax=view.findViewById(R.id.tv_tax);
+            txt_DishPrice=view.findViewById(R.id.tv_dish_price);
             imgDish=view.findViewById(R.id.img_dish);
             txtPlus=view.findViewById(R.id.tv_plus);
             txtMinus=view.findViewById(R.id.tv_minus);
@@ -67,38 +69,51 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         return new MyViewHolder(itemView);
     }
 
-
     MyViewHolder myHolder;
     int pos;
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        myHolder=holder;
+        final int[] count = {0};
+        final String[] cnt = new String[1];
+        final  String[] cnt2 = new String[1];
+        final int[] price = {(dishDetails.get(position).getDish_price())};
 
-        /*holder.txtMinus.setOnClickListener(new View.OnClickListener() {
+        holder.txtMinus.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
 
-                String cnt= String.valueOf(--count);
-                if(cnt.equals("0"))
-                {
-
-                    Toast.makeText(context, "no item added", Toast.LENGTH_SHORT).show();
+                //String cnt= String.valueOf(--count);
+                if(count[0] >0)
+                {   cnt[0] = String.valueOf(--count[0]);
+                    holder.txt_DishCount.setText(cnt[0]);
+                    cnt2[0] = String.valueOf(count[0]* price[0]);
+                    //cartAdatperslist.add(cnt2);
+              holder.txt_DishPrice.setText("$"+cnt2[0]);
                 }
                 else{
-                    holder.txt_DishCount.setText(count);
+                    Toast.makeText(context, "no item added", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         holder.txtPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cnt= String.valueOf(++count);
-                holder.txt_DishCount.setText(cnt);
+               cnt[0] = String.valueOf(++count[0]);
+                holder.txt_DishCount.setText(cnt[0]);
+               cnt2[0] = String.valueOf(count[0]* price[0]);
+                //cartAdatperslist.add(cnt2);
+               holder.txt_DishPrice.setText("$"+cnt2[0]);
+
             }
-        });*/
-//        holder.txt_DishCount.setTag(position);
+        });
+
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 dishDetails.get(position).getDish_image()).into(holder.imgDish);
+        //holder.txtTotal.setText(String.valueOf(getprice()));
+
 
 
     }
@@ -107,4 +122,13 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     public int getItemCount() {
         return dishDetails.size();
     }
+    public String[] getprice(){
+        String[] sum = {};
+        for(int i=0;i<=getItemCount();i++){
+            //sum=sum[0]+;
+
+        }
+        return sum;
+    }
+
 }

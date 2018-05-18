@@ -104,7 +104,7 @@ RecyclerView recyclerView;
         int id = v.getId();
        String cnt;
         switch (id){
-            case R.id.tv_plus:
+           /* case R.id.tv_plus:
                  cnt= String.valueOf(++count);
 
                 setDishCount(cnt);
@@ -122,7 +122,7 @@ RecyclerView recyclerView;
                  Toast.makeText(this, "no item added", Toast.LENGTH_SHORT).show();
                  }
             break;
-
+*/
 
 
     }}
