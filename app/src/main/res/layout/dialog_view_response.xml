@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/shape_background_white"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:srcCompat="@drawable/ic_forgot"
+            android:layout_gravity="center"
+            tools:ignore="VectorDrawableCompat"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"/>
+
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:textColor="@color/text_color_4"
+            android:textSize="13sp"/>
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Description"
+            android:textColor="@color/text_color_4"
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"/>
+
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offer Price"
+            android:textColor="@color/text_color_4"
+            android:textSize="13sp"/>
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$20"
+            android:textColor="@color/text_color_4"
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp">
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="35dp"
+                android:id="@+id/view_response_accept"
+                android:text="Accept"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_right"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:background="@drawable/shape_response_one"
+                />
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="35dp"
+                android:id="@+id/view_response_decline"
+                android:text="Decline"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_cross"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:background="@drawable/shape_response_two"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="35dp"
+                android:id="@+id/view_response_reply"
+                android:text="Reply"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_reply"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:background="@drawable/shape_response_three"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/view_response_cross"
+        android:text="X"
+        android:textColor="@color/colorWhite"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/shape_circle_theme"/>
+
+</RelativeLayout>
