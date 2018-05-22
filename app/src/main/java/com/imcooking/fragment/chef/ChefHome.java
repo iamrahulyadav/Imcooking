@@ -1,6 +1,11 @@
 package com.imcooking.fragment.chef;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,22 +23,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.adapters.AdapterChefHomeViewPager;
 import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
 import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
 import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
+import com.imcooking.fragment.foodie.RequestADishFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -41,6 +54,11 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     public ChefHome() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -60,10 +78,20 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private TextView tv_phoneno;
     private LinearLayout layout;
 
+    private String loginData, user_type;
+    private TinyDB tinyDB;
+    private ApiResponse.UserDataBean userDataBean;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        userDataBean = new ApiResponse.UserDataBean();
+        tinyDB = new TinyDB(getContext());
+        loginData = tinyDB.getString("login_data");
+        userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
+        user_type = userDataBean.getUser_type();
 
         init();
         getchefProfile();
@@ -90,25 +118,28 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
 
+        if(user_type.equals("2")){
+            iv_settings.setVisibility(View.GONE);
+        } else if(user_type.equals("1")){
+            iv_settings.setVisibility(View.VISIBLE);
+        } else {}
 
-
-       /* for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
-            RelativeLayout relativeLayout = (RelativeLayout)
-                    LayoutInflater.from(getContext()).inflate(R.layout.my_tab_layout, tabLayout, false);
-
-            TextView tabTextView = (TextView) relativeLayout.findViewById(R.id.tab_title);
-            tabTextView.setText(tab.getText());
-            tab.setCustomView(relativeLayout);
-            tab.select();
-        }*/
+        new Runnable(){
+            @Override
+            public void run() {
+            }
+        };
     }
 
     private void setupViewPager(ViewPager viewPager) {
         AdapterChefHomeViewPager adapter = new AdapterChefHomeViewPager(getChildFragmentManager());
         adapter.addFragment(new AboutChefFragment(), "ABOUT CHEF");
         adapter.addFragment(new ChefDishListFragment(), "DISHES");
-        adapter.addFragment(new RequestDishFragment(), "DISH REQUESTS");
+        if(user_type.equals("1")) {
+            adapter.addFragment(new RequestDishFragment(), "DISH REQUESTS");
+        } else if(user_type.equals("2")){
+            adapter.addFragment(new RequestADishFragment(), "REQUEST A DISH");
+        } else{ }
         viewPager.setAdapter(adapter);
     }
 
@@ -158,11 +189,33 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     @Override
     public void onResume() {
         super.onResume();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            w.setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            w.setStatusBarColor(Color.TRANSPARENT);
         }
+
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }*/
+/*
+        //make full transparent statusBar
+        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
+            setWindowFlag(getActivity(), WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true);
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+        if (Build.VERSION.SDK_INT >= 21) {
+            setWindowFlag(getActivity(), WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
+            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+*/
+
 
         if (getActivity().getClass().getName().equals(MainActivity.class.getName())) {
             ((MainActivity) getActivity()).setBottomColor();
@@ -171,6 +224,17 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         } else{
 
         }
+    }
+
+    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
+        Window win = activity.getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 
     @Override
@@ -189,17 +253,65 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
         int id = view.getId();
         if(id == R.id.chef_home_settings){
-            showMyPopupMenu(view);
+            PopupWindow popupwindow_obj = showMyPopup();
+            popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
+        } else if(id == R.id.chef_home_popup_edit_profile){
+
+        } else if(id == R.id.chef_home_popup_change_password){
+
+        } else if(id == R.id.chef_home_popup_deacivate){
+
+        } else if(id == R.id.chef_home_popup_logout){
+            new TinyDB(getContext()).remove("login_data");
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            getActivity().finish();
         } else{}
     }
 
-    private void showMyPopupMenu(View v){
+    public PopupWindow showMyPopup () {
+
+        final PopupWindow popupWindow = new PopupWindow(getActivity());
+
+        // inflate your layout or dynamically add view
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.popup_chef_home, null);
+        TextView tv_edit_profile = view.findViewById(R.id.chef_home_popup_edit_profile);
+        TextView tv_change_password = view.findViewById(R.id.chef_home_popup_change_password);
+        TextView tv_deactivate = view.findViewById(R.id.chef_home_popup_deacivate);
+        TextView tv_logout = view.findViewById(R.id.chef_home_popup_logout);
+
+        tv_edit_profile.setOnClickListener(this);
+        tv_change_password.setOnClickListener(this);
+        tv_deactivate.setOnClickListener(this);
+        tv_logout.setOnClickListener(this);
+
+
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
+        popupWindow.setFocusable(true);
+        popupWindow.setWidth(width-700);
+        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(null);
+        popupWindow.setContentView(view);
+        return popupWindow;
+    }
+/*
+
         PopupMenu popup = new PopupMenu(getContext(), v);
         popup.setOnMenuItemClickListener(this);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.popup_chef_settings, popup.getMenu());
+//        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+      //  popup.setGravity(Gravity.LEFT);
+        MenuInflater inflater1 = popup.getMenuInflater();
+        inflater1.inflate(R.menu.popup_chef_settings, popup.getMenu());
         popup.show();
-    }
+*/
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {

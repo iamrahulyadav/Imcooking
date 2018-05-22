@@ -3,6 +3,8 @@
     <style name="AppThemeRatingBar" parent="Theme.AppCompat">
         <item name="colorAccent">#6200ea</item>
         <item name="android:colorControlNormal">#f9a825</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>"
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">

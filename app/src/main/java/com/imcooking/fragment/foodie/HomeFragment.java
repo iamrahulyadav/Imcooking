@@ -183,7 +183,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
 
     }
 
-
     String s;
     String selectedmiles;
     private void milesSpinner() {

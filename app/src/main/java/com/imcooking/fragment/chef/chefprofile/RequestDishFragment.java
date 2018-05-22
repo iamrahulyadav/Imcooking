@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 
 import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.R;
-import com.imcooking.adapters.ChefDishRequestsAdatper;
-import com.imcooking.adapters.OtherDishAdatper;
+import com.imcooking.adapters.ChefMyRequestsAdatper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +45,8 @@ public class RequestDishFragment extends Fragment {
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
 
     private void setDishAdapter(){
-        ChefDishRequestsAdatper chefDishRequestsAdatper = new ChefDishRequestsAdatper(getContext(),dishDetails);
-        requestRecyclerView.setAdapter(chefDishRequestsAdatper);
+        ChefMyRequestsAdatper chefMyRequestsAdatper = new ChefMyRequestsAdatper(getContext());
+        requestRecyclerView.setAdapter(chefMyRequestsAdatper);
 
     }
 }

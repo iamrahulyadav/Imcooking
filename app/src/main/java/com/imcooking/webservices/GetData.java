@@ -77,18 +77,6 @@ public class GetData {
                 @Override
                 public void onFailure(okhttp3.Call call, final IOException e) {
 
-/*
-                    ((SignUpActivity) context).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-                            String msg = e.getMessage();
-
-                            BaseClass.showToast(context, "No Internet");
-//                        Utility.message(getApplicationContext(), getResources().getString(R.string.no_internet_connection));
-                        }
-                    });
-*/
                 }
 
                 @Override

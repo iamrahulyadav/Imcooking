@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.imcooking.Model.ApiRequest.Home;
 import com.imcooking.R;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.chef.ChefHome;
@@ -72,7 +73,30 @@ public class BaseClass {
     }
 
 
-    public static void callFragment(Fragment fragment, String tag, FragmentManager manager){
+    public static void callFragment(Fragment fragment, String tag, FragmentManager manager  ){
+
+        if(manager.getBackStackEntryCount() != 0) {
+            String tag1 = manager.getBackStackEntryAt(manager.getBackStackEntryCount() - 1).getName();
+            if (tag1.equals(tag)) {
+
+            } else {
+
+//            Toast.makeText(context, (manager.findFragmentByTag(tag) + ""), Toast.LENGTH_SHORT).show();
+                    if (manager.findFragmentByTag(tag) == null) { //fragment not in back stack, create it.
+                        manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack(tag).commit();
+
+//                manager.executePendingTransactions();
+                    } else {
+                        manager.beginTransaction().replace(R.id.frame, fragment).commit();
+                        //              manager.executePendingTransactions();
+                    }
+            }
+        } else{
+            manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack(tag).commit();
+        }
+    }
+
+    public static void callFragment1(Fragment fragment, String tag, FragmentManager manager){
 
 
         if(tag.equals(new HomeFragment().getClass().getName())&& tag.equals(new ChefHome().getClass().getName()))
@@ -82,15 +106,22 @@ public class BaseClass {
         else {
 //            Toast.makeText(context, (manager.findFragmentByTag(tag) + ""), Toast.LENGTH_SHORT).show();
             if (manager.findFragmentByTag(tag) == null) { //fragment not in back stack, create it.
-                manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack(tag).commit();
+                manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+                        R.animator.fade_out,
+                        0,
+                        R.animator.fragment_slide_right_exit).replace(R.id.frame, fragment).addToBackStack(tag).commit();
 
 //                manager.executePendingTransactions();
             } else {
-                manager.beginTransaction().replace(R.id.frame, fragment).commit();
+                manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+                        R.animator.fade_out,
+                        0,
+                        R.animator.fragment_slide_right_exit).replace(R.id.frame, fragment).commit();
                 //              manager.executePendingTransactions();
             }
         }
     }
+
 
     public static Boolean isNetworkConnected(Context context) {
         ConnectivityManager connectivityManager= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
