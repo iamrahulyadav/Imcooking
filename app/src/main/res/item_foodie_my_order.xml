@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="0dp"
+    android:layout_marginBottom="2dp"
+    android:layout_height="110dp">
+
+    <android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="0dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/colorWhite">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fragment_myorder_chef_image"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/details_profile"
+            app:civ_border_color="@color/colorBlue"
+            app:civ_border_width="0dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center_vertical"
+
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/fragment_myorder_chef_image"
+            android:layout_toLeftOf="@+id/cart_item_right">
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="#12345"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:id="@+id/fragment_myorder_tv_order_id"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/colorBlack"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="abhishek Gupta"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:id="@+id/fragment_myorder_tv_name"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/colorBlack"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                   >
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Status"
+                        android:singleLine="true"
+                        android:textSize="10sp"
+                        android:id="@+id/fragment_myorder_tv_status"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorBlack"/>
+
+
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="True"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/button_bg3"
+                        android:textSize="12sp"
+                        android:id="@+id/fragment_myorder_tv_status_"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorWhite"/>
+
+
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/layout_med"
+                android:orientation="horizontal">
+
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="10sp"
+                    android:background="@drawable/button_bg5"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:src="@drawable/ic_star_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:src="@drawable/ic_star_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:src="@drawable/ic_star_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:src="@drawable/ic_star_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_star_1" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$00"
+            android:id="@+id/fragment_myorder_tv_order_price"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorBlue"
+            android:textSize="16dp"
+            />
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Order Details"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:id="@+id/fragment_myorder_tv_orderdetails"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/colorWhite"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button_bg5"/>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
+</LinearLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_background_white_1"
+    android:layout_margin="15dp">
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/chef_home_popup_edit_profile"
+        android:text="Edit Profile"
+        android:textColor="@color/text_color_4"
+        android:textSize="12sp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".3dp"
+        android:background="@color/view_6"/>
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/chef_home_popup_change_password"
+        android:text="Change Password"
+        android:textColor="@color/text_color_4"
+        android:textSize="12sp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".3dp"
+        android:background="@color/view_6"/>
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/chef_home_popup_deacivate"
+        android:text="Deactivate"
+        android:textColor="@color/text_color_4"
+        android:textSize="12sp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".3dp"
+        android:background="@color/view_6"/>
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/chef_home_popup_logout"
+        android:text="Logout"
+        android:textColor="@color/text_color_4"
+        android:textSize="12sp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"/>
+
+</LinearLayout>
