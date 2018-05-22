@@ -91,7 +91,7 @@ public class AdapterChefDishList extends PagerAdapter{
             } else {
                 dish_home_delivery.setText("Home Delivery");
                 iv_home_delivery_image.setVisibility(View.VISIBLE);
-                iv_home_delivery_image.setVisibility(View.GONE);
+                iv_pickup_image.setVisibility(View.GONE);
             }
         } else {
             iv_home_delivery_image.setVisibility(View.GONE);
@@ -119,25 +119,39 @@ public class AdapterChefDishList extends PagerAdapter{
                 if (manager.findFragmentByTag(new ChefDishDetail().getTag()) == null) {
                     //fragment not in back stack, create it.
                     if(activity.getClass().getName().equals(MainActivity.class.getName())) {
-                        manager.beginTransaction().replace(R.id.frame, fragment).addToBackStack(fragment.getClass().getName())
+                        manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+                                R.animator.fade_out,
+                                0,
+                                R.animator.fragment_slide_right_exit)
+                                .replace(R.id.frame, fragment).addToBackStack(fragment.getClass().getName())
                                 .commit();
                     } else if(activity.getClass().getName().equals(ChefProfile.class.getName())){
-                        manager.beginTransaction().replace(R.id.frame_chef_profile, fragment).addToBackStack(fragment.getClass()
+                        manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+                                R.animator.fade_out,
+                                0,
+                                R.animator.fragment_slide_right_exit)
+                                .replace(R.id.frame_chef_profile, fragment).addToBackStack(fragment.getClass()
                                 .getName()).commit();
                     } else {}
 
 //                manager.executePendingTransactions();
                 } else {
                     if(activity.getClass().getName().equals(MainActivity.class.getName())) {
-                        manager.beginTransaction().replace(R.id.frame, fragment).commit();
+                        manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+                                R.animator.fade_out,
+                                0,
+                                R.animator.fragment_slide_right_exit)
+                                .replace(R.id.frame, fragment).commit();
                     } else if(activity.getClass().getName().equals(ChefProfile.class.getName())){
-                        manager.beginTransaction().replace(R.id.frame_chef_profile, fragment).commit();
+                        manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+                                R.animator.fade_out,
+                                0,
+                                R.animator.fragment_slide_right_exit)
+                                .replace(R.id.frame_chef_profile, fragment).commit();
                     } else {}
                     //              manager.executePendingTransactions();
                 }
-
 //                BaseClass.callFragment(fragment, fragment.getClass().getName(), manager);
-
             }
         });
 

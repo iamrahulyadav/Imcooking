@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     tools:context=".fragment.chef.chefprofile.RequestDishFragment">
 
@@ -12,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_chef_dish_requests"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </LinearLayout>

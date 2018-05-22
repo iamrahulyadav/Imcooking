@@ -11,6 +11,7 @@
     <color name="colorWhite">#fff</color>
     <color name="colorLightGrey">#E1E1E1</color>
     <color name="colorBlue">#007BB6</color>
+    <color name="colorRed">#FF0000</color>
 
     <color name="coloCart">#424346</color>
     <color name="textColor_1">#2F2F2F</color>
@@ -32,7 +33,9 @@
 
     <color name="home_margin">#F1F2F4</color>
     <color name="home_background">#F8F9FB</color>
+
     <color name="bg_1">#F8F8F8</color>
+    <color name="bg_2">#FAFAFA</color>
 
     <color name="color_1">#F99406</color>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
@@ -344,41 +344,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorWhite"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:visibility="visible"
             android:paddingLeft="10dp">
 
             <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:text="Ingredients of Recipe"
                 android:textSize="14sp"
                 android:textColor="@color/colorBlack"
                 android:gravity="center_vertical"/>
+            <!--
+
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/chef_dish_details_description"
+                        android:padding="10dp"
+                        android:textColor="@color/colorBlack"/>
+            -->
 
         </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/view_2"/>
-<!--
 
         <com.imcooking.customtext.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/chef_dish_details_description"
+            android:textSize="10dp"
             android:padding="10dp"
+            android:text="sdewefwefwefwewfeef"
             android:textColor="@color/colorBlack"/>
--->
-
-        <com.imcooking.customtext.CustomTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/chef_dish_details_description"
-            android:text="Description About Dish"
-            android:textColor="@color/colorBlack"
-            android:padding="10dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -392,7 +392,6 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:layout_marginBottom="10dp"/>
-
     </LinearLayout>
 
 </ScrollView>

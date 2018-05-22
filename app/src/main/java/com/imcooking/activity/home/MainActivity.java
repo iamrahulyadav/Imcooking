@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -43,6 +44,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.fragment.foodie.FoodieMyRequest;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.chef.ChefHome;
 
@@ -169,7 +171,7 @@ public class MainActivity extends AppBaseActivity
         getUserData();
         if (user_type.equals("1")) {
             BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
-        } else {
+        } else { // 2
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
     }
@@ -216,7 +218,6 @@ public class MainActivity extends AppBaseActivity
             } else{
                 BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
             }
-
         } else if (id ==R.id.bottom_profile_layout){
             tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
             iv_profile.setImageResource(R.drawable.ic_user_name_1);
@@ -229,8 +230,11 @@ public class MainActivity extends AppBaseActivity
         } else if (id ==R.id.bottom_my_order_layout){
             tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
             iv_my_order.setImageResource(R.drawable.ic_salad_1);
-            BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(), getSupportFragmentManager());
+            if(user_type.equals("2")) {
+                BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(), getSupportFragmentManager());
+            } else{
 
+            }
         } else if (id ==R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
             iv_notification.setImageResource(R.drawable.ic_ring_1);
@@ -271,12 +275,19 @@ public class MainActivity extends AppBaseActivity
 
     @Override
     public void onBackPressed() {
+
+        String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager()
+                .getBackStackEntryCount() - 1).getName();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(getSupportFragmentManager().getBackStackEntryCount() == 0) {
+        } else if(getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finishAffinity();
-        }else {
+        } else if(tag1.equals(HomeFragment.class.getName()) || tag1.equals(ChefHome.class.getName())){
+            getSupportFragmentManager().popBackStack();
+            finishAffinity();
+        } else{
             super.onBackPressed();
         }
     }
@@ -291,6 +302,11 @@ public class MainActivity extends AppBaseActivity
                 new TinyDB(getApplicationContext()).remove("login_data");
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
+                break;
+            case R.id.navigation_myrequest:
+                if(user_type.equals("2")) {
+                    BaseClass.callFragment(new FoodieMyRequest(), new FoodieMyRequest().getClass().getName(), getSupportFragmentManager());
+                }
                 break;
         }
 

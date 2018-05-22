@@ -85,6 +85,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         } else{
             tv_dish_text_available.setText("Not Available");
         }
+
         tv_dish_time.setText(str_time);
         tv_dish_count.setText(str_count);
 

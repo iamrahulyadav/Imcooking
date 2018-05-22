@@ -148,6 +148,7 @@
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/item_foodie_my_requests_view_response"
                     android:text="View Response"
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp"

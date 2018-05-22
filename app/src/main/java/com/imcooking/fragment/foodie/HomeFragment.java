@@ -40,7 +40,7 @@ import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.Foodie.Cart_activity;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
 import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
 import com.imcooking.activity.home.MainActivity;
@@ -117,7 +117,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
     CuisionAdatper cuisionAdatper;
     private Spinner sp;
 
+    public static TextView cart_icon;
+
     private void init(){
+
+        cart_icon = getView().findViewById(R.id.home_cart_text_count);
         layout_no_record_found = getView().findViewById(R.id.home_no_record_image);
 
         sp = getView().findViewById(R.id.home_spiner);
@@ -178,7 +182,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
 
     }
-
 
     String s;
     String selectedmiles;
@@ -428,7 +431,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         }
         else if (v.getId() == R.id.fragment_home_img_cart)
         {
-            startActivity(new Intent(getContext(), Cart_activity.class).putExtra("foodie_id",
+            startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
                     userDataBean.getUser_id()));
            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (v.getId()==R.id.fragment_home_txtcity){
