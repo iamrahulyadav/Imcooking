@@ -11,14 +11,17 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.imcooking.activity.main.setup.SignUpActivity;
@@ -28,9 +31,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
+import retrofit2.http.POST;
 
 /**
  * Created by vaibhav on 2/21/2017.
@@ -39,18 +46,120 @@ public class GetData {
 
     private Context context;
     private Activity activity;
-    public GetData(Context context, Activity activity)
-    {
+    public GetData(final Context context, Activity activity) {
+/*
+        Map<String, String> jsonData = new HashMap<String, String>();
+        jsonData.put("user_type","2");
+        jsonData.put("foodie_id","104");
+        jsonData.put("name","gg");
+        jsonData.put("email","kh.vaibhav10@gmail.com");
+        jsonData.put("phone","566909900");
+        Log.d("data:",jsonData.toString());
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,"http://webdevelopmentreviews.net/imcooking/api/foodieprofileedit",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //displaying the error in toast if occurrs
+                      //  VolleyErrorHandler.networkErrorHandler(error);
+                    }
+                }){
+
+                protected Map<String, String> getParams() {
+                Map<String, String> jsonData = new HashMap<String, String>();
+                    jsonData.put("user_type","2");
+                    jsonData.put("foodie_id","104");
+                    jsonData.put("name","gg");
+                    jsonData.put("email","kh.vaibhav10@gmail.com");
+                    jsonData.put("phone","566909900");
+                    Log.d("data:",jsonData.toString());
+                    return jsonData;
+            }
+        };
+
+        //creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+        //adding the string request to request queue
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+*/
         this.context = context;
         this.activity = activity;
     }
+
+    public JSONObject getResponseJson() {
+        return responseJson;
+    }
+
+    public   JSONObject responseJson = new JSONObject();
+    public String str = "";
+    public String sendMyData(JSONObject jsonObject, String url, final Activity activity, final MyCallback callback){
+
+
+        String myurl = BASE_URL + url;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,myurl
+               , jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+            public void onResponse(JSONObject jsonObject) {
+
+                Log.d("CallBack", jsonObject.toString());
+
+                str = jsonObject.toString();
+                if(jsonObject.has("status"))
+
+                    callback.onSuccess(str);
+
+
+                    //        Toast.makeText(activity,responseJson.toString(),Toast.LENGTH_SHORT).show();
+                else
+                    BaseClass.showToast(context, "Server Error");
+
+               // responseJson.toString();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                Log.d("TAG", "onErrorResponse:sta "+volleyError);
+                VolleyErrorHandler.networkErrorHandler(volleyError, activity);
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+
+        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(jsonObjReq);
+
+//        Toast.makeText(activity,str,Toast.LENGTH_SHORT).show();
+
+        return str;
+
+    }
+
+
     public GetData(Context context){
         this.context = context;
     }
 
     public static final MediaType JSON = MediaType.parse("application/json");
     public final static String BASE_URL = "http://webdevelopmentreviews.net/imcooking/api/";
-    public final static String IMG_BASE_URL = "http://webdevelopmentreviews.net/imcooking/upload/";
+    public final static String IMG_BASE_URL = "7";
+
     public void getResponse(String jsonString, String api_name, final MyCallback callback) {
 
         if(BaseClass.isNetworkConnected(context)) {

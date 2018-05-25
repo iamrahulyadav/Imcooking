@@ -159,6 +159,7 @@
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/edit_dish_switch_current_available"
                 app:track="@drawable/switch_track"
                 android:thumb="@drawable/switch_thumb"
                 android:textColor="@color/text_color_15"
@@ -169,6 +170,7 @@
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/edit_dish_switch_home_delivery"
                 app:track="@drawable/switch_track"
                 android:thumb="@drawable/switch_thumb"
                 android:textColor="@color/text_color_15"
@@ -178,6 +180,7 @@
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/edit_dish_switch_pickup"
                 app:track="@drawable/switch_track"
                 android:thumb="@drawable/switch_thumb"
                 android:textColor="@color/text_color_15"
@@ -197,6 +200,12 @@
                     android:textSize="16sp"
                     android:textColor="@color/text_color_15"
                     android:layout_alignParentLeft="true"/>
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/shape_border_theme"
+                    ></Spinner>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -214,7 +223,6 @@
 
 
             </RelativeLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -299,7 +307,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="20dp">
 
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
@@ -336,6 +344,19 @@
                 </LinearLayout>
 
             </RelativeLayout>
+
+            <com.imcooking.customtext.CustomTextButtonTextView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="SUBMIT"
+                android:textColor="@color/colorWhite"
+                android:padding="10dp"
+                app:textAllCaps="true"
+                android:background="@drawable/button_bg"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:onClick="edit_dish_submit"/>
+
 
         </LinearLayout>
 

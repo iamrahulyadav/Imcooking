@@ -18,7 +18,6 @@
 
     <string name="other_dish_by_user"><u>Other dish by chef</u></string>
 
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -35,4 +34,7 @@
     <string name="activity_filter_txtDistance">Distance </string>
     <string name="activity_filter_txtRating">Rating </string>
     <string name="activity_filter_txtPrice">Price </string>
+
+    <string name="network_error">Please Check Your Internet Connection</string>
+    <string name="server_error">Server Error</string>
 </resources>

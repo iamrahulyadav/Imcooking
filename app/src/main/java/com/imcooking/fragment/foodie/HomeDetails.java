@@ -138,12 +138,10 @@ Context mc;
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         getDetails(id);
-
     }
 
     @Override
     public void onDestroyView() {
-
         super.onDestroyView();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -220,6 +218,10 @@ Context mc;
 //                                .placeholder( R.drawable.progress_animation )
                                 .into(imgTop);
 
+                        /*Picasso.with(getContext()).load("")
+//                                .placeholder( R.drawable.progress_animation )
+                                .into(imgChef);*/
+
                         adapter=new Pager1(getContext(), nameList);
                         pager.setAdapter(adapter);
                         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -267,6 +269,7 @@ Context mc;
                     ,OtherDishActivity.OTHER_DISH_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
+
         else if (id == R.id.tv_add_to_cart){
 
             addCart(v);

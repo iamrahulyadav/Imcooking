@@ -85,8 +85,7 @@
             android:visibility="gone"
             android:textColor="@color/colorBlack"
             android:imeOptions="actionDone"
-            android:id="@+id/dialog_address_edtMsg"
-            android:background="@drawable/edt_bg"/>
+            android:id="@+id/dialog_address_edtMsg" />
 
         <LinearLayout
             android:layout_width="match_parent"

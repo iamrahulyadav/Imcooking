@@ -133,13 +133,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         tv_cusine.setOnClickListener(this);
         viewPager =  getView().findViewById(R.id.home_viewPager);
 
-        arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
+//        arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
         imgCart = getView().findViewById(R.id.fragment_home_img_cart);
         imgCart.setOnClickListener(this);
 
         imgFilter.setOnClickListener(this);
-        arrow_show_detail.setOnClickListener(this);
+//        arrow_show_detail.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer

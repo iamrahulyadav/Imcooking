@@ -80,6 +80,7 @@ public class MainActivity extends AppBaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         drawerLayout1 = findViewById(R.id.drawer_layout);
         checkGPSStatus();
 

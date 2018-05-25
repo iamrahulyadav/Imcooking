@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -20,6 +22,7 @@ import com.imcooking.R;
 import com.imcooking.adapters.OtherDishAdatper;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
+import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -42,12 +45,17 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_dish);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
-            BaseClass.setLightStatusBar(getWindow().getDecorView(),OtherDishActivity.this);
         }
-        setupToolBar();
-//find id
+
+        init();
+
+        //find id
+    }
+
+    private void init(){
         layout = findViewById(R.id.chef_dish);
         recyclerView = findViewById(R.id.activity_other_dish_recycler);
         txtLike = findViewById(R.id.activity_other_dish_txtChefLike);
@@ -58,15 +66,19 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
         imgPic = findViewById(R.id.other_dish_profile_image);
         ratingBar = findViewById(R.id.activity_other_dish_rating);
         chef_id = getIntent().getStringExtra("chef_id");
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManagaer);
-        getChefOtherList(chef_id);
 
+        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        recyclerView.setLayoutManager(manager);
+        getChefOtherList(chef_id);
     }
 
-    String TAG = OtherDishActivity.class.getName();
     String chef_id;
+
     private void getChefOtherList(String chef_id){
         layout.setVisibility(View.GONE);
 
@@ -118,18 +130,29 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
         otherDishAdatper.CuisionInterfaceMethod(this);
     }
 
-    private void setupToolBar() {
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.custom_toolbar);
-        tv_title = (TextView) myToolbar.findViewById(R.id.custom_toolbar_txtTitle);
-        btnHome = (ImageView) myToolbar.findViewById(R.id.custom_toolbar_imgback);
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { onBackPressed(); }
-        });
-        tv_title.setText("Other Dish by chef ");
-        setSupportActionBar(myToolbar);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+
     public static int OTHER_DISH_CODE = 2;
+
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
         Intent filrestintent=new Intent();

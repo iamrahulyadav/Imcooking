@@ -101,7 +101,6 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
 
     }
 
-
     @Override
     public void AddressInterfaceMethod(View view, int position, String tag) {
         if (tag.equals("edit")){

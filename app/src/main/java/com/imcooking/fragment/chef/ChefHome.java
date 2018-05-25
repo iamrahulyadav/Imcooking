@@ -40,6 +40,7 @@ import com.imcooking.adapters.AdapterChefHomeViewPager;
 import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
 import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
+import com.imcooking.fragment.chef.chefprofile.FoodieRequestADish;
 import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
 import com.imcooking.fragment.foodie.RequestADishFragment;
 import com.imcooking.utils.BaseClass;
@@ -138,7 +139,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         if(user_type.equals("1")) {
             adapter.addFragment(new RequestDishFragment(), "DISH REQUESTS");
         } else if(user_type.equals("2")){
-            adapter.addFragment(new RequestADishFragment(), "REQUEST A DISH");
+            adapter.addFragment(new FoodieRequestADish(), "REQUEST A DISH");
         } else{ }
         viewPager.setAdapter(adapter);
     }

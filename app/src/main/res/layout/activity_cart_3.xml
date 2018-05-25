@@ -94,7 +94,7 @@
                         <TextView
                             android:layout_margin="3dp"
                             android:padding="8dp"
-                            android:background="@drawable/edt_bg"
+                            android:background="@drawable/shape_follow"
                             android:id="@+id/activity_cart_tv_follow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -130,6 +130,7 @@
                     android:id="@+id/recycler_cart_item">
 
                 </android.support.v7.widget.RecyclerView>
+
                 <LinearLayout
                     android:layout_below="@+id/cart_top"
                     android:layout_width="match_parent"

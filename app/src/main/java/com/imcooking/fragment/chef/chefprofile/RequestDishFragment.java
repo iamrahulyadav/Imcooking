@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.R;
 import com.imcooking.adapters.ChefMyRequestsAdatper;
+import com.imcooking.utils.CustomLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +38,15 @@ public class RequestDishFragment extends Fragment {
 
     private void init(){
         requestRecyclerView = getView().findViewById(R.id.recycler_chef_dish_requests);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        requestRecyclerView.setLayoutManager(horizontalLayoutManagaer);
+
+        CustomLayoutManager manager = new CustomLayoutManager(getContext()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+
+        requestRecyclerView.setLayoutManager(manager);
         setDishAdapter();
     }
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
