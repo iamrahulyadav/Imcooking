@@ -1,6 +1,8 @@
 package com.imcooking.Model.ApiRequest;
 
-public class ChefAddDish {
+import java.util.List;
+
+public class ModelChefAddDish {
 
     /**
      * user_id : 11
@@ -17,7 +19,7 @@ public class ChefAddDish {
      * pickup : Yes
      * deliverymiles : 21
      * dish_video : sdsad
-     * dish_image : sdfsdf
+     * dish_image : ["a","b"]
      */
 
     private String user_id;
@@ -34,7 +36,7 @@ public class ChefAddDish {
     private String pickup;
     private String deliverymiles;
     private String dish_video;
-    private String dish_image;
+    private List<String> dish_image;
 
     public String getUser_id() {
         return user_id;
@@ -148,11 +150,11 @@ public class ChefAddDish {
         this.dish_video = dish_video;
     }
 
-    public String getDish_image() {
+    public List<String> getDish_image() {
         return dish_image;
     }
 
-    public void setDish_image(String dish_image) {
+    public void setDish_image(List<String> dish_image) {
         this.dish_image = dish_image;
     }
 }

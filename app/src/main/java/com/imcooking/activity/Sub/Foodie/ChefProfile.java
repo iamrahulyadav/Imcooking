@@ -33,6 +33,8 @@ public class ChefProfile extends AppBaseActivity {
     Page_Adapter adapter;
     String chefId;
 
+    public static int CHEF_PROFILE_CODE = 22;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         List<ChefProfileData.ChefDishBean> chef_dish_list_current = new ArrayList<>();
         List<ChefProfileData.ChefDishBean> chef_dish_list_old = new ArrayList<>();
 
+
         for (int i=0; i<chef_dish_list.size(); i++){
             if(chef_dish_list.get(i).getDish_available().equals("Yes")){
                 chef_dish_list_current.add(chef_dish_list.get(i));
@@ -70,6 +72,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
                 chef_dish_list_old.add(chef_dish_list.get(i));
             } else{}
         }
+        Log.d("MyDataSize", chef_dish_list_current.size()+"");
         AdapterChefDishList adapterChefDishListCurrent = new AdapterChefDishList(getParentFragment().getFragmentManager(),
                 getContext(), getActivity(), chef_dish_list_current);
         AdapterChefDishList adapterChefDishListOld = new AdapterChefDishList(getParentFragment().getFragmentManager(),

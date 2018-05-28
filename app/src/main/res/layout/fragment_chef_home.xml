@@ -166,6 +166,7 @@
                             android:background="@drawable/shape_follow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/chef_home_follow_button"
                             android:text="Follow"
                             android:gravity="center"
                             android:drawablePadding="5dp"

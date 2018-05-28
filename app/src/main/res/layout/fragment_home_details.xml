@@ -347,31 +347,6 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="45dp"
-                android:text="Ingredients of Recipe"
-                android:textSize="14sp"
-                android:textColor="@color/colorBlack"
-                android:gravity="center"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="45dp"
-                android:text="Know Chef"
-                android:textSize="14sp"
-                android:textColor="@color/colorBlack"
-                android:gravity="center"/>
-
-        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

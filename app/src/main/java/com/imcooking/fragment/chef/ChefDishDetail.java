@@ -5,19 +5,24 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
+import com.imcooking.adapters.Pager1;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,10 +52,12 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
     }
 
     private TextView tv_dish_name, tv_dish_likes, tv_dish_text_available, tv_dish_time, tv_dish_count, tv_dish_home_delivery,
-    tv_dish_price, tv_dish_description, tv_edit_dish ;
+    tv_dish_price, /*tv_dish_description,*/ tv_edit_dish ;
 
-    private String str_name, str_likes, str_available, str_time, str_count, str_homedelivery, str_price, str_description,
-    str_special_note, str_cuisine;
+    private String str_name, str_likes, str_available, str_time, str_count, str_homedelivery, str_pickup, str_price,
+            str_description, str_special_note, str_cuisine;
+
+    private ImageView iv_home_delivery_icon, iv_pickup_icon;
 
     private void init(){
 
@@ -61,9 +68,12 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         tv_dish_count = getView().findViewById(R.id.chef_dish_detalis_dish_count);
         tv_dish_home_delivery = getView().findViewById(R.id.chef_dish_detalis_dish_home_deliveryery);
         tv_dish_price = getView().findViewById(R.id.chef_dish_details_dish_price);
-        tv_dish_description = getView().findViewById(R.id.chef_dish_details_description);
+//        tv_dish_description = getView().findViewById(R.id.chef_dish_details_description);
         tv_edit_dish = getView().findViewById(R.id.chef_home_details_edit_dish);
         tv_edit_dish.setOnClickListener(this);
+
+        iv_home_delivery_icon = getView().findViewById(R.id.chef_dish_detalis_icon_home_delivery);
+        iv_pickup_icon = getView().findViewById(R.id.chef_dish_detalis_icon_pickup);
     }
 
     private void getMyData(){
@@ -73,6 +83,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         str_time = getArguments().getString("time");
         str_count = getArguments().getString("count");
         str_homedelivery = getArguments().getString("home_delivery");
+        str_pickup = getArguments().getString("pickup");
         str_price = getArguments().getString("price");
         str_description = getArguments().getString("description");
         str_special_note = getArguments().getString("special_note");
@@ -87,13 +98,61 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         }
 
         tv_dish_time.setText(str_time);
-        tv_dish_count.setText(str_count);
+        if(str_count.equals("null")){
+            tv_dish_count.setText("0");
+        } else{
+            tv_dish_count.setText(str_count);
+        }
 
         tv_dish_home_delivery.setText(str_homedelivery);
-        tv_dish_price.setText(str_price);
-        if (str_description!=null){
-            tv_dish_description.setText(str_description);
+        if(str_homedelivery.equals("Yes")){
+            if(str_pickup.equals("Yes")){
+                tv_dish_home_delivery.setText("Home Delivery / Pick-up");
+                iv_home_delivery_icon.setVisibility(View.VISIBLE);
+                iv_pickup_icon.setVisibility(View.VISIBLE);
+            } else if (str_pickup.equals("No") ){
+                iv_home_delivery_icon.setVisibility(View.VISIBLE);
+                iv_pickup_icon.setVisibility(View.GONE);
+                tv_dish_home_delivery.setText("Home Delivery");
+            } else {}
+        } else if(str_homedelivery.equals("No")){
+            iv_home_delivery_icon.setVisibility(View.GONE);
+            iv_pickup_icon.setVisibility(View.VISIBLE);
+            tv_dish_home_delivery.setText("Pick-up");
         }
+
+        tv_dish_price.setText("£" + str_price);
+        if (str_description!=null){
+//            tv_dish_description.setText(str_description);
+        }
+
+        final ViewPager viewPager = getView().findViewById(R.id.chef_dish_details_view_pager);
+        TabLayout tabLayout = getView().findViewById(R.id.chef_dish_details_tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Recipe"));
+        tabLayout.addTab(tabLayout.newTab().setText("Special Note"));
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add(str_description);
+        arrayList.add(str_special_note);
+        Pager1 adapter = new Pager1(getContext(), arrayList);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -107,6 +166,9 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
                     .putExtra("price", str_price)
                     .putExtra("ingredients", str_description)
                     .putExtra("special_note", str_special_note)
+                    .putExtra("available", str_available)
+                    .putExtra("home_delivery", str_homedelivery)
+                    .putExtra("pickup", str_pickup)
             );
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else{}

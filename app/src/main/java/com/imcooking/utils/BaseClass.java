@@ -13,17 +13,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.Home;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.chef.ChefHome;
+import com.mukesh.tinydb.TinyDB;
 
+import java.io.ByteArrayOutputStream;
 import java.util.regex.Pattern;
 
 /**
@@ -43,6 +48,7 @@ public class BaseClass {
         }
         return false;
     }
+
     public static BitmapDescriptor bitmapDescriptorFromVectorR(Context context) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_placeholder);
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
@@ -122,6 +128,16 @@ public class BaseClass {
         }
     }
 
+    public static String BitMapToString(Bitmap bitmap){
+        String temp="";
+        if(bitmap!=null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100, baos);
+            byte[] b = baos.toByteArray();
+            temp = Base64.encodeToString(b, Base64.DEFAULT);
+        }
+        return temp;
+    }
 
     public static Boolean isNetworkConnected(Context context) {
         ConnectivityManager connectivityManager= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -146,6 +162,16 @@ public class BaseClass {
                             }
                         }).setActionTextColor(context.getResources().getColor(R.color.colorWhite)).show();
 
+    }
+
+    public static String getUserType(Context context){
+        TinyDB tinyDB = new TinyDB(context);
+        ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+        String login_data = tinyDB.getString("login_data");
+        userDataBean = new Gson().fromJson(login_data, ApiResponse.UserDataBean.class);
+        String type = userDataBean.getUser_type();
+
+        return type;
     }
 
 }

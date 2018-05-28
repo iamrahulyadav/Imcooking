@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rsb="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/colorWhite"
     android:layout_width="match_parent"
@@ -9,6 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:id="@+id/chef_edit_dish_title"
         android:text="Edit Dish"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
@@ -40,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_dish_name"
                 android:hint="Dish Name"
-                android:textColorHint="@color/text_color_4"
+                android:textColorHint="@color/text_color_7"
                 android:textSize="16sp"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent"/>
@@ -55,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_dish_cuisine"
                 android:hint="Cuisine"
-                android:textColorHint="@color/text_color_4"
+                android:textColorHint="@color/text_color_7"
                 android:textSize="16sp"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent" />
@@ -70,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_dish_price"
                 android:hint="Price"
-                android:textColorHint="@color/text_color_4"
+                android:textColorHint="@color/text_color_7"
                 android:textSize="16sp"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent"  />
@@ -86,7 +88,7 @@
                 android:id="@+id/chef_edit_dish_description"
                 android:hint="Ingredients of Recipe"
                 android:textSize="16sp"
-                android:textColorHint="@color/text_color_4"
+                android:textColorHint="@color/text_color_7"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent"  />
             <View
@@ -101,7 +103,7 @@
                 android:id="@+id/chef_edit_dish_special_note"
                 android:hint="Special Note"
                 android:textSize="16sp"
-                android:textColorHint="@color/text_color_4"
+                android:textColorHint="@color/text_color_7"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent" />
             <View
@@ -128,8 +130,17 @@
                 <SeekBar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:thumb="@drawable/ic_rectangle"/>
 
+
+             <!--<com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                    android:id="@+id/rangeSeekbar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    rsb:absoluteMaxValue="100"
+                    rsb:absoluteMinValue="0" />
+-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -160,8 +171,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/edit_dish_switch_current_available"
+
                 app:track="@drawable/switch_track"
                 android:thumb="@drawable/switch_thumb"
+
                 android:textColor="@color/text_color_15"
                 android:textSize="16sp"
                 android:text="Currently available"
@@ -199,13 +212,23 @@
                     android:text="Delivety miles"
                     android:textSize="16sp"
                     android:textColor="@color/text_color_15"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"/>
-                <Spinner
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/shape_border_theme"
-                    ></Spinner>
+                    android:background="@drawable/shape_border_theme">
+
+                    <Spinner
+                        style="@style/SpinnerTheme1"
+                        android:spinnerMode="dropdown"
+                        android:id="@+id/edit_dish_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="20dp"/>
+
+                </LinearLayout>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,10 +242,12 @@
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:paddingBottom="5dp"
-                    android:paddingTop="5dp"/>
+                    android:paddingTop="5dp"
+                    android:visibility="gone"/>
 
 
             </RelativeLayout>
+<!--
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -231,6 +256,7 @@
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_dish_photo_name"
                     android:text="Photo1"
                     android:textSize="16sp"
                     android:textColor="@color/text_color_15"
@@ -251,58 +277,36 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:paddingRight="15dp"
-                        android:paddingLeft="15dp"/>
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add more Photos"
-                        android:textSize="10sp"
-                        android:textColor="@color/theme_color"
-                        android:layout_marginTop="10dp"/>
+                        android:paddingLeft="15dp"
+                        android:onClick="edit_dish_browse_photo"/>
 
                 </LinearLayout>
 
+
             </RelativeLayout>
-            <RelativeLayout
+-->
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:id="@+id/chef_edit_dish_photos_recycler"
+                android:layout_marginTop="20dp" />
 
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Photo2"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_color_15"
-                    android:layout_alignParentLeft="true"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_alignParentRight="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_dish_photos"
+                android:orientation="horizontal"/>
 
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Browse"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorWhite"
-                        android:background="@drawable/shape_background_theme"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:paddingRight="15dp"
-                        android:paddingLeft="15dp"/>
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add more Photos"
-                        android:textSize="10sp"
-                        android:textColor="@color/theme_color"
-                        android:layout_marginTop="10dp"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="add_more_photos"
+                android:text="Add more Photos"
+                android:textSize="10sp"
+                android:textColor="@color/theme_color"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"/>
 
-                </LinearLayout>
-
-            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

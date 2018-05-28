@@ -178,7 +178,7 @@ Context mc;
                         layout.setVisibility(View.VISIBLE);
                         txtDishName.setText(dishDetails.getDish_details().getDish_name());
                         txtChefName.setText(dishDetails.getDish_details().getChef_name());
-                        txtPrice.setText("$"+dishDetails.getDish_details().getDish_price());
+                        txtPrice.setText("£"+dishDetails.getDish_details().getDish_price());
                         chef_id = dishDetails.getDish_details().getChef_id()+"";
                         if (dishDetails.getDish_details().getDish_available().equalsIgnoreCase("yes")){
                             txtAvailable.setText("Available ");
@@ -200,6 +200,7 @@ Context mc;
                         if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
                             txtDeliverytype.setText("Pickup");
                             imgPickUp.setVisibility(View.VISIBLE);
+                            imgDeliviery.setVisibility(View.GONE);
                         } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
                                 && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
                             txtDeliverytype.setText("Home Delivery / Pickup");
@@ -207,6 +208,7 @@ Context mc;
                             imgPickUp.setVisibility(View.VISIBLE);
                         } else {
                             imgDeliviery.setVisibility(View.VISIBLE);
+                            imgPickUp.setVisibility(View.GONE);
                             txtDeliverytype.setText("Home Delivery");
                         }
                         txtLike.setText(dishDetails.getDish_details().getLike()+"");
@@ -218,9 +220,11 @@ Context mc;
 //                                .placeholder( R.drawable.progress_animation )
                                 .into(imgTop);
 
-                        /*Picasso.with(getContext()).load("")
+/*
+                        Picasso.with(getContext()).load("")
 //                                .placeholder( R.drawable.progress_animation )
-                                .into(imgChef);*/
+                                .into(imgChef);
+*/
 
                         adapter=new Pager1(getContext(), nameList);
                         pager.setAdapter(adapter);
@@ -261,7 +265,8 @@ Context mc;
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, "Share Using"));
         } else if(id == R.id.home_details_chef_profile) {
-            startActivity(new Intent(getContext(), ChefProfile.class).putExtra("chef_id", chef_id));
+            startActivityForResult(new Intent(getContext(), ChefProfile.class).putExtra("chef_id", chef_id),
+                    ChefProfile.CHEF_PROFILE_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.home_details_txtOtherDish){
@@ -337,10 +342,13 @@ Context mc;
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data!=null){
-            if (requestCode==OtherDishActivity.OTHER_DISH_CODE){
+            if (requestCode == OtherDishActivity.OTHER_DISH_CODE){
                 id = data.getStringExtra("dish_id");
                 getDetails(id);
-            }
-        }
+            } else if (requestCode == ChefProfile.CHEF_PROFILE_CODE){
+                id = data.getStringExtra("dish_id");
+                getDetails(id);
+            } else{}
+        } else{}
     }
 }

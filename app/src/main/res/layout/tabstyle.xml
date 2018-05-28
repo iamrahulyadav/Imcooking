@@ -10,7 +10,7 @@
         android:padding="10dp"
         android:textSize="10sp"
         android:textColor="@color/colorBlack"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_vertical"
         android:scaleType="fitCenter"/>
 
 </LinearLayout>

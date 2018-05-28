@@ -38,6 +38,7 @@ public class Pager1 extends PagerAdapter{
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View view = mLayoutInflater.inflate(R.layout.tabstyle, container, false);
+
         TextView txtName = view.findViewById(R.id.txtName);
         txtName.setText(name.get(position));
         container.addView(view);

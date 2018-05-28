@@ -3,6 +3,7 @@ package com.imcooking.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.DishLikeRequest;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
@@ -28,6 +30,7 @@ import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.HomeDetails;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -79,8 +82,9 @@ public class AdapterChefDishList extends PagerAdapter{
         Picasso.with(context).load(url).into(iv_dish_image);
 
         dish_name.setText(chef_dish_list.get(position).getDish_name());
-        dish_count.setText(chef_dish_list.get(position).getDish_quantity() + "");
-        dish_price.setText(chef_dish_list.get(position).getDish_price() + "");
+//        if(chef_dish_list.get(position).getDish_quantity().equals("null"))
+        dish_count.setText("0");
+        dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
         dish_likes.setText("10");
 
         if (chef_dish_list.get(position).getDish_homedelivery().equals("Yes")) {
@@ -103,13 +107,17 @@ public class AdapterChefDishList extends PagerAdapter{
             @Override
             public void onClick(View view) {
 
+//                String type = BaseClass.getUserType(context);
+//                if(type.equals("1")){
                 ChefDishDetail fragment = new ChefDishDetail();
                 Bundle bundle = new Bundle();
+                bundle.putString("id", chef_dish_list.get(position).getDish_id() + "");
                 bundle.putString("name", chef_dish_list.get(position).getDish_name());
                 bundle.putString("available", chef_dish_list.get(position).getDish_available());
                 bundle.putString("time", chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to());
                 bundle.putString("count", chef_dish_list.get(position).getDish_quantity());
-                bundle.putString("home_delivery", dish_home_delivery.getText().toString());
+                bundle.putString("home_delivery", chef_dish_list.get(position).getDish_homedelivery());
+                bundle.putString("pickup", chef_dish_list.get(position).getDish_pickup());
                 bundle.putString("price", chef_dish_list.get(position).getDish_price() + "");
                 bundle.putString("description", chef_dish_list.get(position).getDish_description());
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
@@ -126,12 +134,20 @@ public class AdapterChefDishList extends PagerAdapter{
                                 .replace(R.id.frame, fragment).addToBackStack(fragment.getClass().getName())
                                 .commit();
                     } else if(activity.getClass().getName().equals(ChefProfile.class.getName())){
-                        manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+
+                        Intent intent = new Intent();
+                        intent.putExtra("dish_id", chef_dish_list.get(position).getDish_id() + "");
+                        activity.setResult(ChefProfile.CHEF_PROFILE_CODE, intent);
+//                Log.d("VKK", gson.toJson(listModel));
+                        activity.finish();
+
+
+/*                        manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
                                 R.animator.fade_out,
                                 0,
                                 R.animator.fragment_slide_right_exit)
                                 .replace(R.id.frame_chef_profile, fragment).addToBackStack(fragment.getClass()
-                                .getName()).commit();
+                                .getName()).commit();*/
                     } else {}
 
 //                manager.executePendingTransactions();

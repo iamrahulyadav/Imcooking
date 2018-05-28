@@ -104,49 +104,59 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
     public   JSONObject responseJson = new JSONObject();
     public String str = "";
+
     public String sendMyData(JSONObject jsonObject, String url, final Activity activity, final MyCallback callback){
 
 
-        String myurl = BASE_URL + url;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,myurl
-               , jsonObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-            public void onResponse(JSONObject jsonObject) {
+        if(BaseClass.isNetworkConnected(context)) {
 
-                Log.d("CallBack", jsonObject.toString());
+            final ProgressDialog progressDialog = new ProgressDialog(activity);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
 
-                str = jsonObject.toString();
-                if(jsonObject.has("status"))
+            String myurl = BASE_URL + url;
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, myurl
+                    , jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject jsonObject) {
 
-                    callback.onSuccess(str);
+                            progressDialog.hide();
+                            Log.d("CallBack", jsonObject.toString());
+
+                            str = jsonObject.toString();
+                            if (jsonObject.has("status"))
+
+                                callback.onSuccess(str);
 
 
-                    //        Toast.makeText(activity,responseJson.toString(),Toast.LENGTH_SHORT).show();
-                else
-                    BaseClass.showToast(context, "Server Error");
+                                //        Toast.makeText(activity,responseJson.toString(),Toast.LENGTH_SHORT).show();
+                            else
+                                BaseClass.showToast(context, "ServerError");
 
-               // responseJson.toString();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
+                            // responseJson.toString();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
 
-                Log.d("TAG", "onErrorResponse:sta "+volleyError);
-                VolleyErrorHandler.networkErrorHandler(volleyError, activity);
-            }
-        });
+                    progressDialog.hide();
+                    Log.d("TAG", "onErrorResponse:sta " + volleyError);
+                    VolleyErrorHandler.networkErrorHandler(volleyError, activity);
+                }
+            });
 
-        RequestQueue requestQueue = Volley.newRequestQueue(activity);
+            RequestQueue requestQueue = Volley.newRequestQueue(activity);
 
-        jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        requestQueue.add(jsonObjReq);
+            requestQueue.add(jsonObjReq);
 
 //        Toast.makeText(activity,str,Toast.LENGTH_SHORT).show();
-
+        }
         return str;
 
     }
@@ -158,7 +168,7 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
     public static final MediaType JSON = MediaType.parse("application/json");
     public final static String BASE_URL = "http://webdevelopmentreviews.net/imcooking/api/";
-    public final static String IMG_BASE_URL = "7";
+    public final static String IMG_BASE_URL = "http://webdevelopmentreviews.net/imcooking/upload/";
 
     public void getResponse(String jsonString, String api_name, final MyCallback callback) {
 

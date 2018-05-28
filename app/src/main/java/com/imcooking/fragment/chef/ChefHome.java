@@ -28,10 +28,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
+import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
@@ -71,7 +73,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     String TAG = ChefProfile.class.getName();
     public static ChefProfileData chefProfileData = new ChefProfileData();
-    TextView txtName, txtAddress,txtFollowers;
+//    public  static ChefProfileData1 chefProfileData = new ChefProfileData1();
+    TextView txtName, txtAddress,txtFollowers, btn_follow;
     ImageView imgChef, imgBack;
     Page_Adapter adapter;
     ViewPager pager;
@@ -114,14 +117,17 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         txtFollowers = getView().findViewById(R.id.activity_chef_txtFollower);
         imgChef = getView().findViewById(R.id.chef_profile_image);
         imgBack = getView().findViewById(R.id.imgBack);
+        btn_follow = getView().findViewById(R.id.chef_home_follow_button);
 
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
 
         if(user_type.equals("2")){
+            btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
         } else if(user_type.equals("1")){
+            btn_follow.setVisibility(View.GONE);
             iv_settings.setVisibility(View.VISIBLE);
         } else {}
 
@@ -146,7 +152,10 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     private void getchefProfile(){
         String s ="{\"chef_id\":\"72\"}";
+//        String s = "{\"chef_id\":\"72\",\"foodie_id\":\"4\"}";
+
         layout.setVisibility(View.GONE);
+
         new GetData(getContext(),getActivity()).getResponse(s, "chefdetails", new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
@@ -156,27 +165,33 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            chefProfileData = new Gson().fromJson(result, ChefProfileData.class);
+//                            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
 
-                            if(chefProfileData.isStatus()) {
-                                layout.setVisibility(View.VISIBLE);
-                                txtAddress.setText(chefProfileData.getChef_data().getAddress());
-                                txtName.setText(chefProfileData.getChef_data().getChef_name());
-                                tv_phoneno.setText(chefProfileData.getChef_data().getChef_phone() + "");
-                                Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData
-                                        .getChef_data().getChef_image())
+                                         chefProfileData = new Gson().fromJson(result, ChefProfileData.class);
+                            if (chefProfileData != null) {
+                                if (chefProfileData.isStatus()) {
+                                    layout.setVisibility(View.VISIBLE);
+                                    txtAddress.setText(chefProfileData.getChef_data().getAddress());
+                                    txtName.setText(chefProfileData.getChef_data().getChef_name());
+                                    tv_phoneno.setText(chefProfileData.getChef_data().getChef_phone() + "");
+                                    Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData
+                                            .getChef_data().getChef_image())
 //                                .placeholder( R.drawable.progress_animation )
-                                        .into(imgChef);
-                                if(chefProfileData.getChef_data().getFollow() == 1) {
-                                    txtFollowers.setText(chefProfileData.getChef_data().getFollow() + " Follower");
-                                } else if(chefProfileData.getChef_data().getFollow() > 1){
-                                    txtFollowers.setText(chefProfileData.getChef_data().getFollow() + " Followers");
-                                } else{}
-                                viewPager = getView().findViewById(R.id.chef_home_viewpager);
-                                setupViewPager(viewPager);
+                                            .into(imgChef);
+                                    if (chefProfileData.getChef_data().getFollow() == 1) {
+                                        txtFollowers.setText(chefProfileData.getChef_data().getFollow() + " Follower");
+                                    } else if (chefProfileData.getChef_data().getFollow() > 1) {
+                                        txtFollowers.setText(chefProfileData.getChef_data().getFollow() + " Followers");
+                                    } else {
+                                    }
+                                    viewPager = getView().findViewById(R.id.chef_home_viewpager);
+                                    setupViewPager(viewPager);
 
-                                tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
-                                tabLayout.setupWithViewPager(viewPager);
+                                    tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
+                                    tabLayout.setupWithViewPager(viewPager);
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                }
                             } else{
                                 BaseClass.showToast(getContext(), "Something Went Wrong.");
                             }
@@ -194,6 +209,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 //            w.setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -225,6 +241,9 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         } else{
 
         }
+
+        getchefProfile();
+
     }
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
