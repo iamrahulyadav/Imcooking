@@ -300,7 +300,7 @@
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="add_more_photos"
+                android:id="@+id/addMore"
                 android:text="Add more Photos"
                 android:textSize="10sp"
                 android:textColor="@color/theme_color"
