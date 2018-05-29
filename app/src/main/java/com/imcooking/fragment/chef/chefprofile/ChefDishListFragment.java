@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.imcooking.Model.api.response.ChefProfileData;
+import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
@@ -44,7 +45,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
     private ViewPager viewPager_1, viewPager_2;
     private TextView tv_add_dish;
-    List<ChefProfileData.ChefDishBean> chef_dish_list=new ArrayList<>();
+    List<ChefProfileData1.ChefDishBean> chef_dish_list=new ArrayList<>();
     private void init(){
 
         tv_add_dish = getView().findViewById(R.id.chef_dish_list_add_dish);
@@ -56,14 +57,13 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         viewPager_2.setPageMargin(10);
 
 //        if (getActivity().getClass().getName().equals(MainActivity.class.getName())){
-            chef_dish_list = ChefHome.chefProfileData.getChef_dish();
+            chef_dish_list = ChefHome.chefProfileData1.getChef_dish();
 
 //        } else {
 //            chef_dish_list = ChefProfile.chefProfileData.getChef_dish();
 //        }
-        List<ChefProfileData.ChefDishBean> chef_dish_list_current = new ArrayList<>();
-        List<ChefProfileData.ChefDishBean> chef_dish_list_old = new ArrayList<>();
-
+        List<ChefProfileData1.ChefDishBean> chef_dish_list_current = new ArrayList<>();
+        List<ChefProfileData1.ChefDishBean> chef_dish_list_old = new ArrayList<>();
 
         for (int i=0; i<chef_dish_list.size(); i++){
             if(chef_dish_list.get(i).getDish_available().equals("Yes")){

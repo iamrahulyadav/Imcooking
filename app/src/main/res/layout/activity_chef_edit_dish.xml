@@ -24,7 +24,7 @@
         android:layout_height="1dp"
         android:background="@color/view_7"/>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -52,6 +52,13 @@
                 android:background="@color/view_6"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"/>
+            <Spinner
+                style="@style/SpinnerTheme1"
+                android:spinnerMode="dropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chef_edit_dish_spinner_cuisine"
+                android:paddingRight="20dp" />
             <com.imcooking.customtext.CustomEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -291,16 +298,11 @@
                 android:id="@+id/chef_edit_dish_photos_recycler"
                 android:layout_marginTop="20dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_dish_photos"
-                android:orientation="horizontal"/>
-
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/addMore"
+                android:id="@+id/edit_dish_add_more"
+                android:onClick="add_more_photos"
                 android:text="Add more Photos"
                 android:textSize="10sp"
                 android:textColor="@color/theme_color"
@@ -364,6 +366,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

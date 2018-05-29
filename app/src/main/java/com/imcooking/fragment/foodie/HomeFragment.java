@@ -258,6 +258,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Cuis
         if (cuisionList!=null){
             cuisionList.clear();
         }
+
         new GetData(getContext(), getActivity()).getResponse("", "cuisine",
                 new GetData.MyCallback() {
             @Override

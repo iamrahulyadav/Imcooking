@@ -47,7 +47,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     Gson gson = new Gson();
     TinyDB tinyDB;
-Context mc;
+
     public HomeDetails() {
         // Required empty public constructor
     }
@@ -94,6 +94,7 @@ Context mc;
     private String TAG  = HomeDetails.class.getName();
 
     private void init(){
+
         iv_share = getView().findViewById(R.id.home_details_share);
         imgChef = getView().findViewById(R.id.home_details_user_icon);
         imgTop = getView().findViewById(R.id.fragment_home_details_img_top);
@@ -265,7 +266,9 @@ Context mc;
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, "Share Using"));
         } else if(id == R.id.home_details_chef_profile) {
-            startActivityForResult(new Intent(getContext(), ChefProfile.class).putExtra("chef_id", chef_id),
+            startActivityForResult(new Intent(getContext(), ChefProfile.class)
+                            .putExtra("chef_id", chef_id)
+                            .putExtra("foodie_id", foodie_id),
                     ChefProfile.CHEF_PROFILE_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
@@ -280,7 +283,6 @@ Context mc;
             addCart(v);
 
         }
-
     }
 
     public void addCart(View view) {

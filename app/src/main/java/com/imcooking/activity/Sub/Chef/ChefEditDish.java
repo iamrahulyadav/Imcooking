@@ -16,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.ModelChefAddDish;
 import com.imcooking.Model.ApiRequest.ModelChefEditDish;
 import com.imcooking.Model.api.response.ApiResponse;
+import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterEditDishPhotos;
 import com.imcooking.utils.BaseClass;
@@ -51,6 +53,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ChefEditDish extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
 
@@ -66,12 +69,14 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private String userChoosenTask;
 
     private TextView tv_title;
+    private TextView tv_add_more_photo;
 
     private String bitmapString="a";
 
     private String title;
 
     private LinearLayout layout_photos;
+//    public TextView addMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
+        getMyCuisines();
         init();
         getMyIntentData();
     }
@@ -92,14 +98,21 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private TextView tv_photo_name;
     private RecyclerView rv1;
     private ArrayList<String> arr_photos = new ArrayList<>();
+    private int pos;
+    private Spinner sp_cuisine;
+    private List<CuisineData.CuisineDataBean> cuisineList=new ArrayList<>();
+    private CuisineData cuisineData = new CuisineData();
 
     private void init(){
     //    layout_photos = findViewById(R.id.edit_dish_photos);
 
 //        tv_photo_name = findViewById(R.id.chef_edit_dish_photo_name);
 
-        tv_title = findViewById(R.id.chef_edit_dish_title);
+        sp_cuisine = findViewById(R.id.chef_edit_dish_spinner_cuisine);
+        tv_add_more_photo = findViewById(R.id.edit_dish_add_more);
 
+        tv_title = findViewById(R.id.chef_edit_dish_title);
+        //addMore=findViewById(R.id.addMore);
         edt_name = findViewById(R.id.chef_edit_dish_name);
         edt_cuisine = findViewById(R.id.chef_edit_dish_cuisine);
         edt_price = findViewById(R.id.chef_edit_dish_price);
@@ -127,18 +140,23 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
         sp.setAdapter(arrayAdapter);
 
+
+
+
         rv1 = findViewById(R.id.chef_edit_dish_photos_recycler);
-        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-//        LinearLayoutManager horizontalLayoutManagaer
-//                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+//        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
+//            @Override
+//            public boolean canScrollVertically() {
+//                return false;
+//            }
+//        };
+
+        rv1.setHasFixedSize(false);
+        LinearLayoutManager manager
+                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         rv1.setLayoutManager(manager);
         arr_photos.clear();
-        arr_photos.add("Photo1");
+        arr_photos.add("Photo");
 
         setMyAdapter(arr_photos);
     }
@@ -198,6 +216,41 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         userDataBean = new Gson().fromJson(login_data, ApiResponse.UserDataBean.class);
 
         chef_id = userDataBean.getUser_id() + "";
+    }
+
+    private void getMyCuisines() {
+
+        try {
+            JSONObject jsonObject = new JSONObject("");
+
+            new GetData(getApplicationContext(), ChefEditDish.this).sendMyData(jsonObject, "cuisine",
+                    ChefEditDish.this, new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            cuisineData = new Gson().fromJson(result, CuisineData.class);
+//                            cuisineList.addAll(cuisineData.getCuisine_data());
+
+                            setMyCuisines();
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setMyCuisines(){
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        for(int i=0; i<cuisineData.getCuisine_data().size(); i++){
+            arrayList.add(cuisineData.getCuisine_data().get(i).getCuisine_name());
+        }
+
+        sp_cuisine.setOnItemSelectedListener(this);
+        ArrayAdapter<String> arrayAdapter1 =new ArrayAdapter<String>(this,
+                R.layout.spinner_row, arrayList);
+        arrayAdapter1.setDropDownViewResource(R.layout.spinner_row);
+        sp_cuisine.setAdapter(arrayAdapter1);
     }
 
     public void edit_dish_submit(View view){
@@ -374,14 +427,22 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
     public void add_more_photos(View view){
 
-        arr_photos.add("photo");
-        setMyAdapter(arr_photos);
+        arr_photos.add("Photo");
+        if(arr_photos.size() == 3){
+            tv_add_more_photo.setVisibility(View.GONE);
+        }
+//        Toast.makeText(getApplicationContext(), arr_photos.size()+"", Toast.LENGTH_SHORT).show();
+        adapterEditDishPhotos.notifyDataSetChanged();
+
+
     }
 
+    private AdapterEditDishPhotos adapterEditDishPhotos;
+
     private void setMyAdapter(ArrayList<String> arr_p){
-        AdapterEditDishPhotos adapterEditDishPhotos = new AdapterEditDishPhotos(ChefEditDish.this, arr_p, this);
+        adapterEditDishPhotos = new AdapterEditDishPhotos(ChefEditDish.this, arr_p, this/*,addMore*/);
         rv1.setAdapter(adapterEditDishPhotos);
-        adapterEditDishPhotos.notifyDataSetChanged();
+//        adapterEditDishPhotos.notifyDataSetChanged();
     }
 
     private void selectImage() {
@@ -496,12 +557,14 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                 Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
 
 
-                if(arr_photos.size() == 1){
+/*                if(arr_photos.size() == 1){
                     arr_photos.clear();
-                }
-                arr_photos.remove(arr_photos.size());
-                arr_photos.add(filePath.substring(filePath.lastIndexOf("/") + 1));
-                setMyAdapter(arr_photos);
+                }*/
+//                arr_photos.remove(arr_photos.size()-1);
+//                arr_photos.add(filePath.substring(filePath.lastIndexOf("/") + 1));
+                arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
+                adapterEditDishPhotos.notifyDataSetChanged();
+//                setMyAdapter(arr_photos);
 
 
 
@@ -537,6 +600,27 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             e.printStackTrace();
         }
         bitmap = thumbnail;
+
+        Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+
+        // CALL THIS METHOD TO GET THE ACTUAL PATH
+        File finalFile = new File(getRealPathFromURI(tempUri));
+
+        System.out.println(finalFile + "");
+
+        String filePath = finalFile + "";
+        Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
+
+
+/*                if(arr_photos.size() == 1){
+                    arr_photos.clear();
+                }*/
+//                arr_photos.remove(arr_photos.size()-1);
+//                arr_photos.add(filePath.substring(filePath.lastIndexOf("/") + 1));
+        arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
+        adapterEditDishPhotos.notifyDataSetChanged();
+//                setMyAdapter(arr_photos);
+
 //        imgUser.setImageBitmap(thumbnail);
 //        uploadImg(bitmap);
         bitmapString = BaseClass.BitMapToString(bitmap);
@@ -601,6 +685,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     @Override
     public void browse_my_photo(View view, int position) {
 
+        pos = position;
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(),

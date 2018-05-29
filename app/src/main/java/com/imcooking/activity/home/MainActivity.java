@@ -171,7 +171,17 @@ public class MainActivity extends AppBaseActivity
         init();
         getUserData();
         if (user_type.equals("1")) {
-            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
+            ChefHome fragment = new ChefHome();
+
+            Bundle args = new Bundle();
+            args.putString("chef_id", user_id);
+            args.putString("foodie_id", "4");
+
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+//            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
         } else { // 2
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
@@ -182,7 +192,7 @@ public class MainActivity extends AppBaseActivity
 
     private String loginData;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
-    private String user_type;
+    private String user_type, user_id;
 
     private void init(){
 
@@ -204,6 +214,7 @@ public class MainActivity extends AppBaseActivity
         loginData = tinyDB.getString("login_data");
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
+        user_id = userDataBean.getUser_id() + "";
     }
 
     public void bottom_click(View view) {

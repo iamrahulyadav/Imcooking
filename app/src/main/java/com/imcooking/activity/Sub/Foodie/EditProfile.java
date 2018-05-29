@@ -133,7 +133,7 @@ public class EditProfile extends AppBaseActivity {
                 try {
                     jsonData = new JSONObject(s);
 
-                    new GetData(getApplicationContext()).sendMyData(jsonData, "foodieprofileedit",
+                        new GetData(getApplicationContext()).sendMyData(jsonData, "foodieprofileedit",
                             EditProfile.this, new GetData.MyCallback() {
                                 @Override
                                 public void onSuccess(String result) {

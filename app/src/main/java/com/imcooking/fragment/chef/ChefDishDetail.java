@@ -54,7 +54,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
     private TextView tv_dish_name, tv_dish_likes, tv_dish_text_available, tv_dish_time, tv_dish_count, tv_dish_home_delivery,
     tv_dish_price, /*tv_dish_description,*/ tv_edit_dish ;
 
-    private String str_name, str_likes, str_available, str_time, str_count, str_homedelivery, str_pickup, str_price,
+    private String str_id, str_name, str_likes, str_available, str_time, str_count, str_homedelivery, str_pickup, str_price,
             str_description, str_special_note, str_cuisine;
 
     private ImageView iv_home_delivery_icon, iv_pickup_icon;
@@ -78,6 +78,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
 
     private void getMyData(){
 
+        str_id = getArguments().getString("id");
         str_name = getArguments().getString("name");
         str_available = getArguments().getString("available");
         str_time = getArguments().getString("time");
@@ -161,6 +162,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         int id = view.getId();
         if(id == R.id.chef_home_details_edit_dish){
             startActivity(new Intent(getContext(), ChefEditDish.class)
+                    .putExtra("id", str_id)
                     .putExtra("name", str_name)
                     .putExtra("cuisine", str_cuisine)
                     .putExtra("price", str_price)

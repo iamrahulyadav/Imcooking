@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.DishLikeRequest;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
+import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
@@ -42,9 +43,10 @@ public class AdapterChefDishList extends PagerAdapter{
     private FragmentManager manager;
     private Context context;
     private Activity activity;
-    private List<ChefProfileData.ChefDishBean> chef_dish_list = new ArrayList<>();
 
-    public AdapterChefDishList(FragmentManager manager, Context context, Activity activity, List<ChefProfileData.ChefDishBean> chef_dish_list) {
+    private List<ChefProfileData1.ChefDishBean> chef_dish_list = new ArrayList<>();
+
+    public AdapterChefDishList(FragmentManager manager, Context context, Activity activity, List<ChefProfileData1.ChefDishBean> chef_dish_list) {
         this.manager = manager;
         this.context = context;
         this.activity = activity;
@@ -115,7 +117,7 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("name", chef_dish_list.get(position).getDish_name());
                 bundle.putString("available", chef_dish_list.get(position).getDish_available());
                 bundle.putString("time", chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to());
-                bundle.putString("count", chef_dish_list.get(position).getDish_quantity());
+                bundle.putString("count", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("home_delivery", chef_dish_list.get(position).getDish_homedelivery());
                 bundle.putString("pickup", chef_dish_list.get(position).getDish_pickup());
                 bundle.putString("price", chef_dish_list.get(position).getDish_price() + "");

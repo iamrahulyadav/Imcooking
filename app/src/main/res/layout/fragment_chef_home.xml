@@ -40,53 +40,56 @@
                         android:padding="10dp">
 
                         <ImageView
-                            android:visibility="visible"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:id="@+id/chef_home_settings"
-                            android:src="@drawable/ic_settings_white"
-                            android:layout_alignParentLeft="true"/>
-                        <ImageView
-                            android:visibility="visible"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/ic_settings_white"
+                            android:visibility="visible" />
+
+                        <ImageView
                             android:id="@+id/chef_home_heart_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
                             android:src="@drawable/ic_heart"
-                            android:layout_alignParentRight="true"/>
+                            android:visibility="visible" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_centerInParent="true"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/activity_chef_txtname"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Jamie Malone"
-                                android:id="@+id/activity_chef_txtname"
+                                android:text="Your Name "
                                 android:textColor="@color/colorWhite"
                                 android:textSize="14sp"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
+
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Narangi Byepass Road, Y K Nagar, Vihar West India"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="10sp"
                                 android:id="@+id/activity_chef_txtAdderss"
-                                android:layout_marginTop="3dp"
-                                android:layout_marginBottom="3dp"/>
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:layout_marginTop="3dp"
+                                android:text="Your Address "
+                                android:textColor="@color/colorWhite"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/chef_home_phoneno"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:layout_marginTop="3dp"
                                 android:text="null"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="10sp"
-                                android:id="@+id/chef_home_phoneno"
-                                android:layout_marginTop="3dp"
-                                android:layout_marginBottom="3dp"/>
+                                android:textSize="10sp" />
 
                         </LinearLayout>
 
@@ -109,6 +112,7 @@
                         <com.imcooking.customtext.CustomTextViewBold
                             android:layout_width="wrap_content"
                             android:layout_height="25dp"
+                            android:id="@+id/chef_home_call_btn"
                             android:text="Call"
                             android:textColor="@color/colorWhite"
                             android:textSize="14sp"
