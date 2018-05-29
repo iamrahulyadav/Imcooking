@@ -64,7 +64,7 @@ Context mc;
         userDataBean  = gson.fromJson(login_data, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id();
 /*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
+            Window w = getActivity().getWindow(); // in Activity'selectedValue onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
     }
@@ -133,7 +133,7 @@ Context mc;
 
 //        ((MainActivity) getActivity()).toolbar.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
+            Window w = getActivity().getWindow(); // in Activity'selectedValue onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
@@ -147,7 +147,7 @@ Context mc;
         super.onDestroyView();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
+            Window w = getActivity().getWindow(); // in Activity'selectedValue onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }

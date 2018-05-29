@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterFoodieMyOrder;
-import com.imcooking.adapters.AdapterFoodieMyRequest;
 import com.imcooking.utils.CustomLayoutManager;
 
 /**

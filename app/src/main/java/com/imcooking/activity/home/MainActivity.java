@@ -51,6 +51,7 @@ import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.MyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
+import com.imcooking.fragment.foodie.TestFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.mukesh.tinydb.TinyDB;
@@ -62,24 +63,21 @@ import java.util.Locale;
 
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private GoogleMap googleMap;
     MapView mMapView;
-    public static StringBuffer stringBuffer  = new StringBuffer();
     Context mContext;
     private FrameLayout frame;
-   public static double latitude, longitude;
     private float lastTranslate = 0.0f;
     private LinearLayout frame_view;
 //    public static Toolbar toolbar;
     public static DrawerLayout drawerLayout1;
     public NavigationView navigationView;
-    TextView txtChefUserName, txtMobile;
     private TinyDB tinyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         drawerLayout1 = findViewById(R.id.drawer_layout);
         checkGPSStatus();
 
@@ -92,43 +90,10 @@ public class MainActivity extends AppBaseActivity
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap map) {
-                googleMap = map;
-
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                    /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            1);
-                    return;
-                }
-                googleMap.setMyLocationEnabled(true);
-                googleMap.setOnMyLocationChangeListener(onMyLocationChangeListener);
-            }
-        });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
-/*
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        LinearLayout toolbar_left = toolbar.findViewById(R.id.toolbar_left);
-        toolbar_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-*/
-
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
@@ -143,8 +108,6 @@ public class MainActivity extends AppBaseActivity
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
-
-
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
@@ -214,7 +177,7 @@ public class MainActivity extends AppBaseActivity
             tv_home.setTextColor(getResources().getColor(R.color.theme_color));
             iv_home.setImageResource(R.drawable.ic_home_1);
             if(user_type.equals("2")) {
-                BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
+                BaseClass.callFragment(new TestFragment(), new TestFragment().getClass().getName(), getSupportFragmentManager());
             } else{
                 BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
             }
@@ -284,7 +247,7 @@ public class MainActivity extends AppBaseActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if(getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finishAffinity();
-        } else if(tag1.equals(HomeFragment.class.getName()) || tag1.equals(ChefHome.class.getName())){
+        } else if(tag1.equals(TestFragment.class.getName()) || tag1.equals(ChefHome.class.getName())){
             getSupportFragmentManager().popBackStack();
             finishAffinity();
         } else{
@@ -316,7 +279,7 @@ public class MainActivity extends AppBaseActivity
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+  /*  @RequiresApi(api = Build.VERSION_CODES.M)
     @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                      @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -326,7 +289,7 @@ public class MainActivity extends AppBaseActivity
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                    /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
+                    *//*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*//*
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             1);
@@ -359,7 +322,7 @@ public class MainActivity extends AppBaseActivity
                         .newCameraPosition(cameraPosition));
             }
         }
-    };
+    };*/
 
     public StringBuffer getAddress(LatLng latLng) throws IOException {
         Geocoder geocoder;

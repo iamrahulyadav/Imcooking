@@ -1,7 +1,9 @@
 package com.imcooking.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,13 +12,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.imcooking.Model.ApiRequest.Home;
@@ -43,6 +49,55 @@ public class BaseClass {
         }
         return false;
     }
+
+    public static boolean checkGooglePlayService(Activity activity)
+    {
+        int checkGooglePlayService= GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+        int Requestcode=200;
+        if(checkGooglePlayService!= ConnectionResult.SUCCESS)
+        {
+            GooglePlayServicesUtil.getErrorDialog(checkGooglePlayService,activity,Requestcode);
+            Toast.makeText(activity,activity.getResources().getString(R.string.no_working),Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean requestPermissionToLocation(final Context context, final Fragment fragment) {
+        if (Build.VERSION.SDK_INT < 23) {
+            return true;
+        } else if (ContextCompat.checkSelfPermission(context, "android.permission.ACCESS_FINE_LOCATION") != 0 && ActivityCompat.checkSelfPermission(context, "android.permission.ACCESS_COARSE_LOCATION") != 0) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity)context, "android.permission.ACCESS_FINE_LOCATION") && ActivityCompat.shouldShowRequestPermissionRationale((Activity)context, "android.permission.ACCESS_COARSE_LOCATION")) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                alertBuilder.setCancelable(true);
+                alertBuilder.setTitle("Permission necessary");
+                alertBuilder.setMessage("Location permission is necessary");
+                alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @TargetApi(16)
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (fragment == null) {
+                            ActivityCompat.requestPermissions((Activity)context, new String[]{"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"}, 2);
+                        } else {
+                            fragment.requestPermissions(new String[]{"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"}, 2);
+                        }
+
+                    }
+                });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+            } else if (fragment == null) {
+                ActivityCompat.requestPermissions((Activity)context, new String[]{"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"}, 2);
+            } else {
+                fragment.requestPermissions(new String[]{"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"}, 2);
+            }
+
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
     public static BitmapDescriptor bitmapDescriptorFromVectorR(Context context) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_placeholder);
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());

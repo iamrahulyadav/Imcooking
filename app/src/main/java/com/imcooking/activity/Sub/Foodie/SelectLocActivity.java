@@ -157,13 +157,15 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent();
-                intent.putExtra("latitude",latLng.latitude);
-                intent.putExtra("longitude", latLng.longitude);
-                intent.putExtra("name", autocompleteView.getText().toString().trim());
-                setResult(2,intent);
+              if (latLng!=null){
+                  Intent intent = new Intent();
+                  intent.putExtra("latitude",latLng.latitude);
+                  intent.putExtra("longitude", latLng.longitude);
+                  intent.putExtra("name", autocompleteView.getText().toString().trim());
+                  setResult(2,intent);
 //                Log.d("VKK", gson.toJson(listModel));
-                finish();
+                  finish();
+              }
             }
         });
     }

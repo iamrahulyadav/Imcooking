@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.main.setup.LoginActivity"
             android:screenOrientation="portrait"
@@ -61,8 +61,9 @@
             android:name=".activity.Sub.Foodie.Help"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.Sub.Foodie.Help1" />
-        <activity android:name=".activity.Sub.Foodie.EditProfile"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+        <activity
+            android:name=".activity.Sub.Foodie.EditProfile"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity android:name=".activity.Sub.Foodie.ChefProfile" />
 
         <meta-data
@@ -74,14 +75,15 @@
 
         <activity android:name=".activity.Sub.Foodie.FilterHomeActivity" />
         <activity android:name=".activity.Sub.Foodie.OtherDishActivity" />
-        <activity android:name=".activity.Sub.Foodie.AddAddressActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-        <activity android:name=".activity.Sub.Foodie.SelectLocActivity"/>
-
-        <activity android:name=".activity.Sub.Foodie.CartActivity"/>
-        <activity android:name=".activity.Sub.Chef.ChefEditDish"
-            android:windowSoftInputMode="stateHidden"/>
-
+        <activity
+            android:name=".activity.Sub.Foodie.AddAddressActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".activity.Sub.Foodie.SelectLocActivity" />
+        <activity android:name=".activity.Sub.Foodie.CartActivity" />
+        <activity
+            android:name=".activity.Sub.Chef.ChefEditDish"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activity.home.TestActivity"></activity>
     </application>
 
 </manifest>
