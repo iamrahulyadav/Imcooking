@@ -200,7 +200,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                 if (chefProfileData1.isStatus()) {
                                     layout.setVisibility(View.VISIBLE);
                                     txtAddress.setText(chefProfileData1.getChef_data().getAddress());
-                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
+//                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
                                     txtName.setText(chefProfileData1.getChef_data().getChef_name()+"");
                                     tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                     Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
@@ -441,17 +441,7 @@ for(int i=0;i<jsonArray.length();i++){
         popupWindow.setContentView(view);
         return popupWindow;
     }
-/*
 
-        PopupMenu popup = new PopupMenu(getContext(), v);
-        popup.setOnMenuItemClickListener(this);
-//        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-      //  popup.setGravity(Gravity.LEFT);
-        MenuInflater inflater1 = popup.getMenuInflater();
-        inflater1.inflate(R.menu.popup_chef_settings, popup.getMenu());
-        popup.show();
-*/
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {

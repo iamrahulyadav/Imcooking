@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -32,6 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/layout_chef_edit_dish"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -46,19 +48,12 @@
                 android:textSize="16sp"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent"/>
-            <View
+            <!--    <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
                 android:background="@color/view_6"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"/>
-            <Spinner
-                style="@style/SpinnerTheme1"
-                android:spinnerMode="dropdown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_dish_spinner_cuisine"
-                android:paddingRight="20dp" />
             <com.imcooking.customtext.CustomEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,6 +63,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent" />
+     -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
@@ -78,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_dish_price"
-                android:hint="Price"
+                android:hint="Price (in £)"
                 android:textColorHint="@color/text_color_7"
                 android:textSize="16sp"
                 android:textColor="@color/text_color_4"
@@ -113,6 +109,21 @@
                 android:textColorHint="@color/text_color_7"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:background="@color/view_6"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"/>
+            <Spinner
+                style="@style/SpinnerTheme1"
+                android:spinnerMode="dropdown"
+                android:textAlignment="textStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chef_edit_dish_spinner_cuisine"
+                android:gravity="start"
+                android:paddingRight="20dp"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"

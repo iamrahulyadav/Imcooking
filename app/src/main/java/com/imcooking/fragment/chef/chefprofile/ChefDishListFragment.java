@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
@@ -22,6 +24,7 @@ import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.adapters.AdapterChefHomeViewPager;
 import com.imcooking.fragment.chef.ChefHome;
+import com.mukesh.tinydb.TinyDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +44,16 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         super.onActivityCreated(savedInstanceState);
 
         init();
+        getMyData();
     }
 
     private ViewPager viewPager_1, viewPager_2;
     private TextView tv_add_dish;
     List<ChefProfileData1.ChefDishBean> chef_dish_list=new ArrayList<>();
+    private ApiResponse.UserDataBean userDataBean;// = new ApiResponse.UserDataBean();
+    private TinyDB tinyDB;
+    private String loginData, user_type;
+
     private void init(){
 
         tv_add_dish = getView().findViewById(R.id.chef_dish_list_add_dish);
@@ -79,6 +87,17 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
                 getContext(), getActivity(), chef_dish_list_old);
         viewPager_1.setAdapter(adapterChefDishListCurrent);
         viewPager_2.setAdapter(adapterChefDishListOld);
+    }
+
+    private void getMyData(){
+        userDataBean = new ApiResponse.UserDataBean();
+        tinyDB = new TinyDB(getContext());
+        loginData = tinyDB.getString("login_data");
+        userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
+        user_type = userDataBean.getUser_type();
+        if(user_type.equals("2")){
+            tv_add_dish.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@
         android:textSize="13sp"
         android:textStyle="bold"
         android:textColor="@color/text_color_4" />
+
     <com.imcooking.customtext.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
         android:layout_marginTop="15dp"
         android:textSize="10dp"
         android:textColor="@color/text_color_4"/>
+
     <com.imcooking.customtext.CustomTextViewBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,6 +29,7 @@
         android:textSize="13sp"
         android:textStyle="bold"
         android:textColor="@color/text_color_4" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,6 +48,7 @@
             android:background="@drawable/shape_background_theme"
             android:paddingLeft="20dp"
             android:paddingRight="20dp" />
+
         <com.imcooking.customtext.CustomTextViewBold
             android:layout_width="wrap_content"
             android:layout_height="35dp"
@@ -60,4 +64,5 @@
             android:paddingRight="20dp" />
 
     </LinearLayout>
+
 </LinearLayout>

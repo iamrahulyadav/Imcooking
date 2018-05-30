@@ -228,7 +228,15 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
+                ChefHome fragment = new ChefHome();
+
+                Bundle args = new Bundle();
+                args.putString("chef_id", user_id);
+                args.putString("foodie_id", "4");
+
+                fragment.setArguments(args);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
             }
         } else if (id ==R.id.bottom_profile_layout){
             tv_profile.setTextColor(getResources().getColor(R.color.theme_color));

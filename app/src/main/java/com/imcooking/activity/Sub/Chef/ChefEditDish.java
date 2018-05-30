@@ -58,7 +58,7 @@ import java.util.List;
 public class ChefEditDish extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
 
     private String chef_id, dish_id, name, cuisine, price, description, special_note, available, homedelivery, pickup;
-    private EditText edt_name, edt_cuisine, edt_price, edt_description, edt_special_note;
+    private EditText edt_name, edt_price, edt_description, edt_special_note;
     private SwitchCompat switch_1, switch_2, switch_3;
     private String sw_1 = "Yes", sw_2 = "Yes", sw_3 = "Yes";
     private String dish_miles = "10";
@@ -75,7 +75,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
     private String title;
 
-    private LinearLayout layout_photos;
+    private LinearLayout layout_photos, layout;
 //    public TextView addMore;
 
     @Override
@@ -89,6 +89,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
+        layout = findViewById(R.id.layout_chef_edit_dish);
 
         getMyCuisines();
         init();
@@ -102,6 +103,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private Spinner sp_cuisine;
     private List<CuisineData.CuisineDataBean> cuisineList=new ArrayList<>();
     private CuisineData cuisineData = new CuisineData();
+    private String selected_cuisine, selected_cuisine_id;
 
     private void init(){
     //    layout_photos = findViewById(R.id.edit_dish_photos);
@@ -114,7 +116,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         tv_title = findViewById(R.id.chef_edit_dish_title);
         //addMore=findViewById(R.id.addMore);
         edt_name = findViewById(R.id.chef_edit_dish_name);
-        edt_cuisine = findViewById(R.id.chef_edit_dish_cuisine);
+//        edt_cuisine = findViewById(R.id.chef_edit_dish_cuisine);
         edt_price = findViewById(R.id.chef_edit_dish_price);
         edt_description = findViewById(R.id.chef_edit_dish_description);
         edt_special_note = findViewById(R.id.chef_edit_dish_special_note);
@@ -176,7 +178,8 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             pickup = getIntent().getExtras().getString("pickup");
 
             edt_name.setText(name);
-            edt_cuisine.setText(cuisine);
+//            sp_cuisine.setSelection();
+//            edt_cuisine.setText(cuisine);
             edt_price.setText(price);
             edt_description.setText(description);
             edt_special_note.setText(special_note);
@@ -221,16 +224,20 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private void getMyCuisines() {
 
         try {
-            JSONObject jsonObject = new JSONObject("");
+            String s = "";
+            JSONObject jsonObject = new JSONObject("{}");
 
+
+            layout.setVisibility(View.GONE);
             new GetData(getApplicationContext(), ChefEditDish.this).sendMyData(jsonObject, "cuisine",
                     ChefEditDish.this, new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
+                            layout.setVisibility(View.VISIBLE);
                             cuisineData = new Gson().fromJson(result, CuisineData.class);
 //                            cuisineList.addAll(cuisineData.getCuisine_data());
 
-                            setMyCuisines();
+                            setMyCuisines(cuisineData);
                         }
                     });
         } catch (JSONException e) {
@@ -239,24 +246,25 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
     }
 
-    private void setMyCuisines(){
+    private void setMyCuisines(CuisineData cuisines){
 
         ArrayList<String> arrayList = new ArrayList<>();
-        for(int i=0; i<cuisineData.getCuisine_data().size(); i++){
-            arrayList.add(cuisineData.getCuisine_data().get(i).getCuisine_name());
+        for(int i=0; i<cuisines.getCuisine_data().size(); i++){
+            arrayList.add(cuisines.getCuisine_data().get(i).getCuisine_name());
         }
 
         sp_cuisine.setOnItemSelectedListener(this);
-        ArrayAdapter<String> arrayAdapter1 =new ArrayAdapter<String>(this,
-                R.layout.spinner_row, arrayList);
-        arrayAdapter1.setDropDownViewResource(R.layout.spinner_row);
+        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this,
+                R.layout.spinner_row_1, arrayList);
+        arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
         sp_cuisine.setAdapter(arrayAdapter1);
+        sp_cuisine.setOnItemSelectedListener(this);
     }
 
     public void edit_dish_submit(View view){
 
         name = edt_name.getText().toString().trim();
-        cuisine = edt_cuisine.getText().toString().trim();
+//        cuisine = edt_cuisine.getText().toString().trim();
         price = edt_price.getText().toString().trim();
         description = edt_description.getText().toString().trim();
         special_note = edt_special_note.getText().toString().trim();
@@ -264,23 +272,18 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
 
         if(!name.isEmpty()){
-            if(!cuisine.isEmpty()){
-                if(!price.isEmpty()){
-                    if(!description.isEmpty()){
-                        if(!special_note.isEmpty()){
-                            if(!bitmapString.equals("a")) {
-
-                                if(title.equals("dish")){
-                                    adddish(title);
-                                } else if(title.equals("editdish")){
-                                    editdish(title);
-                                }
-
-                            } else{
-                                BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
+            if(!price.isEmpty()){
+                if(!description.isEmpty()){
+                    if(!special_note.isEmpty()){
+                        if(!bitmapString.equals("a")) {
+                            if(title.equals("dish")){
+                                adddish(title);
+                            } else if(title.equals("editdish")){
+                                editdish(title);
                             }
+
                         } else{
-                            BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
+                            BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
                         }
                     } else{
                         BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
@@ -303,7 +306,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         ModelChefAddDish requestData = new ModelChefAddDish();
         requestData.setUser_id(chef_id);
         requestData.setDish_name(name);
-        requestData.setCuisine("29");
+        requestData.setCuisine(selected_cuisine_id);
         requestData.setSubcuisine("15");
         requestData.setDescription(description);
         requestData.setSpecial_note(special_note);
@@ -369,7 +372,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         requestData.setDish_id(dish_id);
         requestData.setUser_id(chef_id);
         requestData.setDish_name(name);
-        requestData.setCuisine("29");
+        requestData.setCuisine(selected_cuisine_id);
         requestData.setSubcuisine("15");
         requestData.setDescription(description);
         requestData.setSpecial_note(special_note);
@@ -671,10 +674,18 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-        if (view.getId() == R.id.edit_dish_spinner) {
+//        Toast.makeText(this, adapterView.getId() + "", Toast.LENGTH_SHORT).show();
 
+        if (adapterView.getId() == R.id.edit_dish_spinner) {
             dish_miles = adapterView.getItemAtPosition(i).toString();
-        }
+            Log.d("MySpinner", dish_miles);
+        } else if(adapterView.getId() == R.id.chef_edit_dish_spinner_cuisine){
+            selected_cuisine = adapterView.getItemAtPosition(i).toString();
+            selected_cuisine_id = cuisineData.getCuisine_data().get(i).getCuisine_id() + "";
+            Log.d("MySpinner", selected_cuisine_id);
+        }else{}
+
+
     }
 
     @Override
