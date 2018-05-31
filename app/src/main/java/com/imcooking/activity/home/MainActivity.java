@@ -133,7 +133,17 @@ public class MainActivity extends AppBaseActivity
         init();
         getUserData();
         if (user_type.equals("1")) {
-            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
+            ChefHome fragment = new ChefHome();
+
+            Bundle args = new Bundle();
+            args.putString("chef_id", user_id);
+            args.putString("foodie_id", "4");
+
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+//            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
         } else { // 2
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
@@ -144,7 +154,7 @@ public class MainActivity extends AppBaseActivity
 
     private String loginData;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
-    private String user_type;
+    private String user_type, user_id;
 
     private void init(){
 
@@ -166,6 +176,7 @@ public class MainActivity extends AppBaseActivity
         loginData = tinyDB.getString("login_data");
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
+        user_id = userDataBean.getUser_id() + "";
     }
 
     public void bottom_click(View view) {
@@ -173,24 +184,40 @@ public class MainActivity extends AppBaseActivity
         int id = view.getId();
         setBottomColor();
 
-        if (id ==R.id.bottom_home_layout){
+        if (id == R.id.bottom_home_layout){
             tv_home.setTextColor(getResources().getColor(R.color.theme_color));
             iv_home.setImageResource(R.drawable.ic_home_1);
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new TestFragment(), new TestFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
+                ChefHome fragment = new ChefHome();
+
+                Bundle args = new Bundle();
+                args.putString("chef_id", user_id);
+                args.putString("foodie_id", "4");
+
+                fragment.setArguments(args);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
             }
-        } else if (id ==R.id.bottom_profile_layout){
+        } else if (id == R.id.bottom_profile_layout){
             tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
             iv_profile.setImageResource(R.drawable.ic_user_name_1);
 
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
+                ChefHome fragment = new ChefHome();
+
+                Bundle args = new Bundle();
+                args.putString("chef_id", user_id);
+                args.putString("foodie_id", "4");
+
+                fragment.setArguments(args);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
             }
-        } else if (id ==R.id.bottom_my_order_layout){
+        } else if (id == R.id.bottom_my_order_layout){
             tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
             iv_my_order.setImageResource(R.drawable.ic_salad_1);
             if(user_type.equals("2")) {
@@ -198,7 +225,7 @@ public class MainActivity extends AppBaseActivity
             } else{
 
             }
-        } else if (id ==R.id.bottom_notification_layout){
+        } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
             iv_notification.setImageResource(R.drawable.ic_ring_1);
             BaseClass.callFragment(new NotificationFragment(), new NotificationFragment().getClass().getName(), getSupportFragmentManager());

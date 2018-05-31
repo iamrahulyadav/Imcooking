@@ -31,18 +31,28 @@ public class ChefProfile extends AppBaseActivity {
     TextView txtName, txtAddress,txtFollowers, txtCall;
     ImageView imgChef, imgBack;
     Page_Adapter adapter;
-    String chefId;
+    String chefId, foodie_id;
+
+    public static int CHEF_PROFILE_CODE = 22;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_profile);
-        chefId = getIntent().getStringExtra("chef_id");
-//        find id
-//        init();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_chef_profile, new ChefHome()).commit();
-//        BaseClass.callFragment(new ChefHome(), new ChefHome().getClass().getName(), getSupportFragmentManager());
+        chefId = getIntent().getStringExtra("chef_id");
+        foodie_id = getIntent().getStringExtra("foodie_id");
+
+        ChefHome fragment = new ChefHome();
+
+        Bundle args = new Bundle();
+        args.putString("chef_id", chefId);
+        args.putString("foodie_id", foodie_id);
+
+        fragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_chef_profile, fragment).commit();
+
     }
 
     ViewPager pager;

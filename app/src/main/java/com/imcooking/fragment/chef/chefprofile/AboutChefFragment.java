@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.imcooking.Model.api.response.ChefProfileData;
+import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.fragment.chef.ChefHome;
 
@@ -38,13 +39,13 @@ public class AboutChefFragment extends Fragment {
         tv_cuisine = getView().findViewById(R.id.about_chef_cuisine);
         tv_sub_cuisine = getView().findViewById(R.id.about_chef_sub_cuisine);
 
-        ChefProfileData.ChefDataBean data = ChefHome.chefProfileData.getChef_data();
+        ChefProfileData1.ChefDataBean data = ChefHome.chefProfileData1.getChef_data();
         if(data != null) {
 //            String s1 = data.getAbout();
 //            Toast.makeText(getContext(), s1, Toast.LENGTH_SHORT).show();
 //            String s2 = data.getBestcuisine_name();
 //            String s3 = data.getCuisine_name();
-            tv_description.setText(data.getAbout());
+            tv_description.setText(data.getAbout()+"");
             tv_cuisine.setText(data.getBestcuisine_name());
             tv_sub_cuisine.setText(data.getCuisine_name());
         }

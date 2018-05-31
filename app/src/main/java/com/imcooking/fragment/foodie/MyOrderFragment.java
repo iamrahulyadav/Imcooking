@@ -61,8 +61,6 @@ public class MyOrderFragment extends Fragment {
                 return false;
             }
         };
-        LinearLayoutManager horizontalLayoutManagaer1
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rv_2.setLayoutManager(manager1);
 
         setMyAdapter();

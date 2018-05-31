@@ -4,10 +4,11 @@ import java.util.List;
 
 public class ChefProfileData {
 
+
     /**
      * status : true
-     * chef_data : {"chef_id":72,"chef_name":"Patrick","chef_phone":96325874112,"chef_email":"Patrick@gmail.com","chef_image":"1525759957234.jpg","chef_business":"Patrick food resturent","rating":0,"follow":0,"address":"United Kingdom West Lothian, ","cuisine_id":29,"cuisine_name":"American Food","bestcuisine_id":29,"bestcuisine_name":"American Food","about":"But the real star is the food. Tables laden with delicacies line the walls. Everything you can think of, and things you have never dreamed of, lie in wait. Whole roasted cows and pigs and goats still turning on spits. Huge platters of fowl stuffed with savoury fruit and nuts. Ocean creatures drizzled in sauces or begging to be"}
-     * chef_dish : [{"dish_id":10,"dish_name":"Cobba salad","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":23,"dish_subcuisine":"Cobb salad","dish_price":80,"dish_video":"1525170327How to make a Cobb Salad.mp4","dish_description":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_special_note":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_from":"8:00 AM","dish_to":"12:00 PM","dish_quantity":"12","dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["1520916866chaatpapri.jpg","1520916894alumatar.jpg","1525170327cccoba.jpg","1525170327cobbaa.jpg","1525170327cobba.jpg"]},{"dish_id":16,"dish_name":"smash tometo wth bhati","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":23,"dish_subcuisine":"Cobb salad","dish_price":120,"dish_video":null,"dish_description":"sdad","dish_special_note":"asdsa","dish_from":"11:30 AM","dish_to":"1:30 PM","dish_quantity":"10","dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"No","dish_deliverymiles":17,"dish_image":["1525511259chaatpapri.jpg"]}]
+     * chef_data : {"chef_id":72,"chef_name":"Patrick","chef_phone":96325874112,"chef_email":"Patrick@gmail.com","chef_image":"1525759957234.jpg","chef_business":"Patrick food resturent","rating":0,"follow":25,"address":"United Kingdom West Lothian, ","cuisine_id":29,"cuisine_name":"American Food","bestcuisine_id":29,"bestcuisine_name":"American Food","about":"But the real star is the food. Tables laden with delicacies line the walls. Everything you can think of, and things you have never dreamed of, lie in wait. Whole roasted cows and pigs and goats still turning on spits. Huge platters of fowl stuffed with savoury fruit and nuts. Ocean creatures drizzled in sauces or begging to be","chef_like_foodie":0,"chef_foodie_follow":1}
+     * chef_dish : [{"dish_id":9,"dish_name":"matter paner","dish_cuisine_id":33,"dish_cuisine":"Korean Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":560,"dish_video":"98.mp4","dish_description":"food description","dish_special_note":"food special note description","dish_from":"2:00 AM","dish_to":"10:00 PM","dish_quantity":"10","dish_available":"Yes","dish_homedelivery":"No","dish_pickup":"Yes","dish_deliverymiles":21,"dish_image":["1525170031polbo.jpg","1525170031pisto.jpg","1525170031patatas.jpg"],"dish_foodie_like":0},{"dish_id":10,"dish_name":"Cobba salad","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":23,"dish_subcuisine":"Cobb salad","dish_price":80,"dish_video":"1525170327How to make a Cobb Salad.mp4","dish_description":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_special_note":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_from":"8:00 AM","dish_to":"12:00 PM","dish_quantity":"12","dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["a1.jpg","a2.jpg","a3.jpg","a4.jpg","1525170327cobba.jpg"],"dish_foodie_like":1},{"dish_id":16,"dish_name":"smash tometo wth bhati","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":23,"dish_subcuisine":"Cobb salad","dish_price":120,"dish_video":null,"dish_description":"sdad","dish_special_note":"asdsa","dish_from":"11:30 AM","dish_to":"1:30 PM","dish_quantity":"10","dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"No","dish_deliverymiles":17,"dish_image":["1525511259chaatpapri.jpg"],"dish_foodie_like":1},{"dish_id":103,"dish_name":"matter panergggg","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":560,"dish_video":"36.mp4","dish_description":"fff","dish_special_note":"food special note description","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["10369.png"],"dish_foodie_like":0},{"dish_id":104,"dish_name":"matter paner","dish_cuisine_id":33,"dish_cuisine":"Korean Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":560,"dish_video":"88.mp4","dish_description":"food description","dish_special_note":"food special note description","dish_from":"2:00 AM","dish_to":"10:00 PM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"No","dish_pickup":"Yes","dish_deliverymiles":21,"dish_image":["10478.png"],"dish_foodie_like":0},{"dish_id":109,"dish_name":"ggg","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":8,"dish_video":"v78.mp4","dish_description":"fff","dish_special_note":"fff","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"yes","dish_pickup":"yes","dish_deliverymiles":10,"dish_image":["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY6rP960Z8Mbj0eyAznURHfWXwu9pUzRC8UU99L_Hh5iAihnG_nA"],"dish_foodie_like":0},{"dish_id":110,"dish_name":"hh","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":1,"dish_video":"v25.mp4","dish_description":"ssdddd","dish_special_note":"xx","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"yes","dish_pickup":"yes","dish_deliverymiles":10,"dish_image":["11033.png"],"dish_foodie_like":0},{"dish_id":111,"dish_name":"ff","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":1,"dish_video":"v96.mp4","dish_description":"vv","dish_special_note":"vg","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["11165.png"],"dish_foodie_like":0},{"dish_id":112,"dish_name":"tg","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":3,"dish_video":"v19.mp4","dish_description":"ccc","dish_special_note":"dff","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["11266.png"],"dish_foodie_like":0},{"dish_id":113,"dish_name":"Burger","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":26,"dish_video":"v33.mp4","dish_description":"dhdhhdhdhnrbdn","dish_special_note":"bdbdbbdn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["11365.png"],"dish_foodie_like":0},{"dish_id":114,"dish_name":"Burger","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":26,"dish_video":"v18.mp4","dish_description":"djjdjddj","dish_special_note":"bdbdbbdn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["11496.png"],"dish_foodie_like":0},{"dish_id":115,"dish_name":"Burger2","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":26,"dish_video":"v28.mp4","dish_description":"ing","dish_special_note":"special note","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["11542.png"],"dish_foodie_like":0},{"dish_id":116,"dish_name":"g","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":3,"dish_video":"v25.mp4","dish_description":"ss","dish_special_note":"ss","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["116100.png"],"dish_foodie_like":0},{"dish_id":117,"dish_name":"g","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":3,"dish_video":"v26.mp4","dish_description":"ss","dish_special_note":"ss","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["11742.png"],"dish_foodie_like":0},{"dish_id":119,"dish_name":"hg","dish_cuisine_id":29,"dish_cuisine":"American Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":0,"dish_video":"v24.mp4","dish_description":"xxccf","dish_special_note":"ddd","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["11960.png"],"dish_foodie_like":0}]
      */
 
     private boolean status;
@@ -47,13 +48,15 @@ public class ChefProfileData {
          * chef_image : 1525759957234.jpg
          * chef_business : Patrick food resturent
          * rating : 0
-         * follow : 0
+         * follow : 25
          * address : United Kingdom West Lothian,
          * cuisine_id : 29
          * cuisine_name : American Food
          * bestcuisine_id : 29
          * bestcuisine_name : American Food
          * about : But the real star is the food. Tables laden with delicacies line the walls. Everything you can think of, and things you have never dreamed of, lie in wait. Whole roasted cows and pigs and goats still turning on spits. Huge platters of fowl stuffed with savoury fruit and nuts. Ocean creatures drizzled in sauces or begging to be
+         * chef_like_foodie : 0
+         * chef_foodie_follow : 1
          */
 
         private int chef_id;
@@ -70,6 +73,8 @@ public class ChefProfileData {
         private int bestcuisine_id;
         private String bestcuisine_name;
         private String about;
+        private int chef_like_foodie;
+        private int chef_foodie_follow;
 
         public int getChef_id() {
             return chef_id;
@@ -182,36 +187,53 @@ public class ChefProfileData {
         public void setAbout(String about) {
             this.about = about;
         }
+
+        public int getChef_like_foodie() {
+            return chef_like_foodie;
+        }
+
+        public void setChef_like_foodie(int chef_like_foodie) {
+            this.chef_like_foodie = chef_like_foodie;
+        }
+
+        public int getChef_foodie_follow() {
+            return chef_foodie_follow;
+        }
+
+        public void setChef_foodie_follow(int chef_foodie_follow) {
+            this.chef_foodie_follow = chef_foodie_follow;
+        }
     }
 
     public static class ChefDishBean {
         /**
-         * dish_id : 10
-         * dish_name : Cobba salad
-         * dish_cuisine_id : 29
-         * dish_cuisine : American Food
-         * dish_subcuisine_id : 23
-         * dish_subcuisine : Cobb salad
-         * dish_price : 80
-         * dish_video : 1525170327How to make a Cobb Salad.mp4
-         * dish_description : Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine
-         * dish_special_note : Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine
-         * dish_from : 8:00 AM
-         * dish_to : 12:00 PM
-         * dish_quantity : 12
+         * dish_id : 9
+         * dish_name : matter paner
+         * dish_cuisine_id : 33
+         * dish_cuisine : Korean Food
+         * dish_subcuisine_id : 15
+         * dish_subcuisine : Kimchi
+         * dish_price : 560
+         * dish_video : 98.mp4
+         * dish_description : food description
+         * dish_special_note : food special note description
+         * dish_from : 2:00 AM
+         * dish_to : 10:00 PM
+         * dish_quantity : 10
          * dish_available : Yes
-         * dish_homedelivery : Yes
+         * dish_homedelivery : No
          * dish_pickup : Yes
-         * dish_deliverymiles : 10
-         * dish_image : ["1520916866chaatpapri.jpg","1520916894alumatar.jpg","1525170327cccoba.jpg","1525170327cobbaa.jpg","1525170327cobba.jpg"]
+         * dish_deliverymiles : 21
+         * dish_image : ["1525170031polbo.jpg","1525170031pisto.jpg","1525170031patatas.jpg"]
+         * dish_foodie_like : 0
          */
 
         private int dish_id;
         private String dish_name;
-        private int dish_cuisine_id;
-        private String dish_cuisine;
-        private int dish_subcuisine_id;
-        private String dish_subcuisine;
+        private int dish_cuisine_id=0;
+        private String dish_cuisine = "";
+        private int dish_subcuisine_id = 0;
+        private String dish_subcuisine = "";
         private int dish_price;
         private String dish_video;
         private String dish_description;
@@ -223,6 +245,7 @@ public class ChefProfileData {
         private String dish_homedelivery;
         private String dish_pickup;
         private int dish_deliverymiles;
+        private int dish_foodie_like;
         private List<String> dish_image;
 
         public int getDish_id() {
@@ -242,6 +265,7 @@ public class ChefProfileData {
         }
 
         public int getDish_cuisine_id() {
+
             return dish_cuisine_id;
         }
 
@@ -359,6 +383,14 @@ public class ChefProfileData {
 
         public void setDish_deliverymiles(int dish_deliverymiles) {
             this.dish_deliverymiles = dish_deliverymiles;
+        }
+
+        public int getDish_foodie_like() {
+            return dish_foodie_like;
+        }
+
+        public void setDish_foodie_like(int dish_foodie_like) {
+            this.dish_foodie_like = dish_foodie_like;
         }
 
         public List<String> getDish_image() {

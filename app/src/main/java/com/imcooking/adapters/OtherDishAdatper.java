@@ -34,9 +34,11 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
         this.context = context;
         this.chefDishBeans = chefDishBeans;
     }
+
     public interface CuisionInterface {
         void CuisionInterfaceMethod(View view, int position);
     }
+
     public void CuisionInterfaceMethod(CuisionInterface quoteInterface) {
         this.cuisionInterface = quoteInterface;
     }
@@ -78,6 +80,7 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
         holder.txtName.setText(chefDishBeans.get(position).getDish_name());
         holder.tv_dish_price.setText("$" + chefDishBeans
                 .get(position).getDish_price());
@@ -93,6 +96,7 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
             holder.imgDeliviery.setVisibility(View.VISIBLE);
             holder.txtDeliverytype.setText("Home Delivery");
         }
+
         Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                 .get(position).getDish_image().get(0)).into(holder.iv_dish_image);
     }

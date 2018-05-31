@@ -120,7 +120,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
             imgDeliviery.setVisibility(View.VISIBLE);
             tv_dish_delivery.setText("Home Delivery");
         }
-        tv_dish_price.setText("$" + chefDishBeans
+        tv_dish_price.setText("£" + chefDishBeans
                 .get(position).getDish_price());
         dish_id = chefDishBeans.get(position).getDish_id()+"";
 

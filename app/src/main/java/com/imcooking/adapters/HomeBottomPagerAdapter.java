@@ -113,7 +113,7 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
             }
         }
 
-        tv_dish_price.setText("$" + chefDishBeans
+        tv_dish_price.setText("£" + chefDishBeans
                 .get(position).getDish_price());
 
         tv_dish_name.setOnClickListener(new View.OnClickListener() {

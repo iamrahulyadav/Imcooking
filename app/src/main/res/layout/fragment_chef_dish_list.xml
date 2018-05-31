@@ -1,74 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    >
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context=".fragment.chef.chefprofile.ChefDishListFragment"
+    android:padding="10dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/colorWhite"
-        android:orientation="vertical"
-        tools:context=".fragment.chef.chefprofile.ChefDishListFragment"
-        android:padding="10dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CURRENT DISHES"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_color_4"
-                android:layout_alignParentLeft="true"/>
-            <com.imcooking.customtext.CustomTextViewBold
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/chef_dish_list_add_dish"
-                android:text="Add a dish"
-                android:textSize="13sp"
-                android:textColor="@color/theme_color"
-                android:layout_alignParentRight="true" />
-
-        </RelativeLayout>
-
-        <com.imcooking.utils.CustomViewPager
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/chef_dish_list_pager_one"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"/>
+        android:layout_height="wrap_content">
 
         <com.imcooking.customtext.CustomTextViewBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OLD DISHES"
+            android:text="CURRENT DISHES"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:textColor="@color/text_color_4"/>
-
-        <com.imcooking.utils.CustomViewPager
-            android:layout_width="match_parent"
+            android:textColor="@color/text_color_4"
+            android:layout_alignParentLeft="true"/>
+        <com.imcooking.customtext.CustomTextViewBold
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/chef_dish_list_pager_two"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"/>
+            android:id="@+id/chef_dish_list_add_dish"
+            android:text="Add a dish"
+            android:textSize="13sp"
+            android:textColor="@color/theme_color"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+
+    <com.imcooking.utils.CustomViewPager
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chef_dish_list_pager_one"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"/>
+
+    <com.imcooking.customtext.CustomTextViewBold
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OLD DISHES"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color_4"/>
+
+    <com.imcooking.utils.CustomViewPager
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chef_dish_list_pager_two"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"/>
 
 
-    <!--
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/chef_dishlist_recycler"/>
-    -->
+<!--
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chef_dishlist_recycler"/>
+-->
 
-    </LinearLayout>
-
+</LinearLayout>
 </ScrollView>

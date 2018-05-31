@@ -24,7 +24,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/profile_image"
+                android:id="@+id/foodie_profile_image"
                 android:src="@drawable/details_profile"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"/>
@@ -33,15 +33,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_toRightOf="@+id/profile_image"
+                android:layout_toRightOf="@+id/foodie_profile_image"
                 android:layout_toLeftOf="@+id/profile_edit"
                 android:gravity="bottom"
                 android:paddingLeft="10dp"
                 android:paddingRight="5dp">
 
-                <TextView
+                <com.imcooking.customtext.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/foodie_full_name"
                     android:text="Jemie Malone"
                     android:textColor="@color/colorBlack"
                     android:textSize="16dp"
@@ -50,6 +51,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/foodie_phone_and_email"
                     android:text="999888777  JamieMalone65@gmail.com"
                     android:textColor="@color/text_color_11"
                     android:textSize="10dp"/>
@@ -84,8 +86,9 @@
             android:text="My Account"
             android:textSize="14sp"
             android:layout_gravity="center_vertical"
-            android:textColor="@color/colorBlack"
-            android:drawableRight="@drawable/ic_right_arrow"
+            android:textColor="@color/text_color_10"
+            android:drawableRight="@drawable/ic_down_arrow_2"
+            android:drawablePadding="15dp"
             android:padding="20dp"/>
 
         <View
