@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorWhite">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chef_dish"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@drawable/details_home">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
+                    android:gravity="center">
+
+                    <com.imcooking.customtext.CustomTextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Profile"
+                        android:id="@+id/activity_other_dish_txtChefName"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/other_dish_profile_image"
+                    android:layout_width="96dp"
+                    android:layout_gravity="center"
+                    android:layout_height="96dp"
+                    android:src="@drawable/details_profile"
+                    app:civ_border_width="3dp"
+                    app:civ_border_color="@color/colorBlue"/>
+
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vaibhav Khandelwal"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="164-E, Sector-15, Noida, UP"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"/>
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7737284476"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"/>
+
+                <RatingBar
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:transformPivotX="0dp"
+
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:rating="2"
+                    android:progressTint="#FD9C35"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel">
+
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_profile_name"
+                    android:hint="FULL NAME "
+                    android:singleLine="true"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:imeOptions="actionNext"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp" />
+
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_profile_address"
+                    android:hint="Address"
+                    android:singleLine="true"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:imeOptions="actionNext"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp" />
+
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel">
+
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_profile_city"
+                    android:hint="CITY"
+                    android:singleLine="true"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:imeOptions="actionDone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"/>
+
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel">
+
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_profile_email"
+                    android:hint="Email"
+                    android:editable="false"
+                    android:singleLine="true"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:imeOptions="actionDone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"/>
+
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel">
+
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_profile_zipcode"
+                    android:hint="ZIP CODE"
+                    android:singleLine="true"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:imeOptions="actionDone"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"/>
+
+            </android.support.design.widget.TextInputLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Default miles"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:textColor="@color/colorBlack"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/shape_border_theme">
+
+                    <Spinner
+                        style="@style/SpinnerTheme1"
+                        android:spinnerMode="dropdown"
+                        android:id="@+id/chef_edit_profile_spinner_miles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="20dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+<!--
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chef_edit_profile_notification"
+                app:track="@drawable/switch_track"
+                android:thumb="@drawable/switch_thumb"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/extra_smallsize"
+                android:text="NOTIFICATION"
+                android:paddingLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorBlack"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+-->
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chef_edit_profile_available"
+                app:track="@drawable/switch_track"
+                android:thumb="@drawable/switch_thumb"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/extra_smallsize"
+                android:text="AVAILABLE"
+                android:paddingLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorBlack"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <Spinner
+                android:id="@+id/chef_edit_profile_spinner_select_cuisines"
+                style="@style/SpinnerTheme1"
+                android:spinnerMode="dropdown"
+                android:textAlignment="textStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingRight="20dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="50dp">
+
+                <com.imcooking.customtext.CustomTextButtonTextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="45dp"
+                    android:text="SAVE"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/shape_background_theme_2"
+                    android:onClick="chef_edit_profile_save"/>
+
+                <com.imcooking.customtext.CustomTextButtonTextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="45dp"
+                    android:text="CANCEL"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/shape_background_theme_2"
+                    android:onClick="chef_edit_profile_cancel" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

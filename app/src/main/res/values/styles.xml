@@ -26,6 +26,7 @@
      //  <item name="colorControlActivated">@color/colorLightGrey</item>
         <item name="android:colorControlNormal">#a92727</item>
     </style>
+
     <style name="AppThemeSkeekbar" parent="Theme.AppCompat.Light">
         <item name="android:colorControlActivated" tools:ignore="NewApi">@color/colorBlue</item>
         <item name="android:colorControlNormal" tools:ignore="NewApi">@color/text_color_5</item>

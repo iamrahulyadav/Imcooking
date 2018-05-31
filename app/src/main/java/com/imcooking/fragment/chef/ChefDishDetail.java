@@ -57,6 +57,8 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
     private String str_id, str_name, str_likes, str_available, str_time, str_count, str_homedelivery, str_pickup, str_price,
             str_description, str_special_note, str_cuisine;
 
+    private ArrayList<String> arrayList = new ArrayList<>();
+
     private ImageView iv_home_delivery_icon, iv_pickup_icon;
 
     private void init(){
@@ -89,6 +91,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         str_description = getArguments().getString("description");
         str_special_note = getArguments().getString("special_note");
         str_cuisine = getArguments().getString("cuisine");
+        arrayList = getArguments().getStringArrayList("image");
 
 
         tv_dish_name.setText(str_name);
@@ -171,6 +174,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
                     .putExtra("available", str_available)
                     .putExtra("home_delivery", str_homedelivery)
                     .putExtra("pickup", str_pickup)
+                    .putExtra("image", arrayList)
             );
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else{}

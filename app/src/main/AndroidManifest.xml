@@ -86,7 +86,8 @@
         <activity
             android:name=".activity.Sub.Chef.ChefEditDish"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activity.Sub.Chef.ChefEditProfile"></activity>
+        <activity android:name=".activity.Sub.Chef.ChefEditProfile" />
+        <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate"></activity>
     </application>
 
 </manifest>

@@ -38,6 +38,8 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefActivateDeactivate;
+import com.imcooking.activity.Sub.Chef.ChefEditProfile;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
@@ -81,6 +83,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     String TAG = ChefProfile.class.getName();
     public static ChefProfileData chefProfileData = new ChefProfileData();
     //    public  static ChefProfileData1 chefProfileData = new ChefProfileData1();
+    public static ChefProfileData1 chefProfileData1;
     TextView txtName, txtAddress, txtFollowers, btn_follow;
     ImageView imgChef, imgBack;
     Page_Adapter adapter;
@@ -107,6 +110,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         loginData = tinyDB.getString("login_data");
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
+
 //        chef_id = userDataBean.getUser_id() + "";
 
         init();
@@ -174,7 +178,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         viewPager.setAdapter(adapter);
 
     }
-    public static ChefProfileData1 chefProfileData1;
 
     private void getchefProfile() {
 //        String s ="{\"chef_id\":\"72\"}";
@@ -201,7 +204,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     layout.setVisibility(View.VISIBLE);
                                     txtAddress.setText(chefProfileData1.getChef_data().getAddress());
 //                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
-                                    txtName.setText(chefProfileData1.getChef_data().getChef_name()+"");
+                                    txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                     tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                     Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
                                             .getChef_data().getChef_image())
@@ -363,7 +366,6 @@ for(int i=0;i<jsonArray.length();i++){
         }
 
         getchefProfile();
-
     }
 
     public static void setWindowFlag(Activity activity, final int bits, boolean on) {
@@ -393,13 +395,21 @@ for(int i=0;i<jsonArray.length();i++){
 
         int id = view.getId();
         if (id == R.id.chef_home_settings) {
+
+
             PopupWindow popupwindow_obj = showMyPopup();
             popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
+
+
         } else if (id == R.id.chef_home_popup_edit_profile) {
 
+            startActivity(new Intent(getContext(), ChefEditProfile.class));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (id == R.id.chef_home_popup_change_password) {
 
         } else if (id == R.id.chef_home_popup_deacivate) {
+            startActivity(new Intent(getContext(), ChefActivateDeactivate.class));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.chef_home_popup_logout) {
             new TinyDB(getContext()).remove("login_data");
