@@ -105,6 +105,8 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private CuisineData cuisineData = new CuisineData();
     private String selected_cuisine, selected_cuisine_id;
 
+    private ArrayList<String> arrayList = new ArrayList<>();
+
     private void init(){
     //    layout_photos = findViewById(R.id.edit_dish_photos);
 
@@ -176,6 +178,22 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             available = getIntent().getExtras().getString("available");
             homedelivery = getIntent().getExtras().getString("home_delivery");
             pickup = getIntent().getExtras().getString("pickup");
+            arrayList = getIntent().getExtras().getStringArrayList("image");
+
+            for(int i=0; i<arrayList.size(); i++){
+                if(i<3){
+                    arr_photos.add(arrayList.get(i));
+                }
+            }
+            adapterEditDishPhotos.notifyDataSetChanged();
+
+            if(arr_photos.size() == 3){
+                tv_add_more_photo.setVisibility(View.GONE);
+            }
+
+
+
+
 
             edt_name.setText(name);
 //            sp_cuisine.setSelection();
@@ -318,7 +336,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(arrayList);
+        requestData.setDish_image(arr_photos);
 
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));

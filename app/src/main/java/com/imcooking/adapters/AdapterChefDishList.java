@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,13 @@ public class AdapterChefDishList extends PagerAdapter{
         ImageView iv_pickup_image = view.findViewById(R.id.item_chef_pickyup_icon);
 
         String url = GetData.IMG_BASE_URL + chef_dish_list.get(position).getDish_image().get(0);
+        Log.d("ChefCurrentDishes", url);
         Picasso.with(context).load(url).into(iv_dish_image);
+
+        final ArrayList<String> arrayList = new ArrayList<>();
+        for (int i=0; i<chef_dish_list.get(position).getDish_image().size(); i++){
+            arrayList.add("" + chef_dish_list.get(position).getDish_image().get(i));
+        }
 
         dish_name.setText(chef_dish_list.get(position).getDish_name());
 //        if(chef_dish_list.get(position).getDish_quantity().equals("null"))
@@ -124,6 +131,8 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("description", chef_dish_list.get(position).getDish_description());
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
                 bundle.putString("cuisine", chef_dish_list.get(position).getDish_cuisine());
+                bundle.putStringArrayList("image", arrayList);
+//                bundle.putString("cuisine", chef_dish_list.get(position).get);
                 fragment.setArguments(bundle);
 
                 if (manager.findFragmentByTag(new ChefDishDetail().getTag()) == null) {
