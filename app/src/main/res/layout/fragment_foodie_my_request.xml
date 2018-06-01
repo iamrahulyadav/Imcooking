@@ -25,10 +25,12 @@
         android:background="@color/view_4"/>
 
     <android.support.v7.widget.RecyclerView
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_foodie_my_requests"
-        android:layout_margin="10dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        >
+
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

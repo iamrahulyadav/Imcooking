@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -44,7 +43,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.fragment.foodie.FoodieMyRequest;
+import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.chef.ChefHome;
 
@@ -325,8 +324,14 @@ public class MainActivity extends AppBaseActivity
                 break;
             case R.id.navigation_myrequest:
                 if(user_type.equals("2")) {
-                    BaseClass.callFragment(new FoodieMyRequest(), new FoodieMyRequest().getClass().getName(), getSupportFragmentManager());
+                    BaseClass.callFragment(new FoodieMyRequestFragment(), new FoodieMyRequestFragment().getClass().getName(), getSupportFragmentManager());
                 }
+                break;
+            case R.id.navigation_myorder:
+                if(user_type.equals("2")) {
+                    BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(),
+                            getSupportFragmentManager());
+        }
                 break;
         }
 

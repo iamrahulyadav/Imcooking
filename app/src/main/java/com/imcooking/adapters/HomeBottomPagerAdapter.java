@@ -73,7 +73,7 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_chef_rating = view.findViewById(R.id.home_chef_rating);
         tv_dish_address = view.findViewById(R.id.home_dish_address);
         tv_dish_address.setVisibility(View.GONE);
-        tv_dish_likes.setText(chefDishBeans.get(position).getDishlike() + "");
+//        tv_dish_likes.setText(chefDishBeans.get(position).getDishlike() + "");
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
 //        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
@@ -92,13 +92,11 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_chef_name.setInputType(
                 InputType.TYPE_CLASS_TEXT|
                         InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        tv_chef_likes.setText(String.valueOf(chefDishBeans
-                .get(position).getLike()));
-        tv_chef_followers.setText(chefDishBeans.get(position).getFollow()+"");
+//        tv_chef_likes.setText(String.valueOf(chefDishBeans.get(position).getLike()));
+//        tv_chef_followers.setText(chefDishBeans.get(position).getFollow()+"");
 //        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles()+" miles");
 
         if (chefDishBeans.get(position).getDish_homedeliver()!=null){
-
             if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("No")){
                 tv_dish_delivery.setText("Pickup");
                 imgPickUp.setVisibility(View.VISIBLE);
@@ -129,8 +127,8 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
 
             }
         });
-        if (chefDishBeans.get(position).getRating()!=null){
-            ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()));
+        if (chefDishBeans.get(position).getRating()+""!=null){
+            ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()+""));
         }
         container.addView(view);
         return view;

@@ -11,10 +11,10 @@
         android:background="@color/colorWhite"
         android:padding="5dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:id="@+id/chef_dish_requests_profile_image"
+            android:id="@+id/item_foodie_my_request_profile_image"
             android:src="@drawable/details_profile"
             android:layout_marginRight="5dp"
             android:layout_alignParentLeft="true"/>
@@ -22,7 +22,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/chef_dish_requests_profile_image">
+            android:layout_toRightOf="@+id/item_foodie_my_request_profile_image">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -31,6 +31,7 @@
 
                 <com.imcooking.customtext.CustomTextViewBold
                     android:layout_width="wrap_content"
+                    android:id="@+id/item_foodie_my_request_name"
                     android:layout_height="wrap_content"
                     android:text="Vaibhav Khandelwal"
                     android:textColor="@color/text_color_4"
@@ -38,6 +39,7 @@
                     android:layout_marginBottom="5dp"/>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
+                    android:id="@+id/item_foodie_my_request_address"
                     android:layout_height="wrap_content"
                     android:text="E-164, Sector-15, Noida, India"
                     android:textColor="@color/text_color_4"
@@ -48,28 +50,31 @@
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/item_foodie_my_request_mob_number"
                     android:text="+91-7737284476"
                     android:textColor="@color/text_color_4"
                     android:textSize="12sp"
-                    android:drawableLeft="@drawable/ic_placeholder"
+                    android:drawableLeft="@drawable/ic_phone"
                     android:drawablePadding="5dp"
                     android:layout_marginBottom="3dp"/>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/item_foodie_my_request_email"
                     android:text="android.vaibhav@hotmail.com"
                     android:textColor="@color/text_color_4"
                     android:textSize="12sp"
-                    android:drawableLeft="@drawable/ic_placeholder"
+                    android:drawableLeft="@drawable/ic_mail"
                     android:drawablePadding="5dp"
                     android:layout_marginBottom="3dp"/>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/item_foodie_my_request_time"
                     android:text="Monday * 20:20 PM"
                     android:textColor="@color/text_color_4"
                     android:textSize="12sp"
-                    android:drawableLeft="@drawable/ic_placeholder"
+                    android:drawableLeft="@drawable/ic_time"
                     android:drawablePadding="5dp"
                     android:layout_marginBottom="5dp"/>
                 <LinearLayout
@@ -88,31 +93,16 @@
                         android:paddingBottom="3dp"
                         android:paddingRight="5dp"
                         android:paddingLeft="5dp"/>
-                    <ImageView
+                    <RatingBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_marginLeft="10dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
+                        android:rating="5"
+
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/item_foodie_my_request_rating"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:progressTint="@color/Color_ratingbar"
+                        />
                     <!--
                                 <android.support.v7.widget.AppCompatRatingBar
                                     style="?android:attr/ratingBarStyleIndicator"

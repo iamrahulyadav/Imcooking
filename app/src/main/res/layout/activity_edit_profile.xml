@@ -46,55 +46,57 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="120dp"
                             android:layout_height="120dp">
 
                             <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/foodie_edit_profile_image"
                                 android:layout_width="120dp"
                                 android:layout_height="120dp"
-                                android:id="@+id/foodie_edit_profile_image"
-                                android:src="@drawable/details_profile"/>
+                                android:src="@drawable/details_profile" />
 
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:src="@drawable/camera"
-                                android:layout_alignParentRight="true"
                                 android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
                                 android:layout_marginBottom="10dp"
-                                android:onClick="change_dp"/>
+                                android:onClick="change_dp"
+                                android:src="@drawable/camera" />
 
                         </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/foodie_edit_profile_full_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/foodie_edit_profile_full_name"
+                            android:layout_marginTop="10dp"
                             android:text="Jamie Malone"
                             android:textColor="@color/colorWhite"
                             android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="10dp"/>
+                            android:textStyle="bold" />
+
                         <TextView
+                            android:id="@+id/foodie_edit_profile_email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/foodie_edit_profile_email"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginTop="3dp"
                             android:text="jamiemalone65@gmail.com"
                             android:textColor="@color/colorWhite"
-                            android:textSize="10sp"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginBottom="3dp"/>
+                            android:textSize="10sp" />
+
                         <TextView
+                            android:id="@+id/foodie_edit_profile_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/foodie_edit_profile_phone"
                             android:text="+91-777888999"
                             android:textColor="@color/colorWhite"
-                            android:textSize="10sp"/>
+                            android:textSize="10sp" />
 
                     </LinearLayout>
 

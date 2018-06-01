@@ -9,18 +9,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.imcooking.Model.ApiRequest.AddToCart;
+import com.imcooking.Model.api.response.ApiResponse;
+import com.imcooking.Model.api.response.FoodieMyorder;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterFoodieMyOrder;
 import com.imcooking.adapters.AdapterFoodieMyRequest;
+import com.imcooking.adapters.CartAdatper;
 import com.imcooking.utils.CustomLayoutManager;
+import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MyOrderFragment extends Fragment {
-
+    TinyDB tinyDB;
+List<FoodieMyorder>fooodieorderList=new ArrayList<>();
     public MyOrderFragment() {
         // Required empty public constructor
     }
@@ -63,14 +79,60 @@ public class MyOrderFragment extends Fragment {
             }
         };
         rv_2.setLayoutManager(manager1);
+        tinyDB=new TinyDB(getContext());
+        getorderList();
 
-        setMyAdapter();
+        //        setMyAdapter();
 
     }
 
-    private void setMyAdapter(){
+    public void getorderList(){
 
-        AdapterFoodieMyOrder adapterFoodieMyOrder = new AdapterFoodieMyOrder(getContext(), getFragmentManager());
+        String login = tinyDB.getString("login_data");
+        ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
+        apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
+        String user_id=apiResponse.getUser_id()+"";
+
+       // String s = "{\"foodie_id\":" + user_id + "}";
+        String s = "{\"foodie_id\": 4}";
+        try {
+            JSONObject job = new JSONObject(s);
+            new GetData(getContext(), getActivity()).sendMyData(job, "myorder", getActivity(), new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+
+                    FoodieMyorder foodieMyorder = new FoodieMyorder();
+
+                    foodieMyorder = new Gson().fromJson(result, FoodieMyorder.class);
+
+                    if(foodieMyorder.isStatus()){
+                        if(!foodieMyorder.getFoodie_order_list().isEmpty()){
+
+                            setMyAdapter(foodieMyorder.getFoodie_order_list());
+
+                        }
+                        else {
+                            Toast.makeText(getContext(), "order list is empty", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(getContext(), "spmething went wrong", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setMyAdapter(List<FoodieMyorder.FoodieOrderListBean> arrayList){
+        AdapterFoodieMyOrder adapterFoodieMyOrder = new AdapterFoodieMyOrder(getContext(),
+                getFragmentManager(), arrayList);
         rv_1.setAdapter(adapterFoodieMyOrder);
         rv_2.setAdapter(adapterFoodieMyOrder);
     }
@@ -78,7 +140,6 @@ public class MyOrderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_my_order.setImageResource(R.drawable.ic_salad_1);

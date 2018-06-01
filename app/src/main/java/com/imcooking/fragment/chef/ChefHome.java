@@ -38,6 +38,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChangePassword;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
@@ -398,7 +399,7 @@ for(int i=0;i<jsonArray.length();i++){
         } else if (id == R.id.chef_home_popup_edit_profile) {
 
         } else if (id == R.id.chef_home_popup_change_password) {
-
+            startActivity(new Intent(getContext(), ChangePassword.class));
         } else if (id == R.id.chef_home_popup_deacivate) {
 
         } else if (id == R.id.chef_home_popup_logout) {

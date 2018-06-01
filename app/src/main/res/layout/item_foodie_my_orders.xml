@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:id="@+id/chef_dish_requests_profile_image"
+            android:id="@+id/item_foodie_my_order_chef_profile_image"
             android:src="@drawable/details_profile"
             android:layout_marginRight="5dp"
             android:layout_alignParentLeft="true"
@@ -23,7 +23,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/chef_dish_requests_profile_image">
+            android:layout_toRightOf="@+id/item_foodie_my_order_chef_profile_image">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -31,6 +31,7 @@
                 android:orientation="vertical">
 
                 <com.imcooking.customtext.CustomTextViewBold
+                    android:id="@+id/item_foodie_my_order_orderid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Order Id-#6566754"
@@ -38,6 +39,7 @@
                     android:textSize="12sp"
                     android:layout_marginBottom="5dp"/>
                 <com.imcooking.customtext.CustomTextView
+                    android:id="@+id/item_foodie_my_order_ChefName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vaibhav Khandelwal"
@@ -58,6 +60,7 @@
                         android:textSize="10sp"
                         android:layout_marginRight="5dp"/>
                     <com.imcooking.customtext.CustomTextView
+                        android:id="@+id/item_foodie_my_order_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Failed"
@@ -86,31 +89,15 @@
                         android:paddingBottom="3dp"
                         android:paddingRight="5dp"
                         android:paddingLeft="5dp"/>
-                    <ImageView
+                    <RatingBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_marginLeft="10dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_star_1"
-                        android:layout_margin="3dp"/>
+                        android:rating="5"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/item_foodie_my_order_rating"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:progressTint="#FEF200"
+                        />
                     <!--
                                 <android.support.v7.widget.AppCompatRatingBar
                                     style="?android:attr/ratingBarStyleIndicator"
@@ -134,8 +121,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="end|bottom">
-
                 <com.imcooking.customtext.CustomTextView
+                    android:id="@+id/item_foodie_my_order_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$14"
