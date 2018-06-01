@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="@drawable/shape_background_white_1"
+    android:orientation="horizontal">
+<ImageView
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:background="@drawable/shape_background_white_1"
+    android:scaleType="fitXY"
+    android:src="@drawable/details_home"/>
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:orientation="vertical">
+<com.imcooking.customtext.CustomTextViewBold
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Shahi Paneer"
+    android:textColor="@color/text_color_4"
+    />
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shahi Paneer"
+            android:textSize="10sp"
+            android:textColor="@color/text_color_9"
+            />
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Qty :1"
+            android:textColor="@color/text_color_9"
+            />
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$100"
+            android:textColor="@color/theme_color"
+            />
+    </LinearLayout>
+</LinearLayout>
