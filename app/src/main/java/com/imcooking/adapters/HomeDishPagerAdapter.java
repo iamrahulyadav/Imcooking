@@ -20,8 +20,8 @@ import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.DishLikeRequest;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
-import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.foodie.HomeDetails;
+import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
@@ -85,7 +85,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_chef_rating = view.findViewById(R.id.home_chef_rating);
         tv_dish_address = view.findViewById(R.id.home_dish_address);
         imgLike = view.findViewById(R.id.home_heart);
-        tv_dish_likes.setText(chefDishBeans.get(position).getDishlike() + "");
+        tv_dish_likes.setText(chefDishBeans.get(position).getDishlikeno() + "");
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
         tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 

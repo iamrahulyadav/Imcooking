@@ -1,7 +1,6 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,12 +8,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
-import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefIloveData;
 import com.imcooking.R;
-import com.imcooking.adapters.CartAdatper;
 import com.imcooking.adapters.ChefILoveAdatper;
-import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.webservices.GetData;
@@ -62,9 +58,11 @@ public class ChefILove extends AppBaseActivity {
                     @Override
                     public void run() {
                         chefIloveData = gson.fromJson(result, ChefIloveData.class);
-                        chefloveBeanList.addAll(chefIloveData.getCheflove());
-                        Log.d("TAG", "onSuccess: "+result);
-                        setChefLove();
+                        if (chefIloveData!=null&&chefIloveData.getCheflove()!=null){
+                            chefloveBeanList.addAll(chefIloveData.getCheflove());
+                            Log.d("TAG", "onSuccess: "+result);
+                            setChefLove();
+                        }
                     }
                 });
             }
@@ -75,7 +73,6 @@ public class ChefILove extends AppBaseActivity {
     private void setChefLove(){
          ChefILoveAdatper chefILoveAdatper = new ChefILoveAdatper(getApplicationContext(), chefloveBeanList);
         recyclerView.setAdapter(chefILoveAdatper);
-
         Log.d("VK", chefloveBeanList.size() + "");
     }
 

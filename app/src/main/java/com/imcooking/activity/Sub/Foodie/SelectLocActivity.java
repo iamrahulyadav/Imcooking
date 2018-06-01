@@ -158,13 +158,15 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent();
-                intent.putExtra("latitude",latLng.latitude);
-                intent.putExtra("longitude", latLng.longitude);
-                intent.putExtra("name", autocompleteView.getText().toString().trim());
-                setResult(2,intent);
+              if (latLng!=null){
+                  Intent intent = new Intent();
+                  intent.putExtra("latitude",latLng.latitude);
+                  intent.putExtra("longitude", latLng.longitude);
+                  intent.putExtra("name", autocompleteView.getText().toString().trim());
+                  setResult(2,intent);
 //                Log.d("VKK", gson.toJson(listModel));
-                finish();
+                  finish();
+              }
             }
         });
     }
@@ -178,7 +180,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         String url = "https://maps.googleapis.com/maps/api/geocode/json?address="+place+"&key=AIzaSyD8rFBw_mmTdTCVQ4IdjhzcXt5P1trKrYw";
         url = url.replace(" ", "+");
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response!=null){
@@ -199,6 +201,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                                         != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                     // TODO: Consider calling
+
                                     //    ActivityCompat#requestPermissions
                                     // here to request the missing permissions, and then overriding
                                     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,

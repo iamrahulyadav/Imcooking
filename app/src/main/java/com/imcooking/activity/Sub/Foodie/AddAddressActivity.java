@@ -15,6 +15,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -94,7 +95,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             BaseClass.setLightStatusBar(getWindow().getDecorView(),AddAddressActivity.this);
-        }
+            }
         mContext = this;
         tinyDB = new TinyDB(mContext);
         String  login_data = tinyDB.getString("login_data");

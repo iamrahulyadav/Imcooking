@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.imcooking.Model.api.response.ChefMyorderList;
+
 import com.imcooking.Model.api.response.FoodieMyorderList;
 import com.imcooking.R;
 import com.imcooking.fragment.foodie.FoodieOrderDetails;
