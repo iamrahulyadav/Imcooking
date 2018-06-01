@@ -65,36 +65,30 @@ txtChangepass.setOnClickListener(new View.OnClickListener() {
             String s = "{\"oldpassword\":" +oldpass+ ",\"new_password\":"+newpass+"," +
                     "\"confirmpassword\":"+confirmpass+",\"user_id\":\""+user_id+"\"}" ;
 
-            JSONObject jsonObject = new JSONObject(s);
+//                   JSONObject jsonObject = new JSONObject(s);
+            Log.d("ShowResponse", s);
 
-            new GetData(getApplicationContext(), ChangePassword.this).getResponse(new Gson().
-                    toJson(jsonObject), "changepassword", new GetData.MyCallback() {
+
+            new GetData(getApplicationContext(), ChangePassword.this).getResponse(s, "changepassword", new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    //           Log.d("Show Response", response);
+                               Log.d("ShowResponseresult", result);
 
                     final String response = result;
+                    ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                    Log.d("ShowResponse", apiResponse.isStatus() + "");
+                    Log.d("ShowResponse", apiResponse.getMsg());
+                    if (apiResponse.isStatus()) {
+                        if (apiResponse.getMsg().equals("Successfully change password")) {
 
-                            ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
-
-                            Log.d("ShowResponse", apiResponse.isStatus() + "");
-                            Log.d("ShowResponse", apiResponse.getMsg());
-                            if (apiResponse.isStatus()) {
-                                if (apiResponse.getMsg().equals("Successfully change password")) {
-
-                                    BaseClass.showToast(getApplicationContext(), "Successfully change password");
+                            BaseClass.showToast(getApplicationContext(), "Successfully change password");
 
 
-                                } else {
-                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
-                                }
-                            }
+                        } else {
+                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                         }
-                    });
+                    }
                 }
             });
         } else{

@@ -43,12 +43,13 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.fragment.chef.ChefOrderListFragment;
+import com.imcooking.fragment.chef.chefprofile.ChefHome;
+import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
+import com.imcooking.fragment.foodie.ChefMyOrderListFragment;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
-import com.imcooking.fragment.chef.ChefHome;
 
-import com.imcooking.fragment.foodie.MyOrderFragment;
+import com.imcooking.fragment.foodie.FoodieMyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.AppBaseActivity;
@@ -259,9 +260,9 @@ public class MainActivity extends AppBaseActivity
             tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
             iv_my_order.setImageResource(R.drawable.ic_salad_1);
             if(user_type.equals("2")) {
-                BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(), getSupportFragmentManager());
+                BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                BaseClass.callFragment(new ChefOrderListFragment(), new ChefOrderListFragment().getClass().getName(), getSupportFragmentManager());
+                BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(), getSupportFragmentManager());
             }
         } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
@@ -338,7 +339,7 @@ public class MainActivity extends AppBaseActivity
                 break;
             case R.id.navigation_myorder:
                 if(user_type.equals("2")) {
-                    BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(),
+                    BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(),
                             getSupportFragmentManager());
         }
                 break;

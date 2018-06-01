@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +13,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
-import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
-import com.imcooking.activity.Sub.Foodie.ChefProfile;
-import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterChefDishList;
-import com.imcooking.adapters.AdapterChefHomeViewPager;
-import com.imcooking.fragment.chef.ChefHome;
 import com.mukesh.tinydb.TinyDB;
 
 import java.util.ArrayList;

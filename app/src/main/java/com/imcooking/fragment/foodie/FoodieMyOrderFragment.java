@@ -4,7 +4,6 @@ package com.imcooking.fragment.foodie;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.imcooking.Model.ApiRequest.AddToCart;
 import com.imcooking.Model.api.response.ApiResponse;
-import com.imcooking.Model.api.response.FoodieMyorder;
+import com.imcooking.Model.api.response.FoodieMyorderList;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.home.MainActivity;
-import com.imcooking.adapters.AdapterFoodieMyOrder;
-import com.imcooking.adapters.AdapterFoodieMyRequest;
-import com.imcooking.adapters.CartAdatper;
+import com.imcooking.adapters.AdapterFoodieMyOrderList;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -34,10 +29,10 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyOrderFragment extends Fragment {
+public class FoodieMyOrderFragment extends Fragment {
     TinyDB tinyDB;
-List<FoodieMyorder>fooodieorderList=new ArrayList<>();
-    public MyOrderFragment() {
+List<FoodieMyorderList>fooodieorderList=new ArrayList<>();
+    public FoodieMyOrderFragment() {
         // Required empty public constructor
     }
 
@@ -85,7 +80,6 @@ List<FoodieMyorder>fooodieorderList=new ArrayList<>();
         //        setMyAdapter();
 
     }
-
     public void getorderList(){
 
         String login = tinyDB.getString("login_data");
@@ -97,13 +91,14 @@ List<FoodieMyorder>fooodieorderList=new ArrayList<>();
         String s = "{\"foodie_id\": 4}";
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "myorder", getActivity(), new GetData.MyCallback() {
+            new GetData(getContext(), getActivity()).sendMyData(job, "myorder", getActivity(),
+                    new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
 
-                    FoodieMyorder foodieMyorder = new FoodieMyorder();
+                    FoodieMyorderList foodieMyorder = new FoodieMyorderList();
 
-                    foodieMyorder = new Gson().fromJson(result, FoodieMyorder.class);
+                    foodieMyorder = new Gson().fromJson(result, FoodieMyorderList.class);
 
                     if(foodieMyorder.isStatus()){
                         if(!foodieMyorder.getFoodie_order_list().isEmpty()){
@@ -130,8 +125,8 @@ List<FoodieMyorder>fooodieorderList=new ArrayList<>();
 
     }
 
-    private void setMyAdapter(List<FoodieMyorder.FoodieOrderListBean> arrayList){
-        AdapterFoodieMyOrder adapterFoodieMyOrder = new AdapterFoodieMyOrder(getContext(),
+    private void setMyAdapter(List<FoodieMyorderList.FoodieOrderListBean> arrayList){
+        AdapterFoodieMyOrderList adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),
                 getFragmentManager(), arrayList);
         rv_1.setAdapter(adapterFoodieMyOrder);
         rv_2.setAdapter(adapterFoodieMyOrder);

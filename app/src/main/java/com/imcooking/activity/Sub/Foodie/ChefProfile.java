@@ -16,14 +16,12 @@ import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterChefHomeViewPager;
 import com.imcooking.adapters.Page_Adapter;
-import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
 import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
+import com.imcooking.fragment.chef.chefprofile.ChefHome;
 import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
-import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.foodie.RequestADishFragment;
 import com.imcooking.utils.AppBaseActivity;
-import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +41,7 @@ public class ChefProfile extends AppBaseActivity {
         chefId = getIntent().getStringExtra("chef_id");
         foodie_id = getIntent().getStringExtra("foodie_id");
 
-        ChefHome fragment = new ChefHome();
+       ChefHome fragment = new ChefHome();
 
         Bundle args = new Bundle();
         args.putString("chef_id", chefId);

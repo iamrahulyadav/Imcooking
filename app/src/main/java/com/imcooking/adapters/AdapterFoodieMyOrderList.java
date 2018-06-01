@@ -1,6 +1,5 @@
 package com.imcooking.adapters;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.imcooking.Model.api.response.FoodieMyorder;
+import com.imcooking.Model.api.response.ChefMyorderList;
+import com.imcooking.Model.api.response.FoodieMyorderList;
 import com.imcooking.R;
 import com.imcooking.fragment.foodie.FoodieOrderDetails;
 import com.imcooking.utils.BaseClass;
@@ -25,13 +25,13 @@ import java.util.List;
  * Created by Muhib.
  * Contact Number : +91 9796173066
  */
-public class AdapterFoodieMyOrder extends RecyclerView.Adapter<AdapterFoodieMyOrder.MyViewHolder> {
+public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodieMyOrderList.MyViewHolder> {
 
     private Context context;
     private FragmentManager manager;
-    private List<FoodieMyorder.FoodieOrderListBean> list = new ArrayList();
+    private List<FoodieMyorderList.FoodieOrderListBean> list = new ArrayList();
 
-    public AdapterFoodieMyOrder(Context context, FragmentManager manager, List<FoodieMyorder.FoodieOrderListBean>list) {
+    public AdapterFoodieMyOrderList(Context context, FragmentManager manager, List<FoodieMyorderList.FoodieOrderListBean>list) {
         this.context = context;
         this.manager = manager;
         this.list = list;

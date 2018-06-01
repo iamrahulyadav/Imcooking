@@ -1,7 +1,8 @@
-package com.imcooking.fragment.chef;
+package com.imcooking.fragment.foodie;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +10,13 @@ import android.view.ViewGroup;
 
 import com.imcooking.R;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChefOrderListFragment extends Fragment {
+public class ChefMyOrderListFragment extends Fragment {
 
 
-    public ChefOrderListFragment() {
+    public ChefMyOrderListFragment() {
         // Required empty public constructor
     }
 
@@ -28,4 +28,11 @@ public class ChefOrderListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_chef_order_list, container, false);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+    }
 }

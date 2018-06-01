@@ -2,7 +2,7 @@ package com.imcooking.Model.api.response;
 
 import java.util.List;
 
-public class FoodieMyorder {
+public class FoodieMyorderList {
 
     /**
      * status : true
