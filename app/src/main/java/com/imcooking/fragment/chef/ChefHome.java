@@ -4,7 +4,6 @@ package com.imcooking.fragment.chef;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,25 +14,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonSyntaxException;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.ChefProfileData1;
@@ -49,15 +41,10 @@ import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
 import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
 import com.imcooking.fragment.chef.chefprofile.FoodieRequestADish;
 import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
-import com.imcooking.fragment.foodie.RequestADishFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -180,8 +167,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     }
 
     private void getchefProfile() {
-//        String s ="{\"chef_id\":\"72\"}";
-//        String s = "{\"chef_id\":\"72\",\"foodie_id\":\"4\"}";
         String s = "{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id + "}";
 
         Log.d("MyRequest", s);
@@ -217,7 +202,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     } else {
                                     }
                                     viewPager = getView().findViewById(R.id.chef_home_viewpager);
-
                                     tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
                                     tabLayout.setupWithViewPager(viewPager);
                                     setupViewPager(viewPager);

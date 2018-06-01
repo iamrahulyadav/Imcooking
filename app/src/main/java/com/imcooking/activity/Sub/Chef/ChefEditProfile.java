@@ -1,8 +1,8 @@
 package com.imcooking.activity.Sub.Chef;
 
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.ModelChefEditProfile;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
+import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.utils.BaseClass;
@@ -41,6 +41,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         init();
         getProfileData();
     }
+    private CuisineData cuisineData = new CuisineData();
 
     private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede;
     private Spinner sp_miles, sp_cuisine;
@@ -91,6 +92,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         userDataBean = new Gson().fromJson(login_data, ApiResponse.UserDataBean.class);
 
         str_id = userDataBean.getUser_id() + "";
+
+        getMyCuisines();
     }
 
     private void getProfileData(){
@@ -242,4 +245,44 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     public void chef_edit_profile_cancel(View view){
 
     }
+
+    private void getMyCuisines() {
+
+        try {
+            String s = "";
+            JSONObject jsonObject = new JSONObject("{}");
+
+
+            new GetData(getApplicationContext(), ChefEditProfile.this).sendMyData(jsonObject, "cuisine",
+                    ChefEditProfile.this, new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            cuisineData = new Gson().fromJson(result, CuisineData.class);
+//                            cuisineList.addAll(cuisineData.getCuisine_data());
+
+                            setMyCuisines(cuisineData);
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setMyCuisines(CuisineData cuisines){
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        for(int i=0; i<cuisines.getCuisine_data().size(); i++){
+            arrayList.add(cuisines.getCuisine_data().get(i).getCuisine_name());
+        }
+
+        sp_cuisine.setOnItemSelectedListener(this);
+        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this,
+                R.layout.spinner_row_1, arrayList);
+        arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
+        sp_cuisine.setAdapter(arrayAdapter1);
+        sp_cuisine.setOnItemSelectedListener(this);
+    }
+
+
 }

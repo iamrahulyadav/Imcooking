@@ -19,11 +19,8 @@ import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
 import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
-import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
-import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.foodie.RequestADishFragment;
 import com.imcooking.utils.AppBaseActivity;
-import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 

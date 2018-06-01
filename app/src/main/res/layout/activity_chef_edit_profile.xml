@@ -283,26 +283,26 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
 
-<!--
-            <android.support.v7.widget.SwitchCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_profile_notification"
-                app:track="@drawable/switch_track"
-                android:thumb="@drawable/switch_thumb"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/extra_smallsize"
-                android:text="NOTIFICATION"
-                android:paddingLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/colorBlack"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height=".5dp"
-                android:background="@color/view_2"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
--->
+            <!--
+                        <android.support.v7.widget.SwitchCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/chef_edit_profile_notification"
+                            app:track="@drawable/switch_track"
+                            android:thumb="@drawable/switch_thumb"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/extra_smallsize"
+                            android:text="NOTIFICATION"
+                            android:paddingLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="@color/colorBlack"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height=".5dp"
+                            android:background="@color/view_2"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"/>
+            -->
 
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="match_parent"
@@ -333,6 +333,26 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:paddingRight="20dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_profile_About"
+                    android:hint="About US"
+                    android:singleLine="true"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:imeOptions="actionNext"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
 
             <View
                 android:layout_width="match_parent"

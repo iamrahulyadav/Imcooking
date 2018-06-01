@@ -1,23 +1,15 @@
 package com.imcooking.activity.home;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,28 +22,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.foodie.FoodieMyRequest;
-import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.chef.ChefHome;
 
 import com.imcooking.fragment.foodie.MyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
-import com.imcooking.fragment.foodie.TestFragment;
+import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.mukesh.tinydb.TinyDB;
@@ -120,12 +106,10 @@ public class MainActivity extends AppBaseActivity
                     anim.setDuration(0);
                     anim.setFillAfter(true);
                     frame_view.startAnimation(anim);
-
                     lastTranslate = moveFactor;
                 }
             }
         };
-
 
         drawer.addDrawerListener(toggle);
 //        toggle.syncState();
@@ -188,7 +172,7 @@ public class MainActivity extends AppBaseActivity
             tv_home.setTextColor(getResources().getColor(R.color.theme_color));
             iv_home.setImageResource(R.drawable.ic_home_1);
             if(user_type.equals("2")) {
-                BaseClass.callFragment(new TestFragment(), new TestFragment().getClass().getName(), getSupportFragmentManager());
+                BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
             } else{
                 ChefHome fragment = new ChefHome();
 
@@ -274,7 +258,7 @@ public class MainActivity extends AppBaseActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if(getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finishAffinity();
-        } else if(tag1.equals(TestFragment.class.getName()) || tag1.equals(ChefHome.class.getName())){
+        } else if(tag1.equals(HomeFragment.class.getName()) || tag1.equals(ChefHome.class.getName())){
             getSupportFragmentManager().popBackStack();
             finishAffinity();
         } else{
