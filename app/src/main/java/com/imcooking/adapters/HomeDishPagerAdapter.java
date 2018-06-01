@@ -137,7 +137,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
 
 //        BaseClass.showToast(context, position+"");
 
-        if (chefDishBeans.get(position).getDishlike().equals("0")){
+        if (chefDishBeans.get(position).getDishlike()!=null&&chefDishBeans.get(position).getDishlike().equals("0")){
             arr[position] = false;
             imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
         } else if (chefDishBeans.get(position).getDishlike().equals("1")){

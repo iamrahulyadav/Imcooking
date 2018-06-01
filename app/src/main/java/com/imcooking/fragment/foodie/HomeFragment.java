@@ -1,21 +1,16 @@
 package com.imcooking.fragment.foodie;
 
+
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,18 +22,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.gson.Gson;
-import com.imcooking.Model.ApiRequest.Home;
 import com.imcooking.Model.api.response.ApiResponse;
+import com.imcooking.Model.ApiRequest.Home;
+import com.imcooking.Model.ApiRequest.SearchHomeRequest;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
@@ -46,7 +44,6 @@ import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
 import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
 import com.imcooking.activity.home.MainActivity;
-import com.imcooking.activity.home.TestActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
 import com.imcooking.adapters.HomeDishPagerAdapter;
@@ -59,63 +56,44 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
+import static com.imcooking.activity.home.MainActivity.stringBuffer;
 
-public class HomeFragment extends Fragment implements LocationListener,
-        View.OnClickListener, CuisionAdatper.CuisionInterface{
-    public static TextView cart_icon;
-    LocationManager locationManager;
-    Button getLocationBtn;
-    TextView locationText;
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class HomeFragment extends Fragment implements View.OnClickListener, CuisionAdatper.CuisionInterface {
+
+    SearchHomeRequest searchHomeRequest = new SearchHomeRequest();
     private HomeData homeData = new HomeData();
     private ArrayList<String>spinnerData =new ArrayList<>();
     private TinyDB tinyDB;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private Gson gson = new Gson();
-    private LinearLayout layout_no_record_found,cusine_list;
-    private String TAG = HomeFragment.class.getName();
-    List<HomeData.ChefDishBean>chefDishBeans = new ArrayList<>();
-    List<HomeData.ChefDishBean>favorite_1 = new ArrayList<>();
-    List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
-    private Toolbar toolbar;
-    CustomViewPager viewPager;
-    HomeBottomPagerAdapter homeBottomPagerAdapter;
-    private TextView tv_cusine, arrow_show_detail, txtCityName;
-    private RecyclerView cuisinRecycler;
-    private LinearLayout layout;
-    ViewPager bottomViewPager;
-    ImageView imgCart,imgFilter;
-    CuisionAdatper cuisionAdatper;
-    private Spinner sp;
-
-    String latitudeq="";
-    String longitudeq="" ;
-    String min_miles = "0";
-    String max_miles = "10";
-    public static String foodie_id = "4";
-    String country = "101";
-    private CuisineData cuisineData = new CuisineData();
-    private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
+    private LinearLayout layout_no_record_found;
+    public HomeFragment() {
+        // Required empty public constructor
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_test, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
+
+    private Toolbar toolbar;
+    CustomViewPager viewPager;
+    HomeBottomPagerAdapter homeBottomPagerAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getLocationBtn = (Button)getView().findViewById(R.id.getLocationBtn);
-        locationText = (TextView)getView().findViewById(R.id.locationText);
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         LinearLayout toolbar_left = getView().findViewById(R.id.toolbar_left);
@@ -125,15 +103,21 @@ public class HomeFragment extends Fragment implements LocationListener,
                 ((MainActivity)getActivity()).drawerLayout1.openDrawer(GravityCompat.START);
             }
         });
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION}, TestActivity.requestcode);
-        }
 
         init();
     }
+
+    private TextView tv_cusine, arrow_show_detail, txtCityName;
+    private LinearLayout cusine_list;
+    private RecyclerView cuisinRecycler;
+    private LinearLayout layout;
+    ViewPager bottomViewPager;
+    ImageView imgCart,imgFilter;
+    boolean isApplyFiltered;
+    CuisionAdatper cuisionAdatper;
+    private Spinner sp;
+
+    public static TextView cart_icon;
 
     private void init(){
 
@@ -149,13 +133,13 @@ public class HomeFragment extends Fragment implements LocationListener,
         tv_cusine.setOnClickListener(this);
         viewPager =  getView().findViewById(R.id.home_viewPager);
 
-        arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
+        //arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
         imgCart = getView().findViewById(R.id.fragment_home_img_cart);
         imgCart.setOnClickListener(this);
 
         imgFilter.setOnClickListener(this);
-        arrow_show_detail.setOnClickListener(this);
+//        arrow_show_detail.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
@@ -180,26 +164,26 @@ public class HomeFragment extends Fragment implements LocationListener,
         userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id()+"";
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
-        //    cuisinRecycler.setAdapter(cuisionAdatper);
+    //    cuisinRecycler.setAdapter(cuisionAdatper);
         layout.setVisibility(View.GONE);
 
         getCuisone();
         milesSpinner();
-//        if (txtCityName.getText().toString().isEmpty()){
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    txtCityName.setText(stringBuffer.toString());
-//                    latitudeq = MainActivity.latitude+"";
-//                    longitudeq = MainActivity.longitude+"";
-//
-//                }
-//            },3000);
-//        }
+        if (txtCityName.getText().toString().isEmpty()){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    txtCityName.setText(stringBuffer.toString());
+                    latitudeq = MainActivity.latitude+"";
+                    longitudeq = MainActivity.longitude+"";
+
+                }
+            },3000);
+        }
 
     }
 
-    String selectedValue;
+    String s;
     String selectedmiles;
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
@@ -208,7 +192,7 @@ public class HomeFragment extends Fragment implements LocationListener,
         sp.setAdapter(arrayAdapter);
         if (selectedmiles != null) {
 
-            int spinnerPosition = arrayAdapter.getPosition(selectedValue);
+            int spinnerPosition = arrayAdapter.getPosition(s);
             sp.setSelection(spinnerPosition);
         }
 
@@ -220,26 +204,24 @@ public class HomeFragment extends Fragment implements LocationListener,
                     case 0:
                         min_miles = "0";
                         max_miles = "10";
-                        getHomeData(latitudeq, longitudeq);
-
                         break;
                     case 1:
                         min_miles = "0";
                         max_miles = "20";
-                        getHomeData(latitudeq, longitudeq);
+                        getHomeData();
                         break;
                     case 2:
                         min_miles = "0";
                         max_miles = "30";
-                        getHomeData(latitudeq, longitudeq);
+                        getHomeData();
                         break;
                     case 3:
                         min_miles = "0";
                         max_miles = "50";
-                        getHomeData(latitudeq, longitudeq);
+                        getHomeData();
                         break;
-                    default:
-                        break;
+                        default:
+                            break;
                 }
             }
 
@@ -251,35 +233,41 @@ public class HomeFragment extends Fragment implements LocationListener,
     }
 
     private boolean cuisine_status = false;
-
     @Override
     public void onResume() {
         super.onResume();
-
-        getLocation();
 
         layout_no_record_found.setVisibility(View.GONE);
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+        getHomeData();
 
     }
 
+    String latitudeq="51.5198117";
+    String longitudeq="-0.0939186" ;
+    String min_miles = "0";
+    String max_miles = "10";
+    public static String foodie_id = "4";
+    String country = "101";
+    private CuisineData cuisineData = new CuisineData();
+    private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
     private void getCuisone(){
         if (cuisionList!=null){
             cuisionList.clear();
         }
         new GetData(getContext(), getActivity()).getResponse("", "cuisine",
                 new GetData.MyCallback() {
-                    @Override
-                    public void onSuccess(String result) {
-                        final String response = result;
-                        cuisineData = new Gson().fromJson(result,CuisineData.class);
-                        cuisionList.addAll(cuisineData.getCuisine_data());
-                        setCuisionAdapter();
-                    }
-                });
+            @Override
+            public void onSuccess(String result) {
+                final String response = result;
+                cuisineData = new Gson().fromJson(result,CuisineData.class);
+                cuisionList.addAll(cuisineData.getCuisine_data());
+                setCuisionAdapter();
+            }
+        });
     }
 
     private void setCuisionAdapter(){
@@ -288,7 +276,7 @@ public class HomeFragment extends Fragment implements LocationListener,
         cuisionAdatper.CuisionInterfaceMethod(this);
     }
 
-    private void getHomeData(String latitudeq, String longitudeq){
+    private void getHomeData(){
       /*  Home data = new Home();
         data.setLatitude(latitudeq);
         data.setLongitude(longitudeq);
@@ -302,7 +290,7 @@ public class HomeFragment extends Fragment implements LocationListener,
         data.setMin_miles(min_miles);
         data.setMax_miles(max_miles);
         data.setCountry("");
-        data.setFoodie_id(foodie_id);
+        data.setFoodie_id("4");
         Log.d("MyRequest", new Gson().toJson(data));
         new GetData(getContext(), getActivity()).getResponse(new Gson().toJson(data), "home", new GetData.MyCallback() {
             @Override
@@ -317,11 +305,9 @@ public class HomeFragment extends Fragment implements LocationListener,
                         homeData = new Gson().fromJson(response, HomeData.class);
                         if (homeData.isStatus()) {
                             layout.setVisibility(View.VISIBLE);
-                            viewPager.setVisibility(View.VISIBLE);
-                            layout_no_record_found.setVisibility(View.GONE);
                             setMyData();
 //                            adapter.notifyDataSetChanged();
-//                            homeBottomPagerAdapter.notifyDataSetChanged()
+//                            homeBottomPagerAdapter.notifyDataSetChanged();
                         } else{
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
@@ -360,6 +346,12 @@ public class HomeFragment extends Fragment implements LocationListener,
         });
     }
 
+    private String TAG = HomeFragment.class.getName();
+    List<HomeData.ChefDishBean>chefDishBeans = new ArrayList<>();
+    List<HomeData.ChefDishBean>favorite_1 = new ArrayList<>();
+    List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
+    List<HomeData.FavouriteDataBean>favorite_2 = new ArrayList<>();
+
     private void setMyData(){
         if (chefDishBeans!=null){
             chefDishBeans.clear();
@@ -367,14 +359,13 @@ public class HomeFragment extends Fragment implements LocationListener,
         if (favouriteDataBeans!=null){
             favouriteDataBeans.clear();
         }
-        if (homeData.getChef_dish()!=null&&homeData.getChef_dish().size()>0){
-            chefDishBeans.addAll(homeData.getChef_dish());
-        }
-        if (homeData.getFavourite_data()!=null&&homeData.getFavourite_data().size()>0){
+        chefDishBeans.addAll(homeData.getChef_dish());
+        if (homeData.getFavourite_data()!=null){
             favouriteDataBeans.addAll(homeData.getFavourite_data());
         }
         setMyViewPager(chefDishBeans);
         setBottomViewPager(favouriteDataBeans);
+
     }
 
     private void setMyViewPager(List<HomeData.ChefDishBean> mylist) {
@@ -392,7 +383,7 @@ public class HomeFragment extends Fragment implements LocationListener,
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
 
-
+        
     }
 
     @Override
@@ -442,7 +433,7 @@ public class HomeFragment extends Fragment implements LocationListener,
         {
             startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
                     userDataBean.getUser_id()));
-            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+           getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (v.getId()==R.id.fragment_home_txtcity){
             startActivityForResult(new Intent(getActivity(), SelectLocActivity.class),2);
         }
@@ -463,7 +454,7 @@ public class HomeFragment extends Fragment implements LocationListener,
                 longitudeq = data.getDoubleExtra("longitude",0)+"";
                 txtCityName.setText(data.getStringExtra("name"));
                 Log.d(TAG, "onActivityResult: "+latitudeq+"\n"+longitudeq+"\n");
-                getHomeData(latitudeq, longitudeq);
+                getHomeData();
             }
         }
     }
@@ -494,93 +485,6 @@ public class HomeFragment extends Fragment implements LocationListener,
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case requestcode: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1]==PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
-                }
-                return;
-            }
-        }
-    }
-
-    void getLocation() {
-        try {
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, this);
-        }
-        catch(SecurityException e) {
-            e.printStackTrace();
-        }
-    }
-    public final int requestcode = 101;
-
-    @Override
-    public void onLocationChanged(Location location) {
-        locationText.setText("Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude());
-        latitudeq = location.getLatitude()+"";
-        longitudeq = location.getLongitude()+"";
-        getHomeData(latitudeq, longitudeq);
-
-        try {
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer = getAddress(new LatLng(location.getLatitude(), location.getLongitude()));
-            txtCityName.setText(stringBuffer.toString());
-
-            locationText.setText(locationText.getText() + "\n"+addresses.get(0).getAddressLine(0)+", "+
-                    addresses.get(0).getAddressLine(1)+", "+addresses.get(0).getAddressLine(2));
-        }
-        catch(Exception e)
-        {
-
-        }
-    }
-
-    public StringBuffer getAddress(LatLng latLng) throws IOException {
-        Geocoder geocoder;
-        List<Address> addresses;
-        StringBuffer result = new StringBuffer();
-        geocoder = new Geocoder(getContext(), Locale.getDefault());
-
-        try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
-            /*String state = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
-            String postalCode = addresses.get(0).getPostalCode();
-            String knownName = addresses.get(0).getFeatureName();*/
-            result.append(city);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
 
 
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-        Toast.makeText(getActivity(), "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
-    }
 }

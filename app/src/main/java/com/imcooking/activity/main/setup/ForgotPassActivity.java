@@ -49,7 +49,9 @@ public class ForgotPassActivity extends AppBaseActivity {
             ForgotPassword data = new ForgotPassword();
             data.setEmail(str);
 
-            new GetData(getApplicationContext(), ForgotPassActivity.this).getResponse(new Gson().toJson(data), "forgotpassword",
+            new GetData(getApplicationContext(),
+                    ForgotPassActivity.this).getResponse(new Gson().toJson(data),
+                    "forgotpassword",
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {

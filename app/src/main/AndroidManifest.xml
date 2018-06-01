@@ -28,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.home.HomeSearchActivity1" />
         <activity
             android:name=".activity.main.setup.LoginActivity"
             android:screenOrientation="portrait"
@@ -87,7 +88,7 @@
             android:name=".activity.Sub.Chef.ChefEditDish"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activity.Sub.Chef.ChefEditProfile" />
-        <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate"></activity>
+        <activity android:name=".activity.Sub.Chef.ChangePassword"></activity>
     </application>
 
 </manifest>

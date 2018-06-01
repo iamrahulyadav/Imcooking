@@ -33,6 +33,7 @@
             android:layout_toEndOf="@+id/toolbar_left"
             android:layout_toStartOf="@id/toolbar_right"
             android:layout_margin="5dp"
+            android:id="@+id/fragment_home_search_linearlayout"
             android:background="@drawable/shape_white"
             android:gravity="center">
 
@@ -58,31 +59,39 @@
             android:layout_marginRight="16dp"
             android:gravity="center">
 
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:padding="8dp"
+    android:focusable="true">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_food"
+        android:layout_gravity="center"
+        android:id="@+id/fragment_home_img_cart"
+        />
+    <TextView
+
+        android:id="@+id/home_cart_text_count"
+        android:layout_toRightOf="@id/fragment_home_img_cart"
+        android:background="@drawable/badge_bg"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_gravity="right|end|top"
+        android:layout_marginEnd="-8dp"
+        android:layout_marginRight="-3dp"
+        android:layout_marginTop="-5dp"
+        android:gravity="center"
+        android:padding="3dp"
+        android:textColor="@android:color/white"
+        android:text="0"
+        android:textSize="8sp"/>
 
 
-         <RelativeLayout
-             android:layout_width="wrap_content"
-             android:layout_height="match_parent">
-             <ImageView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:src="@drawable/ic_food"
-                 android:layout_centerInParent="true"
-                 android:id="@+id/fragment_home_img_cart"
-                 android:layout_alignParentLeft="true"
-                 android:layout_marginRight="0dp"/>
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/home_cart_text_count"
-                 android:text="1"
-                 android:textSize="8sp"
-                android:layout_toRightOf="@id/fragment_home_img_cart"
-                 android:layout_marginRight="7dp"
-                 android:layout_marginTop="7dp"
-                 android:background="@drawable/button_bg3"/>
 
-         </RelativeLayout>
+</FrameLayout>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

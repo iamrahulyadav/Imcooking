@@ -11,18 +11,19 @@
         android:background="@color/colorWhite"
         android:padding="5dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:id="@+id/item_foodie_my_request_profile_image"
+            android:id="@+id/item_foodie_my_order_chef_profile_image"
             android:src="@drawable/details_profile"
             android:layout_marginRight="5dp"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"/>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/item_foodie_my_request_profile_image">
+            android:layout_toRightOf="@+id/item_foodie_my_order_chef_profile_image">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -30,53 +31,48 @@
                 android:orientation="vertical">
 
                 <com.imcooking.customtext.CustomTextViewBold
+                    android:id="@+id/item_foodie_my_order_orderid"
                     android:layout_width="wrap_content"
-                    android:id="@+id/item_foodie_my_request_name"
+                    android:layout_height="wrap_content"
+                    android:text="Order Id-#6566754"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="5dp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:id="@+id/item_foodie_my_order_ChefName"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vaibhav Khandelwal"
                     android:textColor="@color/text_color_4"
                     android:textSize="12sp"
-                    android:layout_marginBottom="5dp"/>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:id="@+id/item_foodie_my_request_address"
-                    android:layout_height="wrap_content"
-                    android:text="E-164, Sector-15, Noida, India"
-                    android:textColor="@color/text_color_4"
-                    android:textSize="12sp"
-                    android:drawableLeft="@drawable/ic_placeholder"
                     android:drawablePadding="5dp"
                     android:layout_marginBottom="3dp"/>
-                <com.imcooking.customtext.CustomTextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/item_foodie_my_request_mob_number"
-                    android:text="+91-7737284476"
-                    android:textColor="@color/text_color_4"
-                    android:textSize="12sp"
-                    android:drawableLeft="@drawable/ic_phone"
-                    android:drawablePadding="5dp"
-                    android:layout_marginBottom="3dp"/>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/item_foodie_my_request_email"
-                    android:text="android.vaibhav@hotmail.com"
-                    android:textColor="@color/text_color_4"
-                    android:textSize="12sp"
-                    android:drawableLeft="@drawable/ic_mail"
-                    android:drawablePadding="5dp"
-                    android:layout_marginBottom="3dp"/>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/item_foodie_my_request_time"
-                    android:text="Monday * 20:20 PM"
-                    android:textColor="@color/text_color_4"
-                    android:textSize="12sp"
-                    android:drawableLeft="@drawable/ic_time"
-                    android:drawablePadding="5dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="3dp">
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Status"
+                        android:textColor="@color/text_color_4"
+                        android:textSize="10sp"
+                        android:layout_marginRight="5dp"/>
+                    <com.imcooking.customtext.CustomTextView
+                        android:id="@+id/item_foodie_my_order_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Failed"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="10sp"
+                        android:background="@drawable/shape_background_red"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:paddingBottom="3dp"
+                        android:paddingTop="3dp"/>
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -87,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:text="Ratings"
                         android:textColor="@color/colorWhite"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:background="@drawable/button_bg"
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
@@ -97,9 +93,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:rating="5"
-
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/item_foodie_my_request_rating"
+                        android:id="@+id/item_foodie_my_order_rating"
                         style="@style/Widget.AppCompat.RatingBar.Small"
                         android:progressTint="@color/Color_ratingbar"
                         />
@@ -126,23 +121,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="end|bottom">
-
                 <com.imcooking.customtext.CustomTextView
+                    android:id="@+id/item_foodie_my_order_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Accepted"
+                    android:text="$14"
                     android:layout_gravity="end"
-                    android:textColor="@color/shape_background_1"
+                    android:textColor="@color/theme_color"
                     android:textSize="12dp"
                     android:layout_marginBottom="10dp"/>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/item_foodie_my_requests_view_response"
-                    android:text="View Response"
+                    android:id="@+id/item_foodie_orders_order_details"
+                    android:text="Order details"
                     android:textColor="@color/colorWhite"
-                    android:textSize="12sp"
-                    android:background="@drawable/button_bg"
+                    android:textSize="10sp"
+                    android:background="@drawable/shape_background_theme_2"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:paddingRight="10dp"
@@ -155,8 +150,9 @@
     </RelativeLayout>
     <View
         android:layout_width="wrap_content"
-        android:layout_height="1dp"
+        android:layout_height=".3dp"
         android:background="@color/view_2"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"/>
+
 </LinearLayout>

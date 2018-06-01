@@ -1,15 +1,22 @@
 package com.imcooking.activity.home;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,22 +29,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.fragment.foodie.FoodieMyRequest;
-import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.chef.chefprofile.ChefHome;
+import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
+import com.imcooking.fragment.foodie.ChefMyOrderListFragment;
+import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
+import com.imcooking.fragment.foodie.HomeFragment;
 
-import com.imcooking.fragment.foodie.MyOrderFragment;
+import com.imcooking.fragment.foodie.FoodieMyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
-import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.mukesh.tinydb.TinyDB;
@@ -49,14 +63,18 @@ import java.util.Locale;
 
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private GoogleMap googleMap;
     MapView mMapView;
+    public static StringBuffer stringBuffer  = new StringBuffer();
     Context mContext;
     private FrameLayout frame;
+   public static double latitude, longitude;
     private float lastTranslate = 0.0f;
     private LinearLayout frame_view;
 //    public static Toolbar toolbar;
     public static DrawerLayout drawerLayout1;
     public NavigationView navigationView;
+    TextView txtChefUserName, txtMobile;
     private TinyDB tinyDB;
 
     @Override
@@ -76,10 +94,43 @@ public class MainActivity extends AppBaseActivity
             e.printStackTrace();
         }
 
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap map) {
+                googleMap = map;
+
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            1);
+                    return;
+                }
+                googleMap.setMyLocationEnabled(true);
+                googleMap.setOnMyLocationChangeListener(onMyLocationChangeListener);
+            }
+        });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
+/*
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        LinearLayout toolbar_left = toolbar.findViewById(R.id.toolbar_left);
+        toolbar_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+*/
+
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
@@ -94,6 +145,8 @@ public class MainActivity extends AppBaseActivity
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
@@ -106,10 +159,12 @@ public class MainActivity extends AppBaseActivity
                     anim.setDuration(0);
                     anim.setFillAfter(true);
                     frame_view.startAnimation(anim);
+
                     lastTranslate = moveFactor;
                 }
             }
         };
+
 
         drawer.addDrawerListener(toggle);
 //        toggle.syncState();
@@ -205,9 +260,9 @@ public class MainActivity extends AppBaseActivity
             tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
             iv_my_order.setImageResource(R.drawable.ic_salad_1);
             if(user_type.equals("2")) {
-                BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(), getSupportFragmentManager());
+                BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-
+                BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(), getSupportFragmentManager());
             }
         } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
@@ -279,8 +334,14 @@ public class MainActivity extends AppBaseActivity
                 break;
             case R.id.navigation_myrequest:
                 if(user_type.equals("2")) {
-                    BaseClass.callFragment(new FoodieMyRequest(), new FoodieMyRequest().getClass().getName(), getSupportFragmentManager());
+                    BaseClass.callFragment(new FoodieMyRequestFragment(), new FoodieMyRequestFragment().getClass().getName(), getSupportFragmentManager());
                 }
+                break;
+            case R.id.navigation_myorder:
+                if(user_type.equals("2")) {
+                    BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(),
+                            getSupportFragmentManager());
+        }
                 break;
         }
 
@@ -290,7 +351,7 @@ public class MainActivity extends AppBaseActivity
         return true;
     }
 
-  /*  @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                      @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -300,7 +361,7 @@ public class MainActivity extends AppBaseActivity
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                    *//*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*//*
+                    /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             1);
@@ -333,7 +394,7 @@ public class MainActivity extends AppBaseActivity
                         .newCameraPosition(cameraPosition));
             }
         }
-    };*/
+    };
 
     public StringBuffer getAddress(LatLng latLng) throws IOException {
         Geocoder geocoder;

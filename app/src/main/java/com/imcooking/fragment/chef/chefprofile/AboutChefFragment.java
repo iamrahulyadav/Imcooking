@@ -8,12 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
-import com.imcooking.fragment.chef.ChefHome;
 
 public class AboutChefFragment extends Fragment {
 
