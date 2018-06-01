@@ -73,7 +73,6 @@ public class ChefILove extends AppBaseActivity {
     private void setChefLove(){
          ChefILoveAdatper chefILoveAdatper = new ChefILoveAdatper(getApplicationContext(), chefloveBeanList);
         recyclerView.setAdapter(chefILoveAdatper);
-
         Log.d("VK", chefloveBeanList.size() + "");
     }
 

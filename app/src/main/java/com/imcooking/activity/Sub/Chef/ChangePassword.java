@@ -75,20 +75,23 @@ txtChangepass.setOnClickListener(new View.OnClickListener() {
                                Log.d("ShowResponseresult", result);
 
                     final String response = result;
-                    ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
+                    final ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
 
                     Log.d("ShowResponse", apiResponse.isStatus() + "");
-                    Log.d("ShowResponse", apiResponse.getMsg());
-                    if (apiResponse.isStatus()) {
-                        if (apiResponse.getMsg().equals("Successfully change password")) {
+                   runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           Log.d("ShowResponse", apiResponse.getMsg());
+                           if (apiResponse.isStatus()) {
+                               if (apiResponse.getMsg().equals("Successfully change password")) {
+                                   BaseClass.showToast(getApplicationContext(), "Successfully change password");
 
-                            BaseClass.showToast(getApplicationContext(), "Successfully change password");
-
-
-                        } else {
-                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
-                        }
-                    }
+                               } else {
+                                   BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                               }
+                           }
+                       }
+                   });
                 }
             });
         } else{

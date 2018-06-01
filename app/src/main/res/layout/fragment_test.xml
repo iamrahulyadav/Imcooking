@@ -100,8 +100,7 @@
                     android:textSize="8sp"
                     android:layout_toRightOf="@id/fragment_home_img_cart"
                     android:layout_marginRight="7dp"
-                    android:layout_marginTop="7dp"
-                    android:background="@drawable/button_bg3"/>
+                    android:layout_marginTop="7dp" />
 
             </RelativeLayout>
             <ImageView

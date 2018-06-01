@@ -20,7 +20,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
-import com.imcooking.fragment.chef.chefprofile.ChefHome;
+import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -158,15 +158,13 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
         int id = compoundButton.getId();
        /* if(id == R.id.chef_edit_profile_notification){
-
             if(b) str_notification = "1";
             else  str_notification = "0";
 
-        } else */if(id == R.id.chef_edit_profile_available){
-
+        } else */
+       if(id == R.id.chef_edit_profile_available){
             if(b) str_available = "1";
             else  str_available = "0";
-
         } else {}
     }
 
