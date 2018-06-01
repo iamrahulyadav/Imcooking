@@ -37,16 +37,12 @@ public class AdapterFoodieMyOrder extends RecyclerView.Adapter<AdapterFoodieMyOr
         this.list = list;
     }
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder{
-
         public TextView tv_order_details,tv_chefname,tv_price,tv_orderid,tv_status;
         public ImageView chefProfile;
         RatingBar ratingBar;
-
         public MyViewHolder(View view) {
             super(view);
-
             tv_order_details = view.findViewById(R.id.item_foodie_orders_order_details);
             tv_chefname = view.findViewById(R.id.item_foodie_my_order_ChefName);
             tv_orderid = view.findViewById(R.id.item_foodie_my_order_orderid);
@@ -56,12 +52,10 @@ public class AdapterFoodieMyOrder extends RecyclerView.Adapter<AdapterFoodieMyOr
             ratingBar=view.findViewById(R.id.item_foodie_my_order_rating);
         }
     }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_foodie_my_orders, parent, false);
-
         return new MyViewHolder(itemView);
     }
     @Override
