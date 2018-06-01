@@ -43,6 +43,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.fragment.chef.ChefOrderListFragment;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.chef.ChefHome;
@@ -252,7 +253,7 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new MyOrderFragment(), new MyOrderFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-
+                BaseClass.callFragment(new ChefOrderListFragment(), new ChefOrderListFragment().getClass().getName(), getSupportFragmentManager());
             }
         } else if (id ==R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
