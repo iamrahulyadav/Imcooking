@@ -80,12 +80,12 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private TextView tv_phoneno;
     private LinearLayout layout;
 
-    private String loginData, user_type, chef_id;
+    private String loginData, user_type; public static String chef_id;
     private TinyDB tinyDB;
     private ApiResponse.UserDataBean userDataBean;
 
     private TextView btn_call;
-    private String foodie_id;
+    public static String foodie_id;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

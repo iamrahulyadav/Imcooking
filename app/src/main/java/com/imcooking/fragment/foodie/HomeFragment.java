@@ -69,6 +69,7 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment implements LocationListener,
         View.OnClickListener, CuisionAdatper.CuisionInterface{
+
     public static TextView cart_icon;
     LocationManager locationManager;
     Button getLocationBtn;
