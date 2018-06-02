@@ -1,6 +1,5 @@
 package com.imcooking.activity.Sub.Foodie;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +9,9 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ChefIloveData;
 import com.imcooking.R;
-import com.imcooking.adapters.ChefILoveAdatper;
 import com.imcooking.adapters.FavrouiteAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
-import com.imcooking.webservices.GetData;
 
 import java.util.ArrayList;
 import java.util.List;

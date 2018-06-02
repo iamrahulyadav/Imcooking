@@ -3,25 +3,20 @@ package com.imcooking.activity.Sub.Foodie;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.imcooking.Model.ApiRequest.Home;
 import com.imcooking.Model.api.response.AddDelRequest;
 import com.imcooking.Model.api.response.AddressListData;
 import com.imcooking.R;
 
 
-import com.imcooking.activity.Sub.Foodie.AddAddressActivity;
 import com.imcooking.adapters.AddListAdatper;
-import com.imcooking.adapters.ChefILoveAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.webservices.GetData;

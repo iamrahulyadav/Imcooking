@@ -74,35 +74,34 @@ TinyDB tinyDB;
        // String s = "{\"foodie_id\": 5}";
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "foodie_myrequestdish_chefdetails", getActivity(), new GetData.MyCallback() {
+            new GetData(getContext(), getActivity()).sendMyData(job, "foodie_myrequestdish_chefdetails",
+                    getActivity(), new GetData.MyCallback() {
                 @Override
-                public void onSuccess(String result) {
+                public void onSuccess(final String result) {
 
-                    FoodieMyRequest foodieMyRequest = new FoodieMyRequest();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            FoodieMyRequest foodieMyRequest = new FoodieMyRequest();
 
-                    foodieMyRequest = new Gson().fromJson(result, FoodieMyRequest.class);
+                            foodieMyRequest = new Gson().fromJson(result, FoodieMyRequest.class);
 
-                    if(foodieMyRequest.isStatus()){
-                        if(!foodieMyRequest.getFoodie_request_dish_chef_details().isEmpty()){
+                            if(foodieMyRequest.isStatus()){
+                                if(!foodieMyRequest.getFoodie_request_dish_chef_details().isEmpty()){
 
-                            setMyAdapter(foodieMyRequest.getFoodie_request_dish_chef_details());
+                                    setMyAdapter(foodieMyRequest.getFoodie_request_dish_chef_details());
+                                }
+                                else {
+                                    Toast.makeText(getContext(), "No request found", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                            }
+
                         }
-                        else {
-                            Toast.makeText(getContext(), "No request found", Toast.LENGTH_SHORT).show();
-
-                        }
-
-
-
-                    }
-                    else {
-                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                    }
-
-
-
-
+                    });
                 }
             });
 

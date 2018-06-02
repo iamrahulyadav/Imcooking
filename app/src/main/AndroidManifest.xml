@@ -89,6 +89,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activity.Sub.Chef.ChefEditProfile" />
         <activity android:name=".activity.Sub.Chef.ChangePassword"></activity>
+        <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate"/>
     </application>
 
 </manifest>

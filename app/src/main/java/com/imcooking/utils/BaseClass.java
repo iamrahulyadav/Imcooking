@@ -23,8 +23,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
-import com.imcooking.fragment.chef.chefprofile.ChefHome;
-import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
+import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.mukesh.tinydb.TinyDB;
 
@@ -103,7 +102,6 @@ public class BaseClass {
     }
 
     public static void callFragment1(Fragment fragment, String tag, FragmentManager manager){
-
 
         if(tag.equals(new HomeFragment().getClass().getName())&& tag.equals(new ChefHome().getClass().getName()))
         {

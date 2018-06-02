@@ -2,21 +2,13 @@ package com.imcooking.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.imcooking.Model.api.response.AddDelRequest;
 import com.imcooking.Model.api.response.AddressListData;
-import com.imcooking.Model.api.response.ChefIloveData;
 import com.imcooking.R;
-import com.imcooking.fragment.foodie.HomeFragment;
-import com.imcooking.webservices.GetData;
 
 import java.util.ArrayList;
 import java.util.List;
