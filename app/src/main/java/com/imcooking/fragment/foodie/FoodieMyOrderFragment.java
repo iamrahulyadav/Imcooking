@@ -88,7 +88,7 @@ List<FoodieMyorderList>fooodieorderList=new ArrayList<>();
         String user_id=apiResponse.getUser_id()+"";
 
        // String s = "{\"foodie_id\":" + user_id + "}";
-        String s = "{\"foodie_id\": 4}";
+        String s = "{\"foodie_id\": "+user_id+"}";
         try {
             JSONObject job = new JSONObject(s);
             new GetData(getContext(), getActivity()).sendMyData(job, "myorder", getActivity(),
@@ -102,16 +102,14 @@ List<FoodieMyorderList>fooodieorderList=new ArrayList<>();
 
                     if(foodieMyorder.isStatus()){
                         if(!foodieMyorder.getFoodie_order_list().isEmpty()){
-
                             setMyAdapter(foodieMyorder.getFoodie_order_list());
-
                         }
                         else {
                             Toast.makeText(getContext(), "order list is empty", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
-                        Toast.makeText(getContext(), "spmething went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Order List empty", Toast.LENGTH_SHORT).show();
                     }
 
                 }
