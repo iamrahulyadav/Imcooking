@@ -531,8 +531,7 @@ public class HomeFragment extends Fragment implements LocationListener,
             txtCityName.setText(stringBuffer.toString());
 
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
 
         }
     }
@@ -576,7 +575,8 @@ public class HomeFragment extends Fragment implements LocationListener,
     }
 
 
-    private void filterCuisine(){
-
+    private void filterCuisine(String cuision){
+        List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
+        setMyViewPager(chefDishBeans);
     }
 }

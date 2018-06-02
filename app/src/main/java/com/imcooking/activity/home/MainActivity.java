@@ -44,8 +44,6 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.ChefHome;
-import com.imcooking.fragment.chef.ChefMyOrderListFragment;
-import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 
@@ -66,7 +64,7 @@ public class MainActivity extends AppBaseActivity
 
     private float lastTranslate = 0.0f;
     private LinearLayout frame_view;
-//    public static Toolbar toolbar;
+    //    public static Toolbar toolbar;
     public static DrawerLayout drawerLayout1;
     public NavigationView navigationView;
     TextView txtChefUserName, txtMobile;
@@ -138,16 +136,34 @@ public class MainActivity extends AppBaseActivity
         init();
         getUserData();
         if (user_type.equals("1")) {
-            ChefHome fragment = new ChefHome();
+            if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                if (tag1.equals(ChefHome.class.getName())) {
 
-            Bundle args = new Bundle();
-            args.putString("chef_id", user_id);
-            args.putString("foodie_id", "4");
+                } else {
 
-            fragment.setArguments(args);
+                    ChefHome fragment = new ChefHome();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                    Bundle args = new Bundle();
+                    args.putString("chef_id", user_id);
+                    args.putString("foodie_id", "4");
 
+                    fragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                }
+            } else {
+                ChefHome fragment = new ChefHome();
+
+                Bundle args = new Bundle();
+                args.putString("chef_id", user_id);
+                args.putString("foodie_id", "4");
+
+                fragment.setArguments(args);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+            }
 //            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
         } else { // 2
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
@@ -161,7 +177,7 @@ public class MainActivity extends AppBaseActivity
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private String user_type, user_id;
 
-    private void init(){
+    private void init() {
 
         tinyDB = new TinyDB(getApplicationContext());
 
@@ -176,13 +192,14 @@ public class MainActivity extends AppBaseActivity
         tv_notification = findViewById(R.id.bottom_notification_text);
     }
 
-    private void getUserData(){
+    private void getUserData() {
 
         loginData = tinyDB.getString("login_data");
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
     }
+
 
     public void bottom_click(View view) {
 
@@ -195,15 +212,36 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                ChefHome fragment = new ChefHome();
+                if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                    String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                    if (tag1.equals(ChefHome.class.getName())) {
 
-                Bundle args = new Bundle();
-                args.putString("chef_id", user_id);
-                args.putString("foodie_id", "4");
+                    } else {
 
-                fragment.setArguments(args);
+                        ChefHome fragment = new ChefHome();
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                        Bundle args = new Bundle();
+                        args.putString("chef_id", user_id);
+                        args.putString("foodie_id", "4");
+
+                        fragment.setArguments(args);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame, fragment)
+                                .addToBackStack(ChefHome.class.getName()).commit();
+                    }
+                } else{
+             /*       ChefHome fragment = new ChefHome();
+
+                    Bundle args = new Bundle();
+                    args.putString("chef_id", user_id);
+                    args.putString("foodie_id", "4");
+
+                    fragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+*/
+                }
             }
         } else if (id == R.id.bottom_profile_layout){
             tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
@@ -212,15 +250,37 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                ChefHome fragment = new ChefHome();
+                if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                    String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                    if (tag1.equals(ChefHome.class.getName())) {
 
-                Bundle args = new Bundle();
-                args.putString("chef_id", user_id);
-                args.putString("foodie_id", "4");
+                    } else {
 
-                fragment.setArguments(args);
+                        ChefHome fragment = new ChefHome();
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                        Bundle args = new Bundle();
+                        args.putString("chef_id", user_id);
+                        args.putString("foodie_id", "4");
+
+                        fragment.setArguments(args);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame, fragment)
+                                .addToBackStack(ChefHome.class.getName())
+                                .commit();
+                    }
+                }/* else{
+                    ChefHome fragment = new ChefHome();
+
+                    Bundle args = new Bundle();
+                    args.putString("chef_id", user_id);
+                    args.putString("foodie_id", "4");
+
+                    fragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+                }*/
             }
         } else if (id == R.id.bottom_my_order_layout){
             tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
@@ -228,7 +288,7 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(), getSupportFragmentManager());
+
             }
         } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
@@ -254,8 +314,6 @@ public class MainActivity extends AppBaseActivity
         iv_notification.setImageResource(R.drawable.ic_ring);
 
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -307,7 +365,7 @@ public class MainActivity extends AppBaseActivity
                 if(user_type.equals("2")) {
                     BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(),
                             getSupportFragmentManager());
-        }
+                }
                 break;
         }
 
@@ -316,5 +374,6 @@ public class MainActivity extends AppBaseActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 }
