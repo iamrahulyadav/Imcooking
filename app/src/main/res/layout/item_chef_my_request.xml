@@ -22,6 +22,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:id="@+id/item_chef_my_request_profile_img"
             android:src="@drawable/details_profile"/>
 
         <LinearLayout
@@ -34,12 +35,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Vaibhav Khandelwal"
+                android:id="@+id/item_chef_my_request_name"
                 android:textColor="@color/text_color_13"
                 android:textSize="9sp"
                 android:gravity="center"/>
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/item_chef_my_request_address"
                 android:text="E-164, sector-15, Noida"
                 android:textColor="@color/text_color_13"
                 android:textSize="9sp"
@@ -50,12 +53,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+91-7737284476"
+                android:id="@+id/item_chef_my_request_phone"
                 android:textColor="@color/text_color_13"
                 android:textSize="9sp"
                 android:gravity="center"/>
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/item_chef_my_request_email"
                 android:text="android.vaibhav@hotmail.com"
                 android:textColor="@color/text_color_13"
                 android:textSize="9sp"
@@ -86,9 +91,10 @@
         <com.imcooking.customtext.CustomTextViewBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sahi Paneer"
+            android:text="Shahi Paneer"
             android:textStyle="bold"
             android:textSize="9sp"
+            android:id="@+id/item_chef_my_request_dishName"
             android:textColor="@color/text_color_4"
             android:layout_marginTop="5dp"/>
         <com.imcooking.customtext.CustomTextView
@@ -96,6 +102,7 @@
             android:layout_height="wrap_content"
             android:text="South india food"
             android:textSize="8sp"
+            android:id="@+id/item_chef_my_request_food_category"
             android:textColor="@color/shape_background_1"
             android:layout_marginTop="2dp"/>
         <com.imcooking.customtext.CustomTextView
@@ -103,6 +110,7 @@
             android:layout_height="wrap_content"
             android:text="20/05/2017 20:40PM"
             android:textSize="9sp"
+            android:id="@+id/item_chef_my_request_time"
             android:textColor="@color/text_color_4"
             android:layout_marginTop="5dp"/>
 
@@ -122,6 +130,7 @@
                 android:layout_height="wrap_content"
                 android:text="2"
                 android:textSize="9sp"
+                android:id="@+id/item_chef_my_request_qty"
                 android:textColor="@color/text_color_4"
                 android:background="@drawable/shape_border_grey"
                 android:layout_marginLeft="5dp"
@@ -142,12 +151,14 @@
                 android:textSize="9sp"
                 android:textColor="@color/colorWhite"
                 android:gravity="center"
+                android:id="@+id/item_chef_my_request_reply"
                 android:background="@drawable/shape_background_theme"/>
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="View"
+                android:id="@+id/item_chef_my_request_view"
                 android:textSize="9sp"
                 android:textColor="@color/text_color_13"
                 android:gravity="center"

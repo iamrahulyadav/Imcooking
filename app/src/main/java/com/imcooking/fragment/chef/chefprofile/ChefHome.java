@@ -1,4 +1,4 @@
-package com.imcooking.fragment.chef;
+package com.imcooking.fragment.chef.chefprofile;
 
 
 import android.app.Activity;
@@ -80,12 +80,12 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private TextView tv_phoneno;
     private LinearLayout layout;
 
-    private String loginData, user_type; public static String chef_id;
+    private String loginData, user_type, chef_id;
     private TinyDB tinyDB;
     private ApiResponse.UserDataBean userDataBean;
 
     private TextView btn_call;
-    public static String foodie_id;
+    private String foodie_id;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -193,8 +193,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                     tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                     Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
-                                            .getChef_data().getChef_image())
-//                                .placeholder( R.drawable.progress_animation )
+                                            .getChef_data().getChef_image()+"")
+//                                .placeholder( R.drawable.progress_animatio+n )
                                             .into(imgChef);
                                     if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) == 1) {
                                         txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Follower");
@@ -393,6 +393,7 @@ for(int i=0;i<jsonArray.length();i++){
         } else if (id == R.id.chef_home_popup_change_password) {
             startActivity(new Intent(getContext(), ChangePassword.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
         } else if (id == R.id.chef_home_popup_deacivate) {
             startActivity(new Intent(getContext(), ChefActivateDeactivate.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
