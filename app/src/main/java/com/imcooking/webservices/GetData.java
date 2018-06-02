@@ -304,7 +304,6 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
         }
     }
 
-
     public interface MyCallback {
         void onSuccess(String result);
     }

@@ -45,6 +45,7 @@ import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
 import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
+import com.imcooking.activity.home.HomeSearchActivity1;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.home.TestActivity;
 import com.imcooking.adapters.CuisionAdatper;
@@ -71,7 +72,6 @@ public class HomeFragment extends Fragment implements LocationListener,
     public static TextView cart_icon;
     LocationManager locationManager;
     Button getLocationBtn;
-    TextView locationText;
     private HomeData homeData = new HomeData();
     private ArrayList<String>spinnerData =new ArrayList<>();
     private TinyDB tinyDB;
@@ -85,7 +85,7 @@ public class HomeFragment extends Fragment implements LocationListener,
     private Toolbar toolbar;
     CustomViewPager viewPager;
     HomeBottomPagerAdapter homeBottomPagerAdapter;
-    private TextView tv_cusine, arrow_show_detail, txtCityName;
+    private TextView tv_cusine,  txtCityName, txtSerach;
     private RecyclerView cuisinRecycler;
     private LinearLayout layout;
     ViewPager bottomViewPager;
@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment implements LocationListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_test, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
@@ -115,7 +115,6 @@ public class HomeFragment extends Fragment implements LocationListener,
         super.onActivityCreated(savedInstanceState);
 
         getLocationBtn = (Button)getView().findViewById(R.id.getLocationBtn);
-        locationText = (TextView)getView().findViewById(R.id.locationText);
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         LinearLayout toolbar_left = getView().findViewById(R.id.toolbar_left);
@@ -148,14 +147,13 @@ public class HomeFragment extends Fragment implements LocationListener,
         imgFilter = getView().findViewById(R.id.fragment_home_img_filter);
         tv_cusine.setOnClickListener(this);
         viewPager =  getView().findViewById(R.id.home_viewPager);
-
-        arrow_show_detail = getView().findViewById(R.id.home_show_detail_1);
+        txtSerach = getView().findViewById(R.id.fragment_home_search_img);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
         imgCart = getView().findViewById(R.id.fragment_home_img_cart);
         imgCart.setOnClickListener(this);
 
         imgFilter.setOnClickListener(this);
-        arrow_show_detail.setOnClickListener(this);
+        txtSerach.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
@@ -319,6 +317,10 @@ public class HomeFragment extends Fragment implements LocationListener,
                             layout.setVisibility(View.VISIBLE);
                             viewPager.setVisibility(View.VISIBLE);
                             layout_no_record_found.setVisibility(View.GONE);
+                            if (homeData.getChef_dish()!=null&&homeData.getChef_dish().size()>0){
+                                cart_icon.setText(homeData.getChef_dish().get(0).getAdded_no_of_cart()+"");
+                            }
+
                             setMyData();
 //                            adapter.notifyDataSetChanged();
 //                            homeBottomPagerAdapter.notifyDataSetChanged()
@@ -424,16 +426,6 @@ public class HomeFragment extends Fragment implements LocationListener,
                 tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_arrow, 0);
                 cuisine_status = false;
             }
-        } else if(v.getId() == R.id.home_show_detail_1){
-
-            HomeDetails fragment = new HomeDetails();
-            Bundle bundle = new Bundle();
-            bundle.putString("dish_id", homeData.getChef_dish().get(0).getDish_id() + "");
-            fragment.setArguments(bundle);
-
-            BaseClass.callFragment(fragment, fragment
-                    .getClass().getName(), getFragmentManager());
-
         }
         else if (v.getId()==R.id.fragment_home_img_filter){
             startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
@@ -445,6 +437,9 @@ public class HomeFragment extends Fragment implements LocationListener,
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (v.getId()==R.id.fragment_home_txtcity){
             startActivityForResult(new Intent(getActivity(), SelectLocActivity.class),2);
+        } else if (v.getId()==R.id.fragment_home_search_img){
+            startActivity(new Intent(getContext(), HomeSearchActivity1.class));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
     }
 
@@ -524,7 +519,6 @@ public class HomeFragment extends Fragment implements LocationListener,
 
     @Override
     public void onLocationChanged(Location location) {
-        locationText.setText("Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude());
         latitudeq = location.getLatitude()+"";
         longitudeq = location.getLongitude()+"";
         getHomeData(latitudeq, longitudeq);
@@ -536,8 +530,6 @@ public class HomeFragment extends Fragment implements LocationListener,
             stringBuffer = getAddress(new LatLng(location.getLatitude(), location.getLongitude()));
             txtCityName.setText(stringBuffer.toString());
 
-            locationText.setText(locationText.getText() + "\n"+addresses.get(0).getAddressLine(0)+", "+
-                    addresses.get(0).getAddressLine(1)+", "+addresses.get(0).getAddressLine(2));
         }
         catch(Exception e)
         {
@@ -568,7 +560,6 @@ public class HomeFragment extends Fragment implements LocationListener,
         return result;
     }
 
-
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
 
@@ -582,5 +573,10 @@ public class HomeFragment extends Fragment implements LocationListener,
     @Override
     public void onProviderDisabled(String s) {
         Toast.makeText(getActivity(), "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void filterCuisine(){
+
     }
 }

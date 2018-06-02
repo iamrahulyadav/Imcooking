@@ -44,6 +44,7 @@
                 android:text="Search"
                 android:gravity="center"
                 android:textStyle="bold"
+                android:id="@+id/fragment_home_search_img"
                 android:textColor="@color/text_color_7"
                 android:drawableLeft="@drawable/ic_magnifying_glass"
                 android:drawablePadding="10dp"/>

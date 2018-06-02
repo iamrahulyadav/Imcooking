@@ -1,4 +1,4 @@
-package com.imcooking.fragment.foodie;
+package com.imcooking.fragment.chef;
 
 
 import android.os.Bundle;
