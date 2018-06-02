@@ -304,21 +304,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-
-
                                         ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
-                                        if (apiResponse.getMsg().equals("Already add this dish")){
-                                            Toast.makeText(getContext(), "This dish is already added ", Toast.LENGTH_SHORT).show();
-                                        }
-                                        else {
-
+                                        if (apiResponse.isStatus()){
                                             dialog.show();
+                                        } else {
+                                            Toast.makeText(getContext(), apiResponse.getMsg(), Toast.LENGTH_SHORT).show();
                                         }
-                                   /*     Log.d("ShowResponse", apiResponse.isStatus() + "");
-                                        Log.d("ShowResponse", apiResponse.getMsg());
-//                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
-                                        //tv.setText(apiResponse.getMsg());
-*/
                                     }
                                 });
                             }

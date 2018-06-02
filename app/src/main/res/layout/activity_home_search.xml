@@ -20,7 +20,7 @@
             android:layout_margin="5dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_left_arrow"/>
-        <EditText
+        <com.imcooking.customtext.CustomEditText
             android:id="@+id/etSearch_home"
             android:gravity="center_vertical"
             android:padding="15dp"
@@ -42,10 +42,10 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_margin="14dp"
         android:layout_below="@+id/etSearch_home_lay"
         android:id="@+id/rvLocations"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 </RelativeLayout>

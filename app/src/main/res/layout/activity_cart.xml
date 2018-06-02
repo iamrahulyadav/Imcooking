@@ -7,7 +7,7 @@
     android:background="@color/colorWhite"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.imcooking.activity.Sub.EditProfile">
+ >
 
    <ScrollView
         android:layout_width="match_parent"
@@ -26,6 +26,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="284dp"
+                    android:visibility="visible"
                     android:fitsSystemWindows="true"
                     >
 
@@ -95,45 +96,15 @@
                                 android:src="@drawable/details_profile"
                                 android:visibility="gone" />
 
-
-                            <LinearLayout
+                            <RatingBar
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="3dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="5dp"
-                                    android:src="@drawable/ic_star_1" />
-
-                            </LinearLayout>
+                                android:rating="5"
+                                android:layout_marginLeft="5dp"
+                                android:id="@+id/activity_cart_rating"
+                                style="@style/Widget.AppCompat.RatingBar.Small"
+                                android:progressTint="#FEF200"
+                                />
 
                             <TextView
                                 android:id="@+id/chef_name"
@@ -153,19 +124,6 @@
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/tv_follow"
-                                android:layout_width="wrap_content"
-                                android:layout_height="25dp"
-                                android:layout_marginTop="0dp"
-                                android:drawableLeft="@drawable/ic_drop_up_aarrow"
-                                android:gravity="center"
-                                android:paddingLeft="20dp"
-                                android:paddingRight="20dp"
-                                android:text="follow"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -199,7 +157,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-
                             android:text="Tax"
                             android:textColor="@color/colorBlack"
                             android:textSize="14sp" />
@@ -240,6 +197,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:id="@+id/cart_Linearlayout_placeorder"
                         android:padding="8dp">
 
                         <TextView
@@ -249,6 +207,7 @@
                             android:background="@drawable/button_bg"
                             android:padding="8dp"
                             android:text="Add new item"
+                            android:id="@+id/cart_tv_addnewitem"
                             android:textColor="@color/colorWhite"
                             android:textSize="14sp" />
 
@@ -258,109 +217,126 @@
                             android:background="@drawable/button_bg"
                             android:padding="8dp"
                             android:text="Place order"
+                            android:id="@+id/cart_tv_place_order"
                             android:textColor="@color/colorWhite"
                             android:textSize="14sp" />
                     </LinearLayout>
 
                 </LinearLayout>
+
             <RelativeLayout
-                android:visibility="gone"
+                android:id="@+id/cart_relativelayout_payment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginBottom="20dp">
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/cart_item_left1"
+                    android:layout_width="222dp"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:gravity="center_vertical"
                     android:layout_centerInParent="true"
-                    android:orientation="vertical"
-                    android:layout_toRightOf="@+id/img_dish"
-                    android:layout_toLeftOf="@+id/cart_item_right">
+                    android:layout_toRightOf="@+id/cart_item_right1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radioButton1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery"
+                            android:buttonTint="@color/colorLightGrey"
+                            android:checked="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/radioButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pickup"
+                            android:buttonTint="@color/colorLightGrey"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="12sp" />
+
+                    </RadioGroup>
+
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Butter chicken"
+                        android:layout_margin="5dp"
                         android:singleLine="true"
-                        android:textSize="12sp"
-                        android:id="@+id/tv_dish_name"
-                        android:layout_marginBottom="5dp"
-                        android:textColor="@color/colorBlack"/>
-
-                    <LinearLayout
+                        android:text="Please select Your address for delivery"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="10sp" />
+                    <com.imcooking.customtext.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="@drawable/button_bg2">
-
-                        <TextView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:text="-"
-                            android:id="@+id/tv_minus"
-                            android:textColor="@color/colorBlue"
-                            android:gravity="center"
-                            android:textSize="20sp"
-                            />
-                        <LinearLayout
-                            android:layout_width="1dp"
-                            android:layout_height="25dp"
-                            android:background="@color/colorLightGrey"/>
-                        <TextView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:text="1"
-                            android:id="@+id/tv_dish_count"
-                            android:textSize="20sp"
-                            android:gravity="center"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginRight="2dp"
-                            android:textColor="@color/colorBlack"/>
-                        <LinearLayout
-                            android:layout_width="1dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center_vertical"
-                            android:background="@color/colorLightGrey"/>
-                        <TextView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:text="+"
-                            android:id="@+id/tv_plus"
-                            android:gravity="center"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="20dp"/>
+                        android:text="Select an Address"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="10sp"
+                        android:layout_margin="5dp"
+                        />
 
 
-                    </LinearLayout>
+
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cart_item_right"
+                    android:id="@+id/cart_item_right1"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
                     android:orientation="vertical"
                     android:layout_centerInParent="true"
                     android:layout_alignParentRight="true"
-                    android:gravity="right|center"
+                    android:gravity="center"
 
                     >
-                    <TextView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="Payment"
-                        android:layout_marginBottom="5dp"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:background="@drawable/button_bg4"
+                        android:textColor="@color/colorBlue"
+                        android:layout_margin="5dp"
                         android:id="@+id/tv_payment"
                         />
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="$0"
-                        android:id="@+id/tv_dish_price"
+                        android:text="Add New"
+                        android:gravity="center"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/button_bg4"
+                        android:id="@+id/cart_addnewaddress"
                         android:textSize="12sp"
                         android:textColor="@color/colorBlue"/>
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_margin="5dp"
+                        android:layout_alignParentRight="false"
+                        android:background="@drawable/down"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
+
 
                 </LinearLayout>
+
+
 
             </RelativeLayout>
         </LinearLayout>

@@ -281,7 +281,7 @@ public class HomeFragment extends Fragment implements LocationListener,
     }
 
     private void setCuisionAdapter(){
-        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
+        cuisionAdatper = new CuisionAdatper(getContext(),this,cuisionList);
         cuisinRecycler.setAdapter(cuisionAdatper);
         cuisionAdatper.CuisionInterfaceMethod(this);
     }
@@ -313,13 +313,20 @@ public class HomeFragment extends Fragment implements LocationListener,
                     public void run() {
                         Log.d(TAG, "run: data"+response.toString());
                         homeData = new Gson().fromJson(response, HomeData.class);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject!=null&&jsonObject.has("add_acrt_count")){
+                                cart_icon.setText(jsonObject.getString("add_acrt_count"));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         if (homeData.isStatus()) {
                             layout.setVisibility(View.VISIBLE);
                             viewPager.setVisibility(View.VISIBLE);
                             layout_no_record_found.setVisibility(View.GONE);
-                            if (homeData.getChef_dish()!=null&&homeData.getChef_dish().size()>0){
-                                cart_icon.setText(homeData.getChef_dish().get(0).getAdded_no_of_cart()+"");
-                            }
 
                             setMyData();
 //                            adapter.notifyDataSetChanged();
@@ -328,7 +335,7 @@ public class HomeFragment extends Fragment implements LocationListener,
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (jsonObject.getString("msg").equals("Not record found")){
-                                    BaseClass.showToast(getContext(), "No record found");
+                             //       BaseClass.showToast(getContext(), "No record found");
                                     layout_no_record_found.setVisibility(View.VISIBLE);
                                     layout.setVisibility(View.VISIBLE);
                                     viewPager.setVisibility(View.GONE);
@@ -392,8 +399,7 @@ public class HomeFragment extends Fragment implements LocationListener,
 
     @Override
     public void CuisionInterfaceMethod(View view, int position) {
-        Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
-
+        filterCuisine(position,cuisionList.get(position).getCuisine_name());
     }
 
     @Override
@@ -573,18 +579,26 @@ public class HomeFragment extends Fragment implements LocationListener,
         Toast.makeText(getActivity(), "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
     }
 
+    List<HomeData.ChefDishBean>cuisionChefList;
 
-    private void filterCuisine(String cuision){
-        List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
-
+    private void filterCuisine(int position, String cuision){
+        cuisionChefList = new ArrayList<>();
         for (HomeData.ChefDishBean  bean: chefDishBeans){
             if (bean.getDish_cuisine()!=null&&bean.getDish_cuisine().size()>0){
                 String cuisionVa = bean.getDish_cuisine().get(0).getCuisine_name();
                 if (cuision.equalsIgnoreCase(cuisionVa)){
-                    chefDishBeans1.addAll(chefDishBeans);
+                    cuisionChefList.add(chefDishBeans.get(position));
                 }
             }
         }
-        setMyViewPager(chefDishBeans1);
+        if (cuisionChefList.size()>0){
+            layout_no_record_found.setVisibility(View.GONE);
+            viewPager.setVisibility(View.VISIBLE);
+            setMyViewPager(cuisionChefList);
+
+        } else {
+            layout_no_record_found.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.GONE);
+        }
     }
 }
