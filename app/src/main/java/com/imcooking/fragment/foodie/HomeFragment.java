@@ -394,7 +394,6 @@ public class HomeFragment extends Fragment implements LocationListener,
     public void CuisionInterfaceMethod(View view, int position) {
         Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
 
-
     }
 
     @Override
@@ -575,8 +574,5 @@ public class HomeFragment extends Fragment implements LocationListener,
     }
 
 
-    private void filterCuisine(String cuision){
-        List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
-        setMyViewPager(chefDishBeans);
-    }
+
 }
