@@ -171,16 +171,34 @@ public class MainActivity extends AppBaseActivity
         init();
         getUserData();
         if (user_type.equals("1")) {
-            ChefHome fragment = new ChefHome();
+            if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                if (tag1.equals(ChefHome.class.getName())) {
 
-            Bundle args = new Bundle();
-            args.putString("chef_id", user_id);
-            args.putString("foodie_id", "4");
+                } else {
 
-            fragment.setArguments(args);
+                    ChefHome fragment = new ChefHome();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                    Bundle args = new Bundle();
+                    args.putString("chef_id", user_id);
+                    args.putString("foodie_id", "4");
 
+                    fragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                }
+            } else{
+                ChefHome fragment = new ChefHome();
+
+                Bundle args = new Bundle();
+                args.putString("chef_id", user_id);
+                args.putString("foodie_id", "4");
+
+                fragment.setArguments(args);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+            }
 //            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
         } else { // 2
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
@@ -228,38 +246,83 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                ChefHome fragment = new ChefHome();
+                if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                    String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                    if (tag1.equals(ChefHome.class.getName())) {
 
-                Bundle args = new Bundle();
-                args.putString("chef_id", user_id);
-                args.putString("foodie_id", "4");
+                    } else {
 
-                fragment.setArguments(args);
+                        ChefHome fragment = new ChefHome();
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                        Bundle args = new Bundle();
+                        args.putString("chef_id", user_id);
+                        args.putString("foodie_id", "4");
+
+                        fragment.setArguments(args);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame, fragment)
+                                .addToBackStack(ChefHome.class.getName()).commit();
+                    }
+                } else{
+             /*       ChefHome fragment = new ChefHome();
+
+                    Bundle args = new Bundle();
+                    args.putString("chef_id", user_id);
+                    args.putString("foodie_id", "4");
+
+                    fragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+*/
+                }
             }
         } else if (id == R.id.bottom_profile_layout){
             tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
             iv_profile.setImageResource(R.drawable.ic_user_name_1);
 
             if(user_type.equals("2")) {
-                BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(),
-                        getSupportFragmentManager());
+                BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                ChefHome fragment = new ChefHome();
-                Bundle args = new Bundle();
-                args.putString("chef_id", user_id);
-                args.putString("foodie_id", "4");
-                fragment.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                    String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                    if (tag1.equals(ChefHome.class.getName())) {
+
+                    } else {
+
+                        ChefHome fragment = new ChefHome();
+
+                        Bundle args = new Bundle();
+                        args.putString("chef_id", user_id);
+                        args.putString("foodie_id", "4");
+
+                        fragment.setArguments(args);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame, fragment)
+                                .addToBackStack(ChefHome.class.getName())
+                                .commit();
+                    }
+                }/* else{
+                    ChefHome fragment = new ChefHome();
+
+                    Bundle args = new Bundle();
+                    args.putString("chef_id", user_id);
+                    args.putString("foodie_id", "4");
+
+                    fragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+                }*/
             }
         } else if (id == R.id.bottom_my_order_layout){
             tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
             iv_my_order.setImageResource(R.drawable.ic_salad_1);
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(), getSupportFragmentManager());
-            } else if(user_type.equals("1")){
-                BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(), getSupportFragmentManager());
+            } else{
+
             }
         } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
