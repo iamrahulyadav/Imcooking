@@ -574,5 +574,17 @@ public class HomeFragment extends Fragment implements LocationListener,
     }
 
 
+    private void filterCuisine(String cuision){
+        List<HomeData.ChefDishBean>chefDishBeans1 = new ArrayList<>();
 
+        for (HomeData.ChefDishBean  bean: chefDishBeans){
+            if (bean.getDish_cuisine()!=null&&bean.getDish_cuisine().size()>0){
+                String cuisionVa = bean.getDish_cuisine().get(0).getCuisine_name();
+                if (cuision.equalsIgnoreCase(cuisionVa)){
+                    chefDishBeans1.addAll(chefDishBeans);
+                }
+            }
+        }
+        setMyViewPager(chefDishBeans1);
+    }
 }

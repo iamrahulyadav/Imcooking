@@ -45,18 +45,18 @@ public class DishDetails {
          * dish_image : ["1520672129kheer.jpg"]
          */
 
-        private int chef_id;
+        private String chef_id;
         private String chef_name;
-        private int like;
-        private int follow;
-        private int rating;
+        private String like;
+        private String follow;
+        private String rating;
         private String dish_id;
         private String dish_name;
-        private int dish_cuisine_id;
+        private String dish_cuisine_id;
         private String dish_cuisine;
-        private int dish_subcuisine_id;
+        private String dish_subcuisine_id;
         private String dish_subcuisine;
-        private int dish_price;
+        private String dish_price;
         private Object dish_video;
         private String dish_description;
         private String dish_special_note;
@@ -66,14 +66,14 @@ public class DishDetails {
         private String dish_available;
         private String dish_homedelivery;
         private String dish_pickup;
-        private int dish_deliverymiles;
+        private String dish_deliverymiles;
         private List<String> dish_image;
 
-        public int getChef_id() {
+        public String getChef_id() {
             return chef_id;
         }
 
-        public void setChef_id(int chef_id) {
+        public void setChef_id(String chef_id) {
             this.chef_id = chef_id;
         }
 
@@ -85,27 +85,27 @@ public class DishDetails {
             this.chef_name = chef_name;
         }
 
-        public int getLike() {
+        public String getLike() {
             return like;
         }
 
-        public void setLike(int like) {
+        public void setLike(String like) {
             this.like = like;
         }
 
-        public int getFollow() {
+        public String getFollow() {
             return follow;
         }
 
-        public void setFollow(int follow) {
+        public void setFollow(String follow) {
             this.follow = follow;
         }
 
-        public int getRating() {
+        public String getRating() {
             return rating;
         }
 
-        public void setRating(int rating) {
+        public void setRating(String rating) {
             this.rating = rating;
         }
 
@@ -125,11 +125,11 @@ public class DishDetails {
             this.dish_name = dish_name;
         }
 
-        public int getDish_cuisine_id() {
+        public String getDish_cuisine_id() {
             return dish_cuisine_id;
         }
 
-        public void setDish_cuisine_id(int dish_cuisine_id) {
+        public void setDish_cuisine_id(String dish_cuisine_id) {
             this.dish_cuisine_id = dish_cuisine_id;
         }
 
@@ -141,11 +141,11 @@ public class DishDetails {
             this.dish_cuisine = dish_cuisine;
         }
 
-        public int getDish_subcuisine_id() {
+        public String getDish_subcuisine_id() {
             return dish_subcuisine_id;
         }
 
-        public void setDish_subcuisine_id(int dish_subcuisine_id) {
+        public void setDish_subcuisine_id(String dish_subcuisine_id) {
             this.dish_subcuisine_id = dish_subcuisine_id;
         }
 
@@ -157,11 +157,11 @@ public class DishDetails {
             this.dish_subcuisine = dish_subcuisine;
         }
 
-        public int getDish_price() {
+        public String getDish_price() {
             return dish_price;
         }
 
-        public void setDish_price(int dish_price) {
+        public void setDish_price(String dish_price) {
             this.dish_price = dish_price;
         }
 
@@ -237,11 +237,11 @@ public class DishDetails {
             this.dish_pickup = dish_pickup;
         }
 
-        public int getDish_deliverymiles() {
+        public String getDish_deliverymiles() {
             return dish_deliverymiles;
         }
 
-        public void setDish_deliverymiles(int dish_deliverymiles) {
+        public void setDish_deliverymiles(String dish_deliverymiles) {
             this.dish_deliverymiles = dish_deliverymiles;
         }
 

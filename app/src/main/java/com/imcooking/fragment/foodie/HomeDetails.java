@@ -287,10 +287,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 
     public void addCart(View view) {
 
-        int chef_id=dishDetails.getDish_details().getChef_id();
+        String chef_id=dishDetails.getDish_details().getChef_id();
         String dishId=dishDetails.getDish_details().getDish_id();
         AddToCart addToCart=new AddToCart();
-        addToCart.setChef_id(chef_id);
+        addToCart.setChef_id(Integer.parseInt(chef_id));
         addToCart.setFoodie_id(foodie_id);
         addToCart.setDish_id(dishId);
         addToCart.setAddcart_id("");
