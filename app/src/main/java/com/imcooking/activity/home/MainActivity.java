@@ -44,8 +44,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.chefprofile.ChefHome;
-import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
-import com.imcooking.fragment.foodie.ChefMyOrderListFragment;
+import com.imcooking.fragment.chef.chefprofile.ChefMyOrderListFragment;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 
@@ -244,16 +243,14 @@ public class MainActivity extends AppBaseActivity
             iv_profile.setImageResource(R.drawable.ic_user_name_1);
 
             if(user_type.equals("2")) {
-                BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
+                BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(),
+                        getSupportFragmentManager());
             } else{
                 ChefHome fragment = new ChefHome();
-
                 Bundle args = new Bundle();
                 args.putString("chef_id", user_id);
                 args.putString("foodie_id", "4");
-
                 fragment.setArguments(args);
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
             }
         } else if (id == R.id.bottom_my_order_layout){
@@ -261,7 +258,7 @@ public class MainActivity extends AppBaseActivity
             iv_my_order.setImageResource(R.drawable.ic_salad_1);
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(), getSupportFragmentManager());
-            } else{
+            } else if(user_type.equals("1")){
                 BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(), getSupportFragmentManager());
             }
         } else if (id == R.id.bottom_notification_layout){

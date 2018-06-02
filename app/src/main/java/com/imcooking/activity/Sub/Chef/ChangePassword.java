@@ -69,7 +69,8 @@ txtChangepass.setOnClickListener(new View.OnClickListener() {
             Log.d("ShowResponse", s);
 
 
-            new GetData(getApplicationContext(), ChangePassword.this).getResponse(s, "changepassword", new GetData.MyCallback() {
+            new GetData(getApplicationContext(), ChangePassword.this)
+                    .getResponse(s, "changepassword", new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                                Log.d("ShowResponseresult", result);
