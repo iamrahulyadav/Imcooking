@@ -43,8 +43,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
-import com.imcooking.fragment.chef.chefprofile.ChefHome;
-import com.imcooking.fragment.chef.chefprofile.ChefMyOrderListFragment;
+import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 
@@ -62,15 +61,10 @@ import java.util.Locale;
 
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private GoogleMap googleMap;
-    MapView mMapView;
-    public static StringBuffer stringBuffer  = new StringBuffer();
-    Context mContext;
-    private FrameLayout frame;
-   public static double latitude, longitude;
+
     private float lastTranslate = 0.0f;
     private LinearLayout frame_view;
-//    public static Toolbar toolbar;
+    //    public static Toolbar toolbar;
     public static DrawerLayout drawerLayout1;
     public NavigationView navigationView;
     TextView txtChefUserName, txtMobile;
@@ -83,34 +77,6 @@ public class MainActivity extends AppBaseActivity
 
         drawerLayout1 = findViewById(R.id.drawer_layout);
         checkGPSStatus();
-
-        mMapView = (MapView) findViewById(R.id.ride_now_mapView);
-        mMapView.onCreate(savedInstanceState);
-        mMapView.onResume();
-        try {
-            MapsInitializer.initialize(this.getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap map) {
-                googleMap = map;
-
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                    /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            1);
-                    return;
-                }
-                googleMap.setMyLocationEnabled(true);
-                googleMap.setOnMyLocationChangeListener(onMyLocationChangeListener);
-            }
-        });
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -136,7 +102,6 @@ public class MainActivity extends AppBaseActivity
         }
 
         frame_view = (LinearLayout) findViewById(R.id.frame_view);
-        frame = (FrameLayout) findViewById(R.id.frame);
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -171,7 +136,7 @@ public class MainActivity extends AppBaseActivity
         init();
         getUserData();
         if (user_type.equals("1")) {
-            if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
                 String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 if (tag1.equals(ChefHome.class.getName())) {
 
@@ -187,7 +152,7 @@ public class MainActivity extends AppBaseActivity
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
                 }
-            } else{
+            } else {
                 ChefHome fragment = new ChefHome();
 
                 Bundle args = new Bundle();
@@ -212,7 +177,7 @@ public class MainActivity extends AppBaseActivity
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private String user_type, user_id;
 
-    private void init(){
+    private void init() {
 
         tinyDB = new TinyDB(getApplicationContext());
 
@@ -227,13 +192,14 @@ public class MainActivity extends AppBaseActivity
         tv_notification = findViewById(R.id.bottom_notification_text);
     }
 
-    private void getUserData(){
+    private void getUserData() {
 
         loginData = tinyDB.getString("login_data");
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
     }
+
 
     public void bottom_click(View view) {
 
@@ -348,8 +314,6 @@ public class MainActivity extends AppBaseActivity
         iv_notification.setImageResource(R.drawable.ic_ring);
 
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -401,7 +365,7 @@ public class MainActivity extends AppBaseActivity
                 if(user_type.equals("2")) {
                     BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(),
                             getSupportFragmentManager());
-        }
+                }
                 break;
         }
 
@@ -411,82 +375,5 @@ public class MainActivity extends AppBaseActivity
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                                     @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1:
-
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                    /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            1);
-                    return;
-                }
-                googleMap.setMyLocationEnabled(true);
-                googleMap.setOnMyLocationChangeListener(onMyLocationChangeListener);
-                break;
-        }
-    }
-
-    private GoogleMap.OnMyLocationChangeListener onMyLocationChangeListener= new GoogleMap.OnMyLocationChangeListener() {
-        @Override
-        public void onMyLocationChange(Location location) {
-            LatLng loc = new LatLng(location.getLatitude(),location.getLongitude());
-            try {
-                stringBuffer=getAddress(new LatLng(location.getLatitude(),location.getLongitude()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.d("TAG", "onMyLocationChange: "+stringBuffer+ "lat:  "+ location.getLatitude()+"\n"+"long: "+location.getLongitude());
-            googleMap.clear();
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(loc).zoom(19f).tilt(70).build();
-            googleMap.addMarker(new MarkerOptions().position(loc).icon(bitmapDescriptorFromVector(MainActivity.this)));
-            if (googleMap!=null){
-                googleMap.animateCamera(CameraUpdateFactory
-                        .newCameraPosition(cameraPosition));
-            }
-        }
-    };
-
-    public StringBuffer getAddress(LatLng latLng) throws IOException {
-        Geocoder geocoder;
-        List<Address> addresses;
-        StringBuffer result = new StringBuffer();
-        geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-        try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
-            /*String state = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
-            String postalCode = addresses.get(0).getPostalCode();
-            String knownName = addresses.get(0).getFeatureName();*/
-            result.append(city);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context) {
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_chef);
-        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        background.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
 
 }
