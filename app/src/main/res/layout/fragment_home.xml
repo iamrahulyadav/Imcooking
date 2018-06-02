@@ -47,7 +47,7 @@
                 android:textColor="@color/text_color_7"
                 android:drawableLeft="@drawable/ic_magnifying_glass"
                 android:drawablePadding="10dp"/>
-
+//
         </LinearLayout>
 
         <LinearLayout
