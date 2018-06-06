@@ -216,6 +216,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 
 
                         txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
+                        if(dishDetails
+                                .getDish_details().getDish_image().size() != 0)
                         Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
                                 .getDish_details().getDish_image().get(0))
 //                                .placeholder( R.drawable.progress_animation )
@@ -287,10 +289,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 
     public void addCart(View view) {
 
-        int chef_id=dishDetails.getDish_details().getChef_id();
+        String chef_id=dishDetails.getDish_details().getChef_id();
         String dishId=dishDetails.getDish_details().getDish_id();
         AddToCart addToCart=new AddToCart();
-        addToCart.setChef_id(chef_id);
+        addToCart.setChef_id(Integer.parseInt(chef_id));
         addToCart.setFoodie_id(foodie_id);
         addToCart.setDish_id(dishId);
         addToCart.setAddcart_id("");
@@ -304,21 +306,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-
-
                                         ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
-                                        if (apiResponse.getMsg().equals("Already add this dish")){
-                                            Toast.makeText(getContext(), "This dish is already added ", Toast.LENGTH_SHORT).show();
-                                        }
-                                        else {
-
+                                        if (apiResponse.isStatus()){
                                             dialog.show();
+                                        } else {
+                                            Toast.makeText(getContext(), apiResponse.getMsg(), Toast.LENGTH_SHORT).show();
                                         }
-                                   /*     Log.d("ShowResponse", apiResponse.isStatus() + "");
-                                        Log.d("ShowResponse", apiResponse.getMsg());
-//                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
-                                        //tv.setText(apiResponse.getMsg());
-*/
                                     }
                                 });
                             }

@@ -12,13 +12,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:drawableLeft="@drawable/ic_left_arrow_1"
-        android:drawablePadding="15dp"
         android:text="Help"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
         android:gravity="center_vertical"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:layout_marginLeft="40dp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

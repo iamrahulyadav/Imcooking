@@ -2,7 +2,8 @@
 
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -13,6 +14,7 @@
         android:padding="5dp"
         tools:context=".fragment.chef.chefprofile.FoodieRequestADish">
 
+<!--
         <com.imcooking.customtext.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -23,6 +25,25 @@
             android:drawableRight="@drawable/ic_down_arrow_1"
             android:background="@drawable/shape_background_white_1"
             android:padding="10dp"/>
+
+-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical">
+            <Spinner
+                style="@style/SpinnerTheme1"
+                android:spinnerMode="dropdown"
+                android:textAlignment="textStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/foodie_request_a_dish_spinner_cuisine"
+                android:gravity="start"
+                android:paddingRight="20dp"/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,11 +56,11 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <com.imcooking.customtext.CustomTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Dish Title"
                     android:textSize="12sp"
@@ -47,14 +68,14 @@
                     android:gravity="center_vertical"
                     android:layout_marginRight="15dp"/>
 
-                <com.imcooking.customtext.CustomTextView
+                <com.imcooking.customtext.CustomEditText
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Select Category"
-                    android:textSize="12sp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/foodie_request_a_dish_name"
                     android:textColor="@color/text_color_4"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/shape_border_grey"/>
+                    android:hint="Enter Dish Name"
+                    android:textSize="12sp"
+                    android:textColorHint="@color/text_color_7"/>
 
             </LinearLayout>
             <RelativeLayout
@@ -83,6 +104,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="35dp"
                         android:layout_height="match_parent"
+                        android:id="@+id/foodie_request_a_dish_qty_plus"
                         android:text="+"
                         android:textSize="16sp"
                         android:textColor="@color/colorWhite"
@@ -93,7 +115,8 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="35dp"
                         android:layout_height="match_parent"
-                        android:text="2"
+                        android:id="@+id/foodie_request_a_dish_qty"
+                        android:text="0"
                         android:textSize="12sp"
                         android:textColor="@color/text_color_4"
                         android:gravity="center"
@@ -102,6 +125,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="35dp"
                         android:layout_height="match_parent"
+                        android:id="@+id/foodie_request_a_dish_qty_minus"
                         android:text="-"
                         android:textSize="16sp"
                         android:textColor="@color/colorWhite"
@@ -136,15 +160,20 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
+                        android:id="@+id/foodie_request_a_dish_date"
                         android:text=""
+                        android:hint="yyyy/mm/dd"
+                        android:textColorHint="@color/text_color_7"
                         android:textSize="12sp"
                         android:textColor="@color/text_color_4"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
                         android:background="@drawable/shape_border_grey"/>
 
                     <LinearLayout
                         android:layout_width="35dp"
                         android:layout_height="match_parent"
+                        android:id="@+id/foodie_request_a_dish_date_icon"
                         android:gravity="center"
                         android:background="@drawable/shape_background_theme_2" >
 
@@ -176,16 +205,21 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:id="@+id/foodie_request_a_dish_time_icon"
                     android:orientation="horizontal"
                     android:layout_alignParentRight="true">
 
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
+                        android:id="@+id/foodie_request_a_dish_time"
                         android:text=""
                         android:textSize="12sp"
+                        android:hint="HH : MM"
+                        android:textColorHint="@color/text_color_7"
                         android:textColor="@color/text_color_4"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
                         android:background="@drawable/shape_border_grey"/>
 
                     <LinearLayout
@@ -224,15 +258,33 @@
                 android:textColor="@color/text_color_4"
                 android:gravity="center_vertical"/>
 
-            <com.imcooking.customtext.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
+            <com.imcooking.customtext.CustomEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/foodie_request_a_dish_note"
                 android:text=""
+                android:hint="Dish Descripton"
+                android:textColorHint="@color/text_color_7"
                 android:textSize="12sp"
                 android:textColor="@color/text_color_4"
                 android:gravity="center_vertical"/>
 
         </LinearLayout>
+
+        <com.imcooking.customtext.CustomTextButtonTextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/foodie_request_a_dish_btn"
+            android:text="Submit"
+            android:textColor="@color/colorWhite"
+            android:padding="10dp"
+            app:textAllCaps="true"
+            android:background="@drawable/button_bg"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center"/>
+
 
     </LinearLayout>
 

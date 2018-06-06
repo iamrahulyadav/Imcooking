@@ -12,7 +12,15 @@ public class ApiResponse {
     private UserDataBean user_data;
     public DishDetails dish_details;
     public AddCart add_cart;
+    public CuisineData cuisineData;
 
+    public CuisineData getCuisineData() {
+        return cuisineData;
+    }
+
+    public void setCuisineData(CuisineData cuisineData) {
+        this.cuisineData = cuisineData;
+    }
 
     public boolean isStatus() {
         return status;

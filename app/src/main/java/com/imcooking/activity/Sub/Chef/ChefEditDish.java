@@ -191,10 +191,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                 tv_add_more_photo.setVisibility(View.GONE);
             }
 
-
-
-
-
             edt_name.setText(name);
 //            sp_cuisine.setSelection();
 //            edt_cuisine.setText(cuisine);

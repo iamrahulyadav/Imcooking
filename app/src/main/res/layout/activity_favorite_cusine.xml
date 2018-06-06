@@ -12,13 +12,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:drawableLeft="@drawable/ic_left_arrow_1"
-        android:drawablePadding="15dp"
         android:text="Favorite cuisine"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
         android:gravity="center_vertical"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:layout_marginLeft="40dp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -44,7 +43,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/favorite_cuisine_add"
             android:text="Add your favorite cuisine"
             android:textColor="@color/colorWhite"
             android:textSize="10sp"
@@ -54,7 +52,8 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp"
+            android:onClick="add_your_favorite_cuisine"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -76,98 +75,7 @@
         android:id="@+id/activity_chef_ilove_recycler"/>
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:padding="15dp">
-
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:id="@+id/favorite_cuisine_image_1"
-            android:src="@drawable/shahi_paneer"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/favorite_cuisine_image_1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shahee Paneer"
-                android:textColor="@color/colorBlack"
-                android:textStyle="bold"
-                android:textSize="13dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Abhishek Gupta"
-                android:textColor="@color/text_color_14"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableLeft="@drawable/ic_chef"
-                android:drawablePadding="5dp"
-                android:layout_marginTop="5dp"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rating"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="11sp"
-                    android:background="@drawable/shape_background_theme_1"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="3dp"
-                    android:layout_marginRight="10dp"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star"
-                    android:layout_marginRight="3dp"
-                    android:layout_gravity="center_vertical"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star"
-                    android:layout_marginRight="3dp"
-                    android:layout_gravity="center_vertical"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star"
-                    android:layout_marginRight="3dp"
-                    android:layout_gravity="center_vertical"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star"
-                    android:layout_marginRight="3dp"
-                    android:layout_gravity="center_vertical" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star"
-                    android:layout_marginRight="5dp"
-                    android:layout_gravity="center_vertical"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </RelativeLayout>
-    <View
+   <View
         android:layout_width="match_parent"
         android:layout_height=".5dp"
         android:background="@color/view_4"/>

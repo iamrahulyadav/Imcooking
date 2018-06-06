@@ -96,19 +96,19 @@
         android:orientation="vertical"
         android:layout_centerInParent="true"
         android:layout_alignParentRight="true"
-        android:gravity="right|center"
+        android:gravity="right|center">
 
-        >
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginBottom="5dp"
             android:id="@+id/delete_added_dish_from_cart"
-            android:src="@drawable/ic_drop_down_aarrow"/>
+            android:src="@drawable/delete"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$0"
+            android:layout_gravity="center"
             android:id="@+id/tv_dish_price"
             android:textSize="12sp"
             android:textColor="@color/colorBlue"/>
