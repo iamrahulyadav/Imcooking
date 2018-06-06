@@ -13,7 +13,6 @@ import com.imcooking.Model.api.response.ChefIloveData;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.ModelFoodieFavCuisines;
 import com.imcooking.R;
-import com.imcooking.adapters.AdapterCuisineList;
 import com.imcooking.adapters.AdapterFoodieFavCuisines;
 import com.imcooking.adapters.FavrouiteAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
@@ -31,6 +30,7 @@ public class FavoriteCusine extends AppBaseActivity {
     RecyclerView recyclerView;
     String foodie_id = HomeFragment.foodie_id+"";
     private List<ChefIloveData.ChefloveBean> chefloveBeanList= new ArrayList<>();
+
     private Gson gson = new Gson();
     private CuisineData cuisineData;
     private AdapterFoodieFavCuisines adapter;
