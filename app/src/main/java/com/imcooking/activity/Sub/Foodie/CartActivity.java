@@ -1,6 +1,8 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,8 +31,9 @@ TextView txtChef_Name ,tvAdditem,tvplaceorder,txtfollowers;
 ImageView imgChefImg;
 int foodie_id;
 RatingBar ratingBar;
-LinearLayout linearLayoutplaceorde;
-RelativeLayout relativeLayoutpayment;
+RadioGroup radioGroup;
+RadioButton radioButtoncheck;
+LinearLayout linearLayoutplaceorde,linearLayoutpayment,linearLayout_delivery,linearLayout_pickup;
 public static TextView  txtTax,txtTotalprice;
 RecyclerView recyclerView;
   @SuppressLint("WrongViewCast")
@@ -50,12 +55,34 @@ RecyclerView recyclerView;
         imgChefImg=findViewById(R.id.chef_profile_image);
         ratingBar=findViewById(R.id.activity_cart_rating);
         txtfollowers=findViewById(R.id.activity_cart_tv_chef_followers);
+        radioGroup=findViewById(R.id.radioGroup);
+      //int idradio=radioGroup.getCheckedRadioButtonId();
+     // radioButton=findViewById(idradio);
       linearLayoutplaceorde=findViewById(R.id.cart_Linearlayout_placeorder);
-      relativeLayoutpayment=findViewById(R.id.cart_relativelayout_payment);
+      linearLayoutpayment=findViewById(R.id.cart_linearlayout_payment);
+      linearLayout_delivery=findViewById(R.id.linearlayout_delivery_address);
+      linearLayout_pickup=findViewById(R.id.linearlayout_pickup_address);
       tvAdditem=findViewById(R.id.cart_tv_addnewitem);
       tvplaceorder=findViewById(R.id.cart_tv_place_order);
       tvAdditem.setOnClickListener(this);
       tvplaceorder.setOnClickListener(this);
+      radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+          @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+          @Override
+          public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+     if(checkedId==R.id.radioButton1){
+         linearLayout_delivery.setVisibility(View.VISIBLE);
+         linearLayout_pickup.setVisibility(View.GONE);
+
+     }
+     else if(checkedId==R.id.radioButton2){
+         linearLayout_delivery.setVisibility(View.GONE);
+         linearLayout_pickup.setVisibility(View.VISIBLE);
+
+     }
+          }
+      });
        setdetails();
     }
 
@@ -90,7 +117,7 @@ RecyclerView recyclerView;
                                           HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
                                             Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
                                                     apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
-                                                ratingBar.setRating(Float.parseFloat(apiResponse.getAdd_cart().getRating()));
+                                                ratingBar.setRating(apiResponse.getAdd_cart().getRating());
                                             CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish());
                                             recyclerView.setAdapter(cartAdatper);
@@ -110,6 +137,7 @@ RecyclerView recyclerView;
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -118,11 +146,14 @@ RecyclerView recyclerView;
             case R.id.cart_tv_place_order:
 
                 linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
-                relativeLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
+                linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
                 break;
 
             case R.id.cart_tv_addnewitem:
 
+                break;
+            case R.id.radioGroup:
+               //if(){}
 
                 break;
     }

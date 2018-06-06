@@ -43,7 +43,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
     private ViewPager viewPager_1, viewPager_2;
     private TextView tv_add_dish;
-    private List<ChefProfileData1.ChefDishBean> chef_dish_list=new ArrayList<>();
+    List<ChefProfileData1.ChefDishBean> chef_dish_list=new ArrayList<>();
     private ApiResponse.UserDataBean userDataBean;// = new ApiResponse.UserDataBean();
     private TinyDB tinyDB;
     private String loginData, user_type;
@@ -67,7 +67,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         List<ChefProfileData1.ChefDishBean> chef_dish_list_current = new ArrayList<>();
         List<ChefProfileData1.ChefDishBean> chef_dish_list_old = new ArrayList<>();
 
-        if(chef_dish_list.size()!=0) {
+        if(chef_dish_list.size() != 0) {
             for (int i = 0; i < chef_dish_list.size(); i++) {
                 if (chef_dish_list.get(i).getDish_available().equals("Yes")) {
                     chef_dish_list_current.add(chef_dish_list.get(i));
@@ -104,6 +104,8 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         if(id == R.id.chef_dish_list_add_dish){
             startActivity(new Intent(getContext(), ChefEditDish.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        } else { }
+        } else {
+
+        }
     }
 }

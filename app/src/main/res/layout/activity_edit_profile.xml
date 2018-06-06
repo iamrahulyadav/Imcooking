@@ -173,6 +173,7 @@
                         android:id="@+id/foodie_edit_profile_phone_edit"
                         android:hint="PHONE NUMBER"
                         android:singleLine="true"
+
                         android:textSize="@dimen/extra_smallsize"
                         android:imeOptions="actionDone"
                         android:inputType="phone"
