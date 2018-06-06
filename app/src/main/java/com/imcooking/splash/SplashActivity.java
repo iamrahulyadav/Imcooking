@@ -180,10 +180,8 @@ public class SplashActivity extends AppBaseActivity {
                 }
                 return;
             }
-
         }
     }
-
 
     @Override
     protected void onResume() {
