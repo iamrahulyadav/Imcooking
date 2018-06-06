@@ -216,6 +216,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 
 
                         txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
+                        if(dishDetails
+                                .getDish_details().getDish_image().size() != 0)
                         Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
                                 .getDish_details().getDish_image().get(0))
 //                                .placeholder( R.drawable.progress_animation )

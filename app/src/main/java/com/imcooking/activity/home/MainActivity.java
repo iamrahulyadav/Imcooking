@@ -69,6 +69,7 @@ public class MainActivity extends AppBaseActivity
     public NavigationView navigationView;
     TextView txtChefUserName, txtMobile;
     private TinyDB tinyDB;
+    private TextView tv_name, tv_phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,11 @@ public class MainActivity extends AppBaseActivity
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerLayout = navigationView.getHeaderView(0);
+
+        tv_name = headerLayout.findViewById(R.id.nav_haeder_txtName);
+        tv_phone = headerLayout.findViewById(R.id.nav_header_phone);
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -192,14 +198,20 @@ public class MainActivity extends AppBaseActivity
         tv_notification = findViewById(R.id.bottom_notification_text);
     }
 
+    private String user_name, user_phone;
+
     private void getUserData() {
 
         loginData = tinyDB.getString("login_data");
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
-    }
+        user_name = userDataBean.getFull_name() + "";
+        user_phone = userDataBean.getUser_phone() + "";
 
+        tv_name.setText(user_name);
+        tv_phone.setText(user_phone);
+    }
 
     public void bottom_click(View view) {
 
@@ -373,5 +385,4 @@ public class MainActivity extends AppBaseActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }
