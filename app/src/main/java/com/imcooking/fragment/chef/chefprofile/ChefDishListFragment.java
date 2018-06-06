@@ -104,6 +104,8 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         if(id == R.id.chef_dish_list_add_dish){
             startActivity(new Intent(getContext(), ChefEditDish.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        } else { }
+        } else {
+
+        }
     }
 }
