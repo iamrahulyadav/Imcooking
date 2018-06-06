@@ -55,8 +55,6 @@ public ImageView img;
             img=view.findViewById(R.id.fragment_chef_order_list_img);
 
     }
-
-
     }
 
     int row_index=-1;

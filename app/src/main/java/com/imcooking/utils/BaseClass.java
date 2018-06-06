@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
-import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.chef.chefprofile.ChefHome;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.mukesh.tinydb.TinyDB;
 

@@ -1,4 +1,4 @@
-package com.imcooking.fragment.chef.chefprofile;
+package com.imcooking.fragment.chef;
 
 
 import android.content.Intent;

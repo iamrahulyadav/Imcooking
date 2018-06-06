@@ -44,7 +44,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.chefprofile.ChefHome;
-import com.imcooking.fragment.chef.chefprofile.ChefMyOrderListFragment;
+import com.imcooking.fragment.chef.ChefMyOrderListFragment;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 

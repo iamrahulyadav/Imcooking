@@ -19,7 +19,7 @@ import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
-import com.imcooking.fragment.chef.chefprofile.ChefDishDetail;
+import com.imcooking.fragment.chef.ChefDishDetail;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 

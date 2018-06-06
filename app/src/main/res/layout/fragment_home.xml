@@ -138,6 +138,8 @@
                         android:layout_height="wrap_content"
                         android:text="LOCATION"
                         android:textSize="12sp"
+                        android:visibility="gone"
+                        android:id="@+id/locationText"
                         android:layout_gravity="center"
                         android:textColor="@color/text_color_7"/>
                     <com.imcooking.customtext.CustomTextView

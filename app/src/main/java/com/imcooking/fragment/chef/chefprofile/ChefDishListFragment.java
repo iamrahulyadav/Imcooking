@@ -17,7 +17,6 @@ import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.adapters.AdapterChefDishList;
-import com.imcooking.fragment.chef.ChefHome;
 import com.mukesh.tinydb.TinyDB;
 
 import java.util.ArrayList;
@@ -67,12 +66,15 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         List<ChefProfileData1.ChefDishBean> chef_dish_list_current = new ArrayList<>();
         List<ChefProfileData1.ChefDishBean> chef_dish_list_old = new ArrayList<>();
 
-        for (int i=0; i<chef_dish_list.size(); i++){
-            if(chef_dish_list.get(i).getDish_available().equals("Yes")){
-                chef_dish_list_current.add(chef_dish_list.get(i));
-            } else if(chef_dish_list.get(i).getDish_available().equals("No")){
-                chef_dish_list_old.add(chef_dish_list.get(i));
-            } else{}
+        if(chef_dish_list.size() != 0) {
+            for (int i = 0; i < chef_dish_list.size(); i++) {
+                if (chef_dish_list.get(i).getDish_available().equals("Yes")) {
+                    chef_dish_list_current.add(chef_dish_list.get(i));
+                } else if (chef_dish_list.get(i).getDish_available().equals("No")) {
+                    chef_dish_list_old.add(chef_dish_list.get(i));
+                } else {
+                }
+            }
         }
         Log.d("MyDataSize", chef_dish_list_current.size()+"");
         AdapterChefDishList adapterChefDishListCurrent = new AdapterChefDishList(getParentFragment().getFragmentManager(),
