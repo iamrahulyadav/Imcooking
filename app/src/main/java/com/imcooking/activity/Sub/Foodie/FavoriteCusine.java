@@ -45,7 +45,7 @@ public class FavoriteCusine extends AppBaseActivity {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-//        find id/
+//        find id/;
         recyclerView = findViewById(R.id.activity_chef_ilove_recycler);
 
         LinearLayoutManager horizontalLayoutManagaer
