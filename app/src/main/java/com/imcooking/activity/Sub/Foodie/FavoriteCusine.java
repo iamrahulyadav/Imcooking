@@ -36,6 +36,7 @@ public class FavoriteCusine extends AppBaseActivity {
     private AdapterFoodieFavCuisines adapter;
     private ArrayList<String> arrayList = new ArrayList<>();
     public static ModelFoodieFavCuisines data;
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
