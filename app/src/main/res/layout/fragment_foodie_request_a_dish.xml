@@ -195,7 +195,6 @@
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/foodie_request_a_dish_time"
                     android:text="Time"
                     android:textSize="12sp"
                     android:textColor="@color/text_color_4"
@@ -213,9 +212,10 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
+                        android:id="@+id/foodie_request_a_dish_time"
                         android:text=""
                         android:textSize="12sp"
-                        android:hint="24:00 PM"
+                        android:hint="HH : MM"
                         android:textColorHint="@color/text_color_7"
                         android:textColor="@color/text_color_4"
                         android:gravity="center_vertical"

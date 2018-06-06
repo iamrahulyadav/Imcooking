@@ -89,8 +89,9 @@
             android:name=".activity.Sub.Chef.ChefEditDish"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activity.Sub.Chef.ChefEditProfile" />
-        <activity android:name=".activity.Sub.Chef.ChangePassword"></activity>
-        <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate"/>
+        <activity android:name=".activity.Sub.Chef.ChangePassword" />
+        <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
+        <activity android:name=".activity.Sub.Foodie.CuisineList"></activity>
     </application>
 
 </manifest>

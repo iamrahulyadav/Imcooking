@@ -1,6 +1,8 @@
 package com.imcooking.fragment.chef.chefprofile;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.ModelFoodieRequestADish;
@@ -28,7 +33,10 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,15 +61,20 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
         init();
     }
 
-    private CuisineData cuisineData = new CuisineData();
+//    private CuisineData cuisineData = new CuisineData();
     private String selected_cuisine, selected_cuisine_id;
     private EditText edt_dish_title, edt_dish_note;
     private TextView tv_plus, tv_minus, tv_qty, tv_date, tv_time, btn;
     private String str_name, str_qty, str_date = "2018/06/03", str_time = "24:00 PM", str_note;
+    private LinearLayout layout_date, layout_time;
+//    private TextView tv_date, tv_time;
 
     private ApiResponse.UserDataBean userDataBean;
     private TinyDB tinyDB;
     private String loginData, user_id;
+    Calendar myCalendar = Calendar.getInstance();
+    private DatePickerDialog.OnDateSetListener date;
+    private Spinner sp;
 
     private void init(){
 
@@ -79,11 +92,40 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
         tv_minus.setOnClickListener(this);
         btn.setOnClickListener(this);
 
-        getCuisines();
+        layout_date = getView().findViewById(R.id.foodie_request_a_dish_date_icon);
+        layout_time = getView().findViewById(R.id.foodie_request_a_dish_time_icon);
+
+        layout_date.setOnClickListener(this);
+        layout_time.setOnClickListener(this);
+
+        sp = getView().findViewById(R.id.foodie_request_a_dish_spinner_cuisine);
+        sp.setOnItemSelectedListener(this);
+
+//        getCuisines();
+
+        createMyDatePicker();
+        setMyCuisines(ChefHome.cuisineData);
+    }
+
+    private void createMyDatePicker(){
+        date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//                updateLabel();
+                String myFormat = "dd/MM/yy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                tv_date.setText(sdf.format(myCalendar.getTime()));
+            }
+        };
     }
 
     private void getCuisines(){
-        try {
+        /*try {
             String s = "";
             JSONObject jsonObject = new JSONObject("{}");
 
@@ -102,7 +144,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                     });
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void setMyCuisines(CuisineData cuisines){
@@ -112,19 +154,19 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
             arrayList.add(cuisines.getCuisine_data().get(i).getCuisine_name());
         }
 
-        Spinner sp = getView().findViewById(R.id.foodie_request_a_dish_spinner_cuisine);
-        sp.setOnItemSelectedListener(this);
-        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(getContext(),
-                R.layout.spinner_row_1, arrayList);
-        arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
-        sp.setAdapter(arrayAdapter1);
+        if(getContext() != null) {
+            ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(getContext(),
+                    R.layout.spinner_row_1, arrayList);
+            arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
+            sp.setAdapter(arrayAdapter1);
+        }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
         selected_cuisine = adapterView.getItemAtPosition(i).toString();
-        selected_cuisine_id = cuisineData.getCuisine_data().get(i).getCuisine_id() + "";
+        selected_cuisine_id = ChefHome.cuisineData.getCuisine_data().get(i).getCuisine_id() + "";
         Log.d("MySpinner", selected_cuisine_id);
 
     }
@@ -139,22 +181,73 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
 
         int id = view.getId();
 
-        if(id == R.id.foodie_request_a_dish_qty_plus){
+        if (id == R.id.foodie_request_a_dish_qty_plus) {
 
             tv_qty.setText(Integer.parseInt(tv_qty.getText().toString()) + 1 + "");
 
-        } else if(id == R.id.foodie_request_a_dish_qty_minus){
+        } else if (id == R.id.foodie_request_a_dish_qty_minus) {
 
-            if(Integer.parseInt(tv_qty.getText().toString()) > 0) {
+            if (Integer.parseInt(tv_qty.getText().toString()) > 0) {
                 tv_qty.setText(Integer.parseInt(tv_qty.getText().toString()) - 1 + "");
             }
-        } else if(id == R.id.foodie_request_a_dish_btn){
+        } else if (id == R.id.foodie_request_a_dish_btn) {
 
             request();
 
-        } else {}
+        } else if (id == R.id.foodie_request_a_dish_date_icon) {
+
+            new DatePickerDialog(getContext(), date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+//            dob_pick();
+
+        } else if (id == R.id.foodie_request_a_dish_time_icon) {
+
+
+            Calendar mcurrentTime = Calendar.getInstance();
+            int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+            int minute = mcurrentTime.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker;
+            mTimePicker = new TimePickerDialog(getContext(),
+                    new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                    eReminderTime.setText( selectedHour + ":" + selectedMinute);
+                    tv_time.setText(selectedHour + " : " + selectedMinute);
+                }
+            }, hour, minute, true);//Yes 24 hour time
+            mTimePicker.setTitle("Select Time");
+            mTimePicker.show();
+        } else {
+        }
     }
 
+    Calendar mCalendar = Calendar.getInstance();
+    long timeInMilliseconds;
+    private int mYear, mMonth, mDay;
+    private String dob;
+
+    private void dob_pick(){
+        // Get Current Date
+/*        final Calendar c = Calendar.getInstance();
+        mYear = Calendar.getInstance().get(Calendar.YEAR)-18;
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        timeInMilliseconds = Utility.getTimeDate(mYear + "-" + mMonth + "-" + mDay);
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        dob = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        tv_date.setText(Utility.convertSimpleDate(dob));
+                    }
+                }, mYear, mMonth, mDay);
+
+        datePickerDialog.getDatePicker().setMaxDate(timeInMilliseconds);
+   */ }
 
     private void request(){
 
@@ -185,8 +278,8 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                                 requestData.setRequest_status("1");
                                 requestData.setRequest_cusine_name(selected_cuisine);
                                 requestData.setRequest_quantity(str_qty);
-                                requestData.setRequest_date("30/05/2018");
-                                requestData.setRequest_time("11:00");
+                                requestData.setRequest_date(str_date);
+                                requestData.setRequest_time(str_time);
                                 requestData.setRequest_note(str_note);
 
                                 String s = new Gson().toJson(requestData);

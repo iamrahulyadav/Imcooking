@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
+import com.imcooking.adapters.AdapterChefAboutCuisineList;
 import com.imcooking.fragment.chef.ChefHome;
 
 public class AboutChefFragment extends Fragment {
@@ -26,16 +29,24 @@ public class AboutChefFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         init();
     }
 
     private TextView tv_description, tv_cuisine, tv_sub_cuisine;
+    private RecyclerView rv;
 
     @SuppressLint("SetTextI18n")
     private void init(){
+
+        rv = getView().findViewById(R.id.chef_about_recyler);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rv.setLayoutManager(horizontalLayoutManagaer);
+
         tv_description = getView().findViewById(R.id.about_chef_description);
-        tv_cuisine = getView().findViewById(R.id.about_chef_cuisine);
-        tv_sub_cuisine = getView().findViewById(R.id.about_chef_sub_cuisine);
+//        tv_cuisine = getView().findViewById(R.id.about_chef_cuisine);
+//        tv_sub_cuisine = getView().findViewById(R.id.about_chef_sub_cuisine);
 
         ChefProfileData1.ChefDataBean data = ChefHome.chefProfileData1.getChef_data();
         if(data != null) {
@@ -44,7 +55,11 @@ public class AboutChefFragment extends Fragment {
 //            String s2 = data.getBestcuisine_name();
 //            String s3 = data.getCuisine_name();
             tv_description.setText(data.getAbout()+"");
-            tv_cuisine.setText(data.getBestcuisine_name());
+//            tv_cuisine.setText(data.getBestcuisine_name());
+
+            AdapterChefAboutCuisineList adapter = new AdapterChefAboutCuisineList(getContext(), data.getCuisine_name());
+            rv.setAdapter(adapter);
+
           //  tv_sub_cuisine.setText(data.getCuisine_name());
         }
     }
