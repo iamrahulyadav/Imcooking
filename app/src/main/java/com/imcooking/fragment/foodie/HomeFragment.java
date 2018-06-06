@@ -51,6 +51,7 @@ import com.imcooking.activity.home.TestActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
 import com.imcooking.adapters.HomeDishPagerAdapter;
+import com.imcooking.splash.SplashActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomViewPager;
 import com.imcooking.webservices.GetData;
@@ -67,7 +68,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class HomeFragment extends Fragment implements LocationListener,
+public class HomeFragment extends Fragment implements
         View.OnClickListener, CuisionAdatper.CuisionInterface{
 
     public static TextView cart_icon;
@@ -94,14 +95,15 @@ public class HomeFragment extends Fragment implements LocationListener,
     CuisionAdatper cuisionAdatper;
     private Spinner sp;
 
-    String latitudeq="";
-    String longitudeq="" ;
+    String latitudeq= SplashActivity.latitude+"";
+    String longitudeq=SplashActivity.longitude+"" ;
     String min_miles = "0";
     String max_miles = "10";
     public static String foodie_id = "4";
     String country = "101";
     private CuisineData cuisineData = new CuisineData();
     private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,7 +126,6 @@ public class HomeFragment extends Fragment implements LocationListener,
                 ((MainActivity)getActivity()).drawerLayout1.openDrawer(GravityCompat.START);
             }
         });
-
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -156,18 +157,23 @@ public class HomeFragment extends Fragment implements LocationListener,
         imgFilter.setOnClickListener(this);
         txtSerach.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
-
         cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         cuisinRecycler.setLayoutManager(horizontalLayoutManagaer);
-
         if (spinnerData!=null){
             spinnerData.clear();
         }
         try {
             MapsInitializer.initialize(this.getContext());
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        StringBuffer stringBuffer = new StringBuffer();
+        try {
+            stringBuffer = getAddress(new LatLng(SplashActivity.latitude, SplashActivity.longitude));
+            txtCityName.setText(stringBuffer.toString());
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -181,7 +187,7 @@ public class HomeFragment extends Fragment implements LocationListener,
         foodie_id = userDataBean.getUser_id()+"";
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
         //    cuisinRecycler.setAdapter(cuisionAdatper);
-        layout.setVisibility(View.GONE);
+
 
         getCuisone();
         milesSpinner();
@@ -196,6 +202,8 @@ public class HomeFragment extends Fragment implements LocationListener,
 //                }
 //            },3000);
 //        }
+
+//        getHomeData(latitudeq, longitudeq);
 
     }
 
@@ -256,9 +264,10 @@ public class HomeFragment extends Fragment implements LocationListener,
     public void onResume() {
         super.onResume();
 
-        getLocation();
+     //  getLocation();
 
         layout_no_record_found.setVisibility(View.GONE);
+
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
@@ -303,6 +312,7 @@ public class HomeFragment extends Fragment implements LocationListener,
         data.setCountry("");
         data.setFoodie_id(foodie_id);
         Log.d("MyRequest", new Gson().toJson(data));
+        layout.setVisibility(View.GONE);
         new GetData(getContext(), getActivity()).getResponse(new Gson().toJson(data), "home", new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
@@ -313,12 +323,12 @@ public class HomeFragment extends Fragment implements LocationListener,
                     @Override
                     public void run() {
                         Log.d(TAG, "run: data"+response.toString());
+                        layout.setVisibility(View.VISIBLE);
                         homeData = new Gson().fromJson(response, HomeData.class);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject!=null&&jsonObject.has("add_acrt_count")){
                                 cart_icon.setText(jsonObject.getString("add_acrt_count"));
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -414,14 +424,14 @@ public class HomeFragment extends Fragment implements LocationListener,
                         .translationY(0)
                         .alpha(1.0f)
                         .setListener(null)
-                        .setDuration(300);
+                        .setDuration(1000);
                 tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_aarrow, 0);
                 cuisine_status = true;
             }else{
                 cusine_list.animate()
                         .translationY(0)
                         .alpha(0.0f)
-                        .setDuration(300)
+                        .setDuration(1000)
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -434,13 +444,13 @@ public class HomeFragment extends Fragment implements LocationListener,
             }
         }
         else if (v.getId()==R.id.fragment_home_img_filter){
-//            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
-        } else if (v.getId() == R.id.fragment_home_img_cart) {
-
+            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
+        }
+        else if (v.getId() == R.id.fragment_home_img_cart)
+        {
             startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
                     userDataBean.getUser_id()));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-
         } else if (v.getId()==R.id.fragment_home_txtcity){
             startActivityForResult(new Intent(getActivity(), SelectLocActivity.class),2);
         } else if (v.getId()==R.id.fragment_home_search_img){
@@ -495,53 +505,6 @@ public class HomeFragment extends Fragment implements LocationListener,
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case requestcode: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1]==PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
-                }
-                return;
-            }
-        }
-    }
-
-    void getLocation() {
-        try {
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 5, this);
-        }
-        catch(SecurityException e) {
-            e.printStackTrace();
-        }
-    }
-    public final int requestcode = 101;
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        latitudeq = location.getLatitude()+"";
-        longitudeq = location.getLongitude()+"";
-
-        getHomeData(latitudeq, longitudeq);
-
-        try {
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer = getAddress(new LatLng(location.getLatitude(), location.getLongitude()));
-            txtCityName.setText(stringBuffer.toString());
-
-        } catch(Exception e) {
-
-        }
-    }
 
     public StringBuffer getAddress(LatLng latLng) throws IOException {
         Geocoder geocoder;
@@ -564,21 +527,6 @@ public class HomeFragment extends Fragment implements LocationListener,
         }
 
         return result;
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-        Toast.makeText(getActivity(), "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
     }
 
     List<HomeData.ChefDishBean>cuisionChefList;

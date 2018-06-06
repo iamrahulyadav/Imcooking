@@ -77,7 +77,6 @@ public class MainActivity extends AppBaseActivity
         setContentView(R.layout.activity_main);
 
         drawerLayout1 = findViewById(R.id.drawer_layout);
-        checkGPSStatus();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
