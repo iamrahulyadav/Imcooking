@@ -126,12 +126,8 @@ public class HomeFragment extends Fragment implements
                 ((MainActivity)getActivity()).drawerLayout1.openDrawer(GravityCompat.START);
             }
         });
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION}, TestActivity.requestcode);
-        }
+
+
 
         init();
     }
@@ -164,11 +160,7 @@ public class HomeFragment extends Fragment implements
         if (spinnerData!=null){
             spinnerData.clear();
         }
-        try {
-            MapsInitializer.initialize(this.getContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         StringBuffer stringBuffer = new StringBuffer();
         try {
             stringBuffer = getAddress(new LatLng(SplashActivity.latitude, SplashActivity.longitude));

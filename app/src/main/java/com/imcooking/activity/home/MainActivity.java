@@ -325,11 +325,11 @@ public class MainActivity extends AppBaseActivity
         iv_notification.setImageResource(R.drawable.ic_ring);
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-//        tv_home.setTextColor(getResources().getColor(R.color.theme_color));
-//        iv_home.setImageResource(R.drawable.ic_home_1);
+
     }
 
     public void open_menu(View view){

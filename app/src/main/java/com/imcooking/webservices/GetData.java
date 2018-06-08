@@ -46,6 +46,12 @@ public class GetData {
 
     private Context context;
     private Activity activity;
+//...................................  API ...................................
+
+    public static String PROFILE_IMAGE="profileimage";
+
+
+
     public GetData(final Context context, Activity activity) {
 /*
         Map<String, String> jsonData = new HashMap<String, String>();

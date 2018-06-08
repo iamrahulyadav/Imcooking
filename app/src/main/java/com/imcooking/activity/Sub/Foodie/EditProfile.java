@@ -1,12 +1,26 @@
 package com.imcooking.activity.Sub.Foodie;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +33,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefEditDish;
+import com.imcooking.activity.Sub.Chef.ChefEditProfile;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -27,8 +43,14 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EditProfile extends AppBaseActivity {
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+public class EditProfile extends AppBaseActivity {
+    private ImageView imgProfile;
     private JSONObject jsonData;
 
     @Override
@@ -53,7 +75,7 @@ public class EditProfile extends AppBaseActivity {
         tv_fullname = findViewById(R.id.foodie_edit_profile_full_name);
         tv_email = findViewById(R.id.foodie_edit_profile_email);
         tv_phone = findViewById(R.id.foodie_edit_profile_phone);
-
+        imgProfile = findViewById(R.id.foodie_edit_profile_image);
 
         edt_full_name = findViewById(R.id.foodie_edit_profile_full_name_edit);
         edt_phone = findViewById(R.id.foodie_edit_profile_phone_edit);
@@ -76,8 +98,6 @@ public class EditProfile extends AppBaseActivity {
         str_email = userDataBean.getUser_email() + "";
         str_id = userDataBean.getUser_id() + "";
         str_uname = userDataBean.getUser_name();
-
-
         tv_fullname.setText(str_full_name);
         if(str_full_name.equals("null")){
             tv_fullname.setText("Your Name");
@@ -182,6 +202,218 @@ public class EditProfile extends AppBaseActivity {
     }
 
     public void change_dp(View view){
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(EditProfile.this,
+                    new String[]{Manifest.permission.CAMERA,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CAMERA);
+        } else {
+            Log.e("DB", "PERMISSION GRANTED");
+            result = true;
+        }
+        selectImage();
+    }
+
+    Bitmap bitmap;
+    private String bitmapString="a",userChoosenTask;
+    private boolean result;
+
+
+    private void onSelectFromGalleryResult(Intent data) {
+
+        Bitmap bm=null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(EditProfile.this.getApplicationContext().getContentResolver(), data.getData());
+                Uri tempUri = getImageUri(getApplicationContext(), bm);
+
+                // CALL THIS METHOD TO GET THE ACTUAL PATH
+                File finalFile = new File(getRealPathFromURI(tempUri));
+
+                System.out.println(finalFile + "");
+
+                String filePath = finalFile + "";
+                Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        bitmap = bm;
+        imgProfile.setImageBitmap(bm);
+        bitmapString = BaseClass.BitMapToString(bitmap);
+        uploadProfile(bitmapString);
+
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bitmap = thumbnail;
+
+        Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+
+        // CALL THIS METHOD TO GET THE ACTUAL PATH
+        File finalFile = new File(getRealPathFromURI(tempUri));
+
+        System.out.println(finalFile + "");
+
+        String filePath = finalFile + "";
+        Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
+
+        bitmapString = BaseClass.BitMapToString(bitmap);
+        imgProfile.setImageBitmap(bitmap) ;
+        uploadProfile(bitmapString);
+
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
+    private final int  REQUEST_CAMERA=0, SELECT_FILE = 1;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                     @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(getApplicationContext(), "Camera Permission not granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    result =true;
+                    if(result){
+//                        cameraIntent();
+                    }
+                }
+                break;
+            case SELECT_FILE:
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(getApplicationContext(), "file Permission not granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    result =true;
+                    if(result){
+//                        galleryIntent();
+                    }
+                }
+                break;
+        }
+    }
+
+    private void selectImage() {
+        final CharSequence[] items = { "Take Photo", "Choose from Library",
+                "Cancel" };
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditProfile.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Take Photo")) {
+                    userChoosenTask ="Take Photo";
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                        ActivityCompat.requestPermissions(EditProfile.this,
+                                new String[]{Manifest.permission.CAMERA},
+                                REQUEST_CAMERA);
+                    } else {
+                        Log.e("DB", "PERMISSION GRANTED");
+                        result = true;
+                        cameraIntent();
+                    }
+
+                } else if (items[item].equals("Choose from Library")) {
+                    userChoosenTask ="Choose from Library";
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(EditProfile.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                SELECT_FILE);
+                    } else {
+                        Log.e("DB", "PERMISSION GRANTED");
+                        result = true;
+                        galleryIntent();
+                    }
+
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+    private void galleryIntent() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+    }
+    private void cameraIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+
+        }
+    }
+
+    private void uploadProfile(String base64){
+        String request = "{\"user_id\":" + str_id + ",\"image\":\"" + base64 + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(request);
+            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.PROFILE_IMAGE, EditProfile.this, new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.d("TAG", "Rakhi: "+result);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
