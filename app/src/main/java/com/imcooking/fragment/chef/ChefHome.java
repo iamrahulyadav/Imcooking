@@ -362,8 +362,7 @@ for(int i=0;i<jsonArray.length();i++){
         try {
             String s = "{\n" +
                     "  \"chef_id\": 72,\n" +
-                    "  \"foodie_id\": 70,\n" +
-                    "   \"follow_id\": 10 \n" +
+                    "  \"foodie_id\": 70\n" +
                     "}";
             Log.d("TAGFOLL",s);
             JSONObject jsonObject = new JSONObject(s);
