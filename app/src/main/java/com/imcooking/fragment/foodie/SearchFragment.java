@@ -1,23 +1,26 @@
-package com.imcooking.activity.home;
+package com.imcooking.fragment.foodie;
 
-import android.location.Location;
-import android.os.Build;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ChefAndDish;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.ChefProfile;
+import com.imcooking.activity.home.HomeSearchActivity1;
 import com.imcooking.adapters.AdapterChefSearch;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -29,37 +32,50 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChefSearch.SearchClickInterface{
-    public static final String RESPONSE_DATA = "location" ;
-    public static final int RESPONSE_LOCATION = 200;
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class SearchFragment extends Fragment implements AdapterChefSearch.SearchClickInterface{
+
+
+    public SearchFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_search, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        init();
+    }
+
     AdapterChefSearch adapter ;
     RecyclerView rvChef;
     EditText etSearchHome;
     private String token,cityname, languagecode, keyword;
     List<String> listChef;
-//    ImageView imgBack;
+    //    ImageView imgBack;
     TinyDB tinyDB;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_search);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-
-        tinyDB = new TinyDB(getApplicationContext());
+    private void init(){
+        tinyDB = new TinyDB(getContext());
         token  = tinyDB.getString("access_token") ;
         languagecode = tinyDB.getString("language_code");
 //        setLanguages(languagecode);
-       // actionBar=getSupportActionBar();
-       // if(actionBar!=null) actionBar.hide();
+        // actionBar=getSupportActionBar();
+        // if(actionBar!=null) actionBar.hide();
 //        imgBack=findViewById(R.id.activity_home_search_back);
-        etSearchHome  =  findViewById(R.id.etSearch_home) ;
+        etSearchHome  = getView().findViewById(R.id.etSearch_home) ;
         etSearchHome.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -85,24 +101,16 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
                 return false;
             }
         });*/
-       // imgBack = findViewById(R.id.fragment_home_search_linearlayout);
+        // imgBack = findViewById(R.id.fragment_home_search_linearlayout);
 
-        rvChef = (RecyclerView) findViewById(R.id.rvLocations) ;
+        rvChef = (RecyclerView) getView().findViewById(R.id.rvLocations) ;
         listChef =  new ArrayList<>();
-        RecyclerView.LayoutManager layoutManager  =  new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager  =  new LinearLayoutManager(getContext());
         rvChef.setLayoutManager(layoutManager);
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext()
+                ,DividerItemDecoration.VERTICAL);
         rvChef.addItemDecoration(itemDecoration);
 
-/*
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-                finish();
-            }
-        });
-*/
     }
 
     private ArrayList<String> arr_id = new ArrayList<>();
@@ -115,9 +123,9 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
         String s = "{  \"keyword\":" + keyword + "}" ;
         JSONObject jsonObject = new JSONObject(s);
 
-       Log.d("getchef", jsonObject.toString());
-        new GetData(getApplicationContext(),HomeSearchActivity1.this).sendMyData(jsonObject,
-                "search", HomeSearchActivity1.this, new GetData.MyCallback() {
+        Log.d("getchef", jsonObject.toString());
+        new GetData(getContext(),getActivity()).sendMyData(jsonObject,
+                "search", getActivity(), new GetData.MyCallback() {
                     @Override
                     public void onSuccess(String result) {
 
@@ -130,7 +138,7 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
 
 
                             if ( chefAndDish.getResponse().getDish_lst().isEmpty()){
-                                BaseClass.showToast(getApplicationContext(), "No search found");
+                                BaseClass.showToast(getContext(), "No search found");
 
                             }
                             else {
@@ -156,7 +164,7 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
 
                         }
                         else {
-                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                            BaseClass.showToast(getContext(), "Something Went Wrong");
                         }
 
                     }
@@ -164,7 +172,7 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
     }
 
     private void setMyAdapter(){
-        adapter = new AdapterChefSearch(getApplicationContext(),arr_id,
+        adapter = new AdapterChefSearch(getContext(),arr_id,
                 arr_name, arr_type, this);
         rvChef.setAdapter(adapter);
 
@@ -174,6 +182,19 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
     public void search_click(int position) {
         String type = arr_type.get(position);
 
+        if(type.equals("Dish")){
+            HomeDetails fragment = new HomeDetails();
+            Bundle args = new Bundle();
+            args.putString("dish_id", arr_id.get(position));
+            fragment.setArguments(args);
+            BaseClass.callFragment1(fragment, fragment.getClass().getName(), getFragmentManager());
+        } else{
+            startActivity(new Intent(getContext(), ChefProfile.class)
+                            .putExtra("chef_id", arr_id.get(position))
+                            .putExtra("foodie_id", HomeFragment.foodie_id));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
-    }
-}
+        }
+
+
+    }}

@@ -8,16 +8,16 @@
     android:orientation="vertical"
     tools:context=".activity.Sub.Chef.ChefActivateDeactivate">
 
-    <TextView
+    <com.imcooking.customtext.CustomTextViewBold
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Deactivate"
+        android:text="Activate / Deactivate"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
         android:textStyle="bold"
         android:gravity="center_vertical"
         android:paddingBottom="10dp"
-        android:paddingLeft="35dp"
+        android:paddingLeft="40dp"
         android:paddingTop="10dp"/>
     <View
         android:layout_width="match_parent"
@@ -35,9 +35,9 @@
             android:id="@+id/chef_activate_switch"
             app:track="@drawable/switch_track"
             android:thumb="@drawable/switch_thumb"
+            android:text="Activate"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/extra_smallsize"
-            android:text="Deactivate"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"

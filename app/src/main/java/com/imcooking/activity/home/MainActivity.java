@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.Help;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
@@ -378,7 +379,15 @@ public class MainActivity extends AppBaseActivity
                             getSupportFragmentManager());
                 }
                 break;
-        }
+
+            case R.id.navigation_help:
+                startActivity(new Intent(getApplicationContext(), Help.class));
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+                break;
+            default:
+                break;
+                }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

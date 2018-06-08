@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.AddAddressActivity;
@@ -32,11 +33,15 @@ public class ChefActivateDeactivate extends AppCompatActivity implements Compoun
 
     private SwitchCompat sw;
     private String str;
+//    private TextView tv;
 
     private void init(){
 
+//        tv = findViewById(R.id.chef_activate_text);
         sw = findViewById(R.id.chef_activate_switch);
         sw.setOnCheckedChangeListener(this);
+
+
     }
 
     @Override
@@ -70,8 +75,12 @@ public class ChefActivateDeactivate extends AppCompatActivity implements Compoun
                                 if(status){
                                     if(msg.equals("chef status update successfully")){
                                         if (str.equals("1")){
+                                            sw.setText("Activate");
+//                                            sw.setShowText(true);
                                             BaseClass.showToast(getApplicationContext(), "Profile Activated Successfully");
                                         } else{
+                                            sw.setText("Deactivate");
+//                                            sw.setShowText(false);
                                             BaseClass.showToast(getApplicationContext(), "Profile Deactivated Successfully");
                                         }
                                     }
