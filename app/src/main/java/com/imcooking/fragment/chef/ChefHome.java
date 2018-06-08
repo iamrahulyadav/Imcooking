@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -29,18 +28,19 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
+import com.imcooking.Model.api.response.FollowUnfollow;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChangePassword;
 import com.imcooking.activity.Sub.Chef.ChefActivateDeactivate;
 import com.imcooking.activity.Sub.Chef.ChefEditProfile;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
-import com.imcooking.activity.Sub.Foodie.EditProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.adapters.AdapterChefHomeViewPager;
@@ -48,7 +48,7 @@ import com.imcooking.adapters.Page_Adapter;
 import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
 import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
 import com.imcooking.fragment.chef.chefprofile.FoodieRequestADish;
-import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
+import com.imcooking.fragment.chef.chefprofile.ChefMyRequestFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -101,7 +101,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private ApiResponse.UserDataBean userDataBean;
 
     private TextView btn_call;
-    public static String foodie_id;
+    public static String foodie_id, user_id;
 
     public static CuisineData cuisineData = new CuisineData();
 
@@ -117,6 +117,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         loginData = tinyDB.getString("login_data");
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
+        user_id = userDataBean.getUser_id() + "";
 
 //        chef_id = userDataBean.getUser_id() + "";
 
@@ -135,7 +136,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private ImageView iv_settings;
+    private ImageView iv_settings, heart;
+
     private ProgressBar progressBar;
 //    private AppBarLayout layout;
 
@@ -150,7 +152,11 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         txtFollowers = getView().findViewById(R.id.activity_chef_txtFollower);
         imgChef = getView().findViewById(R.id.chef_profile_image);
         imgBack = getView().findViewById(R.id.imgBack);
+
+        heart = getView().findViewById(R.id.chef_home_heart_icon);
+        heart.setOnClickListener(this);
         btn_follow = getView().findViewById(R.id.chef_home_follow_button);
+        btn_follow.setOnClickListener(this);
 
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
@@ -160,10 +166,12 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
             btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
             btn_call.setVisibility(View.VISIBLE);
+            heart.setVisibility(View.GONE);
         } else if (user_type.equals("1")) {
             btn_call.setVisibility(View.GONE);
             btn_follow.setVisibility(View.GONE);
             iv_settings.setVisibility(View.VISIBLE);
+            heart.setVisibility(View.VISIBLE);
         } else {
         }
 
@@ -180,7 +188,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         adapter.addFragment(new AboutChefFragment(), "ABOUT CHEF");
         adapter.addFragment(new ChefDishListFragment(), "DISHES");
         if (user_type.equals("1")) {
-            adapter.addFragment(new RequestDishFragment(), "DISH REQUESTS");
+            adapter.addFragment(new ChefMyRequestFragment(), "DISH REQUESTS");
         } else if (user_type.equals("2")) {
             adapter.addFragment(new FoodieRequestADish(), "REQUEST A DISH");
         } else {
@@ -190,7 +198,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     }
 
     private void getchefProfile() {
-        String s = "{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id + "}";
+        String s = "{\"chef_id\":" + chef_id + ",\"foodie_id\":" + user_id + "}";
 
         Log.d("MyRequest", s);
 
@@ -214,12 +222,24 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 //                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
                                     txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                     tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                    Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
+                                            .getChef_data().getChef_image())
+//                               .placeholder( R.drawable.progress_animation )
+                                            .into(imgChef);
+                                    if(chefProfileData1.getChef_data().getChef_foodie_follow()==0){
 
+                                        btn_follow.setText("Follow");
+                                    }
+                                    else  if(chefProfileData1.getChef_data().getChef_foodie_follow()==1){
+
+                                        btn_follow.setText("Unfollow");
+                                    }
                                     if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) == 1) {
                                         txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Follower");
                                     } else if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) > 1) {
                                         txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
-                                    } else {
+                                    }
+                                    else {
                                     }
                                     viewPager = getView().findViewById(R.id.chef_home_viewpager);
                                     tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
@@ -444,6 +464,46 @@ for(int i=0;i<jsonArray.length();i++){
             e.printStackTrace();
         }
     }
+    private void getFollowUnfollow(){
+        try {
+            String s = "{\n" +
+                    "  \"chef_id\":" + chef_id + ",\n" +
+                    "  \"foodie_id\":" + user_id + "}";
+            Log.d("TAGFOLL",s);
+            JSONObject jsonObject = new JSONObject(s);
+
+
+//            layout.setVisibility(View.GONE);
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, "follow",
+                    getActivity(), new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+//                            layout.setVisibility(View.VISIBLE);
+                            FollowUnfollow followUnfollow = new Gson().fromJson(result, FollowUnfollow.class);
+                            if(followUnfollow.isStatus()){
+                                if (followUnfollow.getMsg().equals("Successfully follow")){
+                                    Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
+                                    btn_follow.setText("Unfollow");
+//                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText()));
+                                }
+                                else if (followUnfollow.getMsg().equals("Successfully unfollow")){
+                                    Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
+                                    btn_follow.setText("Follow");
+                                }
+
+
+                            }else {
+                                Toast.makeText(getContext(), "Something went Wrong", Toast.LENGTH_SHORT).show();
+                            }
+
+//                            setMyCuisines(cuisineData);
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -517,7 +577,6 @@ for(int i=0;i<jsonArray.length();i++){
         int id = view.getId();
         if (id == R.id.chef_home_settings) {
 
-
             PopupWindow popupwindow_obj = showMyPopup();
             popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
 
@@ -537,12 +596,12 @@ for(int i=0;i<jsonArray.length();i++){
             new TinyDB(getContext()).remove("login_data");
             startActivity(new Intent(getContext(), LoginActivity.class));
             getActivity().finish();
-        } else {
+        } else if (id == R.id.chef_home_follow_button){
+            getFollowUnfollow();
         }
     }
 
     public PopupWindow showMyPopup() {
-
         final PopupWindow popupWindow = new PopupWindow(getActivity());
 
         // inflate your layout or dynamically add view
@@ -558,7 +617,6 @@ for(int i=0;i<jsonArray.length();i++){
         tv_change_password.setOnClickListener(this);
         tv_deactivate.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
-
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -578,4 +636,5 @@ for(int i=0;i<jsonArray.length();i++){
     public boolean onMenuItemClick(MenuItem item) {
         return false;
     }
+
 }

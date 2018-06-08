@@ -42,7 +42,6 @@ import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.EditProfile;
 import com.imcooking.fragment.chef.ChefHome;
-import com.imcooking.fragment.chef.chefprofile.RequestDishFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -390,9 +389,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
         bitmap = bm;
         imgProfile.setImageBitmap(bm);
-//        uploadImg(bitmap);
         bitmapString = BaseClass.BitMapToString(bitmap);
-
+        uploadProfile(bitmapString);
     }
 
     private void onCaptureImageResult(Intent data) {
