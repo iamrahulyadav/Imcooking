@@ -69,7 +69,7 @@ import java.util.Locale;
 
 
 public class HomeFragment extends Fragment implements
-        View.OnClickListener, CuisionAdatper.CuisionInterface{
+        View.OnClickListener, CuisionAdatper.CuisionInterface, HomeDishPagerAdapter.click_dish_pager_like, HomeBottomPagerAdapter.click_dish_pager_like_2 {
 
     public static TextView cart_icon;
     LocationManager locationManager;
@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment implements
     HomeBottomPagerAdapter homeBottomPagerAdapter;
     private TextView tv_cusine,  txtCityName, txtSerach;
     private RecyclerView cuisinRecycler;
-    private LinearLayout layout;
+    private LinearLayout layout, layout2;
     ViewPager bottomViewPager;
     ImageView imgCart,imgFilter;
     CuisionAdatper cuisionAdatper;
@@ -127,15 +127,17 @@ public class HomeFragment extends Fragment implements
             }
         });
 
-
-
         init();
     }
+
+    private ArrayList<String> arr_like_status_1 = new ArrayList<>();
+    private ArrayList<String> arr_like_status_2 = new ArrayList<>();
 
     private void init(){
 
         cart_icon = getView().findViewById(R.id.home_cart_text_count);
         layout_no_record_found = getView().findViewById(R.id.home_no_record_image);
+        layout2 = getView().findViewById(R.id.home_no_record_image_2);
 
         sp = getView().findViewById(R.id.home_spiner);
         layout = getView().findViewById(R.id.home_layout);
@@ -260,6 +262,7 @@ public class HomeFragment extends Fragment implements
 
 
         layout_no_record_found.setVisibility(View.GONE);
+        layout2.setVisibility(View.GONE);
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
@@ -289,6 +292,7 @@ public class HomeFragment extends Fragment implements
         cuisionAdatper.CuisionInterfaceMethod(this);
     }
 
+    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
     private void getHomeData(String latitudeq, String longitudeq){
       /*  Home data = new Home();
         data.setLatitude(latitudeq);
@@ -328,11 +332,28 @@ public class HomeFragment extends Fragment implements
                         }
 
                         if (homeData.isStatus()) {
+
+                            arr_like_status_1.clear(); arr_like_status_2.clear();
+                            for(int i=0; i<homeData.getChef_dish().size(); i++){
+                                arr_like_status_1.add(homeData.getChef_dish().get(i).getDishlike());
+                            }
+                            if(homeData.getFavourite_data().size() != 0){
+                                for(int i=0; i<homeData.getFavourite_data().size(); i++){
+                                    arr_like_status_2.add(homeData.getFavourite_data().get(i).getDishlike());
+                                }
+                                bottomViewPager.setVisibility(View.VISIBLE);
+                                layout2.setVisibility(View.GONE);
+                            } else {
+                                bottomViewPager.setVisibility(View.GONE);
+                                layout2.setVisibility(View.VISIBLE);
+                            }
+
                             layout.setVisibility(View.VISIBLE);
                             viewPager.setVisibility(View.VISIBLE);
                             layout_no_record_found.setVisibility(View.GONE);
 
-                            setMyData();
+
+                            setMyData(/*arr_like_status_1, arr_like_status_2*/);
 //                            adapter.notifyDataSetChanged();
 //                            homeBottomPagerAdapter.notifyDataSetChanged()
                         } else{
@@ -347,11 +368,19 @@ public class HomeFragment extends Fragment implements
                                     JSONArray jar = jsonObject.getJSONArray("favourite_data");
                                     Log.d("VK", jar.toString());
 
-                                    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
+                                    if(homeData.getFavourite_data().size() != 0){
+                                        for(int i=0; i<homeData.getFavourite_data().size(); i++){
+                                            arr_like_status_2.add(homeData.getFavourite_data().get(i).getDishlike());
+                                        }
+                                    }
+
+//                                    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
 //
+                                    list.clear();
                                     list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
 //
-/*
+
+                                    /*
                                     homeData.setFavourite_data((List<HomeData.FavouriteDataBean>) jar);
 
                                     if (favouriteDataBeans!=null){
@@ -373,7 +402,7 @@ public class HomeFragment extends Fragment implements
         });
     }
 
-    private void setMyData(){
+    private void setMyData(/*ArrayList<String> like_1, ArrayList<String> like_2*/){
         if (chefDishBeans!=null){
             chefDishBeans.clear();
         }
@@ -385,19 +414,25 @@ public class HomeFragment extends Fragment implements
         }
         if (homeData.getFavourite_data()!=null&&homeData.getFavourite_data().size()>0){
             favouriteDataBeans.addAll(homeData.getFavourite_data());
+        } else if(homeData.getFavourite_data().size() == 0){
+            layout2.setVisibility(View.VISIBLE);
+            bottomViewPager.setVisibility(View.GONE);
         }
         setMyViewPager(chefDishBeans);
         setBottomViewPager(favouriteDataBeans);
     }
 
+    private HomeDishPagerAdapter adapter;
     private void setMyViewPager(List<HomeData.ChefDishBean> mylist) {
-        HomeDishPagerAdapter adapter = new HomeDishPagerAdapter(getActivity(),getContext(), getFragmentManager(), mylist);
+        adapter = new HomeDishPagerAdapter(getActivity(),getContext(), getFragmentManager()
+                , mylist, this, arr_like_status_1);
         viewPager.setAdapter(adapter);
     }
 
     private void setBottomViewPager(List<HomeData.FavouriteDataBean> mylist) {
         Log.d("Debug", favouriteDataBeans.size() + "");
-        homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager(), mylist);
+        homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager()
+                , mylist,this, arr_like_status_2);
         bottomViewPager.setAdapter(homeBottomPagerAdapter);
     }
 
@@ -417,14 +452,14 @@ public class HomeFragment extends Fragment implements
                         .translationY(0)
                         .alpha(1.0f)
                         .setListener(null)
-                        .setDuration(1000);
+                        .setDuration(300);
                 tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_aarrow, 0);
                 cuisine_status = true;
             }else{
                 cusine_list.animate()
                         .translationY(0)
                         .alpha(0.0f)
-                        .setDuration(1000)
+                        .setDuration(300)
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -437,7 +472,7 @@ public class HomeFragment extends Fragment implements
             }
         }
         else if (v.getId()==R.id.fragment_home_img_filter){
-            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
+//            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
         }
         else if (v.getId() == R.id.fragment_home_img_cart)
         {
@@ -447,8 +482,10 @@ public class HomeFragment extends Fragment implements
         } else if (v.getId()==R.id.fragment_home_txtcity){
             startActivityForResult(new Intent(getActivity(), SelectLocActivity.class),2);
         } else if (v.getId()==R.id.fragment_home_search_img){
-            startActivity(new Intent(getContext(), HomeSearchActivity1.class));
-            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            BaseClass.callFragment1(new SearchFragment(), new SearchFragment().getClass().getName()
+                    , getFragmentManager());
+//            startActivity(new Intent(getContext(), HomeSearchActivity1.class));
+//            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
     }
 
@@ -458,6 +495,8 @@ public class HomeFragment extends Fragment implements
         if (data!=null){
             if(resultCode== FilterHomeActivity.FILTER_RESPONSE_CODE)
             {
+//                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
             } else if (requestCode==2){
@@ -479,6 +518,12 @@ public class HomeFragment extends Fragment implements
             if(list.getRating().equals((rating.intValue() + "")) /*&& list.getDish_price().equals(price + "")*/){
                 favorite_1.add(list);
             }
+
+
+        }
+
+        for(int i=0; i<favorite_1.size(); i++){
+            arr_like_status_1.add(favorite_1.get(i).getDishlike());
         }
 
         setMyViewPager(favorite_1);
@@ -495,7 +540,6 @@ public class HomeFragment extends Fragment implements
 
 
     }
-
 
     public StringBuffer getAddress(LatLng latLng) throws IOException {
         Geocoder geocoder;
@@ -540,6 +584,122 @@ public class HomeFragment extends Fragment implements
         } else {
             layout_no_record_found.setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.GONE);
+        }
+
+        arr_like_status_1.clear();
+        for(int i=0; i<cuisionChefList.size(); i++){
+            arr_like_status_1.add(cuisionChefList.get(i).getDishlike());
+        }
+    }
+
+    @Override
+    public void click_me(int position) {
+
+//        if(arr_like_status_1.get(position).equals("0")){
+
+            like_dislike(position);
+//        } else{
+//
+//        }
+//        BaseClass.showToast(getContext(), position + "");
+
+    }
+
+    private void like_dislike(final int position){
+
+        String s = "{\"chef_id\":" + homeData.getChef_dish().get(position).getChef_id() +
+                ",\"foodie_id\":" + foodie_id +
+                ",\"dish_id\":" + homeData.getChef_dish().get(position).getDish_id() + "}";
+
+        try {
+            JSONObject job = new JSONObject(s);
+
+            new GetData(getContext(), getActivity()).sendMyData(job, "dishlike", getActivity(), new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if(jsonObject.getBoolean("status")){
+                            if(jsonObject.getString("msg").equals("Successfully dish like")){
+                                arr_like_status_1.set(position, "1");
+                                BaseClass.showToast(getContext(), "Successfully Liked");
+                                int i = Integer.parseInt(homeData.getChef_dish().get(position).getDishlikeno());
+                                homeData.getChef_dish().get(position).setDishlikeno((i+1) + "");
+                            } else if(jsonObject.getString("msg").equals("Successfully unlike")){
+                                arr_like_status_1.set(position, "0");
+                                BaseClass.showToast(getContext(), "Dish Successfully unliked");
+                                int i = Integer.parseInt(homeData.getChef_dish().get(position).getDishlikeno());
+                                homeData.getChef_dish().get(position).setDishlikeno((i-1) + "");
+                            } else{
+                                BaseClass.showToast(getContext(), "Something Went Wrong");
+                            }
+
+                            adapter.notifyDataSetChanged();
+                        } else{
+                            BaseClass.showToast(getContext(), "Something Went Wrong");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void click_me_2(int position) {
+        like_dislike_2(position);
+
+    }
+
+    private void like_dislike_2(final int position){
+
+        String s = "{\"chef_id\":" + homeData.getFavourite_data().get(position).getChef_id() +
+                ",\"foodie_id\":" + foodie_id +
+                ",\"dish_id\":" + homeData.getFavourite_data().get(position).getDish_id() + "}";
+
+        try {
+            JSONObject job = new JSONObject(s);
+
+            new GetData(getContext(), getActivity()).sendMyData(job, "dishlike", getActivity(), new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if(jsonObject.getBoolean("status")){
+                            if(jsonObject.getString("msg").equals("Successfully dish like")){
+                                arr_like_status_2.set(position, "1");
+                                BaseClass.showToast(getContext(), "Successfully Liked");
+                                int i = Integer.parseInt(homeData.getFavourite_data().get(position).getDishlikeno());
+                                homeData.getFavourite_data().get(position).setDishlikeno((i+1) + "");
+//                                list.set(position, "");
+//                                list.get(position).
+                            } else if(jsonObject.getString("msg").equals("Successfully unlike")){
+                                arr_like_status_2.set(position, "0");
+                                BaseClass.showToast(getContext(), "Dish Successfully unlike");
+                                int i = Integer.parseInt(homeData.getFavourite_data().get(position).getDishlikeno());
+                                homeData.getFavourite_data().get(position).setDishlikeno((i-1) + "");
+                            } else{
+                                BaseClass.showToast(getContext(), "Something Went Wrong");
+                            }
+
+                            homeBottomPagerAdapter.notifyDataSetChanged();
+                        } else{
+                            BaseClass.showToast(getContext(), "Something Went Wrong");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }
