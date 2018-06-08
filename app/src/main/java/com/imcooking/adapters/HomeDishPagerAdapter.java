@@ -38,14 +38,21 @@ public class HomeDishPagerAdapter extends PagerAdapter{
     private Gson gson = new Gson();
     private boolean arr[];
     Activity activity;
+    private click_dish_pager_like click;
+    private ArrayList<String> arr_like;
 
-    public HomeDishPagerAdapter(Activity activity, Context context, FragmentManager manager,List<HomeData.ChefDishBean> chefDishBeans ) {
+    public HomeDishPagerAdapter(Activity activity, Context context, FragmentManager manager,
+                                List<HomeData.ChefDishBean> chefDishBeans, click_dish_pager_like click
+                                ,ArrayList<String> arr_like) {
+
         this.activity = activity;
         this.context = context;
         this.manager = manager;
         this.chefDishBeans = chefDishBeans;
         mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         arr = new boolean[chefDishBeans.size()];
+        this.click = click;
+        this.arr_like = arr_like;
     }
 
     @Override
@@ -89,6 +96,19 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
         tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
+        if(arr_like.get(position).equals("1")){
+            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
+
+        } else{
+            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
+
+        }
+        imgLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                click.click_me(position);
+            }
+        });
         if (chefDishBeans.get(position).getDish_image()!=null&&chefDishBeans.get(position).getDish_image().size()>0){
             Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                     .get(position).getDish_image().get(0)) .into(iv_dish_image);
@@ -124,15 +144,18 @@ public class HomeDishPagerAdapter extends PagerAdapter{
                 .get(position).getDish_price());
         dish_id = chefDishBeans.get(position).getDish_id()+"";
 
-        String chefId = chefDishBeans.get(position).getChef_id()+"";
+//        String chefId = chefDishBeans.get(position).getChef_id()+"";
 
+/*
         DishLikeRequest dishLikeRequest = new DishLikeRequest();
         dishLikeRequest.setDish_id(dish_id);
         dishLikeRequest.setChef_id(chefId);
         dishLikeRequest.setFoodie_id(HomeFragment.foodie_id);
         final String likerequest = gson.toJson(dishLikeRequest);
+*/
 
 
+/*
         imgLike.setTag(position);
 
 //        BaseClass.showToast(context, position+"");
@@ -149,29 +172,32 @@ public class HomeDishPagerAdapter extends PagerAdapter{
             @Override
             public void onClick(View view) {
 
-                /*if(arr[position]){
+                */
+/*if(arr[position]){
                     Toast.makeText(context, "Successfully Disliked", Toast.LENGTH_SHORT).show();
                     imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
                 } else {
                     Toast.makeText(context, "Successfully liked", Toast.LENGTH_SHORT).show();
                     imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
-                }*/
+                }*//*
+
                 BaseClass.showToast(context, position+"");
 
                 if(chefDishBeans.get(position).getDishlike().equals("0")){
-                    Toast.makeText(context, "Successfully liked", Toast.LENGTH_SHORT).show();
+                    BaseClass.showToast(context, "Successfully liked");
                     imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
                     chefDishBeans.get((Integer) imgLike.getTag()).setDishlike("1");
                 } else{
-                    Toast.makeText(context, "Successfully Disliked", Toast.LENGTH_SHORT).show();
+                    BaseClass.showToast(context, "Successfully Disliked");
                     imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
                     chefDishBeans.get((Integer) imgLike.getTag()).setDishlike("0");
                 }
-                BaseClass.showToast(context, chefDishBeans.get((Integer) imgLike.getTag()).getDishlike());
+             //   BaseClass.showToast(context, chefDishBeans.get((Integer) imgLike.getTag()).getDishlike());
 
                 //                dishlike(likerequest);
             }
         });
+*/
         tv_dish_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,41 +223,15 @@ public class HomeDishPagerAdapter extends PagerAdapter{
     }
 
     String dish_id;
-    String TAG = HomeDishPagerAdapter.class.getName();
 
-   /* private void dishlike(String likerequest){
-        String s ="{\"chef_id\":\"2\",\"foodie_id\":\"21\",\"dish_id\":\"6\"}";
-        new GetData(context).getResponseAdap(likerequest, "dishlike", new GetData.MyCallback() {
-            @Override
-            public void onSuccess(String result) {
-                Log.d(TAG, "onSuccess: "+result);
-                if (result!=null){
-                    try {
-                        final JSONObject jsonObject = new JSONObject(result);
-                        if (jsonObject.getBoolean("status")){
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        if (jsonObject.getString("msg").equalsIgnoreCase("Successfully dish like")){
-                                            Toast.makeText(context, "Successfully like", Toast.LENGTH_SHORT).show();
-                                            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
-                                        } else {
-                                            Toast.makeText(context, "Dislike", Toast.LENGTH_SHORT).show();
+    public interface click_dish_pager_like{
+        public void click_me(int position);
 
-                                            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }*/
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+//        return super.getItemPosition(object);
+        return POSITION_NONE;
+    }
 }

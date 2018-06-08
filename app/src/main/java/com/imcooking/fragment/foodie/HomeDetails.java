@@ -30,9 +30,13 @@ import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.Sub.Foodie.OtherDishActivity;
 import com.imcooking.adapters.Pager1;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -47,12 +51,13 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     Gson gson = new Gson();
     TinyDB tinyDB;
+    private ImageView imgLike;
 
     public HomeDetails() {
         // Required empty public constructor
     }
 
-    String id;
+    private String id;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,14 +92,13 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     }
 
     private ImageView iv_share, imgTop,imgPickUp, imgDeliviery, imgChef;
-    TextView txtDishName, txtChefName,txtAddToCart, txtLike,txtOtherDish, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
+    private TextView txtDishName, txtChefName, txtAddToCart, txtLike, txtOtherDish, txtDistance, txtPrice, txtDeliverytype, txtAvailable,txtTime ;
     private LinearLayout chef_profile, layout;
     ViewPager pager;
 
     private String TAG  = HomeDetails.class.getName();
 
     private void init(){
-
         iv_share = getView().findViewById(R.id.home_details_share);
         imgChef = getView().findViewById(R.id.home_details_user_icon);
         imgTop = getView().findViewById(R.id.fragment_home_details_img_top);
@@ -110,7 +114,9 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         txtTime = getView().findViewById(R.id.fragment_home_details_txtTime);
         imgDeliviery =  getView().findViewById(R.id.home_pager_imgHomeDelivery);
         imgPickUp =  getView().findViewById(R.id.home_pager_imgPick);
+        imgLike = getView().findViewById(R.id.home_details_heart);
         iv_share.setOnClickListener(this);
+        imgLike.setOnClickListener(this);
 
         tabLayout= (TabLayout)getView(). findViewById(R.id.cardet_Tab);
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Recipe"));
@@ -124,8 +130,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         layout = getView().findViewById(R.id.home_details_layout);
         txtOtherDish.setOnClickListener(this);
         txtAddToCart.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -212,7 +216,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                             imgPickUp.setVisibility(View.GONE);
                             txtDeliverytype.setText("Home Delivery");
                         }
-                        txtLike.setText(dishDetails.getDish_details().getLike()+"");
+
+                        txtLike.setText(dishDetails.getDish_details().getLike() + "");
 
 
                         txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
@@ -253,7 +258,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                 }
 
         });
-
     }
 
     @Override
@@ -284,6 +288,48 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 
             addCart(v);
 
+        }
+        else if (id == R.id.home_details_heart){
+
+            dishlike();
+        }
+    }
+
+    private void dishlike(){
+        String s ="{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id + ",\"dish_id\":" + id + "}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, "dishlike", getActivity(),
+                    new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            try {
+                                JSONObject job = new JSONObject(result);
+                                if(job.getBoolean("status")){
+                                    if(job.getString("msg").equals("Successfully dish like")){
+                                        BaseClass.showToast(getContext(), "Successfully Liked");
+                                        int i = Integer.parseInt(txtLike.getText().toString());
+                                        txtLike.setText((i+1) + "");
+                                        imgLike.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.ic_heart_red)));
+                                    } else if(job.getString("msg").equals("Successfully unlike")){
+                                        BaseClass.showToast(getContext(), "Dish Successfully unliked");
+                                        int i = Integer.parseInt(txtLike.getText().toString());
+                                        txtLike.setText((i-1) + "");
+                                        imgLike.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.ic_heart)));
+                                    } else{
+                                        BaseClass.showToast(getContext(), "Something Went Wrong");
+                                    }
+                                } else{
+                                    BaseClass.showToast(getContext(), "Something Went Wrong");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

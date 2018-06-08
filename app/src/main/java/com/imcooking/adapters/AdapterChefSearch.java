@@ -23,35 +23,34 @@ public class AdapterChefSearch extends RecyclerView.Adapter<AdapterChefSearch.My
     private ArrayList<String> arr_id = new ArrayList<>();
     private ArrayList<String> arr_name = new ArrayList<>();
     private ArrayList<String> arr_type = new ArrayList<>();
-    public AdapterChefSearch(Context context, List<String> listChef) {
-        this.context = context;
-       // chefAndDishList=listChef;
-    }
 
-    public AdapterChefSearch(Context context, ArrayList<String> arr_id, ArrayList<String> arr_name, ArrayList<String> arr_type) {
+    private SearchClickInterface click;
+
+    public AdapterChefSearch(Context context, ArrayList<String> arr_id, ArrayList<String> arr_name
+            , ArrayList<String> arr_type, SearchClickInterface click) {
         this.context = context;
         this.arr_id=arr_id;
         this.arr_name=arr_name;
         this.arr_type=arr_type;
-
+        this.click = click;
     }
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder{
-
         public TextView tv_view_response;
-
-
         public MyViewHolder(View view) {
             super(view);
 
             tv_view_response = view.findViewById(R.id.item_forsear_recycler_tv_list);
+
+            tv_view_response.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    click.search_click(getAdapterPosition());
+                }
+            });
         }
-
-
     }
-
-    int row_index=-1;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -64,25 +63,8 @@ public class AdapterChefSearch extends RecyclerView.Adapter<AdapterChefSearch.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
+        holder.tv_view_response.setText(arr_name.get(position));
 
-            holder.tv_view_response.setText(arr_name.get(position));
-
-
-        holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-if(arr_type.get(0).equals("User")){
-    Toast.makeText(context, ""+"id:"+arr_id.get(position)+"name:"+arr_name.get(position), Toast.LENGTH_SHORT).show();
-}
-else if(arr_type.get(0).equals("Dish")){
-    Toast.makeText(context, ""+"id:"+arr_id.get(position)+"name:"+arr_name.get(position), Toast.LENGTH_SHORT).show();
-}
-else {
-    Toast.makeText(context, "sorrry", Toast.LENGTH_SHORT).show();
-}
-            }
-        });
     }
 
     @Override
@@ -90,7 +72,7 @@ else {
         return arr_id.size();
     }
 
-    public class OnItemClickListener {
-
+    public interface SearchClickInterface {
+        public void search_click(int position);
     }
 }

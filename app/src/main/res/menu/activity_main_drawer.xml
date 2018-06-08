@@ -15,7 +15,8 @@
         <item
             android:title="My address" />
         <item
-            android:title="Help" />
+            android:title="Help"
+            android:id="@+id/navigation_help"/>
         <item
             android:id="@+id/navigation_logout"
             android:title="Logout" />

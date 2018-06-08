@@ -30,12 +30,18 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
     Context context;
     List<HomeData.FavouriteDataBean> chefDishBeans = new ArrayList<>();
     FragmentManager manager;
+    private HomeBottomPagerAdapter.click_dish_pager_like_2 click;
+    private ArrayList<String> arr_like;
 
-    public HomeBottomPagerAdapter(Context context, FragmentManager manager, List<HomeData.FavouriteDataBean> chefDishBeans ) {
+    public HomeBottomPagerAdapter(Context context, FragmentManager manager, List<HomeData.FavouriteDataBean> chefDishBeans,
+             HomeBottomPagerAdapter.click_dish_pager_like_2 click
+            ,ArrayList<String> arr_like) {
         this.context = context;
         this.manager = manager;
         this.chefDishBeans = chefDishBeans;
         mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.click = click;
+        this.arr_like = arr_like;
     }
 
     @Override
@@ -52,7 +58,7 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View view = mLayoutInflater.inflate(R.layout.home_dish_pager_view, container, false);
-        ImageView iv_dish_image, imgPickUp, imgDeliviery;
+        ImageView iv_dish_image, imgPickUp, imgDeliviery, imgLike;
         TextView tv_dish_name, tv_chef_name, tv_chef_likes, tv_chef_followers, tv_dish_distance, tv_dish_delivery,
                 tv_dish_price;
         TextView tv_dish_likes, tv_chef_rating, tv_dish_address;
@@ -70,12 +76,26 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         imgDeliviery = view.findViewById(R.id.home_pager_imgHomeDelivery);
         imgPickUp = view.findViewById(R.id.home_pager_imgPick);
         tv_dish_likes = view.findViewById(R.id.home_dish_likes);
+        imgLike = view.findViewById(R.id.home_heart);
         tv_chef_rating = view.findViewById(R.id.home_chef_rating);
         tv_dish_address = view.findViewById(R.id.home_dish_address);
         tv_dish_address.setVisibility(View.GONE);
-//        tv_dish_likes.setText(chefDishBeans.get(position).getDishlike() + "");
+        tv_dish_likes.setText(chefDishBeans.get(position).getDishlikeno() + "");
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
+        BaseClass.showToast(context, chefDishBeans.get(position).getDishlikeno() + "");
 //        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
+
+        if(arr_like.get(position).equals("1")){
+            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
+        } else{
+            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
+        }
+        imgLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                click.click_me_2(position);
+            }
+        });
 
 
         if (chefDishBeans.get(position).getDish_image()!=null&&chefDishBeans.get(position).getDish_image().size()>0){
@@ -138,4 +158,16 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+//        return super.getItemPosition(object);
+        return POSITION_NONE;
+    }
+
+    public interface click_dish_pager_like_2{
+        public void click_me_2(int position);
+
+    }
+
 }

@@ -222,6 +222,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 //                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
                                     txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                     tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+//                                    tv_deactivate.setText(chefProfileData1.getChef_data().get);
                                     Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
                                             .getChef_data().getChef_image())
 //                               .placeholder( R.drawable.progress_animation )
@@ -601,6 +602,7 @@ for(int i=0;i<jsonArray.length();i++){
         }
     }
 
+    private TextView tv_deactivate;
     public PopupWindow showMyPopup() {
         final PopupWindow popupWindow = new PopupWindow(getActivity());
 
@@ -610,7 +612,7 @@ for(int i=0;i<jsonArray.length();i++){
         View view = inflater.inflate(R.layout.popup_chef_home, null);
         TextView tv_edit_profile = view.findViewById(R.id.chef_home_popup_edit_profile);
         TextView tv_change_password = view.findViewById(R.id.chef_home_popup_change_password);
-        TextView tv_deactivate = view.findViewById(R.id.chef_home_popup_deacivate);
+        tv_deactivate = view.findViewById(R.id.chef_home_popup_deacivate);
         TextView tv_logout = view.findViewById(R.id.chef_home_popup_logout);
 
         tv_edit_profile.setOnClickListener(this);

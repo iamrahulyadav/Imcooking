@@ -143,7 +143,7 @@ public class SplashActivity extends AppBaseActivity {
                     if (tinyDB.contains("login_data")) {
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
                         overridePendingTransition(R.anim.enter, R.anim.exit);
-                        finish();
+                        finish();//2
                     } else {
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         overridePendingTransition(R.anim.enter, R.anim.exit);
