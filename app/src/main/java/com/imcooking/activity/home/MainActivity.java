@@ -44,6 +44,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.chef.ChefMyOrderListFragment;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 
@@ -298,8 +299,9 @@ public class MainActivity extends AppBaseActivity
             iv_my_order.setImageResource(R.drawable.ic_salad_1);
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(), getSupportFragmentManager());
-            } else{
-
+            }else if(user_type.equals("1")){
+                BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(),
+                        getSupportFragmentManager());
             }
         } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
@@ -371,10 +373,18 @@ public class MainActivity extends AppBaseActivity
                 if(user_type.equals("2")) {
                     BaseClass.callFragment(new FoodieMyRequestFragment(), new FoodieMyRequestFragment().getClass().getName(), getSupportFragmentManager());
                 }
+                else if(user_type.equals("1")){
+                    BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(),
+                            getSupportFragmentManager());
+                }
                 break;
             case R.id.navigation_myorder:
                 if(user_type.equals("2")) {
                     BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(),
+                            getSupportFragmentManager());
+                }
+                else if(user_type.equals("1")){
+                    BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(),
                             getSupportFragmentManager());
                 }
                 break;

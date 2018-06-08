@@ -26,7 +26,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="284dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:fitsSystemWindows="true"
                     >
 
@@ -132,9 +132,9 @@
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_cart_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycler_cart_item">
+                android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -228,7 +228,7 @@
                 android:id="@+id/cart_linearlayout_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical"
                 android:layout_marginBottom="20dp"
 
