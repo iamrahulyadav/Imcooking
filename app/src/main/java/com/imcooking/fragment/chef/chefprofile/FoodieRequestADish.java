@@ -57,7 +57,6 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         init();
     }
 

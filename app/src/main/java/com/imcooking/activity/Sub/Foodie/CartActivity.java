@@ -118,7 +118,7 @@ RecyclerView recyclerView;
                                           HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
                                             Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
                                                     apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
-                                                ratingBar.setRating(Float.parseFloat(apiResponse.getAdd_cart().getRating()));
+                                                ratingBar.setRating(apiResponse.getAdd_cart().getRating());
                                             CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish());
                                             recyclerView.setAdapter(cartAdatper);

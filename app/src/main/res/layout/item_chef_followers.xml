@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+android:padding="5dp"
+    android:background="@color/colorWhite"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/item_chef_followers_foodie_image"
+            android:src="@drawable/details_profile"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentLeft="true" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/item_chef_followers_foodie_image">
+
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:id="@+id/item_chef_followers__name"
+                    android:layout_height="wrap_content"
+                    android:text="Vaibhav Khandelwal"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="5dp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/item_chef_followers_address"
+                    android:layout_height="wrap_content"
+                    android:text="E-164, Sector-15, Noida, India"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:drawableLeft="@drawable/ic_placeholder"
+                    android:drawablePadding="5dp"
+                    android:layout_marginBottom="3dp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/followers_mob_number"
+                    android:text="+91-7737284476"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:drawableLeft="@drawable/ic_phone"
+                    android:drawablePadding="5dp"
+                    android:layout_marginBottom="3dp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/item_chef_followers_email"
+                    android:text="android.vaibhav@hotmail.com"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:drawableLeft="@drawable/ic_mail"
+                    android:drawablePadding="5dp"
+                    android:layout_marginBottom="3dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+</RelativeLayout>

@@ -53,47 +53,41 @@ public ImageView img;
             txtfoodiename =view.findViewById(R.id.fragment_chef_order_list_foodie_name);
             txtdishname=view.findViewById(R.id.fragment_chef_order_list_dish_name);
             img=view.findViewById(R.id.fragment_chef_order_list_img);
-
-    }
-
-
-    }
-
+    }}
     int row_index=-1;
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_chef_order_list, parent, false);
 
-        return new MyViewHolder(itemView);
-    }
-
+        return new MyViewHolder(itemView); }
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
         holder.txtPlacedon.setText(list.get(position).getBookdate());
-        holder.txtOrderNo.setText(list.get(position).getOrder_id());
+        holder.txtOrderNo.setText(list.get(position).getOrder_id()+"");
         holder.txtdishname.setText(list.get(position).getFoodie_name());
         holder.txtfoodiename.setText(list.get(position).getFoodie_name());
-        holder.txtprice.setText(list.get(position).getPrice());
-       /* holder.txtqty.setText(list.get(position).);
-        holder.txtEmail.setText(list.get(position).);*/
-       // holder.txtTotalAmnt.setText(list.get(position).);
-       // holder.txtPaymentMode.setText(list.get(position).);
-        Picasso.with(context).load(GetData.IMG_BASE_URL +
+        holder.txtprice.setText(list.get(position).getPrice()+"");
+       /* holder.txtTotalAmnt.setText(list.get(position).);
+        holder.txtPaymentMode.setText(list.get(position).);
+        holder.txtqty.setText(list.get(position).);
+       */
+      // holder.txtEmail.setText(list.get(position).);
+       Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getFoodie_image()).into(holder.img);
 
-        holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
+    /*    holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
             }
         });
-    }
+    */}
 
     @Override
     public int getItemCount() {
-        return 5;
+        return list.size();
     }
 }
