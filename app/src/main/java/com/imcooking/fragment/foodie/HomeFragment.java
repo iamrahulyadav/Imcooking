@@ -161,6 +161,9 @@ public class HomeFragment extends Fragment implements
             spinnerData.clear();
         }
 
+
+        latitudeq= SplashActivity.latitude+"";
+        longitudeq=SplashActivity.longitude+"" ;
         StringBuffer stringBuffer = new StringBuffer();
         try {
             stringBuffer = getAddress(new LatLng(SplashActivity.latitude, SplashActivity.longitude));
@@ -168,7 +171,6 @@ public class HomeFragment extends Fragment implements
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         spinnerData.add("10 miles ");
         spinnerData.add("20 miles ");
         spinnerData.add("30 miles ");
@@ -256,7 +258,6 @@ public class HomeFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-     //  getLocation();
 
         layout_no_record_found.setVisibility(View.GONE);
 
@@ -457,8 +458,6 @@ public class HomeFragment extends Fragment implements
         if (data!=null){
             if(resultCode== FilterHomeActivity.FILTER_RESPONSE_CODE)
             {
-//                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
             } else if (requestCode==2){

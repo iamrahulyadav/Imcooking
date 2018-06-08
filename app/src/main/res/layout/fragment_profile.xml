@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     tools:context="com.imcooking.fragment.foodie.ProfileFragment">
 
@@ -20,12 +21,18 @@
             android:layout_marginBottom="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/profile_img_progress"/>
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                app:civ_border_color="@color/colorBlue"
+                app:civ_border_width="2dp"
                 android:id="@+id/foodie_profile_image"
-                android:src="@drawable/details_profile"
                 android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"/>
 

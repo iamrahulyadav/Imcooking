@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +51,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
+import okhttp3.internal.Util;
 
 public class EditProfile extends AppBaseActivity {
     private ImageView imgProfile;
@@ -69,6 +78,7 @@ public class EditProfile extends AppBaseActivity {
     private TextView tv_fullname, tv_email, tv_phone, btn;
     private EditText edt_full_name, edt_email, edt_phone;
     private String str_id, str_uname;
+    private ProgressBar progressBar;
 
     private void init(){
 
@@ -76,7 +86,7 @@ public class EditProfile extends AppBaseActivity {
         tv_email = findViewById(R.id.foodie_edit_profile_email);
         tv_phone = findViewById(R.id.foodie_edit_profile_phone);
         imgProfile = findViewById(R.id.foodie_edit_profile_image);
-
+        progressBar = findViewById(R.id.profile_edit_img_progress);
         edt_full_name = findViewById(R.id.foodie_edit_profile_full_name_edit);
         edt_phone = findViewById(R.id.foodie_edit_profile_phone_edit);
         edt_email = findViewById(R.id.foodie_edit_profile_email_edit);
@@ -85,7 +95,7 @@ public class EditProfile extends AppBaseActivity {
     private void getUserData(){
 
         TinyDB tinyDB = new TinyDB(getApplicationContext());
-
+        progressBar.setVisibility(View.VISIBLE);
         String login_data = tinyDB.getString("login_data");
         Log.d("LoginData", login_data);
         ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
@@ -107,13 +117,20 @@ public class EditProfile extends AppBaseActivity {
 
         tv_phone.setText(str_phone);
         if(userDataBean.getUser_phone() == null){
-            tv_phone.setText("9999999999");
+            tv_phone.setText("XXXXXXXXX");
         } else{
             tv_phone.setText(str_phone);
         }
 
         tv_email.setText(str_email);
         edt_email.setText(str_email);
+        if (str_full_name!=null){
+            edt_full_name.setText(str_full_name);
+        }
+        if (str_phone!=null&&!str_phone.equalsIgnoreCase("null")){
+            edt_phone.setText(str_phone);
+        }
+        getUserProfile(str_id);
     }
 
     @Override
@@ -409,12 +426,107 @@ public class EditProfile extends AppBaseActivity {
                 @Override
                 public void onSuccess(String result) {
                     Log.d("TAG", "Rakhi: "+result);
+
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    String TAG = EditProfile.class.getName();
+
+    private void getUserProfile(String str_id){
+        String request = "{\"user_id\":" + str_id + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(request);
+            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.GETPROFILE_PIC, EditProfile.this, new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.d("TAG", "Rakhi: "+result);
+                    if (result!=null){
+                        try {
+                            JSONObject jsonObject1 = new JSONObject(result);
+                            if (jsonObject1.getBoolean("status")){
+                                JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
+                                String url = GetData.IMG_BASE_URL+imgObj.getString("user_image");
+                                Log.d(TAG, "Rakhi :"+url);
+                                GetImage task = new GetImage();
+                                // Execute the task
+                                task.execute(new String[] { url });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class GetImage extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap map = null;
+            for (String url : urls) {
+                map = downloadImage(url);
+            }
+            return map;
+        }
+
+        // Sets the Bitmap returned by doInBackground
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            progressBar.setVisibility(View.GONE);
+            imgProfile.setImageBitmap(result);
+            bitmapString = BaseClass.BitMapToString(result);
+        }
+
+        // Creates Bitmap from InputStream and returns it
+        private Bitmap downloadImage(String url) {
+            Bitmap bitmap = null;
+            InputStream stream = null;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inSampleSize = 1;
+
+            try {
+                stream = getHttpConnection(url);
+                bitmap = BitmapFactory.
+                        decodeStream(stream, null, bmOptions);
+                stream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
     }
 
 }

@@ -51,12 +51,6 @@
                             android:layout_marginTop="24dp"
                             android:padding="10dp">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:src="@drawable/ic_left_arrow_white" />
-
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -132,9 +126,9 @@
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_cart_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycler_cart_item">
+                android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -224,121 +218,268 @@
 
                 </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/cart_relativelayout_payment"
+            <LinearLayout
+                android:id="@+id/cart_linearlayout_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginBottom="20dp">
+                android:visibility="visible"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp"
+
+                >
 
                 <LinearLayout
                     android:id="@+id/cart_item_left1"
-                    android:layout_width="222dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_centerInParent="true"
-                    android:layout_toRightOf="@+id/cart_item_right1"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <RadioGroup
                         android:id="@+id/radioGroup"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        style="@style/MyRadioButtonStyle"
+                        android:backgroundTint="@color/theme_color"
                         android:orientation="horizontal">
 
                         <RadioButton
+                            style="@style/MyRadioButtonStyle"
                             android:id="@+id/radioButton1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Delivery"
-                            android:buttonTint="@color/colorLightGrey"
                             android:checked="true"
+                            android:padding="5dp"
                             android:textColor="@color/colorBlack"
                             android:textSize="12sp" />
-
                         <RadioButton
                             android:layout_marginLeft="10dp"
                             android:id="@+id/radioButton2"
+                            style="@style/MyRadioButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pickup"
-                            android:buttonTint="@color/colorLightGrey"
+                            android:padding="5dp"
                             android:textColor="@color/colorBlack"
                             android:textSize="12sp" />
 
                     </RadioGroup>
 
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:singleLine="true"
-                        android:text="Please select Your address for delivery"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="10sp" />
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Select an Address"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="10sp"
-                        android:layout_margin="5dp"
-                        />
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Payment"
+                            android:textSize="12sp"
+                            android:gravity="center"
+                            android:background="@drawable/button_bg4"
+                            android:textColor="@color/colorBlue"
+                            android:layout_margin="5dp"
+                            android:id="@+id/tv_payment"
+                            />
+
+
 
 
 
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="110dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/cart_item_right1"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:orientation="vertical"
-                    android:layout_centerInParent="true"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center"
+                    android:id="@+id/linearlayout_delivery_address"
+                    android:orientation="vertical">
 
-                    >
-                    <com.imcooking.customtext.CustomTextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Payment"
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        android:background="@drawable/button_bg4"
-                        android:textColor="@color/colorBlue"
-                        android:layout_margin="5dp"
-                        android:id="@+id/tv_payment"
-                        />
-                    <com.imcooking.customtext.CustomTextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:text="Please select Your address for delivery"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="10sp" />
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Add New"
+                            android:layout_gravity="right"
+                            android:gravity="center"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/button_bg4"
+                            android:id="@+id/cart_addnewaddress"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorBlue"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Add New"
-                        android:gravity="center"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/button_bg4"
-                        android:id="@+id/cart_addnewaddress"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorBlue"/>
-                    <Spinner
-                        android:id="@+id/spinner"
-                        android:layout_margin="5dp"
-                        android:layout_alignParentRight="false"
-                        android:background="@drawable/down"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp" />
+                        android:id="@+id/cart_item_right1"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"  >
 
+
+
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Select an Address"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="10sp"
+                            android:layout_weight="1"
+                            android:layout_margin="5dp"
+                            />
+                        <Spinner
+                            android:id="@+id/activity_cart_spinner"
+                            android:layout_margin="5dp"
+                            android:layout_alignParentRight="false"
+                            android:layout_gravity="right"
+                            android:background="@drawable/ic_down_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearlayout_pickup_address"
+                    android:visibility="gone"
+                    android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
 
-            </RelativeLayout>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_placeholder_withborder"
+                            />
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:singleLine="true"
+                            android:text="E-38,sector 63 noida"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"  >
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_clock_circular_outline"/>
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="From-"
+                            android:layout_margin="5dp"
+                            android:gravity="center_vertical"
+                            android:drawablePadding="5dp"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="10sp"
+
+                            />
+                        <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                            android:gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/shape_background_view_8">
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="02:20"
+        android:textSize="10sp"
+        android:textColor="@color/colorBlack"/>
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/view_7"
+        android:layout_width="1dp"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_clock_circular_outline"/>
+
+</LinearLayout>
+
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="To-"
+                            android:drawablePadding="5dp"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="10sp"
+                            android:layout_marginLeft="20dp"
+
+                            />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_margin="5dp"
+                            android:padding="5dp"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/shape_background_view_8"
+                            >
+                            <com.imcooking.customtext.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="02:20"
+                                android:textSize="10sp"
+                                android:textColor="@color/colorBlack"/>
+                            <LinearLayout
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:background="@color/view_7"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent">
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_clock_circular_outline"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
 

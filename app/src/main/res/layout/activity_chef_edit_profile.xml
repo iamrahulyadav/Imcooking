@@ -56,14 +56,18 @@
                 <RelativeLayout
                     android:layout_width="120dp"
                     android:layout_height="120dp">
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/actvity_chef_edit_progress"/>
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/other_dish_profile_image"
-                        android:layout_width="96dp"
+                        android:layout_width="match_parent"
                         android:layout_gravity="center"
-                        android:layout_height="96dp"
-                        android:src="@drawable/details_profile"
+                        android:layout_height="match_parent"
                         app:civ_border_width="3dp"
                         app:civ_border_color="@color/colorBlue"/>
 
@@ -86,11 +90,13 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp"
                     android:textStyle="bold"
+                    android:id="@+id/activity_chef_edit_txtName"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"/>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/activity_chef_edit_txtAddress"
                     android:text="164-E, Sector-15, Noida, UP"
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp"
@@ -100,6 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="7737284476"
+                    android:id="@+id/activity_chef_edit_txtPhone"
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp"
                     android:textStyle="bold"

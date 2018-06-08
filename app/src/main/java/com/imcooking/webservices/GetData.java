@@ -49,7 +49,7 @@ public class GetData {
 //...................................  API ...................................
 
     public static String PROFILE_IMAGE="profileimage";
-
+    public static String GETPROFILE_PIC ="get_user_profileimage";
 
 
     public GetData(final Context context, Activity activity) {

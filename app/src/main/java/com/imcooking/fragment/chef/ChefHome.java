@@ -4,7 +4,10 @@ package com.imcooking.fragment.chef;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -36,6 +40,7 @@ import com.imcooking.activity.Sub.Chef.ChangePassword;
 import com.imcooking.activity.Sub.Chef.ChefActivateDeactivate;
 import com.imcooking.activity.Sub.Chef.ChefEditProfile;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
+import com.imcooking.activity.Sub.Foodie.EditProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.adapters.AdapterChefHomeViewPager;
@@ -51,6 +56,12 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -125,13 +136,14 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ImageView iv_settings;
+    private ProgressBar progressBar;
 //    private AppBarLayout layout;
 
     private void init() {
         btn_call = getView().findViewById(R.id.chef_home_call_btn);
         layout = getView().findViewById(R.id.layout_chef_home);
 //        layout = getView().findViewById(R.id.app_bar);
-
+        progressBar = getView().findViewById(R.id.fragment_chef_home_progress);
         pager = getView().findViewById(R.id.cardet_viewpager);
         txtName = getView().findViewById(R.id.activity_chef_txtname);
         txtAddress = getView().findViewById(R.id.activity_chef_txtAdderss);
@@ -143,7 +155,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
-
+        progressBar.setVisibility(View.VISIBLE);
         if (user_type.equals("2")) {
             btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
@@ -202,10 +214,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 //                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
                                     txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                     tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
-                                    Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
-                                            .getChef_data().getChef_image())
-//                                .placeholder( R.drawable.progress_animation )
-                                            .into(imgChef);
+
                                     if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) == 1) {
                                         txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Follower");
                                     } else if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) > 1) {
@@ -320,6 +329,99 @@ for(int i=0;i<jsonArray.length();i++){
         });
     }
 
+
+    private void getUserProfile(String str_id){
+        String request = "{\"user_id\":" + str_id + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(request);
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.GETPROFILE_PIC, getActivity(), new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.d("TAG", "Rakhi: "+result);
+                    if (result!=null){
+                        try {
+                            JSONObject jsonObject1 = new JSONObject(result);
+                            if (jsonObject1.getBoolean("status")){
+                                JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
+                                String url = GetData.IMG_BASE_URL+imgObj.getString("user_image");
+                                Log.d(TAG, "Rakhi :"+url);
+                                GetImage task = new GetImage();
+                                // Execute the task
+                                task.execute(new String[] { url });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class GetImage extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap map = null;
+            for (String url : urls) {
+                map = downloadImage(url);
+            }
+            return map;
+        }
+
+        // Sets the Bitmap returned by doInBackground
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            progressBar.setVisibility(View.GONE);
+            imgChef.setImageBitmap(result);
+        }
+
+        // Creates Bitmap from InputStream and returns it
+        private Bitmap downloadImage(String url) {
+            Bitmap bitmap = null;
+            InputStream stream = null;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inSampleSize = 1;
+
+            try {
+                stream = getHttpConnection(url);
+                bitmap = BitmapFactory.
+                        decodeStream(stream, null, bmOptions);
+                stream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
+    }
+
     private void getCuisines(){
         try {
             String s = "";
@@ -373,6 +475,7 @@ for(int i=0;i<jsonArray.length();i++){
             getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 */
+        getUserProfile(foodie_id);
 
 
         if (getActivity().getClass().getName().equals(MainActivity.class.getName())) {

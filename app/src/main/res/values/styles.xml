@@ -9,7 +9,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-
+    <style name="MyRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/customradiobtn</item>
+    </style>
 
     <style name="Trans_Status_Bar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->

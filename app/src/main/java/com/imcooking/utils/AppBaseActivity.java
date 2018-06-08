@@ -23,14 +23,16 @@ import com.imcooking.R;
 
 public class AppBaseActivity extends AppCompatActivity {
 
-    public void checkGPSStatus()
+    public boolean checkGPSStatus()
     {
         LocationManager locationManager =(LocationManager) getSystemService(Context.LOCATION_SERVICE);
         boolean isGPSProviderEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
         if(!isGPSProviderEnable)
         {
             showSettingsAlert();
         }
+        return true;
     }
     private void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);

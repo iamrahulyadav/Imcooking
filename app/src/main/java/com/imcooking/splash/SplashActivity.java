@@ -53,8 +53,9 @@ public class SplashActivity extends AppBaseActivity {
         setContentView(R.layout.activity_splash);
 
         tinyDB = new TinyDB(getApplicationContext());
-        checkGPSStatus();
-        checkLocationPermission();
+        if (checkGPSStatus()){
+            checkLocationPermission();
+        }
 
 //        find id
         imgSplash = findViewById(R.id.splashbg);

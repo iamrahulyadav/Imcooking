@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,7 +28,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -51,6 +55,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 
@@ -71,22 +79,26 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     private SwitchCompat /*sw_notification,*/ sw_available;
     private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles, str_cuisine/*, str_notification*/,
                     str_available = "0";
+    private TextView txt_name, txt_address, txt_phone;
     private TinyDB tinyDB;
     private ImageView imgProfile;
     private ApiResponse.UserDataBean userDataBean;
-
+    private ProgressBar progressBar;
 
     private void init(){
 
         tinyDB = new TinyDB(getApplicationContext());
         userDataBean = new ApiResponse.UserDataBean();
         imgProfile = findViewById(R.id.other_dish_profile_image);
+        progressBar = findViewById(R.id.actvity_chef_edit_progress);
         edt_name = findViewById(R.id.chef_edit_profile_name);
         edt_address = findViewById(R.id.chef_edit_profile_address);
         edt_city = findViewById(R.id.chef_edit_profile_city);
         edt_email = findViewById(R.id.chef_edit_profile_email);
         edt_zipcoede = findViewById(R.id.chef_edit_profile_zipcode);
-
+        txt_name = findViewById(R.id.activity_chef_edit_txtName);
+        txt_address = findViewById(R.id.activity_chef_edit_txtAddress);
+        txt_phone = findViewById(R.id.activity_chef_edit_txtPhone);
         sp_miles = findViewById(R.id.chef_edit_profile_spinner_miles);
         sp_cuisine = findViewById(R.id.chef_edit_profile_spinner_select_cuisines);
 
@@ -120,6 +132,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         getMyCuisines();
     }
 
+
+
     private void getProfileData(){
 
         ChefProfileData1 chefProfileData1 = new ChefProfileData1();
@@ -133,6 +147,30 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 //        str_zipcode = chefProfileData1.getChef_data(). + "";
 
         edt_email.setText(str_email);
+        if (str_name!=null){
+            edt_name.setText(str_name);
+            txt_name.setText(str_name);
+        } else {
+            txt_name.setText("Your Name");
+        }
+        if (str_city!=null){
+            edt_city.setText(str_city);
+        }
+        if (str_address!=null){
+            edt_address.setText(str_address);
+            txt_address.setText(str_address);
+        } else {
+            txt_address.setText("Address");
+        }
+        if (str_zipcode!=null){
+            edt_zipcoede.setText(str_zipcode);
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+        getUserProfile(str_id);
+
+
+
     }
 
     @Override
@@ -520,15 +558,100 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             e.printStackTrace();
         }
 
-
-       /* new GetData(getApplicationContext(),ChefEditProfile.this).getResponse(request,
-                GetData.PROFILE_IMAGE, new GetData.MyCallback() {
-                    @Override
-                    public void onSuccess(String result) {
-                        Log.d("TAG", "Rakhi: "+result);
-                    }
-                });*/
     }
 
+
+
+    private void getUserProfile(String str_id){
+        String request = "{\"user_id\":" + str_id + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(request);
+            new GetData(getApplicationContext(), ChefEditProfile.this).sendMyData(jsonObject,
+                    GetData.GETPROFILE_PIC, ChefEditProfile.this, new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.d("TAG", "Rakhi: "+result);
+                    if (result!=null){
+                        try {
+                            JSONObject jsonObject1 = new JSONObject(result);
+                            if (jsonObject1.getBoolean("status")){
+                                JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
+                                String url = GetData.IMG_BASE_URL+imgObj.getString("user_image");
+                                GetImage task = new GetImage();
+                                // Execute the task
+                                task.execute(new String[] { url });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class GetImage extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap map = null;
+            for (String url : urls) {
+                map = downloadImage(url);
+            }
+            return map;
+        }
+
+        // Sets the Bitmap returned by doInBackground
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            progressBar.setVisibility(View.GONE);
+            imgProfile.setImageBitmap(result);
+        }
+
+        // Creates Bitmap from InputStream and returns it
+        private Bitmap downloadImage(String url) {
+            Bitmap bitmap = null;
+            InputStream stream = null;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inSampleSize = 1;
+
+            try {
+                stream = getHttpConnection(url);
+                bitmap = BitmapFactory.
+                        decodeStream(stream, null, bmOptions);
+                stream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
+    }
 
 }

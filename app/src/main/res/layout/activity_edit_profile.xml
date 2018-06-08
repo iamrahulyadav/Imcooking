@@ -52,12 +52,19 @@
                         <RelativeLayout
                             android:layout_width="120dp"
                             android:layout_height="120dp">
+                            <ProgressBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                android:layout_centerInParent="true"
+                                android:id="@+id/profile_edit_img_progress"/>
 
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/foodie_edit_profile_image"
                                 android:layout_width="120dp"
                                 android:layout_height="120dp"
-                                android:src="@drawable/details_profile" />
+                                app:civ_border_color="@color/colorBlue"
+                                app:civ_border_width="2dp" />
 
                             <ImageView
                                 android:layout_width="30dp"
