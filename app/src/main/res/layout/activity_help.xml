@@ -9,7 +9,7 @@
     tools:context="com.imcooking.activity.Sub.Foodie.ManageAddress">
 
 
-    <TextView
+    <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Help"

@@ -227,8 +227,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                             .getChef_data().getChef_image())
 //                               .placeholder( R.drawable.progress_animation )
                                             .into(imgChef);
-                                    if(chefProfileData1.getChef_data().getChef_foodie_follow()==0){
-
+                                    if(chefProfileData1.getChef_data().getChef_foodie_follow()==0)
                                         btn_follow.setText("Follow");
                                     }
                                     else  if(chefProfileData1.getChef_data().getChef_foodie_follow()==1){
@@ -250,10 +249,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                 } else {
                                     BaseClass.showToast(getContext(), "Something Went Wrong.");
                                 }
-                            } else {
-                                BaseClass.showToast(getContext(), "Something Went Wrong");
                             }
-                        }
+
                     });
                 }
 /*
@@ -598,6 +595,9 @@ for(int i=0;i<jsonArray.length();i++){
             getActivity().finish();
         } else if (id == R.id.chef_home_follow_button){
             getFollowUnfollow();
+        }
+        else if (id == R.id.chef_home_heart_icon){
+            BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
         }
     }
 

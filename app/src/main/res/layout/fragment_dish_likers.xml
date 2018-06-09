@@ -5,28 +5,31 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context=".fragment.chef.ChefFollowersFragment">
+    >
+
     <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Followers"
+        android:text="Dish Likers List"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
         android:gravity="center_vertical"
         android:padding="10dp"
         android:layout_marginLeft="40dp" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/view_4"/>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:id="@+id/fragment_chef_followers_recycler"
+            android:id="@+id/fragment_dish_likers_recycler"
             android:layout_height="wrap_content" />
 
     </android.support.v4.widget.NestedScrollView>
+
+
 </LinearLayout>
