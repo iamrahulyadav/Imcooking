@@ -40,7 +40,7 @@ public class ChefFollowers {
          */
 
         private String foodie_name;
-        private int foodie_phone;
+        private String foodie_phone;
         private String foodie_email;
         private String foodie_address;
         private String foodie_image;
@@ -54,11 +54,11 @@ public class ChefFollowers {
             this.foodie_name = foodie_name;
         }
 
-        public int getFoodie_phone() {
+        public String getFoodie_phone() {
             return foodie_phone;
         }
 
-        public void setFoodie_phone(int foodie_phone) {
+        public void setFoodie_phone(String foodie_phone) {
             this.foodie_phone = foodie_phone;
         }
 

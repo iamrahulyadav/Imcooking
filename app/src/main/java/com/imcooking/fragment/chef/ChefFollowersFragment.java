@@ -84,7 +84,7 @@ public class ChefFollowersFragment extends Fragment {
         String user_id=apiResponse.getUser_id()+"";
 
          String s = "{\"chef_id\":" + user_id + "}";
-//        String s = "{\"Chef_id\": 5}";
+//       String s = "{\"Chef_id\": 5}";
         Log.d("MyRequest", s);
         try {
             JSONObject job = new JSONObject(s);
@@ -94,14 +94,10 @@ public class ChefFollowersFragment extends Fragment {
                         public void onSuccess(String result) {
 
                             ChefFollowers chefFollowers = new ChefFollowers();
-
                             chefFollowers = new Gson().fromJson(result, ChefFollowers.class);
-
                             if(chefFollowers.isStatus()){
                                 if(!chefFollowers.getFoodie_details_list().isEmpty()){
-
                                     setMyAdapter(chefFollowers.getFoodie_details_list());
-
                                 }
                                 else {
                                     Toast.makeText(getContext(), "Followers list is empty", Toast.LENGTH_SHORT).show();
