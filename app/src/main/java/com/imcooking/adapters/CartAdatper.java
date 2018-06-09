@@ -82,7 +82,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         final int[] count = {1};
         final String[] dishCount = new String[1];
       final  String[] totalDishPrice = new String[1];
-        final int[] price = {(dishDetails.get(position).getDish_price())};
+        final int[] price = {(int) dishDetails.get(position).getDish_price()};
       pricelist.add((count[0]* price[0]));
    //  getprice(pricelist);
         CartActivity.txtTotalprice.setText(String.valueOf(getprice(pricelist)));
@@ -124,7 +124,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         holder.txt_DishPrice.setText("$"+String.valueOf(dishDetails.get(position).getDish_price()));
         //holder.txtTotal.setText(String.valueOf(getprice()));
     }
-
     @Override
     public int getItemCount() {
         return dishDetails.size();
@@ -134,7 +133,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
        int sum = 0;
         for(int i=0;i<pricelist.size();i++){
             sum += pricelist.get(i);
-
         }
         return sum;
     }

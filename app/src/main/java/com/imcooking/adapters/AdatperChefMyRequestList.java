@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.imcooking.Model.api.response.ChefMyRequestList;
 import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
 import com.imcooking.webservices.GetData;
@@ -24,10 +25,10 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
 
 //    OnItemClickListenerCategory listener;
     private Context context;
-    List<ChefMyorderList.MyOrderListBean>list=new ArrayList<>();
+    List<ChefMyRequestList.ChefDishDetailsBean>list=new ArrayList<>();
 
 
-    public AdatperChefMyRequestList(Context context, List<ChefMyorderList.MyOrderListBean> list) {
+    public AdatperChefMyRequestList(Context context, List<ChefMyRequestList.ChefDishDetailsBean> list) {
         this.context = context;
         this.list=list;
 
@@ -37,9 +38,8 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public TextView tv_view_response, txtTime, txtAddress,txtTotalAmnt,txtEmail,
-                txtCategory,txtprice, txtfoodiename,txtdishname,txtqty;
-
-public ImageView img;
+                txtCategory,txtmob, txtfoodiename,txtdishname,txtqty;
+                public ImageView img;
         public MyViewHolder(View view) {
             super(view);
             txtEmail=view.findViewById(R.id.item_chef_my_request_email);
@@ -51,6 +51,7 @@ public ImageView img;
             txtfoodiename =view.findViewById(R.id.item_chef_my_request_name);
             txtdishname=view.findViewById(R.id.item_chef_my_request_dishName);
             img=view.findViewById(R.id.item_chef_my_request_profile_img);
+            txtmob=view.findViewById(R.id.item_chef_my_request_phone);
 
     }
     }
@@ -67,19 +68,19 @@ public ImageView img;
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtTime.setText(list.get(position).getBookdate());
-        holder.txtAddress.setText(list.get(position).getOrder_id()+"");
-        holder.txtdishname.setText(list.get(position).getFoodie_name());
+        holder.txtTime.setText(list.get(position).getRequest_date());
+        holder.txtAddress.setText(list.get(position).getFoodie_address()+"");
+      holder.txtdishname.setText(list.get(position).getDish_name());
         holder.txtfoodiename.setText(list.get(position).getFoodie_name());
-        holder.txtprice.setText(list.get(position).getPrice()+"");
-       /* holder.txtTotalAmnt.setText(list.get(position).);
-        holder.txtPaymentMode.setText(list.get(position).);
-        holder.txtqty.setText(list.get(position).);
-        holder.txtEmail.setText(list.get(position).);
-       */ Picasso.with(context).load(GetData.IMG_BASE_URL +
-                list.get(position).getFoodie_image()).into(holder.img);
-
-    /*    holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
+       // holder.txtprice.setText(list.get(position).+"");
+      //  holder.txtTotalAmnt.setText(list.get(position).);
+        holder.txtCategory.setText(list.get(position).getRequest_cusine_name());
+      //  holder.txtqty.setText(list.get(position).getRequest_quantity()+"");
+        holder.txtEmail.setText(list.get(position).getFoodie_email());
+        holder.txtmob.setText(list.get(position).getFoodie_phone()+"");
+    /*    Picasso.with(context).load(GetData.IMG_BASE_URL +
+                list.get(position).ge()).into(holder.img);
+    *//*    holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

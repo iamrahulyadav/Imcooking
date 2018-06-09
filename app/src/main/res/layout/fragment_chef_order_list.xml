@@ -7,11 +7,29 @@
     android:padding="10dp"
     android:background="@color/home_background"
     >
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="10dp"
+    <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_chef_order_list_recycler">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="60dp"
+        android:text="My Order List"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:layout_marginLeft="40dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/view_4"/>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment_chef_order_list_recycler">
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

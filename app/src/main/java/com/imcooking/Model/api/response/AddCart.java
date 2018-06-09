@@ -92,13 +92,13 @@ public class AddCart {
         private String dish_image;
 
         private String dish_name;
-        private int dish_price;
+        private double dish_price;
 
-        public int getDish_price() {
+        public double getDish_price() {
             return dish_price;
         }
 
-        public void setDish_price(int dish_price) {
+        public void setDish_price(double dish_price) {
             this.dish_price = dish_price;
         }
 
