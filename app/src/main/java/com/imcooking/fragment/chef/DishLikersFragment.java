@@ -14,10 +14,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefFollowers;
-import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
 import com.imcooking.adapters.AdatperChefFollowers;
-import com.imcooking.adapters.AdatperChefMyOrderList;
+import com.imcooking.adapters.AdatperDishLikers;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -31,13 +30,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChefFollowersFragment extends Fragment {
+public class DishLikersFragment extends Fragment {
 
     TinyDB tinyDB;
     List<ChefFollowers.FoodieDetailsListBean> list=new ArrayList<>();
     private RecyclerView recyclerView;
 
-    public ChefFollowersFragment() {
+    public DishLikersFragment() {
         // Required empty public constructor
     }
 
@@ -45,7 +44,7 @@ public class ChefFollowersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chef_folowers, container, false);
+        return inflater.inflate(R.layout.fragment_dish_likers, container, false);
     }
 
 
@@ -62,7 +61,7 @@ public class ChefFollowersFragment extends Fragment {
 
         tinyDB=new TinyDB(getContext());
 
-        recyclerView = getView().findViewById(R.id.fragment_chef_followers_recycler);
+        recyclerView = getView().findViewById(R.id.fragment_dish_likers_recycler);
         CustomLayoutManager manager1 = new CustomLayoutManager(getContext()){
             @Override
             public boolean canScrollVertically() {
@@ -83,8 +82,9 @@ public class ChefFollowersFragment extends Fragment {
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         String user_id=apiResponse.getUser_id()+"";
 
-         String s = "{\"chef_id\":" + user_id + "}";
-//       String s = "{\"Chef_id\": 5}";
+        // String s = "{\"chef_id\":" + user_id + "}";
+//        String s = "{\"Chef_id\": 5}";
+        String s = "{\"chef_id\": 5}";
         Log.d("MyRequest", s);
         try {
             JSONObject job = new JSONObject(s);
@@ -94,30 +94,36 @@ public class ChefFollowersFragment extends Fragment {
                         public void onSuccess(String result) {
 
                             ChefFollowers chefFollowers = new ChefFollowers();
+
                             chefFollowers = new Gson().fromJson(result, ChefFollowers.class);
+
                             if(chefFollowers.isStatus()){
                                 if(!chefFollowers.getFoodie_details_list().isEmpty()){
+
                                     setMyAdapter(chefFollowers.getFoodie_details_list());
+
                                 }
                                 else {
-                                    Toast.makeText(getContext(), "Followers list is empty", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Likers list is empty", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else {
                                 Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
                             }
+
                         }
                     });
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
     private void setMyAdapter(List<ChefFollowers.FoodieDetailsListBean> list){
-        AdatperChefFollowers adatperChefFollowers = new AdatperChefFollowers(getContext(),
+        AdatperDishLikers adatperDishLikers = new AdatperDishLikers(getContext(),
                 getFragmentManager(), list);
-        recyclerView.setAdapter(adatperChefFollowers);
+        recyclerView.setAdapter(adatperDishLikers);
     }
 
 }

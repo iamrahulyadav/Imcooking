@@ -47,6 +47,7 @@ import com.imcooking.activity.Sub.Foodie.Help;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.ChefMyOrderListFragment;
+import com.imcooking.fragment.chef.chefprofile.ChefMyRequestFragment;
 import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeFragment;
 
@@ -376,7 +377,7 @@ public class MainActivity extends AppBaseActivity
                     BaseClass.callFragment(new FoodieMyRequestFragment(), new FoodieMyRequestFragment().getClass().getName(), getSupportFragmentManager());
                 }
                 else if(user_type.equals("1")){
-                    BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(),
+                    BaseClass.callFragment(new ChefMyRequestFragment(), new ChefMyRequestFragment().getClass().getName(),
                             getSupportFragmentManager());
                 }
                 break;

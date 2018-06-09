@@ -14,7 +14,7 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/item_chef_followers_foodie_image"
+        android:id="@+id/item_dish_likers_foodie_image"
         android:src="@drawable/details_profile"
         android:layout_marginRight="5dp"
         android:layout_alignParentLeft="true" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_toRightOf="@+id/item_chef_followers_foodie_image">
+        android:layout_toRightOf="@+id/item_dish_likers_foodie_image">
 
         >
 
@@ -33,7 +33,7 @@
 
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="wrap_content"
-                android:id="@+id/item_chef_followers__name"
+                android:id="@+id/item_dish_likers_name"
                 android:layout_height="wrap_content"
                 android:text="Vaibhav Khandelwal"
                 android:textColor="@color/text_color_4"
@@ -41,7 +41,7 @@
                 android:layout_marginBottom="5dp"/>
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
-                android:id="@+id/item_chef_followers_address"
+                android:id="@+id/item_dish_likers_address"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="E-164, Sector-15, Noida, India"
@@ -53,7 +53,7 @@
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/followers_mob_number"
+                android:id="@+id/item_dish_likers_mob_number"
                 android:text="+91-7737284476"
                 android:gravity="center_vertical"
                 android:textColor="@color/text_color_4"
@@ -64,7 +64,7 @@
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/item_chef_followers_email"
+                android:id="@+id/item_dish_likers_email"
                 android:gravity="center_vertical"
                 android:text="android.vaibhav@hotmail.com"
                 android:textColor="@color/text_color_4"
