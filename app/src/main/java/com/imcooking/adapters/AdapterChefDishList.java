@@ -34,12 +34,21 @@ public class AdapterChefDishList extends PagerAdapter{
     private Activity activity;
 
     private List<ChefProfileData1.ChefDishBean> chef_dish_list = new ArrayList<>();
+    private ArrayList<String> arr_like = new ArrayList<>();
 
-    public AdapterChefDishList(FragmentManager manager, Context context, Activity activity, List<ChefProfileData1.ChefDishBean> chef_dish_list) {
+    private Click_interface_chef_dish_list click;
+    private String click_type;
+
+    public AdapterChefDishList(FragmentManager manager, Context context, Activity activity,
+                               List<ChefProfileData1.ChefDishBean> chef_dish_list,
+                               ArrayList<String> arr_like, Click_interface_chef_dish_list click, String click_type) {
         this.manager = manager;
         this.context = context;
         this.activity = activity;
         this.chef_dish_list = chef_dish_list;
+        this.arr_like = arr_like;
+        this.click = click;
+        this.click_type = click_type;
         mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -68,10 +77,36 @@ public class AdapterChefDishList extends PagerAdapter{
         ImageView iv_dish_image = view.findViewById(R.id.item_chef_dish_image);
         ImageView iv_home_delivery_image = view.findViewById(R.id.item_chef_home_delivery_icon);
         ImageView iv_pickup_image = view.findViewById(R.id.item_chef_pickyup_icon);
+        ImageView iv_heart = view.findViewById(R.id.home_heart);
 
-        String url = GetData.IMG_BASE_URL + chef_dish_list.get(position).getDish_image().get(0);
-        Log.d("ChefCurrentDishes", url);
-        Picasso.with(context).load(url).into(iv_dish_image);
+
+/*
+        if(chef_dish_list.get(position).getDish_foodie_like().equals("1")){
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_red));
+        } else
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart));
+*/
+
+        if(arr_like.get(position).equals("1")){
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_red));
+        } else
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart));
+
+
+        iv_heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.click_me_chef_dish_list(position, click_type);
+            }
+        });
+
+        String url = "";
+        if(chef_dish_list.get(position).getDish_image().size() != 0) {
+            url = GetData.IMG_BASE_URL + chef_dish_list.get(position).getDish_image().get(0);
+            Picasso.with(context).load(url).into(iv_dish_image);
+        }
+//        Log.d("ChefCurrentDishes", url);
+
 
         final ArrayList<String> arrayList = new ArrayList<>();
         for (int i=0; i<chef_dish_list.get(position).getDish_image().size(); i++){
@@ -82,7 +117,7 @@ public class AdapterChefDishList extends PagerAdapter{
 //        if(chef_dish_list.get(position).getDish_quantity().equals("null"))
         dish_count.setText("0");
         dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
-        dish_likes.setText("10");
+        dish_likes.setText(chef_dish_list.get(position).getLike_no());
 
         if (chef_dish_list.get(position).getDish_homedelivery().equals("Yes")) {
             if (chef_dish_list.get(position).getDish_pickup().equals("Yes")) {
@@ -179,4 +214,13 @@ public class AdapterChefDishList extends PagerAdapter{
         container.removeView((LinearLayout) object);
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    public interface Click_interface_chef_dish_list{
+
+        public void click_me_chef_dish_list(int position, String click_type);
+    }
 }

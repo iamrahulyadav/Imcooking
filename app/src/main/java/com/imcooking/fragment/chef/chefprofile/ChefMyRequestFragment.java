@@ -29,8 +29,10 @@ import java.util.List;
 
 
 public class ChefMyRequestFragment extends Fragment {
-TinyDB tinyDB;
+
+    TinyDB tinyDB;
     private RecyclerView requestRecyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,7 +57,9 @@ tinyDB=new TinyDB(getContext());
             }
 
         };
-getorderList();
+
+        requestRecyclerView.setLayoutManager(manager);
+        getorderList();
 
     }
 

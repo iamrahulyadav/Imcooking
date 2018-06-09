@@ -81,7 +81,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chef_home, container, false);
+        return inflater.inflate(R.layout.fragment_chef_home_1, container, false);
     }
 
     String TAG = ChefProfile.class.getName();
@@ -124,6 +124,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         init();
         getchefProfile();
         getCuisines();
+//        getUserProfile(foodie_id);
 
 //        setMyData();
     }
@@ -350,7 +351,6 @@ for(int i=0;i<jsonArray.length();i++){
         });
     }
 
-
     private void getUserProfile(String str_id){
         String request = "{\"user_id\":" + str_id + "\"}";
         try {
@@ -465,6 +465,7 @@ for(int i=0;i<jsonArray.length();i++){
             e.printStackTrace();
         }
     }
+
     private void getFollowUnfollow(){
         try {
             String s = "{\n" +
@@ -505,7 +506,6 @@ for(int i=0;i<jsonArray.length();i++){
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -536,7 +536,6 @@ for(int i=0;i<jsonArray.length();i++){
             getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 */
-        getUserProfile(foodie_id);
 
 
         if (getActivity().getClass().getName().equals(MainActivity.class.getName())) {
@@ -577,13 +576,9 @@ for(int i=0;i<jsonArray.length();i++){
 
         int id = view.getId();
         if (id == R.id.chef_home_settings) {
-
             PopupWindow popupwindow_obj = showMyPopup();
             popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
-
-
         } else if (id == R.id.chef_home_popup_edit_profile) {
-
             startActivity(new Intent(getContext(), ChefEditProfile.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (id == R.id.chef_home_popup_change_password) {
@@ -599,7 +594,7 @@ for(int i=0;i<jsonArray.length();i++){
             getActivity().finish();
         } else if (id == R.id.chef_home_follow_button){
             getFollowUnfollow();
-        }
+        } else {}
     }
 
     private TextView tv_deactivate;
@@ -638,5 +633,4 @@ for(int i=0;i<jsonArray.length();i++){
     public boolean onMenuItemClick(MenuItem item) {
         return false;
     }
-
 }

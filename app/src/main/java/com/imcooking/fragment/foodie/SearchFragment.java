@@ -197,4 +197,6 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
         }
 
 
-    }}
+    }
+
+}

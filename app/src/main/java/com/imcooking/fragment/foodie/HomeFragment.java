@@ -372,7 +372,13 @@ public class HomeFragment extends Fragment implements
                                         for(int i=0; i<homeData.getFavourite_data().size(); i++){
                                             arr_like_status_2.add(homeData.getFavourite_data().get(i).getDishlike());
                                         }
+                                        layout2.setVisibility(View.GONE);
+                                        bottomViewPager.setVisibility(View.VISIBLE);
+                                    } else{
+                                        layout2.setVisibility(View.VISIBLE);
+                                        bottomViewPager.setVisibility(View.GONE);
                                     }
+
 
 //                                    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
 //

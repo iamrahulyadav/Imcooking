@@ -67,6 +67,7 @@ public ImageView img;
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
         holder.txtTime.setText(list.get(position).getBookdate());
         holder.txtAddress.setText(list.get(position).getOrder_id()+"");
         holder.txtdishname.setText(list.get(position).getFoodie_name());

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -18,6 +19,7 @@ import com.imcooking.adapters.FavrouiteAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +40,11 @@ public class FavoriteCusine extends AppBaseActivity {
     public static ModelFoodieFavCuisines data;
     //
 
+    private TinyDB tinyDB;
+    private ApiResponse.UserDataBean userDataBean;
+    private String user_id, user_type;
+    private RelativeLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +59,29 @@ public class FavoriteCusine extends AppBaseActivity {
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
 
+        layout = findViewById(R.id.fav_cuisine_layout);
+
+
+        tinyDB = new TinyDB(getApplicationContext());
+        String s = tinyDB.getString("login_data");
+        userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
+        user_id = userDataBean.getUser_id()+"";
+        user_type = userDataBean.getUser_type();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        getFav();
-
+        if(user_type.equals("2")) {
+            layout.setVisibility(View.VISIBLE);
+            getFav_foodie();
+        } else {
+            layout.setVisibility(View.GONE);
+            getFav_chef();
+        }
     }
 
-    private void getFav(){
+    private void getFav_foodie(){
 
         Log.d("Foodie_id", foodie_id);
         String s = "{\"foodie_id\":" + foodie_id + "}";
@@ -90,6 +109,30 @@ public class FavoriteCusine extends AppBaseActivity {
         }
     }
 
+    private void getFav_chef(){
+
+        String s = "{\"chef_id\":" + user_id + "}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+
+            new GetData(getApplicationContext(), FavoriteCusine.this).sendMyData(jsonObject,
+                    "chef_my_cuisine_list", FavoriteCusine.this, new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            data = new ModelFoodieFavCuisines();
+                            data = new Gson().fromJson(result, ModelFoodieFavCuisines.class);
+
+                            if(data.isStatus()){
+                                setMyAdapter(data.getCuisine_data());
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setMyAdapter(List<ModelFoodieFavCuisines.CuisineDataBean> cuisineData){
 
         arrayList.clear();
@@ -100,9 +143,6 @@ public class FavoriteCusine extends AppBaseActivity {
         adapter = new AdapterFoodieFavCuisines(getApplicationContext(), cuisineData, arrayList);
         recyclerView.setAdapter(adapter);
     }
-
-
-
 
     public void add_your_favorite_cuisine(View view){
 

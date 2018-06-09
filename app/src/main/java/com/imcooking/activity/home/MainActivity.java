@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.FavoriteCusine;
 import com.imcooking.activity.Sub.Foodie.Help;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.ChefHome;
@@ -379,6 +380,16 @@ public class MainActivity extends AppBaseActivity
                             getSupportFragmentManager());
                 }
                 break;
+            case R.id.navigation_cuisine:
+                if(user_type.equals("2")) {
+                    startActivity(new Intent(MainActivity.this, FavoriteCusine.class));
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                } else {
+                    startActivity(new Intent(MainActivity.this, FavoriteCusine.class));
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
+
+                break;
             case R.id.navigation_myorder:
                 if(user_type.equals("2")) {
                     BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(),
@@ -387,7 +398,7 @@ public class MainActivity extends AppBaseActivity
                 else if(user_type.equals("1")){
                     BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(),
                             getSupportFragmentManager());
-                }
+                } else {}
                 break;
 
             case R.id.navigation_help:
