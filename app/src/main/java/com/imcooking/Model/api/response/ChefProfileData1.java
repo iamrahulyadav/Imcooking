@@ -8,9 +8,8 @@ public class ChefProfileData1 {
 
     /**
      * status : true
-     * chef_data : {"chef_id":103,"chef_full_name":"vk","chef_user_name":"vaibhav","chef_phone":null,
-     * "chef_email":"kh.bittu@gmail.com","chef_image":null,"chef_business":null,"rating":0,"follow":0,"address":"E-164, Sector-15, Noida, UP","cuisine_name":[{"cuisine_id":29,"cuisine_name":"American Food","cuisine_image":"1521269956american.jpg","cuisine_status":"1"}],"bestcuisine_id":"","bestcuisine_name":"","about":null,"chef_like_foodie":0,"chef_foodie_follow":0}
-     * chef_dish : [{"dish_id":57,"dish_name":"t","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":3,"dish_video":"91.mp4","dish_description":"vv","dish_special_note":"j","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":[],"dish_foodie_like":0},{"dish_id":58,"dish_name":"t","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":3,"dish_video":"87.mp4","dish_description":"vv","dish_special_note":"j","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":[],"dish_foodie_like":0},{"dish_id":66,"dish_name":"t","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":3,"dish_video":"54.mp4","dish_description":"vv","dish_special_note":"j","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":[],"dish_foodie_like":0},{"dish_id":96,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":0,"dish_video":"v54.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9622.png"],"dish_foodie_like":0},{"dish_id":97,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":0,"dish_video":"v27.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9788.png"],"dish_foodie_like":0},{"dish_id":98,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":0,"dish_video":"v51.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9850.png"],"dish_foodie_like":0},{"dish_id":99,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":0,"dish_video":"v19.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9931.png"],"dish_foodie_like":0},{"dish_id":100,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":0,"dish_video":"v23.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10087.png"],"dish_foodie_like":0},{"dish_id":101,"dish_name":"Cobba salad","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":80,"dish_video":"v18.mp4","dish_description":"f","dish_special_note":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10187.png"],"dish_foodie_like":0},{"dish_id":102,"dish_name":"Cobba salad","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":80,"dish_video":"v91.mp4","dish_description":"h","dish_special_note":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10234.png"],"dish_foodie_like":0},{"dish_id":105,"dish_name":"dd","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":9,"dish_video":"v11.mp4","dish_description":"xxxx","dish_special_note":"xx","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10569.png"],"dish_foodie_like":0},{"dish_id":107,"dish_name":"yh","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":7,"dish_video":"v39.mp4","dish_description":"bbb","dish_special_note":"bbb","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"yes","dish_pickup":"yes","dish_deliverymiles":10,"dish_image":["10710.png"],"dish_foodie_like":0},{"dish_id":108,"dish_name":"hhhnn","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":5,"dish_video":"v41.mp4","dish_description":"vvv","dish_special_note":"vgb","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"yes","dish_pickup":"yes","dish_deliverymiles":10,"dish_image":["10824.png"],"dish_foodie_like":0},{"dish_id":123,"dish_name":"MyDish","dish_cuisine_id":35,"dish_cuisine":"Italian","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":12,"dish_video":"v86.mp4","dish_description":"This Is My Dish","dish_special_note":"This One Is  My Favorite","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":20,"dish_image":["12318.png"],"dish_foodie_like":0},{"dish_id":124,"dish_name":"MyDish","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":12,"dish_video":"25.mp4","dish_description":"This Is My Dish","dish_special_note":"This One Is  My Favorite","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12462.png"],"dish_foodie_like":0},{"dish_id":125,"dish_name":"arun","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":10,"dish_video":"v62.mp4","dish_description":"abc","dish_special_note":"abc","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12597.png"],"dish_foodie_like":0},{"dish_id":126,"dish_name":"vk","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":8,"dish_video":"v18.mp4","dish_description":"j","dish_special_note":"n","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12631.png"],"dish_foodie_like":0},{"dish_id":127,"dish_name":"hh","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":8,"dish_video":"v64.mp4","dish_description":"nn","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12712.png"],"dish_foodie_like":0},{"dish_id":128,"dish_name":"qqqq","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":9,"dish_video":"v24.mp4","dish_description":"bbbb","dish_special_note":"bb","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12833.png","12833.png","12842.png","12833.png","12842.png","12830.png"],"dish_foodie_like":0}]
+     * chef_data : {"chef_id":103,"chef_full_name":"vkumar","chef_user_name":"vaibhav","chef_phone":991001727,"chef_email":"kh.bittu@gmail.com","chef_image":"83.png","chef_business":null,"rating":0,"follow":1,"address":"E-164, Sector-15, Noida, UP","cuisine_name":[{"cuisine_id":29,"cuisine_name":"American Food","cuisine_image":"1521269956american.jpg","cuisine_status":"1"}],"bestcuisine_id":18,"bestcuisine_name":"Indian Food","about":null,"chef_like_foodie":0,"chef_foodie_follow":0}
+     * chef_dish : [{"dish_id":57,"dish_name":"t","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"3.00","dish_video":"91.mp4","dish_description":"vv","dish_special_note":"j","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":[],"dish_foodie_like":0,"like_no":1},{"dish_id":58,"dish_name":"t","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"3.00","dish_video":"87.mp4","dish_description":"vv","dish_special_note":"j","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":[],"dish_foodie_like":0,"like_no":0},{"dish_id":66,"dish_name":"t","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"3.00","dish_video":"54.mp4","dish_description":"vv","dish_special_note":"j","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":[],"dish_foodie_like":0,"like_no":0},{"dish_id":96,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"0.00","dish_video":"v54.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9622.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":97,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"0.00","dish_video":"v27.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9788.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":98,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"0.00","dish_video":"v51.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9850.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":99,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"0.00","dish_video":"v19.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["9931.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":100,"dish_name":"j","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"0.00","dish_video":"v23.mp4","dish_description":"bb","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10087.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":101,"dish_name":"Cobba salad","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"80.00","dish_video":"v18.mp4","dish_description":"f","dish_special_note":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"no","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10187.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":102,"dish_name":"Cobba salad","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":"","dish_subcuisine":"","dish_price":"80.00","dish_video":"v91.mp4","dish_description":"h","dish_special_note":"Everyone loves a Cobb salad and this is a great recipe. It makes plain old, shredded iceberg lettuce shine","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10234.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":105,"dish_name":"dd","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"9.00","dish_video":"v11.mp4","dish_description":"xxxx","dish_special_note":"xx","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"no","dish_pickup":"no","dish_deliverymiles":10,"dish_image":["10569.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":107,"dish_name":"yh","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"7.00","dish_video":"v39.mp4","dish_description":"bbb","dish_special_note":"bbb","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"yes","dish_pickup":"yes","dish_deliverymiles":10,"dish_image":["10710.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":108,"dish_name":"hhhnn","dish_cuisine_id":"","dish_cuisine":"","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"5.00","dish_video":"v41.mp4","dish_description":"vvv","dish_special_note":"vgb","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"yes","dish_homedelivery":"yes","dish_pickup":"yes","dish_deliverymiles":10,"dish_image":["10824.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":123,"dish_name":"MyDish","dish_cuisine_id":35,"dish_cuisine":"Italian","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"12.00","dish_video":"v86.mp4","dish_description":"This Is My Dish","dish_special_note":"This One Is  My Favorite","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":20,"dish_image":["12318.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":124,"dish_name":"MyDish","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"12.00","dish_video":"25.mp4","dish_description":"This Is My Dish","dish_special_note":"This One Is  My Favorite","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12462.png"],"dish_foodie_like":1,"like_no":1},{"dish_id":125,"dish_name":"arun","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"10.00","dish_video":"v62.mp4","dish_description":"abc","dish_special_note":"abc","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12597.png"],"dish_foodie_like":1,"like_no":1},{"dish_id":126,"dish_name":"vkk","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"8.00","dish_video":"v18.mp4","dish_description":"j","dish_special_note":"n","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12631.png"],"dish_foodie_like":0,"like_no":0},{"dish_id":127,"dish_name":"hh","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"8.00","dish_video":"v64.mp4","dish_description":"nn","dish_special_note":"nn","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12712.png"],"dish_foodie_like":1,"like_no":1},{"dish_id":128,"dish_name":"qqqq","dish_cuisine_id":18,"dish_cuisine":"Indian Food","dish_subcuisine_id":15,"dish_subcuisine":"Kimchi","dish_price":"9.00","dish_video":"v24.mp4","dish_description":"bbbb","dish_special_note":"bb","dish_from":"12:10 AM","dish_to":"4:10 AM","dish_quantity":null,"dish_available":"Yes","dish_homedelivery":"Yes","dish_pickup":"Yes","dish_deliverymiles":10,"dish_image":["12833.png","12833.png","12842.png","12833.png","12842.png","12830.png"],"dish_foodie_like":0,"like_no":0}]
      */
 
     private boolean status;
@@ -44,18 +43,18 @@ public class ChefProfileData1 {
     public static class ChefDataBean {
         /**
          * chef_id : 103
-         * chef_full_name : vk
+         * chef_full_name : vkumar
          * chef_user_name : vaibhav
-         * chef_phone : null
+         * chef_phone : 991001727
          * chef_email : kh.bittu@gmail.com
-         * chef_image : null
+         * chef_image : 83.png
          * chef_business : null
          * rating : 0
-         * follow : 0
+         * follow : 1
          * address : E-164, Sector-15, Noida, UP
          * cuisine_name : [{"cuisine_id":29,"cuisine_name":"American Food","cuisine_image":"1521269956american.jpg","cuisine_status":"1"}]
-         * bestcuisine_id :
-         * bestcuisine_name :
+         * bestcuisine_id : 18
+         * bestcuisine_name : Indian Food
          * about : null
          * chef_like_foodie : 0
          * chef_foodie_follow : 0
@@ -64,9 +63,9 @@ public class ChefProfileData1 {
         private int chef_id;
         private String chef_full_name;
         private String chef_user_name;
-        private Object chef_phone;
+        private String chef_phone;
         private String chef_email;
-        private Object chef_image;
+        private String chef_image;
         private Object chef_business;
         private String rating;
         private String follow;
@@ -102,11 +101,11 @@ public class ChefProfileData1 {
             this.chef_user_name = chef_user_name;
         }
 
-        public Object getChef_phone() {
+        public String getChef_phone() {
             return chef_phone;
         }
 
-        public void setChef_phone(Object chef_phone) {
+        public void setChef_phone(String chef_phone) {
             this.chef_phone = chef_phone;
         }
 
@@ -118,11 +117,11 @@ public class ChefProfileData1 {
             this.chef_email = chef_email;
         }
 
-        public Object getChef_image() {
+        public String getChef_image() {
             return chef_image;
         }
 
-        public void setChef_image(Object chef_image) {
+        public void setChef_image(String chef_image) {
             this.chef_image = chef_image;
         }
 
@@ -261,7 +260,7 @@ public class ChefProfileData1 {
          * dish_cuisine :
          * dish_subcuisine_id :
          * dish_subcuisine :
-         * dish_price : 3
+         * dish_price : 3.00
          * dish_video : 91.mp4
          * dish_description : vv
          * dish_special_note : j
@@ -274,6 +273,7 @@ public class ChefProfileData1 {
          * dish_deliverymiles : 10
          * dish_image : []
          * dish_foodie_like : 0
+         * like_no : 1
          */
 
         private int dish_id;
@@ -294,6 +294,7 @@ public class ChefProfileData1 {
         private String dish_pickup;
         private String dish_deliverymiles;
         private String dish_foodie_like;
+        private String like_no;
         private List<?> dish_image;
 
         public int getDish_id() {
@@ -438,6 +439,14 @@ public class ChefProfileData1 {
 
         public void setDish_foodie_like(String dish_foodie_like) {
             this.dish_foodie_like = dish_foodie_like;
+        }
+
+        public String getLike_no() {
+            return like_no;
+        }
+
+        public void setLike_no(String like_no) {
+            this.like_no = like_no;
         }
 
         public List<?> getDish_image() {

@@ -92,9 +92,34 @@ public class AdapterChefDishList extends PagerAdapter{
             }
         });
 
-        String url = GetData.IMG_BASE_URL + chef_dish_list.get(position).getDish_image().get(0);
-        Log.d("ChefCurrentDishes", url);
-        Picasso.with(context).load(url).into(iv_dish_image);
+
+/*
+        if(chef_dish_list.get(position).getDish_foodie_like().equals("1")){
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_red));
+        } else
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart));
+*/
+
+        if(arr_like.get(position).equals("1")){
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_red));
+        } else
+            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart));
+
+
+        iv_heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.click_me_chef_dish_list(position, click_type);
+            }
+        });
+
+        String url = "";
+        if(chef_dish_list.get(position).getDish_image().size() != 0) {
+            url = GetData.IMG_BASE_URL + chef_dish_list.get(position).getDish_image().get(0);
+            Picasso.with(context).load(url).into(iv_dish_image);
+        }
+//        Log.d("ChefCurrentDishes", url);
+
 
         final ArrayList<String> arrayList = new ArrayList<>();
         for (int i=0; i<chef_dish_list.get(position).getDish_image().size(); i++){
@@ -105,7 +130,7 @@ public class AdapterChefDishList extends PagerAdapter{
 //        if(chef_dish_list.get(position).getDish_quantity().equals("null"))
         dish_count.setText("0");
         dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
-        dish_likes.setText("10");
+        dish_likes.setText(chef_dish_list.get(position).getLike_no());
 
         if (chef_dish_list.get(position).getDish_homedelivery().equals("Yes")) {
             if (chef_dish_list.get(position).getDish_pickup().equals("Yes")) {

@@ -18,9 +18,6 @@ import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.fragment.chef.ChefHome;
-import com.imcooking.fragment.chef.DishLikersFragment;
-import com.imcooking.utils.BaseClass;
-import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
 import org.json.JSONException;
@@ -79,15 +76,15 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 //        } else {
 //            chef_dish_list = ChefProfile.chefProfileData.getChef_dish();
 //        }
-        chef_dish_list_current.clear(); chef_dish_list_old.clear();
+        List<ChefProfileData1.ChefDishBean> chef_dish_list_current = new ArrayList<>();
+        List<ChefProfileData1.ChefDishBean> chef_dish_list_old = new ArrayList<>();
+
         if(chef_dish_list.size() != 0) {
             for (int i = 0; i < chef_dish_list.size(); i++) {
                 if (chef_dish_list.get(i).getDish_available().equals("Yes")) {
                     chef_dish_list_current.add(chef_dish_list.get(i));
-                    arr_like_current.add(chef_dish_list.get(i).getDish_foodie_like());
                 } else if (chef_dish_list.get(i).getDish_available().equals("No")) {
                     chef_dish_list_old.add(chef_dish_list.get(i));
-                    arr_like_old.add(chef_dish_list.get(i).getDish_foodie_like());
                 } else {
                 }
             }
@@ -127,6 +124,91 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         } else {
 
         }
+    }
+
+    @Override
+
+    public void click_me_chef_dish_list(int position, String click_type) {
+
+
+        if(user_type.equals("2")){
+            like_dislike(position, click_type);
+        } else{
+            dish_likers();
+        }
+        BaseClass.showToast(getContext(), position + "");
+
+    }
+
+    private void like_dislike(final int position, final String click_type){
+
+        String s = "{\"chef_id\":" + ChefHome.chefProfileData1.getChef_data().getChef_id() +
+                ",\"foodie_id\":" + user_id +
+                ",\"dish_id\":" + chef_dish_list.get(position).getDish_id() + "}";
+
+        try {
+            JSONObject job = new JSONObject(s);
+
+            new GetData(getContext(), getActivity()).sendMyData(job, "dishlike", getActivity(), new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if(jsonObject.getBoolean("status")){
+                            if(jsonObject.getString("msg").equals("Successfully dish like")){
+
+                                if(click_type.equals("current")){
+                                    arr_like_current.set(position, "1");
+                                    int i = Integer.parseInt(chef_dish_list_current.get(position).getLike_no());
+                                    chef_dish_list_current.get(position).setLike_no((i+1) + "");
+
+                                    adapterChefDishListCurrent.notifyDataSetChanged();
+                                } else{
+                                    arr_like_old.set(position, "1");
+                                    int i = Integer.parseInt(chef_dish_list_old.get(position).getLike_no());
+                                    chef_dish_list_old.get(position).setLike_no((i+1) + "");
+                                    adapterChefDishListOld.notifyDataSetChanged();
+                                }
+
+                                BaseClass.showToast(getContext(), "Successfully Liked");
+
+                            } else if(jsonObject.getString("msg").equals("Successfully unlike")){
+                                if(click_type.equals("current")){
+                                    int i = Integer.parseInt(chef_dish_list_current.get(position).getLike_no());
+                                    chef_dish_list_current.get(position).setLike_no((i-1) + "");
+                                    arr_like_current.set(position, "0");
+                                    adapterChefDishListCurrent.notifyDataSetChanged();
+                                } else{
+                                    arr_like_old.set(position, "0");
+                                    int i = Integer.parseInt(chef_dish_list_old.get(position).getLike_no());
+                                    chef_dish_list_old.get(position).setLike_no((i-1) + "");
+                                    adapterChefDishListOld.notifyDataSetChanged();
+                                }
+                                BaseClass.showToast(getContext(), "Dish Successfully unliked");
+//                                int i = Integer.parseInt(homeData.getChef_dish().get(position).getDishlikeno());
+//                                homeData.getChef_dish().get(position).setDishlikeno((i-1) + "");
+                            } else{
+                                BaseClass.showToast(getContext(), "Something Went Wrong");
+                            }
+
+                        } else{
+                            BaseClass.showToast(getContext(), "Something Went Wrong");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void dish_likers(){
+
+//        BaseClass.callFragment(new DishLikersFragment(),DishLikersFragment.class.getName(),getParentFragment().getFragmentManager());
     }
 
     @Override
