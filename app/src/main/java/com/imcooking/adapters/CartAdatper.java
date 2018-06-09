@@ -80,8 +80,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         }
     }
 
-
-
+    
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
