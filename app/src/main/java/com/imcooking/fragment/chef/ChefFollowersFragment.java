@@ -111,16 +111,14 @@ public class ChefFollowersFragment extends Fragment {
                             else {
                                 Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
-
-
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     private void setMyAdapter(List<ChefFollowers.FoodieDetailsListBean> list){
         AdatperChefFollowers adatperChefFollowers = new AdatperChefFollowers(getContext(),
                 getFragmentManager(), list);

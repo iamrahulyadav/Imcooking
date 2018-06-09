@@ -9,12 +9,12 @@
     android:fitsSystemWindows="true"
  >
 
-   <ScrollView
+   <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginBottom="5dp"
             android:layout_below="@+id/linearlayout_prof">
@@ -132,7 +132,7 @@
 
             </android.support.v7.widget.RecyclerView>
 
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right|bottom"
@@ -203,7 +203,8 @@
                             android:text="Add new item"
                             android:id="@+id/cart_tv_addnewitem"
                             android:textColor="@color/colorWhite"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:layout_marginEnd="10dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -222,11 +223,9 @@
                 android:id="@+id/cart_linearlayout_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical"
-                android:layout_marginBottom="20dp"
-
-                >
+                android:layout_marginBottom="20dp">
 
                 <LinearLayout
                     android:id="@+id/cart_item_left1"
@@ -279,12 +278,7 @@
                             android:background="@drawable/button_bg4"
                             android:textColor="@color/colorBlue"
                             android:layout_margin="5dp"
-                            android:id="@+id/tv_payment"
-                            />
-
-
-
-
+                            android:id="@+id/tv_payment"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -330,27 +324,23 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical"  >
 
-
-
                         <com.imcooking.customtext.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Select an Address"
                             android:textColor="@color/colorBlack"
                             android:textSize="10sp"
+                            android:gravity="left"
+                            android:id="@+id/activity_cart_txtAddress"
                             android:layout_weight="1"
-                            android:layout_margin="5dp"
                             />
                         <Spinner
                             android:id="@+id/activity_cart_spinner"
                             android:layout_margin="5dp"
-                            android:layout_alignParentRight="false"
                             android:layout_gravity="right"
-                            android:background="@drawable/ic_down_arrow"
+                            android:backgroundTint="@color/colorBlue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-
-
                     </LinearLayout>
 
                 </LinearLayout>
@@ -370,16 +360,15 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
                         <ImageView
-
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_placeholder_withborder"
-                            />
+                            android:src="@drawable/ic_placeholder_withborder" />
                         <com.imcooking.customtext.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:singleLine="true"
+                            android:id="@+id/activity_cart_current_add"
                             android:text="E-38,sector 63 noida"
                             android:textColor="@color/colorBlack"
                             android:textSize="10sp" />
@@ -403,38 +392,36 @@
                             android:gravity="center_vertical"
                             android:drawablePadding="5dp"
                             android:textColor="@color/colorBlack"
-                            android:textSize="10sp"
-
-                            />
+                            android:textSize="10sp" />
                         <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="5dp"
+                            android:id="@+id/actvity_cart_txtFromTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="5dp"
                             android:gravity="center_vertical"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/shape_background_view_8">
-    <com.imcooking.customtext.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="02:20"
-        android:textSize="10sp"
-        android:textColor="@color/colorBlack"/>
-    <LinearLayout
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/view_7"
-        android:layout_width="1dp"
-        android:layout_height="match_parent">
+                            android:layout_margin="5dp"
+                            android:background="@drawable/shape_background_view_8">
+                            <com.imcooking.customtext.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="02:20"
+                                android:textSize="10sp"
+                                android:id="@+id/actvity_cart_txtFromTimeValue"
+                                android:textColor="@color/colorBlack"/>
+                            <LinearLayout
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:background="@color/view_7"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent">
+                            </LinearLayout>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_clock_circular_outline"/>
 
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_clock_circular_outline"/>
-
-</LinearLayout>
+                    </LinearLayout>
 
                         <com.imcooking.customtext.CustomTextView
                             android:layout_width="wrap_content"
@@ -452,6 +439,7 @@
                             android:orientation="horizontal"
                             android:layout_margin="5dp"
                             android:padding="5dp"
+                            android:id="@+id/actvity_cart_txtToLayout"
                             android:gravity="center_vertical"
                             android:background="@drawable/shape_background_view_8"
                             >
@@ -459,6 +447,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="02:20"
+                                android:id="@+id/actvity_cart_txtToTime"
                                 android:textSize="10sp"
                                 android:textColor="@color/colorBlack"/>
                             <LinearLayout
@@ -483,6 +472,6 @@
         </LinearLayout>
 
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

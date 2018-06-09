@@ -1,6 +1,8 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -9,43 +11,58 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
+import com.imcooking.Model.api.response.AddCart;
+import com.imcooking.Model.api.response.AddressListData;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.adapters.CartAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.splash.SplashActivity;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener {
-TextView txtChef_Name ,tvAdditem,tvplaceorder,txtfollowers;
-ImageView imgChefImg;
-int foodie_id;
-RatingBar ratingBar;
-RadioGroup radioGroup;
-RadioButton radioButtoncheck;
-LinearLayout linearLayoutplaceorde,linearLayoutpayment,linearLayout_delivery,linearLayout_pickup;
-public static TextView  txtTax,txtTotalprice;
-RecyclerView recyclerView;
-  @SuppressLint("WrongViewCast")
+
+public class CartActivity extends AppCompatActivity implements View.OnClickListener{
+    TextView txtChef_Name ,tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
+    txt_to_time_value,txtPayment;
+    ImageView imgChefImg;
+    int foodie_id;
+    RatingBar ratingBar;
+    RadioGroup radioGroup;
+    private Spinner addressSpi;
+    RadioButton radioButtoncheck;
+    LinearLayout linearLayoutplaceorde,linearLayoutpayment,linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
+    public static TextView  txtTax,txtTotalprice;
+    RecyclerView recyclerView;
+    private String type="";
+
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
-
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,8 +71,16 @@ RecyclerView recyclerView;
             foodie_id = extras.getInt("foodie_id");
             // and get whatever type user account id is
         }
+        linearTo = findViewById(R.id.actvity_cart_txtToLayout);
+        txtPayment = findViewById(R.id.tv_payment);
+        txt_to_time_value = findViewById(R.id.actvity_cart_txtToTime);
+        txt_time_picker = findViewById(R.id.actvity_cart_txtFromTimeValue);
+        txt_add_address = findViewById(R.id.cart_addnewaddress);
         txtChef_Name=findViewById(R.id.chef_name);
+        addressSpi =  findViewById(R.id.activity_cart_spinner);
         txtTax=findViewById(R.id.tv_tax);
+        txt_pick_add = findViewById(R.id.activity_cart_current_add);
+        txt_address = findViewById(R.id.activity_cart_txtAddress);
         txtTotalprice=findViewById(R.id.tv_total);
         imgChefImg=findViewById(R.id.chef_profile_image);
         ratingBar=findViewById(R.id.activity_cart_rating);
@@ -69,31 +94,74 @@ RecyclerView recyclerView;
       linearLayout_pickup=findViewById(R.id.linearlayout_pickup_address);
       tvAdditem=findViewById(R.id.cart_tv_addnewitem);
       tvplaceorder=findViewById(R.id.cart_tv_place_order);
-      tvAdditem.setOnClickListener(this);
-      tvplaceorder.setOnClickListener(this);
+      linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
+
+//       set listener
+      setListener();
+
+      StringBuffer stringBuffer = new StringBuffer();
+      if (SplashActivity.latitude!=0.0&& SplashActivity.longitude!=0.0){
+          try {
+              stringBuffer =BaseClass.getAddress(getApplicationContext(), new LatLng(SplashActivity.latitude, SplashActivity.longitude));
+              txt_pick_add.setText(stringBuffer.toString());
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      }
       radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
           @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
           @Override
           public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-     if(checkedId==R.id.radioButton1){
-         linearLayout_delivery.setVisibility(View.VISIBLE);
-         linearLayout_pickup.setVisibility(View.GONE);
-
-     }
-     else if(checkedId==R.id.radioButton2){
-         linearLayout_delivery.setVisibility(View.GONE);
-         linearLayout_pickup.setVisibility(View.VISIBLE);
-
-     }
-          }
+             if(checkedId==R.id.radioButton1){
+                 linearLayout_delivery.setVisibility(View.VISIBLE);
+                 linearLayout_pickup.setVisibility(View.GONE);
+             }
+             else if(checkedId==R.id.radioButton2){
+                 linearLayout_delivery.setVisibility(View.GONE);
+                 linearLayout_pickup.setVisibility(View.VISIBLE);
+             }
+             }
       });
        setdetails();
     }
 
+    private void setListener(){
+      linear_time_picker.setOnClickListener(this);
+      tvAdditem.setOnClickListener(this);
+      tvplaceorder.setOnClickListener(this);
+      txt_add_address.setOnClickListener(this);
+      linearTo.setOnClickListener(this);
+      txtPayment.setOnClickListener(this);
+    }
+    CartAdatper cartAdatper;
+    private void setTime(final String type){
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(CartActivity.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                    eReminderTime.setText( selectedHour + ":" + selectedMinute);
+                        if (type.equalsIgnoreCase("to")){
+                            txt_to_time_value.setText(selectedHour + " : " + selectedMinute);
+                        } else if (type.equalsIgnoreCase("from")){
+                            txt_time_picker.setText(selectedHour + " : " + selectedMinute);
+                        }
+
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
+    }
+    List<AddCart.AddDishBean> dishDetails;
+    AddToCart addToCart;
     String TAG = CartActivity.class.getName();
     private void setdetails() {
-        AddToCart addToCart=new AddToCart();
+        dishDetails = new ArrayList<>();
+        addToCart=new AddToCart();
         addToCart.setFoodie_id(foodie_id);
         Log.d(TAG, "MyRequest: "+new Gson().toJson(addToCart));
         new GetData(getApplicationContext(), CartActivity.this)
@@ -107,38 +175,31 @@ RecyclerView recyclerView;
                                     public void run() {
                                         ApiResponse apiResponse = new Gson().fromJson(response,
                                                 ApiResponse.class);
-
                                         if(apiResponse.isStatus()){
-
                                            txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
                                          // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
                                             if (apiResponse.getAdd_cart().getFollow()>1){
-                                                txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+"Followers");
+                                                txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Followers");
                                             }
                                             else {
-                                                txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+"Follower");
-
+                                                txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
                                           HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
                                             Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
                                                     apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
                                                 ratingBar.setRating(apiResponse.getAdd_cart().getRating());
-                                            CartAdatper cartAdatper = new CartAdatper(getApplicationContext(),
-                                                    apiResponse.getAdd_cart().getAdd_dish());
+                                                dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
+                                                cartAdatper = new CartAdatper(getApplicationContext(),
+                                                    apiResponse.getAdd_cart().getAdd_dish(), CartActivity.this, apiResponse.getAdd_cart().getChef_id()+"");
+
                                             recyclerView.setAdapter(cartAdatper);
                                         }
-
-//                                        apiResponse.isStatus();
-
-//                                            Log.d("ShowResponse", apiResponse.getUser_data().toString());
-
                                     }
                                 });
                             }
                         });
 
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -147,11 +208,9 @@ RecyclerView recyclerView;
 
         switch (id){
             case R.id.cart_tv_place_order:
-
                 linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
                 linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
                 break;
-
             case R.id.cart_tv_addnewitem:
 
                 break;
@@ -159,28 +218,101 @@ RecyclerView recyclerView;
                //if(){}
 
                 break;
+            case R.id.actvity_cart_txtFromTime:
+                type = "from";
+                setTime(type);
+                break;
+            case R.id.cart_addnewaddress:
+                startActivity(new Intent(CartActivity.this, AddAddressActivity.class));
+                break;
+            case R.id.actvity_cart_txtToLayout:
+                type = "to";
+                setTime(type);
+                break;
+            case R.id.tv_payment:
+
+                break;
     }
 }
 
     protected void onResume() {
         super.onResume();
+        getAddress();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        }*/
+
+    }
+
+
+    private void addressSpinner(List<String>addressList) {
+        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getApplicationContext(),
+                R.layout.spinner_row, addressList);
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
+        addressSpi.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
+
+        addressSpi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                txt_address.setText(item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
+/*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        }*/
     }
+    private List<AddressListData.AddressBean> addressBeanList = new ArrayList<>();
+
+    private void getAddress(){
+        if (addressBeanList!=null){
+            addressBeanList.clear();
+        }
+        new GetData(getApplicationContext(), CartActivity.this).getResponse("{\"foodie_id\":" +
+                HomeFragment.foodie_id + "}", "addresslist", new GetData.MyCallback() {
+            @Override
+            public void onSuccess(final String result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //   layout.setVisibility(View.VISIBLE);
+                        AddressListData addressListData = new AddressListData();
+                        if (result!=null){
+                            addressListData = new Gson().fromJson(result, AddressListData.class);
+                            if (addressListData.getAddress()!=null){
+                                addressBeanList.addAll(addressListData.getAddress());
+                                List<String>addressList = new ArrayList<>();
+                                for (int i=0;i<addressBeanList.size();i++){
+                                    addressList.add(addressBeanList.get(i).getAddress_address());
+                                }
+                                addressSpinner(addressList);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private void makeOrder(){
+    }
+
 }
 
 

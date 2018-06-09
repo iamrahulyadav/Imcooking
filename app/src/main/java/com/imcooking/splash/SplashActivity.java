@@ -69,7 +69,6 @@ public class SplashActivity extends AppBaseActivity {
         imgLogo.startAnimation(animationLogo);
 
 
-
     }
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     public boolean checkLocationPermission() {

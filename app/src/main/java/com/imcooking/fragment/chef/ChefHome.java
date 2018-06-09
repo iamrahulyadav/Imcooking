@@ -350,7 +350,6 @@ for(int i=0;i<jsonArray.length();i++){
         });
     }
 
-
     private void getUserProfile(String str_id){
         String request = "{\"user_id\":" + str_id + "\"}";
         try {
@@ -369,6 +368,8 @@ for(int i=0;i<jsonArray.length();i++){
                                 GetImage task = new GetImage();
                                 // Execute the task
                                 task.execute(new String[] { url });
+                            } else {
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -491,8 +492,6 @@ for(int i=0;i<jsonArray.length();i++){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
                                     btn_follow.setText("Follow");
                                 }
-
-
                             }else {
                                 Toast.makeText(getContext(), "Something went Wrong", Toast.LENGTH_SHORT).show();
                             }

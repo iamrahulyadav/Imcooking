@@ -50,6 +50,7 @@ public class GetData {
 
     public static String PROFILE_IMAGE="profileimage";
     public static String GETPROFILE_PIC ="get_user_profileimage";
+    public static String ADD_CART = "addcart";
 
 
     public GetData(final Context context, Activity activity) {
