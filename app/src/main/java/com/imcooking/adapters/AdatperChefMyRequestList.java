@@ -72,7 +72,7 @@ public ImageView img;
         holder.txtAddress.setText(list.get(position).getOrder_id()+"");
         holder.txtdishname.setText(list.get(position).getFoodie_name());
         holder.txtfoodiename.setText(list.get(position).getFoodie_name());
-        holder.txtprice.setText(list.get(position).getPrice()+"");
+//        holder.txtprice.setText(list.get(position).getPrice()+"");
        /* holder.txtTotalAmnt.setText(list.get(position).);
         holder.txtPaymentMode.setText(list.get(position).);
         holder.txtqty.setText(list.get(position).);
