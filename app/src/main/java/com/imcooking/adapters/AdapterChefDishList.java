@@ -80,19 +80,6 @@ public class AdapterChefDishList extends PagerAdapter{
         ImageView iv_heart = view.findViewById(R.id.home_heart);
 
 
-        if(chef_dish_list.get(position).getDish_foodie_like().equals("1")){
-            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_red));
-        } else
-            iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart));
-
-        iv_heart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                click.click_me_chef_dish_list(position, click_type);
-            }
-        });
-
-
 /*
         if(chef_dish_list.get(position).getDish_foodie_like().equals("1")){
             iv_heart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_heart_red));

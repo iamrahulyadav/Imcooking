@@ -69,8 +69,7 @@ import java.util.Locale;
 
 
 public class HomeFragment extends Fragment implements
-        View.OnClickListener, CuisionAdatper.CuisionInterface, HomeDishPagerAdapter.click_dish_pager_like,
-        HomeBottomPagerAdapter.click_dish_pager_like_2 {
+        View.OnClickListener, CuisionAdatper.CuisionInterface, HomeDishPagerAdapter.click_dish_pager_like, HomeBottomPagerAdapter.click_dish_pager_like_2 {
 
     public static TextView cart_icon;
     LocationManager locationManager;
@@ -381,8 +380,11 @@ public class HomeFragment extends Fragment implements
                                     }
 
 
+//                                    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
+//
                                     list.clear();
                                     list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
+//
 
                                     /*
                                     homeData.setFavourite_data((List<HomeData.FavouriteDataBean>) jar);
@@ -551,24 +553,20 @@ public class HomeFragment extends Fragment implements
         StringBuffer result = new StringBuffer();
         geocoder = new Geocoder(getContext(), Locale.getDefault());
 
-        if (latLng!=null){
-            try {
-                addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-               if (addresses!=null){
-                   String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                   String city = addresses.get(0).getLocality();
-                   result.append(city);
-               }
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
             /*String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();*/
+            result.append(city);
 
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return result;
     }
 

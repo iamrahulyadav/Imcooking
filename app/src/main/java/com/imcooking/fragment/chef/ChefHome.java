@@ -228,8 +228,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                             .getChef_data().getChef_image())
 //                               .placeholder( R.drawable.progress_animation )
                                             .into(imgChef);
-                                    if(chefProfileData1.getChef_data().getChef_foodie_follow()==0){
-
+                                    if(chefProfileData1.getChef_data().getChef_foodie_follow()==0)
                                         btn_follow.setText("Follow");
                                     }
                                     else  if(chefProfileData1.getChef_data().getChef_foodie_follow()==1){
@@ -367,8 +366,6 @@ for(int i=0;i<jsonArray.length();i++){
                                 GetImage task = new GetImage();
                                 // Execute the task
                                 task.execute(new String[] { url });
-                            } else {
-                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -492,6 +489,8 @@ for(int i=0;i<jsonArray.length();i++){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
                                     btn_follow.setText("Follow");
                                 }
+
+
                             }else {
                                 Toast.makeText(getContext(), "Something went Wrong", Toast.LENGTH_SHORT).show();
                             }
@@ -574,9 +573,13 @@ for(int i=0;i<jsonArray.length();i++){
 
         int id = view.getId();
         if (id == R.id.chef_home_settings) {
+
             PopupWindow popupwindow_obj = showMyPopup();
             popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
+
+
         } else if (id == R.id.chef_home_popup_edit_profile) {
+
             startActivity(new Intent(getContext(), ChefEditProfile.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (id == R.id.chef_home_popup_change_password) {
@@ -592,7 +595,10 @@ for(int i=0;i<jsonArray.length();i++){
             getActivity().finish();
         } else if (id == R.id.chef_home_follow_button){
             getFollowUnfollow();
-        } else {}
+        }
+        else if (id == R.id.chef_home_heart_icon){
+            BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+        }
     }
 
     private TextView tv_deactivate;

@@ -48,7 +48,7 @@ public class ChefMyorderList {
         private String foodie_image;
         private String ordertime;
         private String bookdate;
-        private int price;
+        private String price;
         private String order_status;
         private String order_order_id;
         private int order_id;
@@ -95,11 +95,11 @@ public class ChefMyorderList {
             this.bookdate = bookdate;
         }
 
-        public int getPrice() {
+        public String getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(String price) {
             this.price = price;
         }
 
