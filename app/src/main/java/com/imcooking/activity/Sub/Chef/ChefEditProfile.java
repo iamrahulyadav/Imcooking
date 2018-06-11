@@ -131,8 +131,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         getMyCuisines();
     }
 
-
-
     private void getProfileData(){
 
         ChefProfileData1 chefProfileData1 = new ChefProfileData1();
@@ -232,10 +230,10 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
 //        str_id
         str_name = edt_name.getText().toString().trim();
-        str_address = "E-164, Sector-15, Noida, UP"; //edt_address.getText().toString().trim();
-        str_city = "Noida"; //edt_city.getText().toString();
+        str_address =edt_address.getText().toString().trim();
+        str_city = edt_city.getText().toString();
         str_email = edt_email.getText().toString().trim();
-        str_zipcode = "201301"; // edt_zipcoede.getText().toString().trim();
+        str_zipcode = edt_zipcoede.getText().toString().trim();
 //        str_miles , str_notification, str_available, str_cuisine
 
         ArrayList<String> cuisine_list = new ArrayList<>();
@@ -251,7 +249,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setZipcode(str_zipcode);
         data.setDefault_miles(str_miles);
         data.setAvailable(str_available);
-        data.setCuisine_list("29");
+        data.setCuisine_list(str_cuisine);
 
         if(!str_name.isEmpty()) {
             if(!str_address.isEmpty()){
@@ -578,6 +576,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                                 GetImage task = new GetImage();
                                 // Execute the task
                                 task.execute(new String[] { url });
+                            } else {
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

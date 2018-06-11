@@ -198,7 +198,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/frame_chef_profile"></FrameLayout>
+        android:id="@+id/frame_chef_profile"/>
 
 
 

@@ -39,8 +39,8 @@ import java.util.TreeSet;
 public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> {
     private Context context;
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
-   static List<Double> pricelist = new ArrayList<Double>();
-   public String chef_id;
+    static List<Double> pricelist = new ArrayList<Double>();
+    public String chef_id;
     Activity activity;
     public CartAdatper(Context context,
                        List<AddCart.AddDishBean> dishDetails, Activity activity, String chef_id) {
@@ -74,13 +74,13 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, ""+getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                  //  deleteData(getAdapterPosition());
+                    //  deleteData(getAdapterPosition());
                 }
             });
         }
     }
 
-    
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -90,67 +90,79 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     }
 
     MyViewHolder myHolder;
-    int pos;
+
     List<CartAddedItemList> cartAddedItemLists;
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         myHolder=holder;
         final int[] count = {1};
+        int dish_available = 0;
         final String[] dishCount = new String[1];
-      final  String[] totalDishPrice = new String[1];
+        final  String[] totalDishPrice = new String[1];
         final double[] price = {(Double.parseDouble(dishDetails.get(position).getDish_price()))};
 
-      pricelist.add((count[0]* price[0]));
-   //  getprice(pricelist);
+        pricelist.add((count[0]* price[0]));
+        //  getprice(pricelist);
         CartActivity.txtTotalprice.setText(String.valueOf(getprice(pricelist)));
 
         holder.txtPlus.setTag(position);
         holder.txtMinus.setTag(position);
         cartAddedItemLists = new ArrayList<>();
+        if (dishDetails.get(position).getDish_available()!=null){
+            dish_available = Integer.parseInt(dishDetails.get(position).getDish_available());
+
+        }
+        if (dishDetails.get(position).getDish_quantity()!=null){
+            int dish_quantity = Integer.parseInt(dishDetails.get(position).getDish_quantity());
+            holder.txt_DishCount.setText(dish_quantity+"");
+        }
+        final int finalDish_available1 = dish_available;
+        count[0] = Integer.parseInt(holder.txt_DishCount.getText().toString().trim());
+
         holder.txtPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final CartAddedItemList cartAddedItemList = new CartAddedItemList();
-                dishCount[0] = String.valueOf(++count[0]);
-                holder.txt_DishCount.setText(dishCount[0]);
-               totalDishPrice[0] = String.valueOf(count[0]* price[0]);
-                pricelist.set(position,count[0]* price[0]);
-                CartActivity.txtTotalprice.setText(String.valueOf(getprice(pricelist)));
-               holder.txt_DishPrice.setText("$"+totalDishPrice[0]);
-                cartAddedItemList.setDish_qyt(dishCount[0]);
-                cartAddedItemList.setDish_id(dishDetails.get((int)holder.txtPlus.getTag()).getDish_id()+"");
-                cartAddedItemList.setDish_price(dishDetails.get((int)holder.txtPlus.getTag()).getDish_price());
-                cartAddedItemList.setDish_qyt(holder.txt_DishCount.getText().toString());
-                cartAddedItemList.setPosition((int)holder.txtPlus.getTag());
-                cartAddedItemLists.add(cartAddedItemList);
+                if (count[0]< finalDish_available1){
+                    dishCount[0] = String.valueOf(++count[0]);
+                    holder.txt_DishCount.setText(dishCount[0]);
+                    totalDishPrice[0] = String.valueOf(count[0] * price[0]);
+                    pricelist.set(position, count[0] * price[0]);
+                    CartActivity.txtTotalprice.setText(String.valueOf(getprice(pricelist)));
+                    holder.txt_DishPrice.setText("$" + totalDishPrice[0]);
+                    cartAddedItemList.setDish_qyt(dishCount[0]);
+                    cartAddedItemList.setDish_id(dishDetails.get((int) holder.txtPlus.getTag()).getDish_id() + "");
+                    cartAddedItemList.setDish_price(dishDetails.get((int) holder.txtPlus.getTag()).getDish_price());
+                    cartAddedItemList.setDish_qyt(holder.txt_DishCount.getText().toString());
+                    cartAddedItemList.setPosition((int) holder.txtPlus.getTag());
+                    cartAddedItemLists.add(cartAddedItemList);
 
-                Set<CartAddedItemList> catBeans1 = new TreeSet<>(new Comparator<CartAddedItemList>() {
-                    @Override
-                    public int compare(CartAddedItemList catBean,CartAddedItemList t1) {
-                        if(catBean.getPosition()==(t1.getPosition())){
-                            if (Integer.parseInt(catBean.getDish_qyt())>Integer.parseInt(t1.getDish_qyt())){
+                    Set<CartAddedItemList> catBeans1 = new TreeSet<>(new Comparator<CartAddedItemList>() {
+                        @Override
+                        public int compare(CartAddedItemList catBean, CartAddedItemList t1) {
+                            if (catBean.getPosition() == (t1.getPosition())) {
+                                if (Integer.parseInt(catBean.getDish_qyt()) > Integer.parseInt(t1.getDish_qyt())) {
+                                }
+                                return 0;
                             }
-                            return 0;
+                            return 1;
                         }
-                        return 1;
-                    }
-                });
-                catBeans1.addAll(cartAddedItemLists);
-                cartAddedItemLists.clear();
-                cartAddedItemLists.addAll(catBeans1);
-
-                Log.d("TAG", "Rakhi: "+new Gson().toJson(cartAddedItemLists));
+                    });
+                    catBeans1.addAll(cartAddedItemLists);
+                    cartAddedItemLists.clear();
+                    cartAddedItemLists.addAll(catBeans1);
+                }
             }
         });
+
 
         holder.txtMinus.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View v) {
-
                 //String dishCount= String.valueOf(--count);
                 if(count[0] >1)
-                {   dishCount[0] = String.valueOf(--count[0]);
+                {   dishCount[0] = String.valueOf( --count[0]);
                     holder.txt_DishCount.setText(dishCount[0]);
                     totalDishPrice[0] = String.valueOf(count[0]* price[0]);
                     pricelist.set(position,(count[0]* price[0]));
@@ -181,7 +193,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     }
 
     public double getprice(List<Double> pricelist){
-       int sum = 0;
+        int sum = 0;
         for(int i=0;i<pricelist.size();i++){
             sum += pricelist.get(i);
         }

@@ -253,6 +253,7 @@
                     android:hint="ZIP CODE"
                     android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
+                    android:inputType="number"
                     android:imeOptions="actionDone"
                     android:background="@android:color/transparent"
                     android:textColor="@color/colorBlack"

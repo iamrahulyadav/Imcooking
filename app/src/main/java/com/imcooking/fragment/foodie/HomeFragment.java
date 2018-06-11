@@ -261,8 +261,8 @@ public class HomeFragment extends Fragment implements
         super.onResume();
 
 
-        layout_no_record_found.setVisibility(View.GONE);
-        layout2.setVisibility(View.GONE);
+//        layout_no_record_found.setVisibility(View.GONE);
+//        layout2.setVisibility(View.GONE);
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
@@ -292,15 +292,9 @@ public class HomeFragment extends Fragment implements
         cuisionAdatper.CuisionInterfaceMethod(this);
     }
 
-    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
+    List<HomeData.FavouriteDataBean> list;
     private void getHomeData(String latitudeq, String longitudeq){
-      /*  Home data = new Home();
-        data.setLatitude(latitudeq);
-        data.setLongitude(longitudeq);
-        data.setMin_miles(min_miles);
-        data.setMax_miles(max_miles);
-        data.setCountry("");
-        data.setFoodie_id(foodie_id);*/
+        list = new ArrayList<>();
         Home data = new Home();
         data.setLatitude(latitudeq);
         data.setLongitude(longitudeq);
@@ -352,7 +346,6 @@ public class HomeFragment extends Fragment implements
                             viewPager.setVisibility(View.VISIBLE);
                             layout_no_record_found.setVisibility(View.GONE);
 
-
                             setMyData(/*arr_like_status_1, arr_like_status_2*/);
 //                            adapter.notifyDataSetChanged();
 //                            homeBottomPagerAdapter.notifyDataSetChanged()
@@ -382,7 +375,7 @@ public class HomeFragment extends Fragment implements
 
 //                                    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
 //
-                                    list.clear();
+
                                     list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
 //
 
@@ -555,13 +548,15 @@ public class HomeFragment extends Fragment implements
 
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
+            if (addresses!=null && addresses.size() != 0){
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
             /*String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();*/
-            result.append(city);
+                result.append(city);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

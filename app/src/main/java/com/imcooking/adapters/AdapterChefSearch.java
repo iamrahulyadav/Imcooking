@@ -3,6 +3,7 @@ package com.imcooking.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class AdapterChefSearch extends RecyclerView.Adapter<AdapterChefSearch.My
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         holder.tv_view_response.setText(arr_name.get(position));
+        Log.d("TAG", "Rakhi: "+arr_name.get(position));
 
     }
 

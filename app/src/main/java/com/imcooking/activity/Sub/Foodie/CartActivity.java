@@ -46,7 +46,7 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener{
     TextView txtChef_Name ,tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
-    txt_to_time_value,txtPayment;
+            txt_to_time_value,txtPayment;
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
@@ -86,53 +86,53 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         ratingBar=findViewById(R.id.activity_cart_rating);
         txtfollowers=findViewById(R.id.activity_cart_tv_chef_followers);
         radioGroup=findViewById(R.id.radioGroup);
-      //int idradio=radioGroup.getCheckedRadioButtonId();
-     // radioButton=findViewById(idradio);
-      linearLayoutplaceorde=findViewById(R.id.cart_Linearlayout_placeorder);
-      linearLayoutpayment=findViewById(R.id.cart_linearlayout_payment);
-      linearLayout_delivery=findViewById(R.id.linearlayout_delivery_address);
-      linearLayout_pickup=findViewById(R.id.linearlayout_pickup_address);
-      tvAdditem=findViewById(R.id.cart_tv_addnewitem);
-      tvplaceorder=findViewById(R.id.cart_tv_place_order);
-      linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
+        //int idradio=radioGroup.getCheckedRadioButtonId();
+        // radioButton=findViewById(idradio);
+        linearLayoutplaceorde=findViewById(R.id.cart_Linearlayout_placeorder);
+        linearLayoutpayment=findViewById(R.id.cart_linearlayout_payment);
+        linearLayout_delivery=findViewById(R.id.linearlayout_delivery_address);
+        linearLayout_pickup=findViewById(R.id.linearlayout_pickup_address);
+        tvAdditem=findViewById(R.id.cart_tv_addnewitem);
+        tvplaceorder=findViewById(R.id.cart_tv_place_order);
+        linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
 
 //       set listener
-      setListener();
+        setListener();
 
-      StringBuffer stringBuffer = new StringBuffer();
-      if (SplashActivity.latitude!=0.0&& SplashActivity.longitude!=0.0){
-          try {
-              stringBuffer =BaseClass.getAddress(getApplicationContext(), new LatLng(SplashActivity.latitude, SplashActivity.longitude));
-              txt_pick_add.setText(stringBuffer.toString());
-          } catch (IOException e) {
-              e.printStackTrace();
-          }
-      }
-      radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-          @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-          @Override
-          public void onCheckedChanged(RadioGroup group, int checkedId) {
+        StringBuffer stringBuffer = new StringBuffer();
+        if (SplashActivity.latitude!=0.0&& SplashActivity.longitude!=0.0){
+            try {
+                stringBuffer =BaseClass.getAddress(getApplicationContext(), new LatLng(SplashActivity.latitude, SplashActivity.longitude));
+                txt_pick_add.setText(stringBuffer.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-             if(checkedId==R.id.radioButton1){
-                 linearLayout_delivery.setVisibility(View.VISIBLE);
-                 linearLayout_pickup.setVisibility(View.GONE);
-             }
-             else if(checkedId==R.id.radioButton2){
-                 linearLayout_delivery.setVisibility(View.GONE);
-                 linearLayout_pickup.setVisibility(View.VISIBLE);
-             }
-             }
-      });
-       setdetails();
+                if(checkedId==R.id.radioButton1){
+                    linearLayout_delivery.setVisibility(View.VISIBLE);
+                    linearLayout_pickup.setVisibility(View.GONE);
+                }
+                else if(checkedId==R.id.radioButton2){
+                    linearLayout_delivery.setVisibility(View.GONE);
+                    linearLayout_pickup.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        setdetails();
     }
 
     private void setListener(){
-      linear_time_picker.setOnClickListener(this);
-      tvAdditem.setOnClickListener(this);
-      tvplaceorder.setOnClickListener(this);
-      txt_add_address.setOnClickListener(this);
-      linearTo.setOnClickListener(this);
-      txtPayment.setOnClickListener(this);
+        linear_time_picker.setOnClickListener(this);
+        tvAdditem.setOnClickListener(this);
+        tvplaceorder.setOnClickListener(this);
+        txt_add_address.setOnClickListener(this);
+        linearTo.setOnClickListener(this);
+        txtPayment.setOnClickListener(this);
     }
     CartAdatper cartAdatper;
     private void setTime(final String type){
@@ -176,20 +176,20 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                         ApiResponse apiResponse = new Gson().fromJson(response,
                                                 ApiResponse.class);
                                         if(apiResponse.isStatus()){
-                                           txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
-                                         // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
+                                            txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
+                                            // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
                                             if (apiResponse.getAdd_cart().getFollow()>1){
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Followers");
                                             }
                                             else {
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
-                                          HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
+                                            HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
                                             Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
                                                     apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
-                                                ratingBar.setRating(apiResponse.getAdd_cart().getRating());
-                                                dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
-                                                cartAdatper = new CartAdatper(getApplicationContext(),
+                                            ratingBar.setRating(apiResponse.getAdd_cart().getRating());
+                                            dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
+                                            cartAdatper = new CartAdatper(getApplicationContext(),
                                                     apiResponse.getAdd_cart().getAdd_dish(), CartActivity.this, apiResponse.getAdd_cart().getChef_id()+"");
 
                                             recyclerView.setAdapter(cartAdatper);
@@ -215,7 +215,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.radioGroup:
-               //if(){}
+                //if(){}
 
                 break;
             case R.id.actvity_cart_txtFromTime:
@@ -232,8 +232,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.tv_payment:
 
                 break;
+        }
     }
-}
 
     protected void onResume() {
         super.onResume();
@@ -314,5 +314,3 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 }
-
-

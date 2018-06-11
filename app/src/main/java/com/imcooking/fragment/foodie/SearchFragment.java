@@ -42,7 +42,6 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,7 +54,6 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
         super.onActivityCreated(savedInstanceState);
 
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         init();
     }
 
@@ -131,24 +129,18 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
 
                         ChefAndDish chefAndDish = new ChefAndDish();
                         chefAndDish = new Gson().fromJson(result, ChefAndDish.class);
-
                         arr_id.clear(); arr_name.clear(); arr_type.clear();
                         Log.d("getchef", "inside");
                         if(chefAndDish.isStatus()) {
-
-
-                            if ( chefAndDish.getResponse().getDish_lst().isEmpty()){
+                            if ( chefAndDish.getResponse().getDish_lst().isEmpty()&&chefAndDish.getResponse().getUser_list().isEmpty()){
                                 BaseClass.showToast(getContext(), "No search found");
-
                             }
                             else {
                                 for (int i = 0; i < chefAndDish.getResponse().getDish_lst().size();i++){
-
                                     arr_id.add(chefAndDish.getResponse().getDish_lst().get(i).getDish_id() + "");
                                     arr_name.add(chefAndDish.getResponse().getDish_lst().get(i).getDish_name() + " \t (Dish Name)");
                                     arr_type.add("Dish");
-
-                                    Log.d("getchef_for", "\n" + String.valueOf(chefAndDish.getResponse().getDish_lst().get(i)));
+                                    Log.d("getchef_for", "\n" +new Gson().toJson(chefAndDish.getResponse().getDish_lst().get(i)));
                                 }
                                 for (int i = 0; i < chefAndDish.getResponse().getUser_list().size();i++){
 
@@ -156,12 +148,11 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
                                     arr_name.add(chefAndDish.getResponse().getUser_list().get(i).getUser_name() + " \t (Chef Name)");
                                     arr_type.add("User");
 
-                                    Log.d("getchef_for", "\n" + String.valueOf(chefAndDish.getResponse().getUser_list().get(i)));
+                                    Log.d("getchef_for", "\n" + new Gson().toJson(arr_name));
                                 }
 
                                 setMyAdapter();
                             }
-
                         }
                         else {
                             BaseClass.showToast(getContext(), "Something Went Wrong");
@@ -175,13 +166,11 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
         adapter = new AdapterChefSearch(getContext(),arr_id,
                 arr_name, arr_type, this);
         rvChef.setAdapter(adapter);
-
     }
 
     @Override
     public void search_click(int position) {
         String type = arr_type.get(position);
-
         if(type.equals("Dish")){
             HomeDetails fragment = new HomeDetails();
             Bundle args = new Bundle();
@@ -195,7 +184,6 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         }
-
 
     }
 
