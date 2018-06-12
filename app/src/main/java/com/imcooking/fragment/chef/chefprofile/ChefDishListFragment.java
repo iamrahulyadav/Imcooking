@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -18,6 +19,7 @@ import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.chef.DishLikersFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -62,7 +64,12 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
     private List<ChefProfileData1.ChefDishBean> chef_dish_list_current = new ArrayList<>();
     private List<ChefProfileData1.ChefDishBean> chef_dish_list_old = new ArrayList<>();
 
+    private LinearLayout layout_current_dish_no_record, layout_old_dish_no_record;
+
     private void init(){
+
+        layout_current_dish_no_record = getView().findViewById(R.id.chef_dish_list_current_dish_no_record);
+        layout_old_dish_no_record = getView().findViewById(R.id.chef_dish_list_old_dish_no_record);
 
         tv_add_dish = getView().findViewById(R.id.chef_dish_list_add_dish);
         tv_add_dish.setOnClickListener(this);
@@ -92,6 +99,22 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
                 } else {
                 }
             }
+        }
+
+        if(chef_dish_list_current.size() == 0){
+            viewPager_1.setVisibility(View.GONE);
+            layout_current_dish_no_record.setVisibility(View.VISIBLE);
+        } else{
+            viewPager_1.setVisibility(View.VISIBLE);
+            layout_current_dish_no_record.setVisibility(View.GONE);
+        }
+
+        if(chef_dish_list_old.size() == 0){
+            viewPager_2.setVisibility(View.GONE);
+            layout_old_dish_no_record.setVisibility(View.VISIBLE);
+        } else{
+            viewPager_2.setVisibility(View.VISIBLE);
+            layout_old_dish_no_record.setVisibility(View.GONE);
         }
 
         Log.d("MyDataSize", chef_dish_list_current.size()+"");
@@ -131,7 +154,6 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-
     public void click_me_chef_dish_list(int position, String click_type) {
 
 
@@ -140,7 +162,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         } else{
             dish_likers();
         }
-        BaseClass.showToast(getContext(), position + "");
+//        BaseClass.showToast(getContext(), position + "");
 
     }
 
@@ -212,6 +234,6 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
     private void dish_likers(){
 
-//        BaseClass.callFragment(new DishLikersFragment(),DishLikersFragment.class.getName(),getParentFragment().getFragmentManager());
+        BaseClass.callFragment(new DishLikersFragment(),DishLikersFragment.class.getName(),getParentFragment().getFragmentManager());
     }
 }

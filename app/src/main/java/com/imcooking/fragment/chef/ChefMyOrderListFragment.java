@@ -1,6 +1,5 @@
 package com.imcooking.fragment.chef;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,6 +41,8 @@ RecyclerView recyclerView;
         init(view);
         return view;
     }
+
+
     private void init(View view) {
 
         tinyDB=new TinyDB(getContext());

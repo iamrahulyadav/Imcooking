@@ -366,7 +366,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_About"
-                    android:hint="About US"
+                    android:hint="Description"
                     android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
                     android:imeOptions="actionNext"

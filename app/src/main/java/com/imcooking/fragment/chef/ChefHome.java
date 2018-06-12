@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -129,8 +128,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         getchefProfile();
         getCuisines();
 //        getUserProfile(foodie_id);
-//        setMyData();
 
+//        setMyData();
     }
 
     private void getMyintentData() {
@@ -164,6 +163,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
+        progressBar.setVisibility(View.VISIBLE);
         if (user_type.equals("2")) {
             btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
@@ -176,7 +176,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
             heart.setVisibility(View.VISIBLE);
         } else {
         }
-
 
         new Runnable() {
             @Override
