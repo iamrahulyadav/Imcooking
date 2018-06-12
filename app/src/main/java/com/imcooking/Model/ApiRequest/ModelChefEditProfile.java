@@ -11,6 +11,7 @@ public class ModelChefEditProfile {
      * default_miles : 45
      * cuisine_list : 29
      * available : 1
+     * about : "abc"
      */
 
     private String chef_id;
@@ -22,6 +23,7 @@ public class ModelChefEditProfile {
     private String default_miles;
     private String cuisine_list;
     private String available;
+    private String about;
 
     public String getChef_id() {
         return chef_id;
@@ -93,5 +95,13 @@ public class ModelChefEditProfile {
 
     public void setAvailable(String available) {
         this.available = available;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 }

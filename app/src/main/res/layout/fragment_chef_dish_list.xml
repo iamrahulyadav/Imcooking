@@ -41,6 +41,22 @@
         android:id="@+id/chef_dish_list_pager_one"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:id="@+id/chef_dish_list_current_dish_no_record"
+        android:background="@color/colorPrimary"
+        android:visibility="visible"
+        android:orientation="horizontal">
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="No Current Dishes Available."/>
+    </LinearLayout>
 
     <com.imcooking.customtext.CustomTextViewBold
         android:layout_width="wrap_content"
@@ -57,6 +73,22 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="10dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:id="@+id/chef_dish_list_old_dish_no_record"
+        android:background="@color/colorPrimary"
+        android:visibility="visible"
+        android:orientation="horizontal">
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="No Old Dishes Available."/>
+    </LinearLayout>
 <!--
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

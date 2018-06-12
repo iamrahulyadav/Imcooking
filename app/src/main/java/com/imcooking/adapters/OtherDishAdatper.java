@@ -44,14 +44,15 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView txtName,txtDeliverytype,tv_dish_address,tv_dish_price;
+        public TextView txtName,txtDeliverytype,tv_dish_count, tv_dish_price;
         ImageView imgPickUp, iv_dish_image,imgDeliviery;
 
         public MyViewHolder(View view) {
             super(view);
             imgDeliviery = view.findViewById(R.id.home_pager_imgHomeDelivery);
             imgPickUp = view.findViewById(R.id.home_pager_imgPick);
-            tv_dish_address = view.findViewById(R.id.home_dish_address);
+//            tv_dish_address = view.findViewById(R.id.home_dish_address);
+            tv_dish_count = view.findViewById(R.id.item_other_dish_count);
             tv_dish_price = view.findViewById(R.id.home_dish_price);
             iv_dish_image = view.findViewById(R.id.home_image);
             txtName = (TextView) view.findViewById(R.id.home_show_detail_1);
@@ -67,7 +68,6 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
         }
     }
 
-    int row_index=-1;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -81,6 +81,11 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
+//        if(chefDishBeans.get(position).getDish_quantity() != null) {
+            holder.tv_dish_count.setText(chefDishBeans.get(position).getDish_quantity());
+//        } else {
+//
+//        }
         holder.txtName.setText(chefDishBeans.get(position).getDish_name());
         holder.tv_dish_price.setText("$" + chefDishBeans
                 .get(position).getDish_price());

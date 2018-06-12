@@ -104,7 +104,6 @@ public class HomeFragment extends Fragment implements
     private CuisineData cuisineData = new CuisineData();
     private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -261,8 +260,8 @@ public class HomeFragment extends Fragment implements
         super.onResume();
 
 
-        layout_no_record_found.setVisibility(View.GONE);
-        layout2.setVisibility(View.GONE);
+//        layout_no_record_found.setVisibility(View.GONE);
+//        layout2.setVisibility(View.GONE);
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
@@ -293,6 +292,7 @@ public class HomeFragment extends Fragment implements
     }
 
     List<HomeData.FavouriteDataBean> list = new ArrayList<>();
+
     private void getHomeData(String latitudeq, String longitudeq){
       /*  Home data = new Home();
         data.setLatitude(latitudeq);
@@ -379,11 +379,12 @@ public class HomeFragment extends Fragment implements
                                         bottomViewPager.setVisibility(View.GONE);
                                     }
 
+                                    setMyData();
 
 //                                    List<HomeData.FavouriteDataBean> list = new ArrayList<>();
 //
-                                    list.clear();
-                                    list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
+//                                    list.clear();
+//                                    list = Arrays.asList(new Gson().fromJson(jar.toString(), HomeData.FavouriteDataBean[].class));
 //
 
                                     /*
@@ -396,7 +397,7 @@ public class HomeFragment extends Fragment implements
                                         favouriteDataBeans.addAll(homeData.getFavourite_data());
                                     }
 */
-                                    setBottomViewPager(list);
+//                                    setBottomViewPager(list);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -417,6 +418,9 @@ public class HomeFragment extends Fragment implements
         }
         if (homeData.getChef_dish()!=null&&homeData.getChef_dish().size()>0){
             chefDishBeans.addAll(homeData.getChef_dish());
+        } else{
+            viewPager.setVisibility(View.GONE);
+            layout_no_record_found.setVisibility(View.VISIBLE);
         }
         if (homeData.getFavourite_data()!=null&&homeData.getFavourite_data().size()>0){
             favouriteDataBeans.addAll(homeData.getFavourite_data());
@@ -424,6 +428,7 @@ public class HomeFragment extends Fragment implements
             layout2.setVisibility(View.VISIBLE);
             bottomViewPager.setVisibility(View.GONE);
         }
+
         setMyViewPager(chefDishBeans);
         setBottomViewPager(favouriteDataBeans);
     }
@@ -549,19 +554,21 @@ public class HomeFragment extends Fragment implements
 
     public StringBuffer getAddress(LatLng latLng) throws IOException {
         Geocoder geocoder;
-        List<Address> addresses;
+        List<Address> addresses = null;
         StringBuffer result = new StringBuffer();
         geocoder = new Geocoder(getContext(), Locale.getDefault());
 
         try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
+            if(addresses != null && addresses.size() != 0) {
+                addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
             /*String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();*/
-            result.append(city);
+                result.append(city);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

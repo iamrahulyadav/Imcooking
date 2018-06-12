@@ -219,7 +219,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
 
                         txtLike.setText(dishDetails.getDish_details().getLike() + "");
 
-
                         txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
                         if(dishDetails
                                 .getDish_details().getDish_image().size() != 0)

@@ -71,13 +71,14 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         init();
         getProfileData();
     }
-    private CuisineData cuisineData = new CuisineData();
 
-    private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede;
+    private CuisineData cuisineData = new CuisineData();
+    private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about;
     private Spinner sp_miles, sp_cuisine;
     private SwitchCompat /*sw_notification,*/ sw_available;
-    private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles, str_cuisine/*, str_notification*/,
-                    str_available = "0";
+    private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles,
+            str_cuisine = "Indian Food"/*, str_notification*/,
+                    str_available = "0", str_about;
     private TextView txt_name, txt_address, txt_phone;
     private TinyDB tinyDB;
     private ImageView imgProfile;
@@ -95,6 +96,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         edt_city = findViewById(R.id.chef_edit_profile_city);
         edt_email = findViewById(R.id.chef_edit_profile_email);
         edt_zipcoede = findViewById(R.id.chef_edit_profile_zipcode);
+        edt_about = findViewById(R.id.chef_edit_profile_About);
         txt_name = findViewById(R.id.activity_chef_edit_txtName);
         txt_address = findViewById(R.id.activity_chef_edit_txtAddress);
         txt_phone = findViewById(R.id.activity_chef_edit_txtPhone);
@@ -131,8 +133,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         getMyCuisines();
     }
 
-
-
     private void getProfileData(){
 
         ChefProfileData1 chefProfileData1 = new ChefProfileData1();
@@ -163,6 +163,9 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         }
         if (str_zipcode!=null){
             edt_zipcoede.setText(str_zipcode);
+        }
+        if(str_about != null){
+            edt_about.setText(str_about);
         }
 
         progressBar.setVisibility(View.VISIBLE);
@@ -232,10 +235,11 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
 //        str_id
         str_name = edt_name.getText().toString().trim();
-        str_address = "E-164, Sector-15, Noida, UP"; //edt_address.getText().toString().trim();
-        str_city = "Noida"; //edt_city.getText().toString();
+        str_address = edt_address.getText().toString().trim();
+        str_city = edt_city.getText().toString();
         str_email = edt_email.getText().toString().trim();
-        str_zipcode = "201301"; // edt_zipcoede.getText().toString().trim();
+        str_zipcode = edt_zipcoede.getText().toString().trim();
+        str_about = edt_about.getText().toString().trim();
 //        str_miles , str_notification, str_available, str_cuisine
 
         ArrayList<String> cuisine_list = new ArrayList<>();
@@ -251,40 +255,45 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setZipcode(str_zipcode);
         data.setDefault_miles(str_miles);
         data.setAvailable(str_available);
-        data.setCuisine_list("29");
+        data.setCuisine_list(str_cuisine);
+        data.setAbout(str_about);;
 
         if(!str_name.isEmpty()) {
             if(!str_address.isEmpty()){
                 if(!str_city.isEmpty()){
                         if(!str_zipcode.isEmpty()){
-                            try {
-                                JSONObject jsonObject = new JSONObject(new Gson().toJson(data));
+                            if(!str_about.isEmpty()) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(new Gson().toJson(data));
 
-                                Log.d("MyRequest", jsonObject.toString());
-                                new GetData(getApplicationContext()).sendMyData(jsonObject, "chef_profile_update",
-                                        ChefEditProfile.this, new GetData.MyCallback() {
-                                            @Override
-                                            public void onSuccess(String result) {
+                                    Log.d("MyRequest", jsonObject.toString());
+                                    new GetData(getApplicationContext()).sendMyData(jsonObject, "chef_profile_update",
+                                            ChefEditProfile.this, new GetData.MyCallback() {
+                                                @Override
+                                                public void onSuccess(String result) {
 
-                                                try {
-                                                    JSONObject job = new JSONObject(result);
-                                                    if(job.getBoolean("status")){
-                                                        if(job.getString("msg").equals("chef profile update successfully")){
-                                                            BaseClass.showToast(getApplicationContext(), "Profle Updated Successfully");
-                                                            finish();
-                                                        } else{
+                                                    try {
+                                                        JSONObject job = new JSONObject(result);
+                                                        if (job.getBoolean("status")) {
+                                                            if (job.getString("msg").equals("chef profile update successfully")) {
+                                                                BaseClass.showToast(getApplicationContext(), "Profle Updated Successfully");
+                                                                finish();
+                                                            } else {
+                                                                BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                                            }
+                                                        } else {
                                                             BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                                         }
-                                                    } else{
-                                                        BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
                                                     }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
                                                 }
-                                            }
-                                        });
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                            });
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else{
+                                BaseClass.showToast(getApplicationContext(), "Please enter your description");
                             }
                         }  else{
                             BaseClass.showToast(getApplicationContext(), "All Fields Required");
@@ -299,7 +308,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             BaseClass.showToast(getApplicationContext(), "All Fields Required");
         }
     }
-
 
     public void chef_edit_profile_cancel(View view){
 
@@ -342,6 +350,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         sp_cuisine.setAdapter(arrayAdapter1);
         sp_cuisine.setOnItemSelectedListener(this);
     }
+
     public void change_dp(View view){
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
@@ -359,7 +368,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         }
         selectImage();
     }
-
 
     Bitmap bitmap;
     private String bitmapString="a",userChoosenTask;
@@ -557,8 +565,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         }
 
     }
-
-
 
     private void getUserProfile(String str_id){
         String request = "{\"user_id\":" + str_id + "\"}";

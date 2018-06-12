@@ -251,7 +251,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     BaseClass.showToast(getContext(), "Something Went Wrong.");
                                 }
                             }
-
                     });
                 }
 /*
