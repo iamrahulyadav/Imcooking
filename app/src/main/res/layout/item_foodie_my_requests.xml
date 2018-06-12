@@ -34,6 +34,7 @@
                     android:id="@+id/item_foodie_my_request_name"
                     android:layout_height="wrap_content"
                     android:text="Vaibhav Khandelwal"
+                    android:inputType="textCapWords"
                     android:textColor="@color/text_color_4"
                     android:textSize="12sp"
                     android:layout_marginBottom="5dp"/>

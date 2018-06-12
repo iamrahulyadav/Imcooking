@@ -150,7 +150,6 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
 
                                     Log.d("getchef_for", "\n" + new Gson().toJson(arr_name));
                                 }
-
                                 setMyAdapter();
                             }
                         }

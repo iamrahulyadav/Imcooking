@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -163,7 +164,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
-        progressBar.setVisibility(View.VISIBLE);
         if (user_type.equals("2")) {
             btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
@@ -246,10 +246,11 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     }
 
                                     if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) == 1) {
-                                        txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Follower");
+                                        txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
                                     } else if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) > 1) {
                                         txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
                                     } else {
+                                        txtFollowers.setText(" 0 Follower");
                                     }
                                     viewPager = getView().findViewById(R.id.chef_home_viewpager);
                                     tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
@@ -492,10 +493,16 @@ for(int i=0;i<jsonArray.length();i++){
                                 if (followUnfollow.getMsg().equals("Successfully follow")){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
                                     btn_follow.setText("Unfollow");
+
+                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
+                                            .replace(" Followers",""))+1 + " Followers");
+
 //                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText()));
                                 }
                                 else if (followUnfollow.getMsg().equals("Successfully unfollow")){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
+                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace("Followers",""))
+                                            -1 + " Followers");
                                     btn_follow.setText("Follow");
                                 }
 
@@ -649,4 +656,5 @@ for(int i=0;i<jsonArray.length();i++){
     public boolean onMenuItemClick(MenuItem item) {
         return false;
     }
+
 }

@@ -69,7 +69,8 @@ import java.util.Locale;
 
 
 public class HomeFragment extends Fragment implements
-        View.OnClickListener, CuisionAdatper.CuisionInterface, HomeDishPagerAdapter.click_dish_pager_like, HomeBottomPagerAdapter.click_dish_pager_like_2 {
+        View.OnClickListener, CuisionAdatper.CuisionInterface, HomeDishPagerAdapter.click_dish_pager_like,
+        HomeBottomPagerAdapter.click_dish_pager_like_2 {
 
     public static TextView cart_icon;
     LocationManager locationManager;
@@ -187,20 +188,6 @@ public class HomeFragment extends Fragment implements
 
         getCuisone();
         milesSpinner();
-//        if (txtCityName.getText().toString().isEmpty()){
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    txtCityName.setText(stringBuffer.toString());
-//                    latitudeq = MainActivity.latitude+"";
-//                    longitudeq = MainActivity.longitude+"";
-//
-//                }
-//            },3000);
-//        }
-
-//        getHomeData(latitudeq, longitudeq);
-
     }
 
     String selectedValue;
@@ -211,11 +198,11 @@ public class HomeFragment extends Fragment implements
         arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
         sp.setAdapter(arrayAdapter);
         if (selectedmiles != null) {
-
             int spinnerPosition = arrayAdapter.getPosition(selectedValue);
             sp.setSelection(spinnerPosition);
         }
 
+        sp.setSelection(2);
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -259,10 +246,6 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-
-
-//        layout_no_record_found.setVisibility(View.GONE);
-//        layout2.setVisibility(View.GONE);
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
@@ -460,7 +443,8 @@ public class HomeFragment extends Fragment implements
                         .setDuration(300);
                 tv_cusine.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down_aarrow, 0);
                 cuisine_status = true;
-            }else{
+            }
+            else{
                 cusine_list.animate()
                         .translationY(0)
                         .alpha(0.0f)
@@ -476,8 +460,9 @@ public class HomeFragment extends Fragment implements
                 cuisine_status = false;
             }
         }
+
         else if (v.getId()==R.id.fragment_home_img_filter){
-//            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
+            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
         }
         else if (v.getId() == R.id.fragment_home_img_cart)
         {
@@ -553,16 +538,13 @@ public class HomeFragment extends Fragment implements
         geocoder = new Geocoder(getContext(), Locale.getDefault());
 
         try {
-            if(addresses != null && addresses.size() != 0) {
                 addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                String city = addresses.get(0).getLocality();
-            /*String state = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
-            String postalCode = addresses.get(0).getPostalCode();
-            String knownName = addresses.get(0).getFeatureName();*/
-                result.append(city);
-            }
+
+                if (addresses!=null&&addresses.size()!=0){
+                    String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    String city = addresses.get(0).getLocality();
+                    result.append(city);
+                }
 
         } catch (IOException e) {
             e.printStackTrace();

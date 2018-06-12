@@ -137,7 +137,6 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
                                 callback.onSuccess(str);
 
-
                                 //        Toast.makeText(activity,responseJson.toString(),Toast.LENGTH_SHORT).show();
                             else
                                 BaseClass.showToast(context, "ServerError");
@@ -156,7 +155,7 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
             RequestQueue requestQueue = Volley.newRequestQueue(activity);
 
-            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(5000,
+            jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(10000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 

@@ -33,24 +33,23 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Created by Muhib.
- * Contact Number : +91 9796173066
+ * Created by RAkhi.
+ * Contact Number : +91 9958187463
  */
 public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> {
     private Context context;
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
     static List<Double> pricelist = new ArrayList<Double>();
-    public String chef_id;
-    Activity activity;
+    CartInterface  cartInterface;
+
+
     public CartAdatper(Context context,
-                       List<AddCart.AddDishBean> dishDetails, Activity activity, String chef_id) {
+                       List<AddCart.AddDishBean> dishDetails,CartInterface cartInterface) {
         this.context = context;
         this.dishDetails = dishDetails;
-        this.activity = activity;
-        this.chef_id = chef_id;
+        this.cartInterface = cartInterface;
+
     }
-
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView txtPlus,txtMinus,txt_DishPrice,txt_DishCount,txtDishName,txtTotal,txtTax;
@@ -73,13 +72,29 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, ""+getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    //  deleteData(getAdapterPosition());
+                    bindListener(getAdapterPosition(),cartInterface);
+                }
+            });
+        }
+
+        void bindListener(final int position, final CartInterface listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    notifyDataSetChanged();
+                    listener.CartInterfaceMethod(itemView,position);
                 }
             });
         }
     }
 
+    public interface CartInterface {
+        void CartInterfaceMethod(View view, int position);
+    }
+
+    public void CartInterfaceMethod(CartInterface cartInterface) {
+        this.cartInterface = cartInterface;
+    }
 
 
     @Override
@@ -112,8 +127,8 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
             dish_available = Integer.parseInt(dishDetails.get(position).getDish_available());
 
         }
-        if (dishDetails.get(position).getDish_quantity()!=null){
-            int dish_quantity = Integer.parseInt(dishDetails.get(position).getDish_quantity());
+        if (dishDetails.get(position).getDish_quantity_selected()!=null){
+            int dish_quantity = Integer.parseInt(dishDetails.get(position).getDish_quantity_selected());
             holder.txt_DishCount.setText(dish_quantity+"");
         }
         final int finalDish_available1 = dish_available;
@@ -171,7 +186,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 //                    cartAddedItemList.setDish_qyt(dishCount[0]);
                     holder.txt_DishCount.getText().toString().trim();
 
-                    Log.d("TAG", "Rakhi: "+holder.txt_DishCount.getText().toString().trim()+(int)holder.txtPlus.getTag());
                 }
                 else{
                     Toast.makeText(context, "minimum item added", Toast.LENGTH_SHORT).show();
@@ -201,28 +215,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     }
 
 
-    private void deleteData(int pos){
-
-        String dishId=dishDetails.get(pos).getDish_id()+"";
-        AddToCart addToCart=new AddToCart();
-        addToCart.setChef_id(Integer.parseInt(chef_id));
-        addToCart.setFoodie_id(Integer.parseInt(HomeFragment.foodie_id));
-        addToCart.setDish_id(dishId);
-        addToCart.setAddcart_id(dishDetails.get(pos).getAddcart_id()+"");
-        try {
-            JSONObject jsonObject = new JSONObject(new Gson().toJson(addToCart));
-            new GetData(context, activity).sendMyData(jsonObject, GetData.ADD_CART, activity, new GetData.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.d(CartAdatper.class.getName(), "Rakhi: "+result);
-                    notifyDataSetChanged();
-                }
-            });
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 

@@ -49,8 +49,6 @@ public class ChefILoveAdatper extends RecyclerView.Adapter<ChefILoveAdatper.MyVi
         }
     }
 
-    int row_index=-1;
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -64,7 +62,6 @@ public class ChefILoveAdatper extends RecyclerView.Adapter<ChefILoveAdatper.MyVi
 
         holder.txtChefName.setText(dishDetails.get(position).getChef_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL + dishDetails.get(position).getChef_image()).into(holder.imgDish);
-
         holder.tv_distance.setText(dishDetails.get(position).getMiles()+" miles");
 
     }

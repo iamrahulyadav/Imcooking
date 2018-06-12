@@ -94,6 +94,15 @@ public class AddCart {
         private String dish_available;
         private String dish_name;
         private String dish_price;
+        private String dish_quantity_selected;
+
+        public String getDish_quantity_selected() {
+            return dish_quantity_selected;
+        }
+
+        public void setDish_quantity_selected(String dish_quantity_selected) {
+            this.dish_quantity_selected = dish_quantity_selected;
+        }
 
         public String getDish_quantity() {
             return dish_quantity;

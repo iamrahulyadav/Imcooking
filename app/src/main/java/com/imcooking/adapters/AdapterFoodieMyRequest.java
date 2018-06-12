@@ -35,7 +35,7 @@ this.list=list;
     }
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView tv_view_response,txt_name,txt_address,txt_email,txt_time;
+        public TextView tv_view_response,txt_name,txt_address,txt_email,txt_time, txt_phn;
         public RatingBar ratingBar;
         public ImageView img_profile;
         public MyViewHolder(View view) {
@@ -48,10 +48,9 @@ this.list=list;
             txt_time = view.findViewById(R.id.item_foodie_my_request_time);
             img_profile=view.findViewById(R.id.item_foodie_my_request_profile_image);
             ratingBar=view.findViewById(R.id.item_foodie_my_request_rating);
+            txt_phn = view.findViewById(R.id.item_foodie_my_request_mob_number);
         }
     }
-
-    int row_index=-1;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -68,13 +67,13 @@ this.list=list;
       holder.txt_name.setText(list.get(position).getChef_name());
         holder.txt_address.setText(list.get(position).getChef_address());
         holder.txt_email.setText(list.get(position).getChef_email());
+        holder.txt_phn.setText(list.get(position).getChef_phone()+"");
       //  holder.txt_time.setText(foodie.get());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.img_profile);
         holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_view_response);
                 dialog.setCancelable(true);

@@ -96,12 +96,12 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
         tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
-        if(arr_like.get(position).equals("1")){
-            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
-
-        } else{
-            imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
-
+        if (arr_like!=null&&arr_like.size()>0){
+            if(arr_like.get(position).equals("1")){
+                imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
+            } else{
+                imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart)));
+            }
         }
         imgLike.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -112,10 +112,11 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_chef_name.setInputType(
                 InputType.TYPE_CLASS_TEXT|
                         InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-//        tv_chef_likes.setText(String.valueOf(chefDishBeans.get(position).getLike()));
-//        tv_chef_followers.setText(chefDishBeans.get(position).getFollow()+"");
-//        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles()+" miles");
-
+        tv_chef_likes.setText(String.valueOf(chefDishBeans.get(position).getLike()));
+        tv_chef_followers.setText(chefDishBeans.get(position).getFollow()+"");
+        if (chefDishBeans.get(position).getDistance()!=null){
+          //  tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles()+" miles");
+        }
         if (chefDishBeans.get(position).getDish_homedeliver()!=null){
             if (chefDishBeans.get(position).getDish_homedeliver().equalsIgnoreCase("No")){
                 tv_dish_delivery.setText("Pickup");
@@ -141,7 +142,6 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
                 Bundle bundle = new Bundle();
                 bundle.putString("dish_id", chefDishBeans.get(position).getDish_id() + "");
                 fragment.setArguments(bundle);
-
                 BaseClass.callFragment(fragment, fragment
                         .getClass().getName(), manager);
 

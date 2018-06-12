@@ -181,6 +181,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         layout.setVisibility(View.VISIBLE);
+                   /*     if(dishDetails.getDish_details().)
+                        imgLike.setImageResource();*/
                         txtDishName.setText(dishDetails.getDish_details().getDish_name());
                         txtChefName.setText(dishDetails.getDish_details().getChef_name());
                         txtPrice.setText("£"+dishDetails.getDish_details().getDish_price());

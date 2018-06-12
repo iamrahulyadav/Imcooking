@@ -44,6 +44,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.FavoriteCusine;
 import com.imcooking.activity.Sub.Foodie.Help;
+import com.imcooking.activity.Sub.Foodie.ManageAddress;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.ChefMyOrderListFragment;
@@ -405,7 +406,10 @@ public class MainActivity extends AppBaseActivity
             case R.id.navigation_help:
                 startActivity(new Intent(getApplicationContext(), Help.class));
                 overridePendingTransition(R.anim.enter, R.anim.exit);
-
+                break;
+            case R.id.navigation_address:
+                startActivity(new Intent(getApplicationContext(), ManageAddress.class));
+                overridePendingTransition(R.anim.enter, R.anim.exit);
                 break;
             default:
                 break;
