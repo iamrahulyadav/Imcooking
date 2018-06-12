@@ -13,7 +13,11 @@ import com.imcooking.R;
 import com.imcooking.adapters.ChefILoveAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +54,26 @@ public class ChefILove extends AppBaseActivity {
     ChefIloveData chefIloveData = new ChefIloveData();
 
     private void getChefLove(String foodie_id){
-        String request = "{\"foodie_id\":"+foodie_id+"}";
+        String request = "{\"foodie_id\":" + foodie_id + "}";
+        try {
+            JSONObject jsonObject = new JSONObject(request);
+            new GetData(getApplicationContext()).sendMyData(jsonObject, "cheflove", ChefILove.this,
+                    new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            chefIloveData = gson.fromJson(result, ChefIloveData.class);
+                            if (chefIloveData!=null && chefIloveData.getCheflove()!=null){
+                                chefloveBeanList.addAll(chefIloveData.getCheflove());
+                                setChefLove();
+                            }   else {
+                                BaseClass.showToast(getApplicationContext(), "You are not following any chef yet.");
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+/*
         new GetData(getApplicationContext(), ChefILove.this).getResponse(request, "cheflove", new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
@@ -68,6 +91,7 @@ public class ChefILove extends AppBaseActivity {
             }
         }
         );
+*/
     }
 
     private void setChefLove(){
