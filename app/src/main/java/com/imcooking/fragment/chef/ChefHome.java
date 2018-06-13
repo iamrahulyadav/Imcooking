@@ -88,8 +88,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     }
 
     String TAG = ChefProfile.class.getName(), phoneNo;
-    public static ChefProfileData chefProfileData = new ChefProfileData();
-    //    public  static ChefProfileData1 chefProfileData = new ChefProfileData1();
     public static ChefProfileData1 chefProfileData1;
     TextView txtName, txtAddress, txtFollowers, btn_follow;
     ImageView imgChef, imgBack;
@@ -228,17 +226,20 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     if (chefProfileData1.getChef_data().getRating() != null) {
                                         ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
                                     }
+                                    if (chefProfileData1
+                                            .getChef_data().getChef_image()!=null){
+                                        Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
+                                                .getChef_data().getChef_image())
+                                                .into(imgChef);
+                                    } else {
+                                        imgChef.setBackgroundResource(R.drawable.details_profile);
+                                    }
+
 //                                    tv_deactivate.setText(chefProfileData1.getChef_data().get);
-                                    Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
-                                            .getChef_data().getChef_image())
-//                               .placeholder( R.drawable.progress_animation )
-                                            .into(imgChef);
 
                                     int i = Integer.parseInt(chefProfileData1.getChef_data().getFollow());
                                     if (chefProfileData1.getChef_data().getChef_foodie_follow() == 0)
                                         btn_follow.setText("Follow");
-
-
                                     else if (chefProfileData1.getChef_data().getChef_foodie_follow() == 1) {
                                         btn_follow.setText("Unfollow");
                                     } else {
@@ -481,7 +482,6 @@ for(int i=0;i<jsonArray.length();i++){
             Log.d("TAGFOLL",s);
             JSONObject jsonObject = new JSONObject(s);
 
-
 //            layout.setVisibility(View.GONE);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, "follow",
                     getActivity(), new GetData.MyCallback() {
@@ -493,20 +493,19 @@ for(int i=0;i<jsonArray.length();i++){
                                 if (followUnfollow.getMsg().equals("Successfully follow")){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
                                     btn_follow.setText("Unfollow");
-
+/*
                                     txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
                                             .replace(" Followers",""))+1 + " Followers");
+*/
 
 //                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText()));
                                 }
                                 else if (followUnfollow.getMsg().equals("Successfully unfollow")){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
-                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace("Followers",""))
-                                            -1 + " Followers");
+                                   /* txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace("Followers",""))
+                                            -1 + " Followers");*/
                                     btn_follow.setText("Follow");
                                 }
-
-
                             }else {
                                 Toast.makeText(getContext(), "Something went Wrong", Toast.LENGTH_SHORT).show();
                             }

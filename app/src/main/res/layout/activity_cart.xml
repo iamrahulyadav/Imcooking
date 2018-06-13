@@ -5,12 +5,15 @@
     android:fitsSystemWindows="true"
     android:background="@color/colorWhite"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="5dp"
-            android:layout_below="@+id/linearlayout_prof">
+            android:id="@+id/cart_layput">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,8 +93,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:id="@+id/activity_cart_rating"
                                 style="@style/Widget.AppCompat.RatingBar.Small"
-                                android:progressTint="#FEF200"
-                                />
+                                android:progressTint="#FEF200" />
 
                             <TextView
                                 android:id="@+id/chef_name"
@@ -319,12 +321,13 @@
                         android:gravity="center_vertical"  >
 
                         <com.imcooking.customtext.CustomTextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Select an Address"
                             android:textColor="@color/colorBlack"
                             android:textSize="10sp"
                             android:gravity="left"
+                            android:paddingLeft="5dp"
                             android:id="@+id/activity_cart_txtAddress"
                             android:layout_weight="1"
                             />
@@ -465,5 +468,57 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_no_record_image"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"
+            android:layout_marginTop="130dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/cart"/>
+            <com.imcooking.customtext.CustomTextButtonTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:textSize="@dimen/largesize"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:text="Your Cart is empty !"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="Add Items to it now."
+                android:textColor="@color/coloCart"/>
 
-    </android.support.v4.widget.NestedScrollView>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop Now "
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/button_bg"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:id="@+id/activity_cart_shop_now"/>
+
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+</android.support.v4.widget.NestedScrollView>

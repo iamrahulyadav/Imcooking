@@ -97,7 +97,6 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
             }
         });
 
-
         if (chefDishBeans.get(position).getDish_image()!=null&&chefDishBeans.get(position).getDish_image().size()>0){
             Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                     .get(position).getDish_image().get(0))

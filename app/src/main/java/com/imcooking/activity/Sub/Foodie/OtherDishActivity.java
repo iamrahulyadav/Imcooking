@@ -115,7 +115,9 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                                     Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL+otherDish.getChef().getChef_image())
                                             .into(imgPic);
                                 }
-                                setDishAdapter();
+                                if (chefDishBeans!=null && chefDishBeans.size()>0){
+                                    setDishAdapter(chefDishBeans);
+                                }
                             }
                         }
                     }
@@ -124,7 +126,7 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
         });
     }
 
-    private void setDishAdapter(){
+    private void setDishAdapter(List<OtherDish.ChefDishBean>chefDishBeans){
         otherDishAdatper = new OtherDishAdatper(getApplicationContext(),chefDishBeans);
         recyclerView.setAdapter(otherDishAdatper);
         otherDishAdatper.CuisionInterfaceMethod(this);

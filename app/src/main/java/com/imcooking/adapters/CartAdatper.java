@@ -20,6 +20,7 @@ import com.imcooking.Model.api.response.CartAddedItemList;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -75,6 +76,8 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
                     bindListener(getAdapterPosition(),cartInterface);
                 }
             });
+
+
         }
 
         void bindListener(final int position, final CartInterface listener) {
@@ -95,7 +98,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     public void CartInterfaceMethod(CartInterface cartInterface) {
         this.cartInterface = cartInterface;
     }
-
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -137,39 +139,18 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         holder.txtPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CartAddedItemList cartAddedItemList = new CartAddedItemList();
                 if (count[0]< finalDish_available1){
                     dishCount[0] = String.valueOf(++count[0]);
                     holder.txt_DishCount.setText(dishCount[0]);
                     totalDishPrice[0] = String.valueOf(count[0] * price[0]);
                     pricelist.set(position, count[0] * price[0]);
                     CartActivity.txtTotalprice.setText(String.valueOf(getprice(pricelist)));
-                    holder.txt_DishPrice.setText("$" + totalDishPrice[0]);
-                    cartAddedItemList.setDish_qyt(dishCount[0]);
-                    cartAddedItemList.setDish_id(dishDetails.get((int) holder.txtPlus.getTag()).getDish_id() + "");
-                    cartAddedItemList.setDish_price(dishDetails.get((int) holder.txtPlus.getTag()).getDish_price());
-                    cartAddedItemList.setDish_qyt(holder.txt_DishCount.getText().toString());
-                    cartAddedItemList.setPosition((int) holder.txtPlus.getTag());
-                    cartAddedItemLists.add(cartAddedItemList);
-
-                    Set<CartAddedItemList> catBeans1 = new TreeSet<>(new Comparator<CartAddedItemList>() {
-                        @Override
-                        public int compare(CartAddedItemList catBean, CartAddedItemList t1) {
-                            if (catBean.getPosition() == (t1.getPosition())) {
-                                if (Integer.parseInt(catBean.getDish_qyt()) > Integer.parseInt(t1.getDish_qyt())) {
-                                }
-                                return 0;
-                            }
-                            return 1;
-                        }
-                    });
-                    catBeans1.addAll(cartAddedItemLists);
-                    cartAddedItemLists.clear();
-                    cartAddedItemLists.addAll(catBeans1);
+                    holder.txt_DishPrice.setText("£" + totalDishPrice[0]);
+                } else {
+                    BaseClass.showToast(context, "Maximum Number available with chef");
                 }
             }
         });
-
 
         holder.txtMinus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,10 +163,9 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
                     totalDishPrice[0] = String.valueOf(count[0]* price[0]);
                     pricelist.set(position,(count[0]* price[0]));
                     CartActivity.txtTotalprice.setText(String.valueOf(getprice(pricelist)));
-                    holder.txt_DishPrice.setText("$"+totalDishPrice[0]);
+                    holder.txt_DishPrice.setText("£"+totalDishPrice[0]);
 //                    cartAddedItemList.setDish_qyt(dishCount[0]);
                     holder.txt_DishCount.getText().toString().trim();
-
                 }
                 else{
                     Toast.makeText(context, "minimum item added", Toast.LENGTH_SHORT).show();
@@ -196,9 +176,8 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 dishDetails.get(position).getDish_image()).into(holder.imgDish);
-        holder.txt_DishPrice.setText("$"+String.valueOf(dishDetails.get(position).getDish_price()));
+        holder.txt_DishPrice.setText("£"+String.valueOf(dishDetails.get(position).getDish_price()));
 
-        //holder.txtTotal.setText(String.valueOf(getprice()));
     }
 
     @Override
@@ -213,9 +192,6 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         }
         return sum;
     }
-
-
-
 
 
 }

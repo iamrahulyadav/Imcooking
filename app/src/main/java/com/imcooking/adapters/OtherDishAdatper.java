@@ -68,12 +68,10 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
         }
     }
 
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.other_dish_view, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
@@ -81,30 +79,31 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-//        if(chefDishBeans.get(position).getDish_quantity() != null) {
-            holder.tv_dish_count.setText(chefDishBeans.get(position).getDish_quantity());
-//        } else {
-//
-//        }
-        holder.txtName.setText(chefDishBeans.get(position).getDish_name());
-        holder.tv_dish_price.setText("$" + chefDishBeans
-                .get(position).getDish_price());
-        if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("No")){
-            holder.txtDeliverytype.setText("Pickup");
-            holder.imgPickUp.setVisibility(View.VISIBLE);
-        } else if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("YES")
-                && chefDishBeans.get(position).getDish_pickup().equalsIgnoreCase("YES")){
-            holder.txtDeliverytype.setText("Home Delivery / Pickup");
-            holder.imgDeliviery.setVisibility(View.VISIBLE);
-            holder.imgPickUp.setVisibility(View.VISIBLE);
-        } else {
-            holder.imgDeliviery.setVisibility(View.VISIBLE);
-            holder.txtDeliverytype.setText("Home Delivery");
+        if (chefDishBeans!=null && chefDishBeans.size()>0){
+            if(chefDishBeans.get(position).getDish_quantity() != null) {
+                holder.tv_dish_count.setText(chefDishBeans.get(position).getDish_quantity());
+            }
+            holder.txtName.setText(chefDishBeans.get(position).getDish_name());
+            holder.tv_dish_price.setText("$" + chefDishBeans
+                    .get(position).getDish_price());
+            if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("No")){
+                holder.txtDeliverytype.setText("Pickup");
+                holder.imgPickUp.setVisibility(View.VISIBLE);
+            } else if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("YES")
+                    && chefDishBeans.get(position).getDish_pickup().equalsIgnoreCase("YES")){
+                holder.txtDeliverytype.setText("Home Delivery / Pickup");
+                holder.imgDeliviery.setVisibility(View.VISIBLE);
+                holder.imgPickUp.setVisibility(View.VISIBLE);
+            } else {
+                holder.imgDeliviery.setVisibility(View.VISIBLE);
+                holder.txtDeliverytype.setText("Home Delivery");
+            }
+            if (chefDishBeans.get(position).getDish_image()!=null && chefDishBeans.get(position).getDish_image().size()>0){
+                Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
+                        .get(position).getDish_image().get(0)).into(holder.iv_dish_image);
+            }
+            }
         }
-
-        Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
-                .get(position).getDish_image().get(0)).into(holder.iv_dish_image);
-    }
 
     @Override
     public int getItemCount() {

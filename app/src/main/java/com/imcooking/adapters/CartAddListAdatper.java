@@ -18,57 +18,54 @@ import java.util.List;
  * Contact Number : +91 9958187463
  */
 
-public class AddListAdatper extends RecyclerView.Adapter<AddListAdatper.MyViewHolder> {
+public class CartAddListAdatper extends RecyclerView.Adapter<CartAddListAdatper.MyViewHolder> {
     AddInterfaceMethod addInterfaceMethod;
     private Context context;
     private List<AddressListData.AddressBean>addressBeanList = new ArrayList<>();
 
-    public AddListAdatper(Context context, List<AddressListData.AddressBean> addressBeanList) {
+    public CartAddListAdatper(Context context, List<AddressListData.AddressBean> addressBeanList) {
         this.context = context;
         this.addressBeanList = addressBeanList;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView title, address, txtEdit, txtDelete;
+        public TextView title, address;
 
         public MyViewHolder(View view) {
             super(view);
 
             title = view.findViewById(R.id.manage_address_title);
             address = view.findViewById(R.id.manage_address_address);
-            txtEdit = view.findViewById(R.id.manage_address_txtEdit);
-            txtDelete = view.findViewById(R.id.manage_address_txtDelete);
-            txtEdit.setOnClickListener(this);
-            txtDelete.setOnClickListener(this);
+            itemView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.manage_address_txtEdit:
-                    if (addInterfaceMethod != null) {
-                        addInterfaceMethod.AddressInterfaceMethod(view, getPosition(), "edit");
-                    }
-                    break;
-                case R.id.manage_address_txtDelete:
-                    if (addInterfaceMethod != null) {
-                        addInterfaceMethod.AddressInterfaceMethod(view, getPosition(), "delete");
-                    }
-                    break;
+            if (addInterfaceMethod != null) {
+                addInterfaceMethod.AddressInterfaceMethod(view, getAdapterPosition());
             }
+           /* switch (view.getId()){
+                case R.id.manage_address_address:
+                    if (addInterfaceMethod != null) {
+                        addInterfaceMethod.AddressInterfaceMethod(view, getPosition());
+                    }
+                    break;
+
+            }*/
         }
     }
     public interface AddInterfaceMethod {
-        void AddressInterfaceMethod(View view, int position, String tag);
+        void AddressInterfaceMethod(View view, int position);
     }
-    public void AddInterfaceMethod(AddListAdatper.AddInterfaceMethod quoteInterface) {
+    public void AddInterfaceMethod(AddInterfaceMethod quoteInterface) {
         this.addInterfaceMethod = quoteInterface;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_address_list_view, parent, false);
+                .inflate(R.layout.item_cart_address_list_view, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -79,20 +76,6 @@ public class AddListAdatper extends RecyclerView.Adapter<AddListAdatper.MyViewHo
         holder.title.setText(addressBeanList.get(position).getAddress_title());
         holder.address.setText(addressBeanList.get(position).getAddress_address());
 
-      /*  holder.txtDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
-                deleteAdd(HomeFragment.foodie_id+"", addressBeanList.get(position).getAddress_id()+"");
-            }
-        });*/
-
-        /*holder.txtEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, ""+position, Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
     @Override

@@ -485,8 +485,6 @@ public class HomeFragment extends Fragment implements
         if (data!=null){
             if(resultCode== FilterHomeActivity.FILTER_RESPONSE_CODE)
             {
-//                Toast.makeText(getContext(), ""+data.getFloatExtra("ratingvalue",0), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getContext(), ""+data.getIntExtra("progressChangedValue",0), Toast.LENGTH_SHORT).show();
                 filter_data(data.getFloatExtra("ratingvalue", 0),
                         data.getIntExtra("progressChangedValue", 0));
             } else if (requestCode==2){
@@ -505,18 +503,21 @@ public class HomeFragment extends Fragment implements
         for(int i=0; i<chefDishBeans.size(); i++){
             HomeData.ChefDishBean list = chefDishBeans.get(i);
 
-            if(list.getRating().equals((rating.intValue() + "")) /*&& list.getDish_price().equals(price + "")*/){
+            if(list.getRating().equals((rating.intValue() + "")) /*&& list.getDish_price().equals(price + "")*/) {
                 favorite_1.add(list);
             }
-
-
         }
 
         for(int i=0; i<favorite_1.size(); i++){
             arr_like_status_1.add(favorite_1.get(i).getDishlike());
         }
 
-        setMyViewPager(favorite_1);
+        if (favorite_1!=null && favorite_1.size()>0){
+            viewPager.setVisibility(View.GONE);
+            setMyViewPager(favorite_1);
+        } else {
+            layout_no_record_found.setVisibility(View.VISIBLE);
+        }
        /* favorite_2.clear();
         for(int i=0; i<favouriteDataBeans.size(); i++){
             HomeData.FavouriteDataBean list = favouriteDataBeans.get(i);

@@ -92,16 +92,12 @@ public class FavoriteCusine extends AppBaseActivity {
                     "foodie_my_cuisine_list", FavoriteCusine.this, new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-
                             data = new ModelFoodieFavCuisines();
                             data = new Gson().fromJson(result, ModelFoodieFavCuisines.class);
 
                             if(data.isStatus()){
-
                                 setMyAdapter(data.getCuisine_data());
-
                             }
-
                         }
                     });
         } catch (JSONException e) {

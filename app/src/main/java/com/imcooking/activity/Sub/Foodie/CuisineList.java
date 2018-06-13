@@ -104,7 +104,6 @@ public class CuisineList extends AppBaseActivity implements AdapterCuisineList.c
                 for (int j = 0; j < FavoriteCusine.data.getCuisine_data().size(); j++) {
                     if (FavoriteCusine.data.getCuisine_data().get(j).getCuisine_name()
                             .equals(cuisineData.getCuisine_data().get(i).getCuisine_name())) {
-
                         arrayList.set(i, "1");
                     }
                 }
@@ -121,7 +120,6 @@ public class CuisineList extends AppBaseActivity implements AdapterCuisineList.c
         if(arrayList.get(position).equals("1")) {
             arrayList.set(position, "0");
         } else {
-
             arrayList.set(position, "1");
         }
         adapter.notifyDataSetChanged();

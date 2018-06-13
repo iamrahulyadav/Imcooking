@@ -1,19 +1,17 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -26,7 +24,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.wallet.Cart;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
 import com.imcooking.Model.api.response.AddCart;
@@ -34,6 +31,7 @@ import com.imcooking.Model.api.response.AddressListData;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.adapters.CartAdatper;
+import com.imcooking.adapters.CartAddListAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.splash.SplashActivity;
 import com.imcooking.utils.BaseClass;
@@ -49,8 +47,8 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface{
-    TextView txtChef_Name ,tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
+public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
+    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
     ImageView imgChefImg;
     int foodie_id;
@@ -58,8 +56,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     RadioGroup radioGroup;
     private Spinner addressSpi;
     RadioButton radioButtoncheck;
-    LinearLayout linearLayoutplaceorde,linearLayoutpayment,linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
-    public static TextView  txtTax,txtTotalprice;
+    LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
+    public static TextView txtTax,txtTotalprice;
     RecyclerView recyclerView;
     private String type="";
 
@@ -78,6 +76,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
         txtPayment = findViewById(R.id.tv_payment);
+        txtShopNow = findViewById(R.id.activity_cart_shop_now);
         txt_to_time_value = findViewById(R.id.actvity_cart_txtToTime);
         txt_time_picker = findViewById(R.id.actvity_cart_txtFromTimeValue);
         txt_add_address = findViewById(R.id.cart_addnewaddress);
@@ -91,8 +90,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         ratingBar=findViewById(R.id.activity_cart_rating);
         txtfollowers=findViewById(R.id.activity_cart_tv_chef_followers);
         radioGroup=findViewById(R.id.radioGroup);
+        cartLayout = findViewById(R.id.cart_layput);
+        no_record_Layout = findViewById(R.id.home_no_record_image);
         //int idradio=radioGroup.getCheckedRadioButtonId();
         // radioButton=findViewById(idradio);
+
         linearLayoutplaceorde=findViewById(R.id.cart_Linearlayout_placeorder);
         linearLayoutpayment=findViewById(R.id.cart_linearlayout_payment);
         linearLayout_delivery=findViewById(R.id.linearlayout_delivery_address);
@@ -117,7 +119,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
                 if(checkedId==R.id.radioButton1){
                     linearLayout_delivery.setVisibility(View.VISIBLE);
                     linearLayout_pickup.setVisibility(View.GONE);
@@ -138,6 +139,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         txt_add_address.setOnClickListener(this);
         linearTo.setOnClickListener(this);
         txtPayment.setOnClickListener(this);
+        txtShopNow.setOnClickListener(this);
     }
 
     CartAdatper cartAdatper;
@@ -165,8 +167,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     List<AddCart.AddDishBean> dishDetails;
     AddToCart addToCart;
-    String TAG = CartActivity.class.getName();
+    String TAG = CartActivity.class.getName(),chef_id;
+
     private void setdetails() {
+        cartLayout.setVisibility(View.GONE);
         dishDetails = new ArrayList<>();
         addToCart=new AddToCart();
         addToCart.setFoodie_id(foodie_id);
@@ -183,7 +187,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                         ApiResponse apiResponse = new Gson().fromJson(response,
                                                 ApiResponse.class);
                                         if(apiResponse.isStatus()){
+                                            no_record_Layout.setVisibility(View.GONE);
+                                            cartLayout.setVisibility(View.VISIBLE);
                                             txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
+                                            chef_id = apiResponse.getAdd_cart().getChef_id()+"";
                                             // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
                                             if (apiResponse.getAdd_cart().getFollow()>1){
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Followers");
@@ -192,13 +199,20 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
                                             HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
-                                            Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
-                                                    apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
+                                            if (apiResponse.getAdd_cart().getChef_image()!=null){
+
+                                                Log.d(TAG, "run: "+GetData.IMG_BASE_URL + apiResponse.getAdd_cart().getChef_image());
+                                                Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
+                                                        apiResponse.getAdd_cart().getChef_image()).skipMemoryCache().into(imgChefImg);
+                                            } else {
+                                                imgChefImg.setBackgroundResource(R.drawable.details_profile);
+                                            }
                                             ratingBar.setRating(apiResponse.getAdd_cart().getRating());
                                             dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
-
                                             setMyAdapter(dishDetails);
-//
+                                            }
+                                            else {
+                                            no_record_Layout.setVisibility(View.VISIBLE);
                                         }
                                     }
                                 });
@@ -242,7 +256,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 setTime(type);
                 break;
             case R.id.tv_payment:
-
+                break;
+            case R.id.activity_cart_shop_now:
+                finish();
                 break;
         }
     }
@@ -259,28 +275,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
-    private void addressSpinner(List<String>addressList) {
-        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getApplicationContext(),
-                R.layout.spinner_row, addressList);
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
-        addressSpi.setAdapter(arrayAdapter);
-        arrayAdapter.notifyDataSetChanged();
-
-        addressSpi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void addressDialog(final List<AddressListData.AddressBean> addressBeanList) {
+        txt_address.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-                txt_address.setText(item);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View view) {
+                openDialog(addressBeanList);
             }
         });
-
-//        openDialog();
     }
 
     @Override
@@ -292,12 +293,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
     }
-    private List<AddressListData.AddressBean> addressBeanList = new ArrayList<>();
+    private List<AddressListData.AddressBean> addressBeanList;
 
     private void getAddress(){
-        if (addressBeanList!=null){
-            addressBeanList.clear();
-        }
+        addressBeanList = new ArrayList<>();
         new GetData(getApplicationContext(), CartActivity.this).getResponse("{\"foodie_id\":" +
                 HomeFragment.foodie_id + "}", "addresslist", new GetData.MyCallback() {
             @Override
@@ -311,11 +310,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             addressListData = new Gson().fromJson(result, AddressListData.class);
                             if (addressListData.getAddress()!=null){
                                 addressBeanList.addAll(addressListData.getAddress());
-                                List<String>addressList = new ArrayList<>();
-                                for (int i=0;i<addressBeanList.size();i++){
-                                    addressList.add(addressBeanList.get(i).getAddress_address());
-                                }
-                                addressSpinner(addressList);
+                                addressDialog(addressBeanList);
                             }
                         }
                     }
@@ -329,8 +324,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void CartInterfaceMethod(View view, int position) {
-        Toast.makeText(this, ""+position, Toast.LENGTH_SHORT).show();
-        String chef_id = addToCart.getChef_id()+"";
         deleteData(position, chef_id);
     }
 
@@ -344,6 +337,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         addToCart.setAddcart_id(dishDetails.get(pos).getAddcart_id()+"");
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(addToCart));
+            Log.d(TAG, "deleteData: "+jsonObject);
             new GetData(getApplicationContext(), CartActivity.this).sendMyData(jsonObject, GetData.ADD_CART, CartActivity.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
@@ -352,21 +346,38 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     cartAdatper.notifyDataSetChanged();
                 }
             });
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-
-    private void openDialog(){
-        Dialog dialog = new Dialog(getApplicationContext());
-        dialog.setContentView(R.layout.add_address_details_view);
+    private BottomSheetDialog dialog;
+    private void openDialog(List<AddressListData.AddressBean> addressBeanList){
+        dialog = new BottomSheetDialog(CartActivity.this);
+        dialog.setContentView(R.layout.dialog_cart_address);
+        RecyclerView recyclerView = dialog.findViewById(R.id.dialog_cart_address_recycler);
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(horizontalLayoutManagaer);
         dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
+        setAddList(recyclerView, addressBeanList);
     }
 
+    private CartAddListAdatper addListAdatper;
+    private void setAddList(RecyclerView savedAddress,  List<AddressListData.AddressBean> addressBeanList){
+        addListAdatper = new CartAddListAdatper(getApplicationContext(), addressBeanList);
+        savedAddress.setAdapter(addListAdatper);
+        addListAdatper.AddInterfaceMethod(this);
+    }
 
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void AddressInterfaceMethod(View view, int position) {
+        dialog.dismiss();
+        txt_address.setText(addressBeanList.get(position).getAddress_title()+" : \n \n"
+                +addressBeanList.get(position).getAddress_address());
+    }
 }

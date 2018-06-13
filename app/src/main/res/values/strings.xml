@@ -45,4 +45,9 @@
 
     <string name="network_error">Please Check Your Internet Connection</string>
     <string name="server_error">Server Error</string>
+
+    <!--dialog cart chef added-->
+    <string name="txt_foodie_info">Oops! you can\'t add dishes from other chef. To add this dish(which is from different chef) you need to remove dishes from previously added chef.</string>
+    <string name="txt_foodie_yes">Remove</string>
+    <string name="txt_foodie_no">Cancel</string>
 </resources>
