@@ -99,7 +99,7 @@ public class CuisineList extends AppBaseActivity implements AdapterCuisineList.c
 
     private void markMyFav(CuisineData cuisineData){
 
-        if(FavoriteCusine.data.getCuisine_data() != null) {
+        if(FavoriteCusine.data!=null && FavoriteCusine.data.getCuisine_data() != null) {
             for (int i = 0; i < cuisineData.getCuisine_data().size(); i++) {
                 for (int j = 0; j < FavoriteCusine.data.getCuisine_data().size(); j++) {
                     if (FavoriteCusine.data.getCuisine_data().get(j).getCuisine_name()

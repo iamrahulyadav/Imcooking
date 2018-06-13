@@ -137,11 +137,9 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
                                 callback.onSuccess(str);
 
-                                //        Toast.makeText(activity,responseJson.toString(),Toast.LENGTH_SHORT).show();
                             else
                                 BaseClass.showToast(context, "ServerError");
 
-                            // responseJson.toString();
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -161,7 +159,6 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
             requestQueue.add(jsonObjReq);
 
-//        Toast.makeText(activity,str,Toast.LENGTH_SHORT).show();
         }
         return str;
 
