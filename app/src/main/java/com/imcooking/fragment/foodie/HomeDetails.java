@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
-import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
@@ -89,7 +88,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
 
         init();
-
+        createMyDialog();
     }
 
     private ImageView iv_share, imgTop,imgPickUp, imgDeliviery, imgChef;
@@ -156,7 +155,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         }
     }
 
-    String chef_id,dishId;
+    String chef_id;
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
     ArrayList<String>nameList = new ArrayList<>();
@@ -187,8 +186,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                         txtDishName.setText(dishDetails.getDish_details().getDish_name());
                         txtChefName.setText(dishDetails.getDish_details().getChef_name());
                         txtPrice.setText("£"+dishDetails.getDish_details().getDish_price());
-                        chef_id=dishDetails.getDish_details().getChef_id();
-                        dishId=dishDetails.getDish_details().getDish_id();
+                        chef_id = dishDetails.getDish_details().getChef_id()+"";
                         if (dishDetails.getDish_details().getDish_available().equalsIgnoreCase("yes")){
                             txtAvailable.setText("Available ");
                             txtAvailable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_circle, 0);
@@ -280,21 +278,15 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                             .putExtra("foodie_id", foodie_id),
                     ChefProfile.CHEF_PROFILE_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        }
-        else if (id == R.id.home_details_txtOtherDish){
+
+        } else if (id == R.id.home_details_txtOtherDish){
             startActivityForResult(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id)
                     ,OtherDishActivity.OTHER_DISH_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
-        else if (id == R.id.tv_add_to_cart){
 
-            AddToCart addToCart=new AddToCart();
-            addToCart.setChef_id(Integer.parseInt(chef_id));
-            addToCart.setFoodie_id(foodie_id);
-            addToCart.setDish_id(dishId);
-            addToCart.setAddcart_yes("");
-            addToCart.setAddcart_id("");
-            addCart(addToCart);
+        else if (id == R.id.tv_add_to_cart){
+            addCart();
         }
 
         else if (id == R.id.home_details_heart){
@@ -306,6 +298,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         String s ="{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id + ",\"dish_id\":" + id + "}";
         try {
             JSONObject jsonObject = new JSONObject(s);
+            Log.d("MyRequest", jsonObject.toString());
 
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, "dishlike", getActivity(),
                     new GetData.MyCallback() {
@@ -340,8 +333,15 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void addCart(AddToCart addToCart) {
-
+    public void addCart() {
+        String chef_id=dishDetails.getDish_details().getChef_id();
+        String dishId=dishDetails.getDish_details().getDish_id();
+        AddToCart addToCart=new AddToCart();
+        addToCart.setChef_id(Integer.parseInt(chef_id));
+        addToCart.setFoodie_id(foodie_id);
+        addToCart.setDish_id(dishId);
+        addToCart.setAddcart_yes("yes");
+        addToCart.setAddcart_id("");
         Log.d(TAG, "addCart: "+new Gson().toJson(addToCart));
         new GetData(getContext(), getActivity())
                 .getResponse(new Gson().toJson(addToCart), "addcart",
@@ -354,9 +354,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                     public void run() {
                                         ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
                                         if (apiResponse.isStatus()){
-                                            createMyDialog();
-                                        } else if (apiResponse.getMsg().equalsIgnoreCase("This chef already added")){
-                                            chefMsgDialog();
+                                            dialog.show();
                                         } else {
                                             Toast.makeText(getContext(), apiResponse.getMsg(), Toast.LENGTH_SHORT).show();
                                         }
@@ -369,7 +367,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     private void createMyDialog(){
         dialog= new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_add_to_cart);
-        dialog.show();
 
      dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
          @Override
@@ -381,37 +378,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
     }
-
-    private void chefMsgDialog(){
-        dialog= new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_cart_chef_added);
-
-        dialog.findViewById(R.id.dialog_cart_chef_txt_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.findViewById(R.id.dialog_cart_chef_txt_remove).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddToCart addToCart=new AddToCart();
-                addToCart.setChef_id(Integer.parseInt(chef_id));
-                addToCart.setFoodie_id(foodie_id);
-                addToCart.setDish_id(dishId);
-                addToCart.setAddcart_yes("yes");
-                addToCart.setAddcart_id("");
-                addCart(addToCart);
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(null);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

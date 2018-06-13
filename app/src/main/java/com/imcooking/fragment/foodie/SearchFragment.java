@@ -69,10 +69,12 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
         tinyDB = new TinyDB(getContext());
         token  = tinyDB.getString("access_token") ;
         languagecode = tinyDB.getString("language_code");
-//        setLanguages(languagecode);
+
+        //        setLanguages(languagecode);
         // actionBar=getSupportActionBar();
         // if(actionBar!=null) actionBar.hide();
 //        imgBack=findViewById(R.id.activity_home_search_back);
+
         etSearchHome  = getView().findViewById(R.id.etSearch_home) ;
         etSearchHome.addTextChangedListener(new TextWatcher() {
             @Override
@@ -86,6 +88,10 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else{
+                    arr_id.clear(); arr_name.clear(); arr_type.clear();
+                    if(adapter != null)
+                    adapter.notifyDataSetChanged();
                 }
             }
             @Override
@@ -133,7 +139,7 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
                         Log.d("getchef", "inside");
                         if(chefAndDish.isStatus()) {
                             if ( chefAndDish.getResponse().getDish_lst().isEmpty()&&chefAndDish.getResponse().getUser_list().isEmpty()){
-                                BaseClass.showToast(getContext(), "No search found");
+                                BaseClass.showToast(getContext(), "No Search Found");
                             }
                             else {
                                 for (int i = 0; i < chefAndDish.getResponse().getDish_lst().size();i++){
@@ -150,8 +156,9 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
 
                                     Log.d("getchef_for", "\n" + new Gson().toJson(arr_name));
                                 }
-                                setMyAdapter();
+//                                setMyAdapter();
                             }
+                            setMyAdapter();
                         }
                         else {
                             BaseClass.showToast(getContext(), "Something Went Wrong");
@@ -181,9 +188,7 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
                             .putExtra("chef_id", arr_id.get(position))
                             .putExtra("foodie_id", HomeFragment.foodie_id));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-
         }
-
     }
 
 }

@@ -28,6 +28,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -360,6 +361,26 @@ public class MainActivity extends AppBaseActivity
         } else{
             super.onBackPressed();
         }
+    }
+
+    public static int i;
+    public static String my_tag;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        i = getSupportFragmentManager().getBackStackEntryCount();
+        my_tag = getSupportFragmentManager().getBackStackEntryAt(i-1).getName();
+//        Toast.makeText(this, my_tag, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+//        i =
+//        Toast.makeText(this, "yes2", Toast.LENGTH_SHORT).show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

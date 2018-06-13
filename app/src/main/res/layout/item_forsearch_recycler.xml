@@ -17,7 +17,7 @@
     android:id="@+id/item_forsear_recycler_tv_list"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height=".3dp"
         android:background="@color/view_6" />
 
 </LinearLayout>

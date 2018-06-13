@@ -11,15 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.DishLikersFragment;
+import com.imcooking.fragment.foodie.SearchFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -67,6 +70,16 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
     private LinearLayout layout_current_dish_no_record, layout_old_dish_no_record;
 
     private void init(){
+
+/*
+        int i11 = new MainActivity().getSupportFragmentManager().getBackStackEntryCount();
+        String tag = new MainActivity().getSupportFragmentManager()
+                .getBackStackEntryAt(i11-1).getName();
+        if(tag.equals(new SearchFragment().getTag())){
+            Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
+        }
+*/
+
 
         layout_current_dish_no_record = getView().findViewById(R.id.chef_dish_list_current_dish_no_record);
         layout_old_dish_no_record = getView().findViewById(R.id.chef_dish_list_old_dish_no_record);
