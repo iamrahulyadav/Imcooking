@@ -82,7 +82,6 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_dish_address.setVisibility(View.GONE);
         tv_dish_likes.setText(chefDishBeans.get(position).getDishlikeno() + "");
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
-        BaseClass.showToast(context, chefDishBeans.get(position).getDishlikeno() + "");
 //        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
         if(arr_like.get(position).equals("1")){

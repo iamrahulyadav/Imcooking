@@ -380,4 +380,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         txt_address.setText(addressBeanList.get(position).getAddress_title()+" : \n \n"
                 +addressBeanList.get(position).getAddress_address());
     }
+
+
 }
