@@ -39,6 +39,7 @@ public class ModelChefEditDish {
     private String pickup;
     private String deliverymiles;
     private String dish_video;
+
     private List<String> dish_image;
 
     public String getDish_id() {

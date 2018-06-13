@@ -14,7 +14,8 @@
             android:id="@+id/navigation_cuisine"
             android:title="My cuisine" />
         <item
-            android:title="My address" />
+            android:title="My address"
+            android:id="@+id/navigation_address" />
         <item
             android:title="Help"
             android:id="@+id/navigation_help"/>

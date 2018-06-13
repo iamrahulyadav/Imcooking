@@ -9,6 +9,15 @@ public class AddToCart {
     private int chef_id;
     private String dish_id;
     private int foodie_id;
+    private String addcart_yes;
+
+    public String getAddcart_yes() {
+        return addcart_yes;
+    }
+
+    public void setAddcart_yes(String addcart_yes) {
+        this.addcart_yes = addcart_yes;
+    }
 
     public String getAddcart_id() {
         return addcart_id;

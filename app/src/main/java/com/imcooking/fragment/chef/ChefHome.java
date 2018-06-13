@@ -1,12 +1,14 @@
 package com.imcooking.fragment.chef;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,7 +87,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         return inflater.inflate(R.layout.fragment_chef_home_1, container, false);
     }
 
-    String TAG = ChefProfile.class.getName();
+    String TAG = ChefProfile.class.getName(), phoneNo;
     public static ChefProfileData chefProfileData = new ChefProfileData();
     //    public  static ChefProfileData1 chefProfileData = new ChefProfileData1();
     public static ChefProfileData1 chefProfileData1;
@@ -94,6 +97,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     ViewPager pager;
 
     private TextView tv_phoneno;
+    private RatingBar ratingBar;
     private LinearLayout layout;
 
     private String loginData, user_type; public static String chef_id;
@@ -139,30 +143,27 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private TabLayout tabLayout;
     private ImageView iv_settings, heart;
 
-    private ProgressBar progressBar;
-//    private AppBarLayout layout;
-
     private void init() {
         btn_call = getView().findViewById(R.id.chef_home_call_btn);
         layout = getView().findViewById(R.id.layout_chef_home);
 //        layout = getView().findViewById(R.id.app_bar);
-        progressBar = getView().findViewById(R.id.fragment_chef_home_progress);
         pager = getView().findViewById(R.id.cardet_viewpager);
         txtName = getView().findViewById(R.id.activity_chef_txtname);
         txtAddress = getView().findViewById(R.id.activity_chef_txtAdderss);
         txtFollowers = getView().findViewById(R.id.activity_chef_txtFollower);
         imgChef = getView().findViewById(R.id.chef_profile_image);
         imgBack = getView().findViewById(R.id.imgBack);
+        ratingBar = getView().findViewById(R.id.fragment_chef_home_rating);
 
         heart = getView().findViewById(R.id.chef_home_heart_icon);
         heart.setOnClickListener(this);
         btn_follow = getView().findViewById(R.id.chef_home_follow_button);
         btn_follow.setOnClickListener(this);
+        btn_call.setOnClickListener(this);
 
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
-        progressBar.setVisibility(View.VISIBLE);
         if (user_type.equals("2")) {
             btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
@@ -214,6 +215,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                     chefProfileData1 = new ChefProfileData1();
                     chefProfileData1 = new Gson().fromJson(result, ChefProfileData1.class);
                     getActivity().runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void run() {
                             if (chefProfileData1 != null) {
@@ -223,24 +225,32 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 //                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
                                     txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                     tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                    if (chefProfileData1.getChef_data().getRating() != null) {
+                                        ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
+                                    }
 //                                    tv_deactivate.setText(chefProfileData1.getChef_data().get);
                                     Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
                                             .getChef_data().getChef_image())
 //                               .placeholder( R.drawable.progress_animation )
                                             .into(imgChef);
-                                    if(chefProfileData1.getChef_data().getChef_foodie_follow()==0)
-                                        btn_follow.setText("Follow");
-                                    }
-                                    else  if(chefProfileData1.getChef_data().getChef_foodie_follow()==1){
 
+                                    int i = Integer.parseInt(chefProfileData1.getChef_data().getFollow());
+                                    if (chefProfileData1.getChef_data().getChef_foodie_follow() == 0)
+                                        btn_follow.setText("Follow");
+
+
+                                    else if (chefProfileData1.getChef_data().getChef_foodie_follow() == 1) {
                                         btn_follow.setText("Unfollow");
+                                    } else {
+                                        btn_follow.setText("");
                                     }
+
                                     if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) == 1) {
-                                        txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Follower");
+                                        txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
                                     } else if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) > 1) {
                                         txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
-                                    }
-                                    else {
+                                    } else {
+                                        txtFollowers.setText(" 0 Follower");
                                     }
                                     viewPager = getView().findViewById(R.id.chef_home_viewpager);
                                     tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
@@ -251,6 +261,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     BaseClass.showToast(getContext(), "Something Went Wrong.");
                                 }
                             }
+                        }
+
                     });
                 }
 /*
@@ -395,7 +407,6 @@ for(int i=0;i<jsonArray.length();i++){
         // Sets the Bitmap returned by doInBackground
         @Override
         protected void onPostExecute(Bitmap result) {
-            progressBar.setVisibility(View.GONE);
             imgChef.setImageBitmap(result);
         }
 
@@ -482,10 +493,16 @@ for(int i=0;i<jsonArray.length();i++){
                                 if (followUnfollow.getMsg().equals("Successfully follow")){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
                                     btn_follow.setText("Unfollow");
+
+                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
+                                            .replace(" Followers",""))+1 + " Followers");
+
 //                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText()));
                                 }
                                 else if (followUnfollow.getMsg().equals("Successfully unfollow")){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
+                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace("Followers",""))
+                                            -1 + " Followers");
                                     btn_follow.setText("Follow");
                                 }
 
@@ -572,11 +589,8 @@ for(int i=0;i<jsonArray.length();i++){
 
         int id = view.getId();
         if (id == R.id.chef_home_settings) {
-
             PopupWindow popupwindow_obj = showMyPopup();
             popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
-
-
         } else if (id == R.id.chef_home_popup_edit_profile) {
 
             startActivity(new Intent(getContext(), ChefEditProfile.class));
@@ -587,7 +601,6 @@ for(int i=0;i<jsonArray.length();i++){
         } else if (id == R.id.chef_home_popup_deacivate) {
             startActivity(new Intent(getContext(), ChefActivateDeactivate.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-
         } else if (id == R.id.chef_home_popup_logout) {
             new TinyDB(getContext()).remove("login_data");
             startActivity(new Intent(getContext(), LoginActivity.class));
@@ -597,6 +610,13 @@ for(int i=0;i<jsonArray.length();i++){
         }
         else if (id == R.id.chef_home_heart_icon){
             BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+        }
+        else if (id == R.id.chef_home_call_btn){
+            phoneNo = tv_phoneno.getText().toString().trim();
+            if (phoneNo!=null){
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNo, null));
+                startActivity(intent);
+            }
         }
     }
 
@@ -636,4 +656,5 @@ for(int i=0;i<jsonArray.length();i++){
     public boolean onMenuItemClick(MenuItem item) {
         return false;
     }
+
 }

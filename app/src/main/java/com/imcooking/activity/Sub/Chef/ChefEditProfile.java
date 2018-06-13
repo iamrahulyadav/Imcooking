@@ -584,6 +584,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                                 GetImage task = new GetImage();
                                 // Execute the task
                                 task.execute(new String[] { url });
+                            } else {
+                                progressBar.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -25,6 +26,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.wallet.Cart;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
 import com.imcooking.Model.api.response.AddCart;
@@ -38,15 +40,18 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener{
+public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface{
     TextView txtChef_Name ,tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
-    txt_to_time_value,txtPayment;
+            txt_to_time_value,txtPayment;
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
@@ -86,54 +91,55 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         ratingBar=findViewById(R.id.activity_cart_rating);
         txtfollowers=findViewById(R.id.activity_cart_tv_chef_followers);
         radioGroup=findViewById(R.id.radioGroup);
-      //int idradio=radioGroup.getCheckedRadioButtonId();
-     // radioButton=findViewById(idradio);
-      linearLayoutplaceorde=findViewById(R.id.cart_Linearlayout_placeorder);
-      linearLayoutpayment=findViewById(R.id.cart_linearlayout_payment);
-      linearLayout_delivery=findViewById(R.id.linearlayout_delivery_address);
-      linearLayout_pickup=findViewById(R.id.linearlayout_pickup_address);
-      tvAdditem=findViewById(R.id.cart_tv_addnewitem);
-      tvplaceorder=findViewById(R.id.cart_tv_place_order);
-      linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
+        //int idradio=radioGroup.getCheckedRadioButtonId();
+        // radioButton=findViewById(idradio);
+        linearLayoutplaceorde=findViewById(R.id.cart_Linearlayout_placeorder);
+        linearLayoutpayment=findViewById(R.id.cart_linearlayout_payment);
+        linearLayout_delivery=findViewById(R.id.linearlayout_delivery_address);
+        linearLayout_pickup=findViewById(R.id.linearlayout_pickup_address);
+        tvAdditem=findViewById(R.id.cart_tv_addnewitem);
+        tvplaceorder=findViewById(R.id.cart_tv_place_order);
+        linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
 
 //       set listener
-      setListener();
+        setListener();
 
-      StringBuffer stringBuffer = new StringBuffer();
-      if (SplashActivity.latitude!=0.0&& SplashActivity.longitude!=0.0){
-          try {
-              stringBuffer =BaseClass.getAddress(getApplicationContext(), new LatLng(SplashActivity.latitude, SplashActivity.longitude));
-              txt_pick_add.setText(stringBuffer.toString());
-          } catch (IOException e) {
-              e.printStackTrace();
-          }
-      }
-      radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-          @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-          @Override
-          public void onCheckedChanged(RadioGroup group, int checkedId) {
+        StringBuffer stringBuffer = new StringBuffer();
+        if (SplashActivity.latitude!=0.0&& SplashActivity.longitude!=0.0){
+            try {
+                stringBuffer =BaseClass.getAddress(getApplicationContext(), new LatLng(SplashActivity.latitude, SplashActivity.longitude));
+                txt_pick_add.setText(stringBuffer.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-             if(checkedId==R.id.radioButton1){
-                 linearLayout_delivery.setVisibility(View.VISIBLE);
-                 linearLayout_pickup.setVisibility(View.GONE);
-             }
-             else if(checkedId==R.id.radioButton2){
-                 linearLayout_delivery.setVisibility(View.GONE);
-                 linearLayout_pickup.setVisibility(View.VISIBLE);
-             }
-             }
-      });
-       setdetails();
+                if(checkedId==R.id.radioButton1){
+                    linearLayout_delivery.setVisibility(View.VISIBLE);
+                    linearLayout_pickup.setVisibility(View.GONE);
+                }
+                else if(checkedId==R.id.radioButton2){
+                    linearLayout_delivery.setVisibility(View.GONE);
+                    linearLayout_pickup.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        setdetails();
     }
 
     private void setListener(){
-      linear_time_picker.setOnClickListener(this);
-      tvAdditem.setOnClickListener(this);
-      tvplaceorder.setOnClickListener(this);
-      txt_add_address.setOnClickListener(this);
-      linearTo.setOnClickListener(this);
-      txtPayment.setOnClickListener(this);
+        linear_time_picker.setOnClickListener(this);
+        tvAdditem.setOnClickListener(this);
+        tvplaceorder.setOnClickListener(this);
+        txt_add_address.setOnClickListener(this);
+        linearTo.setOnClickListener(this);
+        txtPayment.setOnClickListener(this);
     }
+
     CartAdatper cartAdatper;
     private void setTime(final String type){
         Calendar mcurrentTime = Calendar.getInstance();
@@ -156,6 +162,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         mTimePicker.setTitle("Select Time");
         mTimePicker.show();
     }
+
     List<AddCart.AddDishBean> dishDetails;
     AddToCart addToCart;
     String TAG = CartActivity.class.getName();
@@ -176,23 +183,22 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                         ApiResponse apiResponse = new Gson().fromJson(response,
                                                 ApiResponse.class);
                                         if(apiResponse.isStatus()){
-                                           txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
-                                         // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
+                                            txtChef_Name.setText(apiResponse.getAdd_cart().getChef_name());
+                                            // imgChefImg.setImageURI(apiResponse.getAdd_cart().getChef_image());
                                             if (apiResponse.getAdd_cart().getFollow()>1){
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Followers");
                                             }
                                             else {
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
-                                          HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
+                                            HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
                                             Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
                                                     apiResponse.getAdd_cart().getChef_image()).into(imgChefImg);
-                                                ratingBar.setRating(apiResponse.getAdd_cart().getRating());
-                                                dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
-                                                cartAdatper = new CartAdatper(getApplicationContext(),
-                                                    apiResponse.getAdd_cart().getAdd_dish(), CartActivity.this, apiResponse.getAdd_cart().getChef_id()+"");
+                                            ratingBar.setRating(apiResponse.getAdd_cart().getRating());
+                                            dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
 
-                                            recyclerView.setAdapter(cartAdatper);
+                                            setMyAdapter(dishDetails);
+//
                                         }
                                     }
                                 });
@@ -201,6 +207,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void setMyAdapter(List<AddCart.AddDishBean> dishDetails){
+        cartAdatper = new CartAdatper(getApplicationContext(),
+                dishDetails, this);
+        recyclerView.setAdapter(cartAdatper);
+        cartAdatper.CartInterfaceMethod(this);
+    }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
@@ -215,7 +227,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.radioGroup:
-               //if(){}
+                //if(){}
 
                 break;
             case R.id.actvity_cart_txtFromTime:
@@ -232,8 +244,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.tv_payment:
 
                 break;
+        }
     }
-}
 
     protected void onResume() {
         super.onResume();
@@ -267,6 +279,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+//        openDialog();
     }
 
     @Override
@@ -313,6 +327,46 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void makeOrder(){
     }
 
+    @Override
+    public void CartInterfaceMethod(View view, int position) {
+        Toast.makeText(this, ""+position, Toast.LENGTH_SHORT).show();
+        String chef_id = addToCart.getChef_id()+"";
+        deleteData(position, chef_id);
+    }
+
+    private void deleteData(final int pos, String chef_id){
+
+        String dishId=dishDetails.get(pos).getDish_id()+"";
+        AddToCart addToCart=new AddToCart();
+        addToCart.setChef_id(Integer.parseInt(chef_id));
+        addToCart.setFoodie_id(Integer.parseInt(HomeFragment.foodie_id));
+        addToCart.setDish_id(dishId);
+        addToCart.setAddcart_id(dishDetails.get(pos).getAddcart_id()+"");
+        try {
+            JSONObject jsonObject = new JSONObject(new Gson().toJson(addToCart));
+            new GetData(getApplicationContext(), CartActivity.this).sendMyData(jsonObject, GetData.ADD_CART, CartActivity.this, new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.d(CartAdatper.class.getName(), "Rakhi: "+result);
+                    dishDetails.remove(pos);
+                    cartAdatper.notifyDataSetChanged();
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void openDialog(){
+        Dialog dialog = new Dialog(getApplicationContext());
+        dialog.setContentView(R.layout.add_address_details_view);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
+    }
+
+
 }
-
-

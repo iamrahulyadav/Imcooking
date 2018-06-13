@@ -90,9 +90,35 @@ public class AddCart {
         private int addcart_id;
         private int dish_id;
         private String dish_image;
-
+        private String dish_quantity;
+        private String dish_available;
         private String dish_name;
         private String dish_price;
+        private String dish_quantity_selected;
+
+        public String getDish_quantity_selected() {
+            return dish_quantity_selected;
+        }
+
+        public void setDish_quantity_selected(String dish_quantity_selected) {
+            this.dish_quantity_selected = dish_quantity_selected;
+        }
+
+        public String getDish_quantity() {
+            return dish_quantity;
+        }
+
+        public void setDish_quantity(String dish_quantity) {
+            this.dish_quantity = dish_quantity;
+        }
+
+        public String getDish_available() {
+            return dish_available;
+        }
+
+        public void setDish_available(String dish_available) {
+            this.dish_available = dish_available;
+        }
 
         public String getDish_price() {
             return dish_price;

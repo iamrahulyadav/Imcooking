@@ -16,6 +16,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.FoodieMyRequest;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterFoodieMyRequest;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
@@ -37,7 +38,6 @@ TinyDB tinyDB;
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,7 +51,6 @@ TinyDB tinyDB;
 
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         init();
-
     }
 
     private RecyclerView rv;
@@ -63,15 +62,16 @@ TinyDB tinyDB;
         rv.setLayoutManager(linearLayoutManager);
         myorderRequest();
     }
+
+
     public void myorderRequest(){
         tinyDB=new TinyDB(getContext());
-   String login = tinyDB.getString("login_data");
+        String login = tinyDB.getString("login_data");
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         int user_id=apiResponse.getUser_id();
 
         String s = "{\"foodie_id\":" + user_id + "}";
-       // String s = "{\"foodie_id\": 5}";
         try {
             JSONObject job = new JSONObject(s);
             new GetData(getContext(), getActivity()).sendMyData(job, "foodie_myrequestdish_chefdetails",
@@ -88,29 +88,22 @@ TinyDB tinyDB;
 
                             if(foodieMyRequest.isStatus()){
                                 if(!foodieMyRequest.getFoodie_request_dish_chef_details().isEmpty()){
-
                                     setMyAdapter(foodieMyRequest.getFoodie_request_dish_chef_details());
                                 }
                                 else {
-                                    Toast.makeText(getContext(), "No request found", Toast.LENGTH_SHORT).show();
+                                    BaseClass.showToast(getContext(),"No request found");
                                 }
                             }
                             else {
-                                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-
+                                BaseClass.showToast(getContext(), "Something went wrong");
                             }
-
                         }
                     });
                 }
             });
-
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     private void setMyAdapter(List<FoodieMyRequest.FoodieRequestDishChefDetailsBean> list ){
