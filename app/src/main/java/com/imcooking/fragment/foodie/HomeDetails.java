@@ -286,12 +286,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         }
 
         else if (id == R.id.tv_add_to_cart){
-
             addCart(v);
-
         }
-        else if (id == R.id.home_details_heart){
 
+        else if (id == R.id.home_details_heart){
             dishlike();
         }
     }
