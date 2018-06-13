@@ -50,6 +50,7 @@ import java.util.List;
 
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface{
+
     TextView txtChef_Name ,tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
     ImageView imgChefImg;
@@ -68,14 +69,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         if (extras != null) {
             foodie_id = extras.getInt("foodie_id");
             // and get whatever type user account id is
         }
+
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
         txtPayment = findViewById(R.id.tv_payment);
         txt_to_time_value = findViewById(R.id.actvity_cart_txtToTime);

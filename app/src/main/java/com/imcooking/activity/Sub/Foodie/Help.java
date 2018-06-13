@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.imcooking.R;
 import com.imcooking.utils.AppBaseActivity;
+import com.imcooking.utils.BaseClass;
 
 public class Help extends AppBaseActivity {
 
@@ -13,6 +14,7 @@ public class Help extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
+        BaseClass.setLightStatusBar(getWindow().getDecorView(),Help.this);
     }
 
     public void help_legal(View view){

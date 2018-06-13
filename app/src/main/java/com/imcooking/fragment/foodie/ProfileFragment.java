@@ -61,7 +61,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
 
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         init();
     }
 
@@ -185,7 +184,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             JSONObject jsonObject1 = new JSONObject(result);
                             if (jsonObject1.getBoolean("status")){
                                 JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
-                                String url = GetData.IMG_BASE_URL+imgObj.getString("user_image");
+                                String url = GetData.IMG_BASE_URL + imgObj.getString("user_image");
+
+                                Log.d("ProfileImage", url);
+
                                 GetImage task = new GetImage();
                                 // Execute the task
                                 task.execute(new String[] { url });
@@ -263,5 +265,4 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             return stream;
         }
     }
-
 }

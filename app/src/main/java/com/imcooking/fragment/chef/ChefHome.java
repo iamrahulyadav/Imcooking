@@ -501,7 +501,7 @@ for(int i=0;i<jsonArray.length();i++){
                                 }
                                 else if (followUnfollow.getMsg().equals("Successfully unfollow")){
                                     Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
-                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace("Followers",""))
+                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace(" Followers",""))
                                             -1 + " Followers");
                                     btn_follow.setText("Follow");
                                 }

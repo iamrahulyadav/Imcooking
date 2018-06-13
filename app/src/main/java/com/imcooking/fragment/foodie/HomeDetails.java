@@ -286,7 +286,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         }
 
         else if (id == R.id.tv_add_to_cart){
-            addCart(v);
+            addCart();
         }
 
         else if (id == R.id.home_details_heart){
@@ -298,6 +298,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         String s ="{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id + ",\"dish_id\":" + id + "}";
         try {
             JSONObject jsonObject = new JSONObject(s);
+            Log.d("MyRequest", jsonObject.toString());
 
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, "dishlike", getActivity(),
                     new GetData.MyCallback() {
@@ -332,7 +333,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void addCart(View view) {
+    public void addCart() {
         String chef_id=dishDetails.getDish_details().getChef_id();
         String dishId=dishDetails.getDish_details().getDish_id();
         AddToCart addToCart=new AddToCart();
