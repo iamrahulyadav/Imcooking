@@ -14,12 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.fragment.chef.ChefDishDetail;
+import com.imcooking.fragment.foodie.HomeDetails;
+import com.imcooking.fragment.foodie.SearchFragment;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -169,11 +173,40 @@ public class AdapterChefDishList extends PagerAdapter{
                                 .commit();
                     } else if(activity.getClass().getName().equals(ChefProfile.class.getName())){
 
-                        Intent intent = new Intent();
-                        intent.putExtra("dish_id", chef_dish_list.get(position).getDish_id() + "");
-                        activity.setResult(ChefProfile.CHEF_PROFILE_CODE, intent);
-//                Log.d("VKK", gson.toJson(listModel));
-                        activity.finish();
+//                        Toast.makeText(context, "called", Toast.LENGTH_SHORT).show();
+//                        int i = new MainActivity().getSupportFragmentManager().getBackStackEntryCount();
+//                        Toast.makeText(context,  i + "", Toast.LENGTH_SHORT).show();
+//                        String tag = ""; //new MainActivity().getSupportFragmentManager()
+//                                .getBackStackEntryAt(i-1).getName();
+                        if(MainActivity.my_tag.equals(new SearchFragment().getClass().getName())){
+//                            Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
+                            HomeDetails fragment1 = new HomeDetails();
+                            Bundle bundle1 = new Bundle();
+                            bundle1.putString("dish_id", chef_dish_list.get(position).getDish_id() + "");
+                            fragment1.setArguments(bundle1);
+
+                            manager.beginTransaction().replace(R.id.frame_chef_profile, fragment1).commit();
+
+//                            BaseClass.callFragment(fragment1, fragment1
+//                                    .getClass().getName(), manager);
+
+                        } else {
+//                        if(new MainActivity().getSupportFragmentManager().findFragmentByTag(new SearchFragment().getTag()) == null){
+                            Intent intent = new Intent();
+                            intent.putExtra("dish_id", chef_dish_list.get(position).getDish_id() + "");
+                            activity.setResult(ChefProfile.CHEF_PROFILE_CODE, intent);
+                            activity.finish();
+                        }
+/*
+                        } else {
+                            manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,
+                                    R.animator.fade_out,
+                                    0,
+                                    R.animator.fragment_slide_right_exit)
+                                    .replace(R.id.frame, fragment).addToBackStack(fragment.getClass().getName())
+                                    .commit();
+                        }
+*/
 
 
 /*                        manager.beginTransaction().setCustomAnimations(R.animator.fragment_slide_left_enter,

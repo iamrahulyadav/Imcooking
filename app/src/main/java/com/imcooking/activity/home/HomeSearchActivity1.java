@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChefSearch.SearchClickInterface{
+
     public static final String RESPONSE_DATA = "location" ;
     public static final int RESPONSE_LOCATION = 200;
     AdapterChefSearch adapter ;
@@ -72,10 +74,32 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else{
+
                 }
             }
             @Override
             public void afterTextChanged(Editable editable) {}
+        });
+
+        etSearchHome.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DEL) {
+                    if(etSearchHome.getText().toString().length() >2){
+                        String keyword = etSearchHome.getText().toString().trim();
+                        try {
+                            getChefList(keyword);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else{
+                        arr_id.clear(); arr_name.clear(); arr_type.clear();
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+                return false;
+            }
         });
 
        /* etSearchLocation.setOnTouchListener(new View.OnTouchListener() {
@@ -125,13 +149,10 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
                         chefAndDish = new Gson().fromJson(result, ChefAndDish.class);
 
                         arr_id.clear(); arr_name.clear(); arr_type.clear();
-                        Log.d("getchef", "inside");
                         if(chefAndDish.isStatus()) {
-
-
                             if ( chefAndDish.getResponse().getDish_lst().isEmpty()){
-                                BaseClass.showToast(getApplicationContext(), "No search found");
-
+                                BaseClass.showToast(getApplicationContext(), "No Search Found");
+                                adapter.notifyDataSetChanged();
                             }
                             else {
                                 for (int i = 0; i < chefAndDish.getResponse().getDish_lst().size();i++){
@@ -147,18 +168,14 @@ public class HomeSearchActivity1 extends AppCompatActivity implements AdapterChe
                                     arr_id.add(chefAndDish.getResponse().getUser_list().get(i).getUser_id() + "");
                                     arr_name.add(chefAndDish.getResponse().getUser_list().get(i).getUser_name() + " \t (Chef Name)");
                                     arr_type.add("User");
-
-                                    Log.d("getchef_for", "\n" + String.valueOf(chefAndDish.getResponse().getUser_list().get(i)));
                                 }
-
-                                setMyAdapter();
+//                                setMyAdapter();
                             }
-
+                            setMyAdapter();
                         }
                         else {
                             BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                         }
-
                     }
                 });
     }

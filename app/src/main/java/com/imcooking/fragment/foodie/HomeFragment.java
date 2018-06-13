@@ -105,7 +105,6 @@ public class HomeFragment extends Fragment implements
     private CuisineData cuisineData = new CuisineData();
     private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -474,9 +473,7 @@ public class HomeFragment extends Fragment implements
         } else if (v.getId()==R.id.fragment_home_search_img){
             BaseClass.callFragment1(new SearchFragment(), new SearchFragment().getClass().getName()
                     , getFragmentManager());
-//            startActivity(new Intent(getContext(), HomeSearchActivity1.class));
-//            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        }
+        } else {}
     }
 
     @Override

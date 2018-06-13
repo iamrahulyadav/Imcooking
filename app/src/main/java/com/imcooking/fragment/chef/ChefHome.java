@@ -359,97 +359,6 @@ for(int i=0;i<jsonArray.length();i++){
         });
     }
 
-    private void getUserProfile(String str_id){
-        String request = "{\"user_id\":" + str_id + "\"}";
-        try {
-            JSONObject jsonObject = new JSONObject(request);
-            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.GETPROFILE_PIC, getActivity(), new GetData.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.d("TAG", "Rakhi: "+result);
-                    if (result!=null){
-                        try {
-                            JSONObject jsonObject1 = new JSONObject(result);
-                            if (jsonObject1.getBoolean("status")){
-                                JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
-                                String url = GetData.IMG_BASE_URL+imgObj.getString("user_image");
-                                Log.d(TAG, "Rakhi :"+url);
-                                GetImage task = new GetImage();
-                                // Execute the task
-                                task.execute(new String[] { url });
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public class GetImage extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-            Bitmap map = null;
-            for (String url : urls) {
-                map = downloadImage(url);
-            }
-            return map;
-        }
-
-        // Sets the Bitmap returned by doInBackground
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            imgChef.setImageBitmap(result);
-        }
-
-        // Creates Bitmap from InputStream and returns it
-        private Bitmap downloadImage(String url) {
-            Bitmap bitmap = null;
-            InputStream stream = null;
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inSampleSize = 1;
-
-            try {
-                stream = getHttpConnection(url);
-                bitmap = BitmapFactory.
-                        decodeStream(stream, null, bmOptions);
-                stream.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        // Makes HttpURLConnection and returns InputStream
-        private InputStream getHttpConnection(String urlString)
-                throws IOException {
-            InputStream stream = null;
-            URL url = new URL(urlString);
-            URLConnection connection = url.openConnection();
-
-            try {
-                HttpURLConnection httpConnection = (HttpURLConnection) connection;
-                httpConnection.setRequestMethod("GET");
-                httpConnection.connect();
-
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    stream = httpConnection.getInputStream();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return stream;
-        }
-    }
-
     private void getCuisines(){
         try {
             String s = "";
@@ -461,11 +370,8 @@ for(int i=0;i<jsonArray.length();i++){
                     getActivity(), new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-//                            layout.setVisibility(View.VISIBLE);
-                            cuisineData = new Gson().fromJson(result, CuisineData.class);
-//                            cuisineList.addAll(cuisineData.getCuisine_data());
 
-//                            setMyCuisines(cuisineData);
+                            cuisineData = new Gson().fromJson(result, CuisineData.class);
                         }
                     });
         } catch (JSONException e) {
@@ -562,22 +468,14 @@ for(int i=0;i<jsonArray.length();i++){
 //        getchefProfile();
     }
 
-    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
-        Window win = activity.getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
-    }
-
     @Override
     public void onDestroyView() {
-
         super.onDestroyView();
 
+        if(popupwindow_obj != null) {
+            popupwindow_obj.dismiss();
+            popupwindow_obj = null;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -585,14 +483,25 @@ for(int i=0;i<jsonArray.length();i++){
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+
+        if(popupwindow_obj != null) {
+            popupwindow_obj.dismiss();
+            popupwindow_obj = null;
+        }
+
+    }
+
+    private PopupWindow popupwindow_obj;
+    @Override
     public void onClick(View view) {
 
         int id = view.getId();
         if (id == R.id.chef_home_settings) {
-            PopupWindow popupwindow_obj = showMyPopup();
+            popupwindow_obj = showMyPopup();
             popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
         } else if (id == R.id.chef_home_popup_edit_profile) {
-
             startActivity(new Intent(getContext(), ChefEditProfile.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (id == R.id.chef_home_popup_change_password) {
