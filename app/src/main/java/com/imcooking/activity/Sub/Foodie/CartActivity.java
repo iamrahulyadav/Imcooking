@@ -103,7 +103,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         tvplaceorder=findViewById(R.id.cart_tv_place_order);
         linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
 
-//       set listener
+        //       set listener
         setListener();
 
         StringBuffer stringBuffer = new StringBuffer();
@@ -152,7 +152,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//                    eReminderTime.setText( selectedHour + ":" + selectedMinute);
+                        //                    eReminderTime.setText( selectedHour + ":" + selectedMinute);
                         if (type.equalsIgnoreCase("to")){
                             txt_to_time_value.setText(selectedHour + " : " + selectedMinute);
                         } else if (type.equalsIgnoreCase("from")){
@@ -210,8 +210,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             ratingBar.setRating(apiResponse.getAdd_cart().getRating());
                                             dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
                                             setMyAdapter(dishDetails);
-                                            }
-                                            else {
+                                        }
+                                        else {
                                             no_record_Layout.setVisibility(View.VISIBLE);
                                         }
                                     }
@@ -267,11 +267,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         getAddress();
 
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }*/
+		   /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				Window w = getWindow(); // in Activity's onCreate() for instance
+				w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+				w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+			}*/
 
     }
 
@@ -287,11 +287,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         super.onStop();
-/*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }*/
+	/*
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				Window w = getWindow(); // in Activity's onCreate() for instance
+				w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+			}*/
     }
     private List<AddressListData.AddressBean> addressBeanList;
 
@@ -322,9 +322,20 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void makeOrder(){
     }
 
+    int c = 0;
     @Override
-    public void CartInterfaceMethod(View view, int position) {
-        deleteData(position, chef_id);
+    public void CartInterfaceMethod(View view, int position, String tag) {
+        if (tag.equalsIgnoreCase("delete")){
+            deleteData(position, chef_id);
+        } else if (tag.equalsIgnoreCase("plus")){
+            c++;
+            dishDetails.get(position).setDish_quantity_selected(c +"");
+            Log.d(TAG, "CartInterfaceMethod: "+c);
+        } else if (tag.equalsIgnoreCase("minus")){
+            dishDetails.get(position).setDish_quantity_selected(c +"");
+
+            Log.d(TAG, "CartInterfaceMethod: "+dishDetails);
+        }
     }
 
     private void deleteData(final int pos, String chef_id){
@@ -380,6 +391,4 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         txt_address.setText(addressBeanList.get(position).getAddress_title()+" : \n \n"
                 +addressBeanList.get(position).getAddress_address());
     }
-
-
 }
