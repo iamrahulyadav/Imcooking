@@ -51,6 +51,7 @@ public class GetData {
     public static String PROFILE_IMAGE="profileimage";
     public static String GETPROFILE_PIC ="get_user_profileimage";
     public static String ADD_CART = "addcart";
+    public static String CART_SELECTED_QTY = "cart_quantity_save";
 
 
     public GetData(final Context context, Activity activity) {

@@ -38,6 +38,7 @@ import java.util.TreeSet;
  * Contact Number : +91 9958187463
  */
 public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> {
+
     private Context context;
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
     static List<Double> pricelist = new ArrayList<Double>();
@@ -46,6 +47,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
     public CartAdatper(Context context,
                        List<AddCart.AddDishBean> dishDetails,CartInterface cartInterface) {
+
         this.context = context;
         this.dishDetails = dishDetails;
         this.cartInterface = cartInterface;
@@ -53,6 +55,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
+
         public TextView txtPlus,txtMinus,txt_DishPrice,txt_DishCount,txtDishName,txtTotal,txtTax;
         public ImageView imgDish, imgDelete;
 
@@ -60,54 +63,40 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
 
         public MyViewHolder(View view) {
             super(view);
+
             txtDishName = view.findViewById(R.id.tv_dish_name);
             txt_DishCount=view.findViewById(R.id.tv_dish_count);
             txtTax=view.findViewById(R.id.tv_tax);
             txt_DishPrice=view.findViewById(R.id.tv_dish_price);
             imgDish=view.findViewById(R.id.img_dish);
+
             txtPlus=view.findViewById(R.id.tv_plus);
             txtMinus=view.findViewById(R.id.tv_minus);
             imgDelete = view.findViewById(R.id.delete_added_dish_from_cart);
 
-            imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    bindListener(getAdapterPosition(),cartInterface,"delete");
-                }
-            });
-
             txtPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    bindListener(getAdapterPosition(), cartInterface, "plus");
+                    cartInterface.CartInterfaceMethod(getAdapterPosition(), "plus");
                 }
             });
             txtMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    bindListener(getAdapterPosition(), cartInterface, "minus");
+                    cartInterface.CartInterfaceMethod(getAdapterPosition(), "minus");
                 }
             });
-
-
-        }
-
-        void bindListener(final int position, final CartInterface listener, final String tag) {
-            itemView.setOnClickListener(new View.OnClickListener() {
+            imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    listener.CartInterfaceMethod(itemView,position, tag);
+                public void onClick(View view) {
+                    cartInterface.CartInterfaceMethod(getAdapterPosition(), "delete");
                 }
             });
         }
     }
 
     public interface CartInterface {
-        void CartInterfaceMethod(View view, int position, String tag);
-    }
-
-    public void CartInterfaceMethod(CartInterface cartInterface) {
-        this.cartInterface = cartInterface;
+        void CartInterfaceMethod(int position, String click_type);
     }
 
     @Override
@@ -122,7 +111,8 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
     List<CartAddedItemList> cartAddedItemLists;
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        myHolder=holder;
+    /*    myHolder=holder;
+
         final int[] count = {1};
         int dish_available = 0;
         final String[] dishCount = new String[1];
@@ -147,7 +137,7 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
         final int finalDish_available1 = dish_available;
         count[0] = Integer.parseInt(holder.txt_DishCount.getText().toString().trim());
 
-      /*  holder.txtPlus.setOnClickListener(new View.OnClickListener() {
+      *//*  holder.txtPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (count[0]< finalDish_available1){
@@ -182,12 +172,16 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
                     Toast.makeText(context, "minimum item added", Toast.LENGTH_SHORT).show();
                 }
             }
-        });*/
-
+        });*//*
+*/
+        holder.txt_DishCount.setText(dishDetails.get(position).getDish_quantity_selected());
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 dishDetails.get(position).getDish_image()).into(holder.imgDish);
-        holder.txt_DishPrice.setText("£"+String.valueOf(dishDetails.get(position).getDish_price()));
+        Double i = Double.parseDouble(dishDetails.get(position).getDish_price());
+        Double j = Double.parseDouble(dishDetails.get(position).getDish_quantity_selected());
+
+        holder.txt_DishPrice.setText("£" + (i * j));
 
     }
 

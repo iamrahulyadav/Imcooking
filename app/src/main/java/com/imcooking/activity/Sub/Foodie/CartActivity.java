@@ -48,6 +48,7 @@ import java.util.List;
 
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
+
     TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
     ImageView imgChefImg;
@@ -57,7 +58,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private Spinner addressSpi;
     RadioButton radioButtoncheck;
     LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
-    public static TextView txtTax,txtTotalprice;
+    private TextView txtTax,txtTotalprice;
     RecyclerView recyclerView;
     private String type="";
 
@@ -66,6 +67,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+/*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+*/
+
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -74,6 +82,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             foodie_id = extras.getInt("foodie_id");
             // and get whatever type user account id is
         }
+
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
         txtPayment = findViewById(R.id.tv_payment);
         txtShopNow = findViewById(R.id.activity_cart_shop_now);
@@ -92,6 +101,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         radioGroup=findViewById(R.id.radioGroup);
         cartLayout = findViewById(R.id.cart_layput);
         no_record_Layout = findViewById(R.id.home_no_record_image);
+
         //int idradio=radioGroup.getCheckedRadioButtonId();
         // radioButton=findViewById(idradio);
 
@@ -170,6 +180,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     String TAG = CartActivity.class.getName(),chef_id;
 
     private void setdetails() {
+
         cartLayout.setVisibility(View.GONE);
         dishDetails = new ArrayList<>();
         addToCart=new AddToCart();
@@ -209,6 +220,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             }
                                             ratingBar.setRating(apiResponse.getAdd_cart().getRating());
                                             dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
+
+                                            update_total_price();
                                             setMyAdapter(dishDetails);
                                         }
                                         else {
@@ -218,15 +231,27 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                 });
                             }
                         });
-
     }
 
     private void setMyAdapter(List<AddCart.AddDishBean> dishDetails){
         cartAdatper = new CartAdatper(getApplicationContext(),
                 dishDetails, this);
         recyclerView.setAdapter(cartAdatper);
-        cartAdatper.CartInterfaceMethod(this);
+//        cartAdatper.CartInterfaceMethod(this);
     }
+
+    private void update_total_price(){
+        double total_price = 0;
+        for(int i=0; i<dishDetails.size(); i++){
+            Double s_q = Double.parseDouble(dishDetails.get(i).getDish_quantity_selected());
+            Double d_p = Double.parseDouble(dishDetails .get(i).getDish_price());
+            Double s_price = d_p * s_q;
+            total_price = total_price + s_price;
+        }
+
+        txtTotalprice.setText("£" + total_price + "");
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
@@ -322,6 +347,60 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void makeOrder(){
     }
 
+    @Override
+    public void CartInterfaceMethod(int position, String click_type) {
+        if(click_type.equals("plus")){
+            int i = Integer.parseInt(dishDetails.get(position).getDish_quantity_selected());
+            if(i < Integer.parseInt(dishDetails.get(position).getDish_quantity())) {
+                plus_minus_api(position, (i+1));
+            } else{
+                BaseClass.showToast(getApplicationContext(),
+                        "You have reached maximum number of availablity for this item.");
+            }
+        } else if(click_type.equals("minus")){
+            int i = Integer.parseInt(dishDetails.get(position).getDish_quantity_selected());
+            if(i > 1) {
+                plus_minus_api(position, (i-1));
+            } else{
+                BaseClass.showToast(getApplicationContext(),
+                        "You can not select less than \"1\" item");
+            }
+        } else {
+            deleteData(position, chef_id);
+        }
+    }
+
+    private void plus_minus_api(final int position, final int selected_qty){
+        final String s = "{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id +
+                ",\"dish_id\":" + dishDetails.get(position).getDish_id() + ",\"dish_quantity\":" + selected_qty
+                + "}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            new GetData(getApplicationContext(), CartActivity.this).sendMyData(jsonObject,
+                    GetData.CART_SELECTED_QTY, CartActivity.this, new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            ApiResponse apiResponse = new Gson().fromJson(result, ApiResponse.class);
+                            if(apiResponse.isStatus()){
+                                if(apiResponse.getMsg().equals("update quantity in cart Successfully")){
+                                    dishDetails.get(position).setDish_quantity_selected(selected_qty + "");
+                                    cartAdatper.notifyDataSetChanged();
+                                    BaseClass.showToast(getApplicationContext(), "Updated Selected Item");
+                                    update_total_price();
+                                } else{
+                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
+                                }
+                            } else{
+                                BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    /*
     int c = 0;
     @Override
     public void CartInterfaceMethod(View view, int position, String tag) {
@@ -338,6 +417,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+*/
     private void deleteData(final int pos, String chef_id){
 
         String dishId=dishDetails.get(pos).getDish_id()+"";
@@ -346,15 +426,18 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         addToCart.setFoodie_id(Integer.parseInt(HomeFragment.foodie_id));
         addToCart.setDish_id(dishId);
         addToCart.setAddcart_id(dishDetails.get(pos).getAddcart_id()+"");
+
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(addToCart));
-            Log.d(TAG, "deleteData: "+jsonObject);
+            Log.d(TAG, "deleteData: " + jsonObject);
             new GetData(getApplicationContext(), CartActivity.this).sendMyData(jsonObject, GetData.ADD_CART, CartActivity.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d(CartAdatper.class.getName(), "Rakhi: "+result);
                     dishDetails.remove(pos);
                     cartAdatper.notifyDataSetChanged();
+                    BaseClass.showToast(getApplicationContext(), "Item successfully removed from your cart.");
+                    update_total_price();
                 }
             });
         } catch (JSONException e) {
@@ -391,4 +474,5 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         txt_address.setText(addressBeanList.get(position).getAddress_title()+" : \n \n"
                 +addressBeanList.get(position).getAddress_address());
     }
+
 }
