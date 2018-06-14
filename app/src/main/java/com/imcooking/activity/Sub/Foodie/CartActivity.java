@@ -49,10 +49,9 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
 
-    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
+    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
-    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address,
-            txt_time_picker,txt_pick_add, txt_add_new_item,txt_to_time_value,txtPayment;
+
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
