@@ -81,7 +81,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -192,6 +191,13 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                             } else {
                                 txtAvailable.setText("No");
                             }
+                            if (dishDetails.getDish_details().getFoodie_dish_like()!=null && Integer.parseInt(dishDetails.getDish_details().getFoodie_dish_like())==1)
+                                imgLike.setImageResource(R.drawable.ic_heart_red);
+                            else  if (dishDetails.getDish_details().getFoodie_dish_like()!=null &&
+                                    Integer.parseInt(dishDetails.getDish_details().getFoodie_dish_like())==0)
+                                imgLike.setImageResource(R.drawable.ic_heart);
+                            if (dishDetails.getDish_details().getDish_total_like()!=null)
+                                txtLike.setText(dishDetails.getDish_details().getDish_total_like());
                             if (dishDetails.getDish_details().getChef_image()!=null){
                                 Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails.getDish_details().getChef_image()).into(imgChef);
                             } else {
@@ -232,12 +238,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                         .getDish_details().getDish_image().get(0))
 //                                .placeholder( R.drawable.progress_animation )
                                         .into(imgTop);
-
-/*
-                        Picasso.with(getContext()).load("")
-//                                .placeholder( R.drawable.progress_animation )
-                                .into(imgChef);
-*/
 
                             adapter=new Pager1(getContext(), nameList);
                             pager.setAdapter(adapter);

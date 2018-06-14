@@ -43,11 +43,12 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView txtName,txtDeliverytype,tv_dish_count, tv_dish_price, txtTotalLike;
+        public TextView txtName,txtDeliverytype,tv_dish_count, tv_dish_price,txtAvailable, txtTotalLike;
         ImageView imgPickUp, iv_dish_image,imgDeliviery, imgHeart;
 
         public MyViewHolder(View view) {
             super(view);
+            txtAvailable = view.findViewById(R.id.other_dish_txtAvailable);
             imgDeliviery = view.findViewById(R.id.home_pager_imgHomeDelivery);
             imgPickUp = view.findViewById(R.id.home_pager_imgPick);
             imgHeart = view.findViewById(R.id.other_dish_view_heart);
@@ -109,7 +110,12 @@ public class OtherDishAdatper extends RecyclerView.Adapter<OtherDishAdatper.MyVi
                 holder.imgDeliviery.setVisibility(View.VISIBLE);
                 holder.txtDeliverytype.setText("Home Delivery");
             }
-
+            if (chefDishBeans.get(position).getDish_available().equalsIgnoreCase("yes")){
+                holder.txtAvailable.setText("Available ");
+                holder.txtAvailable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_circle, 0);
+            } else {
+               holder.txtAvailable.setText("No");
+            }
             if (chefDishBeans.get(position).getLikeno()!= null && Integer.parseInt(chefDishBeans.get(position).getLikeno())>0)
                 holder.txtTotalLike.setText(chefDishBeans.get(position).getLikeno());
             else holder.txtTotalLike.setText("0");

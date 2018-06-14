@@ -70,6 +70,15 @@ public class DishDetails {
         private List<String> dish_image;
         private String chef_image;
         private String foodie_dish_like;
+        private String dish_total_like;
+
+        public String getDish_total_like() {
+            return dish_total_like;
+        }
+
+        public void setDish_total_like(String dish_total_like) {
+            this.dish_total_like = dish_total_like;
+        }
 
         public String getChef_image() {
             return chef_image;

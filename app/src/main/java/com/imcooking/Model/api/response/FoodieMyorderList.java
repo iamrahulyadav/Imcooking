@@ -48,12 +48,12 @@ public class FoodieMyorderList {
         private String chef_image;
         private Object ordertime;
         private String bookdate;
-        private int price;
+        private String price;
         private String order_status;
         private String order_order_id;
-        private int order_id;
-        private int follow;
-        private double rating;
+        private String order_id;
+        private String follow;
+        private String rating;
 
         public int getChef_id() {
             return chef_id;
@@ -95,11 +95,11 @@ public class FoodieMyorderList {
             this.bookdate = bookdate;
         }
 
-        public int getPrice() {
+        public String getPrice() {
             return price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(String price) {
             this.price = price;
         }
 
@@ -119,27 +119,27 @@ public class FoodieMyorderList {
             this.order_order_id = order_order_id;
         }
 
-        public int getOrder_id() {
+        public String getOrder_id() {
             return order_id;
         }
 
-        public void setOrder_id(int order_id) {
+        public void setOrder_id(String order_id) {
             this.order_id = order_id;
         }
 
-        public int getFollow() {
+        public String getFollow() {
             return follow;
         }
 
-        public void setFollow(int follow) {
+        public void setFollow(String follow) {
             this.follow = follow;
         }
 
-        public double getRating() {
+        public String getRating() {
             return rating;
         }
 
-        public void setRating(double rating) {
+        public void setRating(String rating) {
             this.rating = rating;
         }
     }

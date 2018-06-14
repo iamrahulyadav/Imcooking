@@ -21,11 +21,11 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
+import com.imcooking.Model.ApiRequest.PlaceOrder;
 import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.Model.api.response.AddressListData;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -42,26 +42,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
 
-    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
+    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,
+            txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
-
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
     RadioGroup radioGroup;
     private Spinner addressSpi;
     RadioButton radioButtoncheck;
-    LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
+    LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,
+            linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
     private TextView txtTax,txtTotalprice;
     RecyclerView recyclerView;
-    private String type="";
+    private String type="", delivery_type="1" ;// 1 = delivery 2 = pickup
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -85,7 +88,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
-        txtPayment = findViewById(R.id.tv_payment);
+        txtPayment = findViewById(R.id.activity_cart_tv_payment);
         txtShopNow = findViewById(R.id.activity_cart_shop_now);
         txt_to_time_value = findViewById(R.id.actvity_cart_txtToTime);
         txt_add_new_item = findViewById(R.id.cart_tv_addnewitem);
@@ -130,13 +133,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId==R.id.radioButton1){
+                if(checkedId==R.id.radioButtonDelivery){
                     linearLayout_delivery.setVisibility(View.VISIBLE);
                     linearLayout_pickup.setVisibility(View.GONE);
+                    delivery_type = "1";
                 }
-                else if(checkedId==R.id.radioButton2){
+                else if(checkedId==R.id.radioButtonPick){
                     linearLayout_delivery.setVisibility(View.GONE);
                     linearLayout_pickup.setVisibility(View.VISIBLE);
+                    delivery_type = "2";
                 }
             }
         });
@@ -282,7 +287,56 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 type = "to";
                 setTime(type);
                 break;
-            case R.id.tv_payment:
+            case R.id.activity_cart_tv_payment:
+                /*
+                 * chef_id : 7
+                 * foodie_id : 2
+                 * dishorder : [{"dish_id":"2","quantity":"2","price":"100"},{"dish_id":"2","quantity":"2","price":"100"}]
+                 * delivery_type : 2
+                 * tax : 2.00
+                 * total_price : 200
+                 * address : 2
+                 * from_time : 245
+                 * to_time : 2
+                 * payment_type : cod
+                 * transaction_id : 45645645456
+                 * bookdate : 1
+                 */
+                if (txt_address.getText().toString().trim().isEmpty()){
+                    BaseClass.showToast(getApplicationContext(), "Please select an address");
+                } else {
+                    List<PlaceOrder.DishorderBean>dishorderBeanList = new ArrayList<>();
+
+                    for (int i = 0; i<dishDetails.size();i++){
+                        PlaceOrder.DishorderBean dishorderBean = new PlaceOrder.DishorderBean();
+                        dishorderBean.setDish_id(dishDetails.get(i).getDish_id()+"");
+                        dishorderBean.setPrice(dishDetails.get(i).getDish_price());
+                        dishorderBean.setQuantity(dishDetails.get(i).getDish_quantity_selected());
+                        dishorderBeanList.add(dishorderBean);
+                    }
+
+                    PlaceOrder placeOrder = new PlaceOrder();
+                    Date currentTime = Calendar.getInstance().getTime();
+                    SimpleDateFormat spf= new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+                    String date = spf.format(currentTime);
+                    Log.d(TAG, "Rakhi "+date);
+                    placeOrder.setChef_id(chef_id);
+                    placeOrder.setFoodie_id(foodie_id+"");
+
+                    placeOrder.setDishorder(dishorderBeanList);
+                    placeOrder.setDelivery_type(delivery_type);
+                    placeOrder.setTax("");
+                    placeOrder.setTotal_price(txtTotalprice.getText().toString().trim());
+                    placeOrder.setAddress(txt_address.getText().toString().trim());
+                    placeOrder.setFrom_time(txt_time_picker.getText().toString().trim());
+                    placeOrder.setTo_time(txt_to_time_value.getText().toString().trim());
+                    placeOrder.setBookdate(date);
+                    placeOrder.setPayment_type("");
+                    placeOrder.setTransaction_id("COD");
+                    startActivity(new Intent(CartActivity.this, PaymentActivity.class)
+                            .putExtra("order_details", new Gson().toJson(placeOrder)));
+                }
+
                 break;
             case R.id.activity_cart_shop_now:
                 finish();
@@ -346,9 +400,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void makeOrder(){
-    }
-
     @Override
     public void CartInterfaceMethod(int position, String click_type) {
         if(click_type.equals("plus")){
@@ -402,22 +453,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-    /*
-    int c = 0;
-    @Override
-    public void CartInterfaceMethod(View view, int position, String tag) {
-        if (tag.equalsIgnoreCase("delete")){
-            deleteData(position, chef_id);
-        } else if (tag.equalsIgnoreCase("plus")){
-            c++;
-            dishDetails.get(position).setDish_quantity_selected(c +"");
-            Log.d(TAG, "CartInterfaceMethod: "+c);
-        } else if (tag.equalsIgnoreCase("minus")){
-            dishDetails.get(position).setDish_quantity_selected(c +"");
-        }
-    }
 
-*/
     private void deleteData(final int pos, String chef_id){
 
         String dishId=dishDetails.get(pos).getDish_id()+"";

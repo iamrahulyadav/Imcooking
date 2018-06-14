@@ -92,6 +92,7 @@
         <activity android:name=".activity.Sub.Chef.ChangePassword" />
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />
+        <activity android:name=".activity.Sub.Foodie.PaymentActivity"></activity>
     </application>
 
 </manifest>
