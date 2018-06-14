@@ -54,6 +54,8 @@ public class GetData {
     public static String DISH_LIKE= "dishlike";
     public static String DISH_DETAILS = "dishdetails";
     public static String DISH_CHEF = "dishchef";
+    public static String CART_SELECTED_QTY = "cart_quantity_save";
+
 
     public GetData(final Context context, Activity activity) {
 /*

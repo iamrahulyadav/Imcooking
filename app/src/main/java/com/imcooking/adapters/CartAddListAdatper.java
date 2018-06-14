@@ -55,6 +55,7 @@ public class CartAddListAdatper extends RecyclerView.Adapter<CartAddListAdatper.
             }*/
         }
     }
+
     public interface AddInterfaceMethod {
         void AddressInterfaceMethod(View view, int position);
     }
