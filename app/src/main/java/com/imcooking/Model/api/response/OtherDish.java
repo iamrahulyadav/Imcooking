@@ -143,6 +143,8 @@ public class OtherDish {
          * dish_image : ["1520916866chaatpapri.jpg","1520916894alumatar.jpg","1525170327cccoba.jpg","1525170327cobbaa.jpg","1525170327cobba.jpg"]
          */
 
+        private String dishlike;
+        private String likeno;
         private int dish_like;
         private int dish_id;
         private String dish_name;
@@ -158,6 +160,22 @@ public class OtherDish {
         private String dish_pickup;
         private int dish_deliverymiles;
         private List<String> dish_image;
+
+        public String getDishlike() {
+            return dishlike;
+        }
+
+        public void setDishlike(String dishlike) {
+            this.dishlike = dishlike;
+        }
+
+        public String getLikeno() {
+            return likeno;
+        }
+
+        public void setLikeno(String likeno) {
+            this.likeno = likeno;
+        }
 
         public int getDish_like() {
             return dish_like;

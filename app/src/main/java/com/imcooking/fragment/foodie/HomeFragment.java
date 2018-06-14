@@ -47,7 +47,6 @@ import com.imcooking.activity.Sub.Foodie.FilterHomeActivity;
 import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
 import com.imcooking.activity.home.HomeSearchActivity1;
 import com.imcooking.activity.home.MainActivity;
-import com.imcooking.activity.home.TestActivity;
 import com.imcooking.adapters.CuisionAdatper;
 import com.imcooking.adapters.HomeBottomPagerAdapter;
 import com.imcooking.adapters.HomeDishPagerAdapter;
@@ -63,7 +62,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,7 +71,6 @@ public class HomeFragment extends Fragment implements
         HomeBottomPagerAdapter.click_dish_pager_like_2 {
 
     public static TextView cart_icon;
-    LocationManager locationManager;
     Button getLocationBtn;
     private HomeData homeData = new HomeData();
     private ArrayList<String>spinnerData =new ArrayList<>();
@@ -85,7 +82,6 @@ public class HomeFragment extends Fragment implements
     List<HomeData.ChefDishBean>chefDishBeans = new ArrayList<>();
     List<HomeData.ChefDishBean>favorite_1 = new ArrayList<>();
     List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
-    private Toolbar toolbar;
     CustomViewPager viewPager;
     HomeBottomPagerAdapter homeBottomPagerAdapter;
     private TextView tv_cusine,  txtCityName, txtSerach;
@@ -404,7 +400,6 @@ public class HomeFragment extends Fragment implements
             layout2.setVisibility(View.VISIBLE);
             bottomViewPager.setVisibility(View.GONE);
         }
-
         setMyViewPager(chefDishBeans);
         setBottomViewPager(favouriteDataBeans);
     }
@@ -510,21 +505,12 @@ public class HomeFragment extends Fragment implements
         }
 
         if (favorite_1!=null && favorite_1.size()>0){
-            viewPager.setVisibility(View.GONE);
+            viewPager.setVisibility(View.VISIBLE);
             setMyViewPager(favorite_1);
         } else {
+            viewPager.setVisibility(View.GONE);
             layout_no_record_found.setVisibility(View.VISIBLE);
         }
-       /* favorite_2.clear();
-        for(int i=0; i<favouriteDataBeans.size(); i++){
-            HomeData.FavouriteDataBean list = favouriteDataBeans.get(i);
-
-            if(list.getRating().equals((rating.intValue() + "")) *//*&& list.getDish_price().equals(price + "")*//*){
-                favorite_2.add(list);
-            }
-        }
-
-        setBottomViewPager(favorite_2);*/
 
 
     }
@@ -537,7 +523,6 @@ public class HomeFragment extends Fragment implements
 
         try {
                 addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
                 if (addresses!=null&&addresses.size()!=0){
                     String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                     String city = addresses.get(0).getLocality();

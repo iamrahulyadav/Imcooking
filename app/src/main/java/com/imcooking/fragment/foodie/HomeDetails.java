@@ -3,7 +3,6 @@ package com.imcooking.fragment.foodie;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +27,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
-import com.imcooking.activity.Sub.Foodie.OtherDishActivity;
+import com.imcooking.activity.Sub.Foodie.OtherDishDishActivity;
 import com.imcooking.adapters.Pager1;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -165,69 +164,74 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         if (nameList!=null){
             nameList.clear();
         }
-        String detailRequest = "{\"dish_id\":" + id + "}";
+        String detailRequest = "{\"dish_id\":" + id + ",\"foodie_id\":"+foodie_id+"}";
         Log.d("MyRequest", detailRequest);
-        new GetData(getContext(), getActivity()).getResponse(detailRequest, "dishdetails",
+        new GetData(getContext(), getActivity()).getResponse(detailRequest, GetData.DISH_DETAILS,
                 new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
 
-                String s  = result;
-                Log.d(TAG, "onSuccess: data"+result);
+                apiResponse = gson.fromJson(result, ApiResponse.class);
                 apiResponse.dish_details = gson.fromJson(result, DishDetails.class);
                 dishDetails = apiResponse.dish_details;
-                getActivity().runOnUiThread(new Runnable() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void run() {
-                        layout.setVisibility(View.VISIBLE);
-                   /*     if(dishDetails.getDish_details().)
-                        imgLike.setImageResource();*/
-                        txtDishName.setText(dishDetails.getDish_details().getDish_name());
-                        txtChefName.setText(dishDetails.getDish_details().getChef_name());
-                        txtPrice.setText("£"+dishDetails.getDish_details().getDish_price());
-                        chef_id = dishDetails.getDish_details().getChef_id()+"";
-                        if (dishDetails.getDish_details().getDish_available().equalsIgnoreCase("yes")){
-                            txtAvailable.setText("Available ");
-                            txtAvailable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_circle, 0);
-                        } else {
-                            txtAvailable.setText("No");
-                        }//248340568282
-                        txtTime.setText(dishDetails.getDish_details().getDish_from()+"-"+dishDetails.getDish_details().getDish_to());
-                        if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
-                            txtDeliverytype.setText("Pickup");
-                        } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
-                                && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
-                            txtDeliverytype.setText("Home Delivery / Pickup");
-                        } else {
-                            txtDeliverytype.setText("Home Delivery");
-                        }
-                        nameList.add(dishDetails.getDish_details().getDish_special_note());
-                        nameList.add(dishDetails.getDish_details().getDish_description());
-                        if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
-                            txtDeliverytype.setText("Pickup");
-                            imgPickUp.setVisibility(View.VISIBLE);
-                            imgDeliviery.setVisibility(View.GONE);
-                        } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
-                                && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
-                            txtDeliverytype.setText("Home Delivery / Pickup");
-                            imgDeliviery.setVisibility(View.VISIBLE);
-                            imgPickUp.setVisibility(View.VISIBLE);
-                        } else {
-                            imgDeliviery.setVisibility(View.VISIBLE);
-                            imgPickUp.setVisibility(View.GONE);
-                            txtDeliverytype.setText("Home Delivery");
-                        }
+                if (apiResponse.isStatus()){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            layout.setVisibility(View.VISIBLE);
+                            if (dishDetails.getDish_details().getDish_name()!=null)
+                                txtDishName.setText(dishDetails.getDish_details().getDish_name());
+                            txtChefName.setText(dishDetails.getDish_details().getChef_name());
+                            txtPrice.setText("£"+dishDetails.getDish_details().getDish_price());
 
-                        txtLike.setText(dishDetails.getDish_details().getLike() + "");
+                            chef_id = dishDetails.getDish_details().getChef_id()+"";
+                            if (dishDetails.getDish_details().getDish_available().equalsIgnoreCase("yes")){
+                                txtAvailable.setText("Available ");
+                                txtAvailable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_circle, 0);
+                            } else {
+                                txtAvailable.setText("No");
+                            }
+                            if (dishDetails.getDish_details().getChef_image()!=null){
+                                Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails.getDish_details().getChef_image()).into(imgChef);
+                            } else {
+                                imgChef.setBackgroundResource(R.drawable.details_profile);
+                            }
+                            txtTime.setText(dishDetails.getDish_details().getDish_from()+"-"+dishDetails.getDish_details().getDish_to());
+                            if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
+                                txtDeliverytype.setText("Pickup");
+                            } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
+                                    && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
+                                txtDeliverytype.setText("Home Delivery / Pickup");
+                            } else {
+                                txtDeliverytype.setText("Home Delivery");
+                            }
+                            nameList.add(dishDetails.getDish_details().getDish_special_note());
+                            nameList.add(dishDetails.getDish_details().getDish_description());
+                            if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
+                                txtDeliverytype.setText("Pickup");
+                                imgPickUp.setVisibility(View.VISIBLE);
+                                imgDeliviery.setVisibility(View.GONE);
+                            } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
+                                    && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
+                                txtDeliverytype.setText("Home Delivery / Pickup");
+                                imgDeliviery.setVisibility(View.VISIBLE);
+                                imgPickUp.setVisibility(View.VISIBLE);
+                            } else {
+                                imgDeliviery.setVisibility(View.VISIBLE);
+                                imgPickUp.setVisibility(View.GONE);
+                                txtDeliverytype.setText("Home Delivery");
+                            }
 
-                        txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
-                        if(dishDetails
-                                .getDish_details().getDish_image().size() != 0)
-                        Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
-                                .getDish_details().getDish_image().get(0))
+                            txtLike.setText(dishDetails.getDish_details().getLike() + "");
+
+                            txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
+                            if(dishDetails
+                                    .getDish_details().getDish_image().size() != 0)
+                                Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
+                                        .getDish_details().getDish_image().get(0))
 //                                .placeholder( R.drawable.progress_animation )
-                                .into(imgTop);
+                                        .into(imgTop);
 
 /*
                         Picasso.with(getContext()).load("")
@@ -235,27 +239,36 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                 .into(imgChef);
 */
 
-                        adapter=new Pager1(getContext(), nameList);
-                        pager.setAdapter(adapter);
-                        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                            @Override
-                            public void onTabSelected(TabLayout.Tab tab) {
-                                pager.setCurrentItem(tab.getPosition());
-                            }
+                            adapter=new Pager1(getContext(), nameList);
+                            pager.setAdapter(adapter);
+                            pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                                @Override
+                                public void onTabSelected(TabLayout.Tab tab) {
+                                    pager.setCurrentItem(tab.getPosition());
+                                }
 
-                            @Override
-                            public void onTabUnselected(TabLayout.Tab tab) {
+                                @Override
+                                public void onTabUnselected(TabLayout.Tab tab) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onTabReselected(TabLayout.Tab tab) {
+                                @Override
+                                public void onTabReselected(TabLayout.Tab tab) {
 
-                            }
-                        });
-                    }
-                });
+                                }
+                            });
+                        }
+                    });
+
+                } else{
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            BaseClass.showToast(getContext(), "Something went wrong ");
+                        }
+                    });
+                }
                 }
 
         });
@@ -280,8 +293,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
         } else if (id == R.id.home_details_txtOtherDish){
-            startActivityForResult(new Intent(getContext(), OtherDishActivity.class).putExtra("chef_id",chef_id)
-                    ,OtherDishActivity.OTHER_DISH_CODE);
+            startActivityForResult(new Intent(getContext(), OtherDishDishActivity.class).putExtra("chef_id",chef_id)
+                    , OtherDishDishActivity.OTHER_DISH_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
 
@@ -300,7 +313,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             JSONObject jsonObject = new JSONObject(s);
             Log.d("MyRequest", jsonObject.toString());
 
-            new GetData(getContext(), getActivity()).sendMyData(jsonObject, "dishlike", getActivity(),
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.DISH_LIKE, getActivity(),
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
@@ -344,7 +357,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         addToCart.setAddcart_id("");
         Log.d(TAG, "addCart: "+new Gson().toJson(addToCart));
         new GetData(getContext(), getActivity())
-                .getResponse(new Gson().toJson(addToCart), "addcart",
+                .getResponse(new Gson().toJson(addToCart), GetData.ADD_CART,
                         new GetData.MyCallback() {
                             @Override
                             public void onSuccess(String result) {
@@ -383,7 +396,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data!=null){
-            if (requestCode == OtherDishActivity.OTHER_DISH_CODE){
+            if (requestCode == OtherDishDishActivity.OTHER_DISH_CODE){
                 id = data.getStringExtra("dish_id");
                 getDetails(id);
             } else if (requestCode == ChefProfile.CHEF_PROFILE_CODE){

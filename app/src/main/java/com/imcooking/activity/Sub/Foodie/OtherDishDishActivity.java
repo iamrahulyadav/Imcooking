@@ -5,9 +5,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,16 +19,20 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.OtherDish;
 import com.imcooking.R;
 import com.imcooking.adapters.OtherDishAdatper;
+import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatper.CuisionInterface{
+public class OtherDishDishActivity extends AppBaseActivity implements OtherDishAdatper.OtherDishInterface {
     private TextView tv_title,txtReset, txtFilter,txtLike, txtchecfName,txtcall, txtAddress, txtfollower ;
     private ImageView btnHome ;
     LinearLayout layout;
@@ -52,7 +55,6 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
 
         init();
 
-        //find id
     }
 
     private void init(){
@@ -82,9 +84,9 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
     private void getChefOtherList(String chef_id){
         layout.setVisibility(View.GONE);
 
-        String detailRequest = "{\"chef_id\":" + chef_id + "}";
-        new GetData(getApplicationContext(),OtherDishActivity.this).getResponse(detailRequest,
-                "dishchef",
+        String detailRequest = "{\"chef_id\":" + chef_id +",\"foodie_id\":"+ HomeFragment.foodie_id+ "}";
+        new GetData(getApplicationContext(),OtherDishDishActivity.this).getResponse(detailRequest,
+                GetData.DISH_CHEF,
                 new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
@@ -99,7 +101,10 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                                 txtfollower.setText(otherDish.getChef().getFollow()+" Followers");
                                 txtchecfName.setText(otherDish.getChef().getChef_name());
                                 txtAddress.setText(otherDish.getChef().getAddress());
-                                txtLike.setText(otherDish.getChef().getLike()+" Likes ");
+                                if (otherDish.getChef().getLike()>0){
+                                    txtLike.setText(otherDish.getChef().getLike()+" Likes ");
+                                } else txtLike.setText(0 +" Like");
+
                                 ratingBar.setRating(otherDish.getChef().getRating());
                                 txtcall.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -113,7 +118,7 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
                                 });
                                 if (otherDish.getChef().getChef_image()!=null){
                                     Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL+otherDish.getChef().getChef_image())
-                                            .into(imgPic);
+                                            .placeholder(R.drawable.details_profile).into(imgPic);
                                 }
                                 if (chefDishBeans!=null && chefDishBeans.size()>0){
                                     setDishAdapter(chefDishBeans);
@@ -146,7 +151,6 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
     @Override
     protected void onStop() {
         super.onStop();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -156,11 +160,61 @@ public class OtherDishActivity extends AppBaseActivity implements OtherDishAdatp
     public static int OTHER_DISH_CODE = 2;
 
     @Override
-    public void CuisionInterfaceMethod(View view, int position) {
-        Intent filrestintent=new Intent();
-        filrestintent.putExtra("dish_id", chefDishBeans.get(position).getDish_id() + "");
-        setResult(OTHER_DISH_CODE,filrestintent);
-//                Log.d("VKK", gson.toJson(listModel));
-        finish();
+    public void OtherDishInterfaceMethod(View view, int position, String TAG) {
+        if (TAG.equalsIgnoreCase("name_detail")){
+            Intent filrestintent=new Intent();
+            filrestintent.putExtra("dish_id", chefDishBeans.get(position).getDish_id() + "");
+            setResult(OTHER_DISH_CODE,filrestintent);
+            finish();
+        } else if (TAG.equalsIgnoreCase("like")){
+            dishlike(chefDishBeans.get(position).getDish_id()+"",position);
+        }
+
     }
+
+
+    private void dishlike(String dishid, final int position){
+        String s ="{\"chef_id\":" + chef_id + ",\"foodie_id\":" + HomeFragment.foodie_id + ",\"dish_id\":" + dishid + "}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            Log.d("MyRequest", jsonObject.toString());
+
+            new GetData(getApplicationContext(), OtherDishDishActivity.this).sendMyData(jsonObject,
+                    GetData.DISH_LIKE, OtherDishDishActivity.this,
+                    new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            try {
+                                JSONObject job = new JSONObject(result);
+                                if(job.getBoolean("status")){
+                                    if(job.getString("msg").equals("Successfully dish like")){
+                                        BaseClass.showToast(getApplicationContext(), "Successfully Liked");
+                                        chefDishBeans.get(position).setDishlike("1");
+                                        int likeno = Integer.parseInt(chefDishBeans.get(position).getLikeno())+1;
+                                        chefDishBeans.get(position).setLikeno(likeno+"");
+                                        otherDishAdatper.notifyDataSetChanged();
+                                    } else if(job.getString("msg").equals("Successfully unlike")){
+                                        chefDishBeans.get(position).setDishlike("0");
+                                        int likeno = Integer.parseInt(chefDishBeans.get(position).getLikeno())-1;
+                                        chefDishBeans.get(position).setLikeno(likeno+"");
+                                        otherDishAdatper.notifyDataSetChanged();
+                                        BaseClass.showToast(getApplicationContext(), "Dish Successfully unliked");
+                                    } else{
+                                        BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                    }
+                                } else{
+                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

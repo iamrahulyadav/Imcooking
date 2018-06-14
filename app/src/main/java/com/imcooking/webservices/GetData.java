@@ -51,7 +51,9 @@ public class GetData {
     public static String PROFILE_IMAGE="profileimage";
     public static String GETPROFILE_PIC ="get_user_profileimage";
     public static String ADD_CART = "addcart";
-
+    public static String DISH_LIKE= "dishlike";
+    public static String DISH_DETAILS = "dishdetails";
+    public static String DISH_CHEF = "dishchef";
 
     public GetData(final Context context, Activity activity) {
 /*
@@ -113,8 +115,6 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
     public String str = "";
 
     public String sendMyData(JSONObject jsonObject, String url, final Activity activity, final MyCallback callback){
-
-
         if(BaseClass.isNetworkConnected(context)) {
 
             final ProgressDialog progressDialog = new ProgressDialog(activity);

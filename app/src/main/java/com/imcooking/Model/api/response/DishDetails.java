@@ -68,6 +68,24 @@ public class DishDetails {
         private String dish_pickup;
         private String dish_deliverymiles;
         private List<String> dish_image;
+        private String chef_image;
+        private String foodie_dish_like;
+
+        public String getChef_image() {
+            return chef_image;
+        }
+
+        public void setChef_image(String chef_image) {
+            this.chef_image = chef_image;
+        }
+
+        public String getFoodie_dish_like() {
+            return foodie_dish_like;
+        }
+
+        public void setFoodie_dish_like(String foodie_dish_like) {
+            this.foodie_dish_like = foodie_dish_like;
+        }
 
         public String getChef_id() {
             return chef_id;

@@ -111,6 +111,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if(str_fullname.equals("null")){
             tv_fullname.setText("Your Name");
         }
+
         if(userDataBean.getUser_phone() == null){
             tv_phone_email.setText("9999999999   " + userDataBean.getUser_email());
         }
@@ -121,8 +122,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
-        int id = v.getId();
 
         if(v.getId() == R.id.profile_edit_manage_address){
             startActivity(new Intent(getContext(), ManageAddress.class));
@@ -166,7 +165,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         ((MainActivity) getActivity()).iv_profile.setImageResource(R.drawable.ic_user_name_1);
 
         getUserData();
-
 
     }
 

@@ -79,7 +79,7 @@
             android:value="@string/API_KEY" />
 
         <activity android:name=".activity.Sub.Foodie.FilterHomeActivity" />
-        <activity android:name=".activity.Sub.Foodie.OtherDishActivity" />
+        <activity android:name=".activity.Sub.Foodie.OtherDishDishActivity" />
         <activity
             android:name=".activity.Sub.Foodie.AddAddressActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />

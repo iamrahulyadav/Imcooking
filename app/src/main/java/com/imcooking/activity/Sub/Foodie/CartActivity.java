@@ -48,8 +48,8 @@ import java.util.List;
 
 
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
-    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address, txt_time_picker,txt_pick_add,
-            txt_to_time_value,txtPayment;
+    TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txtfollowers, txt_address,txt_add_address,
+            txt_time_picker,txt_pick_add, txt_add_new_item,txt_to_time_value,txtPayment;
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
@@ -78,6 +78,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         txtPayment = findViewById(R.id.tv_payment);
         txtShopNow = findViewById(R.id.activity_cart_shop_now);
         txt_to_time_value = findViewById(R.id.actvity_cart_txtToTime);
+        txt_add_new_item = findViewById(R.id.cart_tv_addnewitem);
         txt_time_picker = findViewById(R.id.actvity_cart_txtFromTimeValue);
         txt_add_address = findViewById(R.id.cart_addnewaddress);
         txtChef_Name=findViewById(R.id.chef_name);
@@ -140,6 +141,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         linearTo.setOnClickListener(this);
         txtPayment.setOnClickListener(this);
         txtShopNow.setOnClickListener(this);
+        txt_add_new_item.setOnClickListener(this);
     }
 
     CartAdatper cartAdatper;
@@ -238,7 +240,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
                 break;
             case R.id.cart_tv_addnewitem:
-
+                startActivity(new Intent(CartActivity.this, OtherDishDishActivity.class).putExtra("chef_id", chef_id));
                 break;
             case R.id.radioGroup:
                 //if(){}
@@ -260,6 +262,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.activity_cart_shop_now:
                 finish();
                 break;
+
         }
     }
 
@@ -333,8 +336,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "CartInterfaceMethod: "+c);
         } else if (tag.equalsIgnoreCase("minus")){
             dishDetails.get(position).setDish_quantity_selected(c +"");
-
-            Log.d(TAG, "CartInterfaceMethod: "+dishDetails);
         }
     }
 

@@ -29,7 +29,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/home_heart"
+                android:id="@+id/other_dish_view_heart"
                 android:src="@drawable/ic_heart"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
@@ -38,13 +38,13 @@
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/home_dish_likes"
+                android:id="@+id/other_dish_likes"
                 android:text="10"
                 android:textSize="11sp"
                 android:textColor="@color/text_color_4"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/home_heart"/>
+                android:layout_below="@+id/other_dish_view_heart"/>
             <com.imcooking.customtext.CustomTextButtonTextView
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
