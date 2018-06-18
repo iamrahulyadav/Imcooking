@@ -24,13 +24,65 @@
         android:layout_height="1dp"
         android:background="@color/view_4"/>
 
-    <android.support.v7.widget.RecyclerView
-
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recycler_foodie_my_requests"
-        >
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
 
-    </android.support.v7.widget.RecyclerView>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_foodie_my_requests"
+            android:visibility="gone">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_my_request_foodie_no_record_image"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/cart"/>
+            <com.imcooking.customtext.CustomTextButtonTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:textSize="@dimen/largesize"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:text="No Request Found !"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="Add Items to it now."
+                android:textColor="@color/coloCart"/>
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop Now "
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/button_bg"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:id="@+id/fragment_my_request_shop_now"/>
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

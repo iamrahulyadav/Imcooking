@@ -141,10 +141,10 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         str_id = chefProfileData1.getChef_data().getChef_id() + "";
         str_name = chefProfileData1.getChef_data().getChef_full_name() + "";
         str_address = chefProfileData1.getChef_data().getAddress() + "";
-//        str_city = chefProfileData1.getChef_data().getChef_city() + "";
+        str_city = chefProfileData1.getChef_data().getChef_city() + "";
         str_email = chefProfileData1.getChef_data().getChef_email() + "";
-//        str_zipcode = chefProfileData1.getChef_data(). + "";
-
+        str_zipcode = chefProfileData1.getChef_data().getChef_zipcode();
+        str_about = chefProfileData1.getChef_data().getChef_description();
         edt_email.setText(str_email);
         if (str_name!=null){
             edt_name.setText(str_name);
@@ -170,8 +170,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
         progressBar.setVisibility(View.VISIBLE);
         getUserProfile(str_id);
-
-
 
     }
 
@@ -256,7 +254,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setDefault_miles(str_miles);
         data.setAvailable(str_available);
         data.setCuisine_list(str_cuisine);
-        data.setAbout(str_about);;
+        data.setAbout(str_about);
 
         if(!str_name.isEmpty()) {
             if(!str_address.isEmpty()){

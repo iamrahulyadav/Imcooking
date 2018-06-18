@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/item_foodie_my_order_chef_profile_image"
+            android:src="@drawable/details_profile"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/frame"
+            android:layout_toRightOf="@+id/item_foodie_my_order_chef_profile_image">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:id="@+id/item_foodie_my_order_dish_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shahi Paneer"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="5dp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:id="@+id/item_foodie_my_order_ChefName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vaibhav Khandelwal"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:drawablePadding="5dp"
+                    android:layout_marginBottom="3dp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:id="@+id/item_foodie_my_order_qyt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Qyt : 4"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:drawablePadding="5dp"
+                    android:layout_marginBottom="3dp"/>
+
+                <com.imcooking.customtext.CustomTextView
+                    android:id="@+id/item_foodie_my_order_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$14"
+                    android:textColor="@color/theme_color"
+                    android:textSize="12dp"
+                    android:layout_marginBottom="3dp"/>
+
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

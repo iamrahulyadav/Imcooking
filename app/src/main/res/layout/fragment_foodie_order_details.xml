@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorWhite"
+    android:background="@color/bg_2"
     android:orientation="vertical"
     tools:context=".fragment.chef.chefprofile.ChefMyRequestFragment">
 
@@ -32,15 +32,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/bg_2"
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:background="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp">
 
@@ -117,8 +116,55 @@
                         android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="2dp">
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_4"
+                    android:text="Updates sent to :"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_4"
+                    android:text="a@gmail.com"/>
+
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="2dp">
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_4"
+                    android:text="Payment mode :"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_4"
+                    android:text="Cash"/>
+
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

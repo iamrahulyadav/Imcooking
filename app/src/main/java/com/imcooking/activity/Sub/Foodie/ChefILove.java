@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -32,6 +34,8 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
     private List<ChefIloveData.ChefloveBean>chefloveBeanList= new ArrayList<>();
     private Gson gson = new Gson();
     private ChefILoveAdatper chefILoveAdatper;
+    private LinearLayout layoutNoRecord;
+    private TextView txtShopNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +47,21 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
         }
 
 //        find id
+        layoutNoRecord = findViewById(R.id.activity_chef_ilove_no_record_image);
         recyclerView = findViewById(R.id.activity_chef_ilove_recycler);
+        txtShopNow = findViewById(R.id.activity_chef_ilove_shop_now);
 
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
 
         getChefLove(foodie_id);
+        txtShopNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
@@ -70,11 +82,15 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
                         public void onSuccess(String result) {
                             chefIloveData = gson.fromJson(result, ChefIloveData.class);
                             chefloveBeanList.clear();
-                            if (chefIloveData!=null && chefIloveData.getCheflove()!=null){
+                            if (chefIloveData!=null && chefIloveData.getCheflove()!=null && chefIloveData.getCheflove().size()>0){
 
                                 chefloveBeanList.addAll(chefIloveData.getCheflove());
+                                recyclerView.setVisibility(View.VISIBLE);
+                                layoutNoRecord.setVisibility(View.GONE);
                                 setChefLove();
                             }   else {
+                                recyclerView.setVisibility(View.GONE);
+                                layoutNoRecord.setVisibility(View.VISIBLE);
                                 BaseClass.showToast(getApplicationContext(), "You are not following any chef yet.");
                             }
                         }
@@ -82,25 +98,6 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        /*
-        new GetData(getApplicationContext(), ChefILove.this).getResponse(request, "cheflove", new GetData.MyCallback() {
-            @Override
-            public void onSuccess(final String result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        chefIloveData = gson.fromJson(result, ChefIloveData.class);
-                        if (chefIloveData!=null&&chefIloveData.getCheflove()!=null){
-                            chefloveBeanList.addAll(chefIloveData.getCheflove());
-                            Log.d("TAG", "onSuccess: "+result);
-                            setChefLove();
-                        }
-                    }
-                });
-            }
-        }
-        );
-*/
     }
 
     private void setChefLove(){

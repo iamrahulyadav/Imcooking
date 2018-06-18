@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_2"
+    tools:context=".activity.Sub.Foodie.FoodieOrderDetailActivity">
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Order Details"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:layout_marginLeft="40dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/view_4"/>
+
+
+    <LinearLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/layout_order_details"
+        android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="@color/colorWhite"
+            android:paddingLeft="8dp">
+
+            <com.imcooking.customtext.CustomTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chef : "
+                android:textColor="@color/text_color_4"
+                android:textSize="12sp"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VK"
+                android:id="@+id/item_foodie_my_order_chef"
+                android:textSize="12sp"
+                android:textColor="@color/text_color_13"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:layout_marginBottom="10dp">
+
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order No : "
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#63465987"
+                    android:textSize="12sp"
+                    android:id="@+id/item_foodie_my_order_id"
+                    android:textColor="@color/text_color_13"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Placed on : "
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="09 Jan 2018"
+                    android:id="@+id/item_foodie_my_order_placed_date"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_color_13"/>
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/foodie_order_details_total_amount_text"
+                    android:text="Total Amount : "
+                    android:textColor="@color/text_color_4"
+                    android:textSize="12sp"
+                    android:layout_alignParentLeft="true"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$14"
+                    android:id="@+id/item_foodie_my_order_total_price"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_color_13"
+                    android:layout_toRightOf="@+id/foodie_order_details_total_amount_text"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delivered"
+                    android:visibility="visible"
+                    android:id="@+id/item_foodie_my_order_details_status"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="10sp"
+                    android:background="@drawable/shape_green_background"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="2dp">
+            <com.imcooking.customtext.CustomTextViewBold
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_4"
+                android:text="Updates sent to :"/>
+            <com.imcooking.customtext.CustomTextView
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/item_foodie_my_order_foodie_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_4"
+                android:text="a@gmail.com"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="2dp">
+            <com.imcooking.customtext.CustomTextViewBold
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_4"
+                android:text="Payment mode :"/>
+            <com.imcooking.customtext.CustomTextView
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/item_foodie_my_order_payment_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color_4"
+                android:text="Cash"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/order_details_recycler"/>
+
+
+</LinearLayout>

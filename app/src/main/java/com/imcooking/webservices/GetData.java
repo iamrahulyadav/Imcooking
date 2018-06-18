@@ -55,7 +55,12 @@ public class GetData {
     public static String DISH_DETAILS = "dishdetails";
     public static String DISH_CHEF = "dishchef";
     public static String CART_SELECTED_QTY = "cart_quantity_save";
-        public static String PLACE_ORDER = "place_order";
+    public static String CHEF_DETAILS = "chefdetails";
+    public static String PLACE_ORDER = "place_order";
+    public static String ORDER_DETAILS = "order_detail";
+    public static String CHEF_ACCEPT_REQUEST ="chef_accept_request";
+    public static String ADDRESS = "address";
+
 
 
     public GetData(final Context context, Activity activity) {

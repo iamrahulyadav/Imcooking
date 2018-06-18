@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -72,11 +74,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-/*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-*/
+        }*/
 
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
@@ -120,15 +120,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         //       set listener
         setListener();
 
-        StringBuffer stringBuffer = new StringBuffer();
-        if (SplashActivity.latitude!=0.0&& SplashActivity.longitude!=0.0){
-            try {
-                stringBuffer =BaseClass.getAddress(getApplicationContext(), new LatLng(SplashActivity.latitude, SplashActivity.longitude));
-                txt_pick_add.setText(stringBuffer.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -213,13 +205,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             if (apiResponse.getAdd_cart().getFollow()>1){
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Followers");
                                             }
+
                                             else {
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
                                             HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
+                                            txt_pick_add.setText(apiResponse.getAdd_cart().getChef_address());
                                             if (apiResponse.getAdd_cart().getChef_image()!=null){
-
-                                                Log.d(TAG, "run: "+GetData.IMG_BASE_URL + apiResponse.getAdd_cart().getChef_image());
                                                 Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
                                                         apiResponse.getAdd_cart().getChef_image()).skipMemoryCache().into(imgChefImg);
                                             } else {
@@ -302,10 +294,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                  * transaction_id : 45645645456
                  * bookdate : 1
                  */
-                if (txt_address.getText().toString().trim().isEmpty()){
+                String address;
+                if (txt_address.getText().toString().trim().isEmpty()&& txt_pick_add.getText().toString().trim().isEmpty()){
                     BaseClass.showToast(getApplicationContext(), "Please select an address");
                 } else {
                     List<PlaceOrder.DishorderBean>dishorderBeanList = new ArrayList<>();
+                    if (txt_address.getText().toString().isEmpty()) address = txt_pick_add.getText().toString().trim();
+                    else address = txt_address.getText().toString().trim();
 
                     for (int i = 0; i<dishDetails.size();i++){
                         PlaceOrder.DishorderBean dishorderBean = new PlaceOrder.DishorderBean();
@@ -322,21 +317,20 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(TAG, "Rakhi "+date);
                     placeOrder.setChef_id(chef_id);
                     placeOrder.setFoodie_id(foodie_id+"");
-
                     placeOrder.setDishorder(dishorderBeanList);
                     placeOrder.setDelivery_type(delivery_type);
                     placeOrder.setTax("");
                     placeOrder.setTotal_price(txtTotalprice.getText().toString().trim());
-                    placeOrder.setAddress(txt_address.getText().toString().trim());
+                    placeOrder.setAddress(address);
                     placeOrder.setFrom_time(txt_time_picker.getText().toString().trim());
                     placeOrder.setTo_time(txt_to_time_value.getText().toString().trim());
                     placeOrder.setBookdate(date);
                     placeOrder.setPayment_type("");
                     placeOrder.setTransaction_id("COD");
                     startActivity(new Intent(CartActivity.this, PaymentActivity.class)
-                            .putExtra("order_details", new Gson().toJson(placeOrder)));
+                            .putExtra("order_details", new Gson().toJson(placeOrder))
+                            .putExtra("chef_name", txtChef_Name.getText().toString().trim()));
                 }
-
                 break;
             case R.id.activity_cart_shop_now:
                 finish();
@@ -344,17 +338,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    protected void onResume() {
-        super.onResume();
-        getAddress();
-
-		   /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-				Window w = getWindow(); // in Activity's onCreate() for instance
-				w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-				w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-			}*/
-
-    }
 
     private void addressDialog(final List<AddressListData.AddressBean> addressBeanList) {
         txt_address.setOnClickListener(new View.OnClickListener() {
@@ -365,15 +348,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-	/*
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-				Window w = getWindow(); // in Activity's onCreate() for instance
-				w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-			}*/
-    }
     private List<AddressListData.AddressBean> addressBeanList;
 
     private void getAddress(){
@@ -456,11 +430,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     private void deleteData(final int pos, String chef_id){
 
-        String dishId=dishDetails.get(pos).getDish_id()+"";
+        String dishId = dishDetails.get(pos).getDish_id()+"";
         AddToCart addToCart=new AddToCart();
         addToCart.setChef_id(Integer.parseInt(chef_id));
         addToCart.setFoodie_id(Integer.parseInt(HomeFragment.foodie_id));
         addToCart.setDish_id(dishId);
+        addToCart.setAddcart_yes("");
         addToCart.setAddcart_id(dishDetails.get(pos).getAddcart_id()+"");
 
         try {
@@ -474,6 +449,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     cartAdatper.notifyDataSetChanged();
                     BaseClass.showToast(getApplicationContext(), "Item successfully removed from your cart.");
                     update_total_price();
+                    if (dishDetails.size()==0){
+                        cartLayout.setVisibility(View.GONE);
+                        no_record_Layout.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         } catch (JSONException e) {
@@ -511,4 +490,46 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 +addressBeanList.get(position).getAddress_address());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAddress();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
 }

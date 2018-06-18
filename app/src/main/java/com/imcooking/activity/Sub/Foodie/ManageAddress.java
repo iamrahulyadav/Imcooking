@@ -99,11 +99,10 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
     @Override
     public void AddressInterfaceMethod(View view, int position, String tag) {
         if (tag.equals("edit")){
-            Toast.makeText(this, ""+position, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(ManageAddress.this, AddAddressActivity.class)
                     .putExtra("address_id",addressBeanList.get(position).getAddress_id()+"")
             .putExtra("name", addressBeanList.get(position).getAddress_address())
-                    .putExtra("edit",true));
+                    .putExtra("edit",true).putExtra("title", addressBeanList.get(position).getAddress_title()));
         } else if (tag.equals("delete")){
             deleteAdd(HomeFragment.foodie_id+"", addressBeanList.get(position).getAddress_id()+"", position);
         }

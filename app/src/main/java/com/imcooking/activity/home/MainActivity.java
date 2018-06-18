@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
@@ -87,21 +88,6 @@ public class MainActivity extends AppBaseActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
-/*
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        LinearLayout toolbar_left = toolbar.findViewById(R.id.toolbar_left);
-        toolbar_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-*/
-
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
@@ -121,7 +107,6 @@ public class MainActivity extends AppBaseActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
-
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
@@ -139,7 +124,6 @@ public class MainActivity extends AppBaseActivity
                 }
             }
         };
-
 
         drawer.addDrawerListener(toggle);
 //        toggle.syncState();
@@ -176,6 +160,8 @@ public class MainActivity extends AppBaseActivity
 
             }
 //            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
+        } else if (getIntent().hasExtra("pay")) {
+            BaseClass.callFragment(new FoodieMyOrderFragment(), FoodieMyOrderFragment.class.getName(), getSupportFragmentManager());
         } else { // 2
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
@@ -211,8 +197,13 @@ public class MainActivity extends AppBaseActivity
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
-        user_name = userDataBean.getFull_name() + "";
-        user_phone = userDataBean.getUser_phone() + "";
+        if (userDataBean.getFull_name()!=null)
+            user_name = userDataBean.getFull_name() + "";
+        else user_name="Your Name";
+
+        if (userDataBean.getUser_phone()!=null)
+            user_phone = userDataBean.getUser_phone() + "";
+        else user_phone="XXXXXXXXXX";
 
         tv_name.setText(user_name);
         tv_phone.setText(user_phone);
@@ -343,21 +334,28 @@ public class MainActivity extends AppBaseActivity
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         drawerLayout.openDrawer(GravityCompat.START);
     }
-
     @Override
     public void onBackPressed() {
 
-        String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager()
-                .getBackStackEntryCount() - 1).getName();
+        i = getSupportFragmentManager().getBackStackEntryCount();
+//        Toast.makeText(getApplicationContext(), i+"", Toast.LENGTH_SHORT).show();
+        String tag1 = "";
+        if(i !=0) {
+            tag1 = getSupportFragmentManager().getBackStackEntryAt(i- 1).getName();
+        } else {
+//            tag1 = getSupportFragmentManager().getBackStackEntryAt(i).getName();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if(getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finishAffinity();
+//            finish();
         } else if(tag1.equals(HomeFragment.class.getName()) || tag1.equals(ChefHome.class.getName())){
             getSupportFragmentManager().popBackStack();
             finishAffinity();
+//            finish();
         } else{
             super.onBackPressed();
         }
@@ -371,17 +369,12 @@ public class MainActivity extends AppBaseActivity
         super.onStop();
 
         i = getSupportFragmentManager().getBackStackEntryCount();
-        my_tag = getSupportFragmentManager().getBackStackEntryAt(i-1).getName();
+//        Toast.makeText(getApplicationContext(), i+"", Toast.LENGTH_SHORT).show();
+        if(i !=0)
+            my_tag = getSupportFragmentManager().getBackStackEntryAt(i-1).getName();
 //        Toast.makeText(this, my_tag, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-//        i =
-//        Toast.makeText(this, "yes2", Toast.LENGTH_SHORT).show();
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

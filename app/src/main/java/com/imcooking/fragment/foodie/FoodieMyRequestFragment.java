@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -32,7 +34,9 @@ import java.util.List;
 
 public class FoodieMyRequestFragment extends Fragment {
 
-TinyDB tinyDB;
+    TinyDB tinyDB;
+    private LinearLayout no_recordLayout;
+    private TextView txtShop;
     private List<FoodieMyRequest.FoodieRequestDishChefDetailsBean> list = new ArrayList();
     public FoodieMyRequestFragment() {
         // Required empty public constructor
@@ -56,11 +60,20 @@ TinyDB tinyDB;
     private RecyclerView rv;
 
     private void init(){
+        txtShop = getView().findViewById(R.id.fragment_my_request_shop_now);
+        no_recordLayout = getView().findViewById(R.id.fragment_my_request_foodie_no_record_image);
         rv = getView().findViewById(R.id.recycler_foodie_my_requests);
         LinearLayoutManager linearLayoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
         myorderRequest();
+
+        txtShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getFragmentManager());
+            }
+        });
     }
 
 
@@ -78,27 +91,34 @@ TinyDB tinyDB;
                     getActivity(), new GetData.MyCallback() {
                 @Override
                 public void onSuccess(final String result) {
+                    if (getActivity()!=null){
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                FoodieMyRequest foodieMyRequest = new FoodieMyRequest();
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            FoodieMyRequest foodieMyRequest = new FoodieMyRequest();
+                                foodieMyRequest = new Gson().fromJson(result, FoodieMyRequest.class);
 
-                            foodieMyRequest = new Gson().fromJson(result, FoodieMyRequest.class);
-
-                            if(foodieMyRequest.isStatus()){
-                                if(!foodieMyRequest.getFoodie_request_dish_chef_details().isEmpty()){
-                                    setMyAdapter(foodieMyRequest.getFoodie_request_dish_chef_details());
+                                if(foodieMyRequest.isStatus()){
+                                    if(!foodieMyRequest.getFoodie_request_dish_chef_details().isEmpty()){
+                                        rv.setVisibility(View.VISIBLE);
+                                        no_recordLayout.setVisibility(View.GONE);
+                                        setMyAdapter(foodieMyRequest.getFoodie_request_dish_chef_details());
+                                    }
+                                    else {
+                                        rv.setVisibility(View.GONE);
+                                        no_recordLayout.setVisibility(View.VISIBLE);
+                                        BaseClass.showToast(getContext(),"No request found");
+                                    }
                                 }
                                 else {
-                                    BaseClass.showToast(getContext(),"No request found");
+                                    rv.setVisibility(View.GONE);
+                                    no_recordLayout.setVisibility(View.VISIBLE);
+                                    BaseClass.showToast(getContext(), "Something went wrong");
                                 }
                             }
-                            else {
-                                BaseClass.showToast(getContext(), "Something went wrong");
-                            }
-                        }
-                    });
+                        });
+                    }
                 }
             });
         } catch (JSONException e) {

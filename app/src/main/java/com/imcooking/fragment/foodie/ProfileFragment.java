@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         if(userDataBean.getUser_phone() == null){
-            tv_phone_email.setText("9999999999   " + userDataBean.getUser_email());
+            tv_phone_email.setText("" + userDataBean.getUser_email());
         }
 
         getUserProfile(userid);
@@ -182,13 +182,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                             JSONObject jsonObject1 = new JSONObject(result);
                             if (jsonObject1.getBoolean("status")){
                                 JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
-                                String url = GetData.IMG_BASE_URL + imgObj.getString("user_image");
-
-                                Log.d("ProfileImage", url);
-
-                                GetImage task = new GetImage();
-                                // Execute the task
-                                task.execute(new String[] { url });
+                                String user_image =  imgObj.getString("user_image");
+                                if (user_image!=null && !user_image.equalsIgnoreCase("null")){
+                                    String url = GetData.IMG_BASE_URL + user_image;
+                                    GetImage task = new GetImage();
+                                    // Execute the task
+                                    task.execute(new String[] { url });
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    imgProfile.setImageResource(R.drawable.details_profile);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

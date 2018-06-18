@@ -1,5 +1,6 @@
 package com.imcooking.fragment.chef;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefOrderDetailsActivity;
 import com.imcooking.adapters.AdatperChefMyOrderList;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
@@ -26,7 +28,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChefMyOrderListFragment extends Fragment {
+public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOrderList.ChefMyOrderInterface{
 TinyDB tinyDB;
 RecyclerView recyclerView;
    public ChefMyOrderListFragment() {
@@ -66,55 +68,57 @@ RecyclerView recyclerView;
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
     }
-
+    private List<ChefMyorderList.MyOrderListBean> list;
     public void getorderList(){
-
+        list = new ArrayList<>();
         String login = tinyDB.getString("login_data");
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         String user_id=apiResponse.getUser_id()+"";
 
-        // String s = "{\"chef_id\":" + user_id + "}";
-
-        String s = "{\"chef_id\": 1}";
+        String s = "{\"chef_id\": "+user_id+"}";
         Log.d("Tags",s);
+
         try {
             JSONObject job = new JSONObject(s);
             new GetData(getContext(), getActivity()).sendMyData(job, "chef_order_list", getActivity(),
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-
                             ChefMyorderList chefMyorderList = new ChefMyorderList();
-
                             chefMyorderList = new Gson().fromJson(result, ChefMyorderList.class);
-
                             if(chefMyorderList.isStatus()){
                               if(!chefMyorderList.getMy_order_list().isEmpty()){
-
-                                    setMyAdapter(chefMyorderList.getMy_order_list());
-
+                                  list.addAll(chefMyorderList.getMy_order_list());
+                                    setMyAdapter(list);
                                 }
                                 else {
-                                    Toast.makeText(getContext(), "order list is empty", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Order List is empty", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else {
-                                Toast.makeText(getContext(), "spmething went wrong", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Order List is empty", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
-
-
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     private void setMyAdapter(List<ChefMyorderList.MyOrderListBean> list){
         AdatperChefMyOrderList adatperChefMyOrderList = new AdatperChefMyOrderList(getContext(),
-                getFragmentManager(), list);
+                 list, this);
         recyclerView.setAdapter(adatperChefMyOrderList);
     }
+
+
+    @Override
+    public void chefOrderdetails(int pos) {
+       String orderid = list.get(pos).getOrder_order_id();
+       startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class).putExtra("order_id", orderid));
+    }
+
+
 }

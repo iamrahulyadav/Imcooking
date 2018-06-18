@@ -53,7 +53,25 @@ public class ChefMyorderList {
         private String order_order_id;
         private int order_id;
         private int follow;
+        private String dish_name;
+        private String dish_qyt;
         private String rating;
+
+        public String getDish_name() {
+            return dish_name;
+        }
+
+        public void setDish_name(String dish_name) {
+            this.dish_name = dish_name;
+        }
+
+        public String getDish_qyt() {
+            return dish_qyt;
+        }
+
+        public void setDish_qyt(String dish_qyt) {
+            this.dish_qyt = dish_qyt;
+        }
 
         public int getFoodie_id() {
             return foodie_id;

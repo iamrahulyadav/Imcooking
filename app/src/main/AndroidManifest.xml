@@ -87,12 +87,17 @@
         <activity android:name=".activity.Sub.Foodie.CartActivity" />
         <activity
             android:name=".activity.Sub.Chef.ChefEditDish"
-            android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activity.Sub.Chef.ChefEditProfile" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".activity.Sub.Chef.ChefEditProfile"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".activity.Sub.Chef.ChangePassword" />
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />
-        <activity android:name=".activity.Sub.Foodie.PaymentActivity"></activity>
+        <activity android:name=".activity.Sub.Foodie.PaymentActivity" />
+        <activity android:name=".activity.Sub.Foodie.FoodieOrderDetailActivity" />
+        <activity android:name=".activity.Sub.ChefOrderDeatilsActivity" />
+        <activity android:name=".activity.Sub.Chef.ChefOrderDetailsActivity"></activity>
     </application>
 
 </manifest>

@@ -38,6 +38,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.activity.Sub.Chef.ChefEditProfile;
+import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -124,7 +125,7 @@ public class EditProfile extends AppBaseActivity {
 
         tv_email.setText(str_email);
         edt_email.setText(str_email);
-        if (str_full_name!=null){
+        if (str_full_name!=null&&!str_full_name.equalsIgnoreCase("null")){
             edt_full_name.setText(str_full_name);
         }
         if (str_phone!=null&&!str_phone.equalsIgnoreCase("null")){
@@ -449,13 +450,16 @@ public class EditProfile extends AppBaseActivity {
                             JSONObject jsonObject1 = new JSONObject(result);
                             if (jsonObject1.getBoolean("status")){
                                 JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
-                                String url = GetData.IMG_BASE_URL+imgObj.getString("user_image");
-                                Log.d(TAG, "Rakhi :"+url);
-                                GetImage task = new GetImage();
-                                // Execute the task
-                                task.execute(new String[] { url });
-                            } else {
-                                progressBar.setVisibility(View.GONE);
+                                String user_image =  imgObj.getString("user_image");
+                                if (user_image!=null && !user_image.equalsIgnoreCase("null")){
+                                    String url = GetData.IMG_BASE_URL + user_image;
+                                    GetImage task = new GetImage();
+                                    // Execute the task
+                                    task.execute(new String[] { url });
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    imgProfile.setImageResource(R.drawable.details_profile);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

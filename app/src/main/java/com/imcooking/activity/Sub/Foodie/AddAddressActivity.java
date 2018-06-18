@@ -80,6 +80,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     private MapView mMapView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private TextView txtPlaceName, txtLocatName, txtConfirm;
+    private EditText edtHouse, edtLandmark;
     TinyDB  tinyDB ;
     String title,foodie_id,address;
     private Gson gson = new Gson();
@@ -112,6 +113,8 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             return;
         }
         mMapView = (MapView) findViewById(R.id.mapView);
+        edtHouse = findViewById(R.id.add_address_edtHouse);
+        edtLandmark = findViewById(R.id.add_address_edtLandMark);
         txtLocatName = findViewById(R.id.activity_add_aaddres_txtLocaname);
         txtPlaceName = findViewById(R.id.activity_add_aaddres_txtLoc);
         txtConfirm = findViewById(R.id.add_address_btnConfirm);
@@ -121,6 +124,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             txtPlaceName.setText(name);
             txtLocatName.setText(name);
             isEdit = getIntent().getBooleanExtra("edit",false);
+            title = getIntent().getStringExtra("title");
         }
 
         mMapView.onCreate(savedInstanceState);
@@ -182,6 +186,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     EditText edtMsg;
     RadioButton radioHome, radioOffice,radioOther;
     TextView txtCanel, txtSave, txtCancleIcon;
+
     private void createMyDialog(){
 
         dialog = new Dialog(AddAddressActivity.this);
@@ -195,6 +200,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         txtSave = dialog.findViewById(R.id.dialog_address_txtSave);
         txtCanel = dialog.findViewById(R.id.dialog_address_txtCancel);
         txtCancleIcon = dialog.findViewById(R.id.cancel_icon);
+
         txtCancleIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,11 +213,24 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 dialog.dismiss();
             }
         });
+        if (address_id!=null){
+            if (title.equalsIgnoreCase("Home"))
+                radioHome.setChecked(true);
+            else if (title.equalsIgnoreCase("Office"))
+                radioOffice.setChecked(true);
+            else radioOther.setChecked(true);
+        }
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (title!=null){
                     address = txtLocatName.getText().toString().trim();
+                    if (!edtHouse.getText().toString().trim().isEmpty()){
+                        address = address + " , "+ edtHouse.getText().toString().trim();
+                    }
+                    if (!edtLandmark.getText().toString().trim().isEmpty()){
+                        address = address + " , "+ edtLandmark.getText().toString().trim();
+                    }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -223,7 +242,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                             } else {
                                 addAddress(title,address,"");
                             }
-
                         }
                     });
                 } else {
@@ -311,8 +329,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         }
         String s = gson.toJson(addressRequest);
         Log.d(TAG, "addAddress: "+s);
-        new GetData(mContext, AddAddressActivity.this).getResponse(s,
-                "address", new GetData.MyCallback() {
+        new GetData(mContext, AddAddressActivity.this).getResponse(s, GetData.ADDRESS, new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
                 runOnUiThread(new Runnable() {
@@ -542,7 +559,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             @SuppressLint("SetTextI18n")
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                Log.d("Camera postion change" + "", cameraPosition + "");
+                Log.d("Camera posItion change" + "", cameraPosition + "");
                 mCenterLatLong = cameraPosition.target;
                 //   mMap.clear();
 

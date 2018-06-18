@@ -19,7 +19,16 @@ public class AddCart {
     private String chef_image;
     private float rating;
     private int follow;
+    private String chef_address;
     private List<AddDishBean> add_dish;
+
+    public String getChef_address() {
+        return chef_address;
+    }
+
+    public void setChef_address(String chef_address) {
+        this.chef_address = chef_address;
+    }
 
     public List<AddDishBean> getItemprice() {
         return itemprice;

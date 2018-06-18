@@ -114,8 +114,6 @@ public class HomeDishPagerAdapter extends PagerAdapter{
                     .get(position).getDish_image().get(0)) .into(iv_dish_image);
         }
 
-//                                .placeholder( R.drawable.progress_animation )
-
         tv_dish_name.setText(chefDishBeans
                 .get(position).getDish_name());
         tv_chef_name.setText(chefDishBeans

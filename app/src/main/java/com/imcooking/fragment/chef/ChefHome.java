@@ -177,11 +177,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         } else {
         }
 
-        new Runnable() {
-            @Override
-            public void run() {
-            }
-        };
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -200,13 +195,13 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     }
 
     private void getchefProfile() {
-        String s = "{\"chef_id\":" + chef_id + ",\"foodie_id\":" + user_id + "}";
+        String s = "{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id + "}";
 
         Log.d("MyRequest", s);
 
         layout.setVisibility(View.GONE);
 
-        new GetData(getContext(), getActivity()).getResponse(s, "chefdetails", new GetData.MyCallback() {
+        new GetData(getContext(), getActivity()).getResponse(s, GetData.CHEF_DETAILS, new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
                 Log.d(TAG, "onSuccess: " + result);
@@ -231,14 +226,10 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 //                                    tv_deactivate.setText(chefProfileData1.getChef_data().get);
                                     Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
                                             .getChef_data().getChef_image())
-//                               .placeholder( R.drawable.progress_animation )
                                             .into(imgChef);
 
-                                    int i = Integer.parseInt(chefProfileData1.getChef_data().getFollow());
                                     if (chefProfileData1.getChef_data().getChef_foodie_follow() == 0)
                                         btn_follow.setText("Follow");
-
-
                                     else if (chefProfileData1.getChef_data().getChef_foodie_follow() == 1) {
                                         btn_follow.setText("Unfollow");
                                     } else {
@@ -378,6 +369,7 @@ for(int i=0;i<jsonArray.length();i++){
             e.printStackTrace();
         }
     }
+
 
     private void getFollowUnfollow(){
         try {

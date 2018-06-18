@@ -75,6 +75,34 @@ public class ChefProfileData1 {
         private Object about;
         private int chef_like_foodie;
         private int chef_foodie_follow;
+        private String chef_city;
+        private String  chef_description;
+        private String chef_zipcode;
+
+        public String getChef_city() {
+            return chef_city;
+        }
+
+        public void setChef_city(String chef_city) {
+            this.chef_city = chef_city;
+        }
+
+        public String getChef_description() {
+            return chef_description;
+        }
+
+        public void setChef_description(String chef_description) {
+            this.chef_description = chef_description;
+        }
+
+        public String getChef_zipcode() {
+            return chef_zipcode;
+        }
+
+        public void setChef_zipcode(String chef_zipcode) {
+            this.chef_zipcode = chef_zipcode;
+        }
+
         private List<CuisineNameBean> cuisine_name;
 
         public int getChef_id() {

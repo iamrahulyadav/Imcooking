@@ -305,7 +305,6 @@ public class HomeFragment extends Fragment implements
                         }
 
                         if (homeData.isStatus()) {
-
                             arr_like_status_1.clear(); arr_like_status_2.clear();
                             for(int i=0; i<homeData.getChef_dish().size(); i++){
                                 arr_like_status_1.add(homeData.getChef_dish().get(i).getDishlike());
