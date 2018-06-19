@@ -127,12 +127,10 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                         else {
                             nestedScrollView.setVisibility(View.GONE);
                             no_record_Layout.setVisibility(View.VISIBLE);
-//                            Toast.makeText(getContext(), "Order list is empty", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
-
-                        Toast.makeText(getContext(), "Something went wrong .", Toast.LENGTH_SHORT).show();
+                        BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                     }
                 }
             });
@@ -165,6 +163,5 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         if (visibilityArray.get(position)) visibilityArray.set(position,false);
         else visibilityArray.set(position, true);
         adapterFoodieMyOrder.notifyDataSetChanged();
-        BaseClass.showToast(getContext(), position+"");
     }
 }

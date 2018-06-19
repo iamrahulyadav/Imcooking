@@ -37,6 +37,15 @@ public class ModelChefAddDish {
     private String deliverymiles;
     private String dish_video;
     private List<String> dish_image;
+    private String dish_qyt;
+
+    public String getDish_qyt() {
+        return dish_qyt;
+    }
+
+    public void setDish_qyt(String dish_qyt) {
+        this.dish_qyt = dish_qyt;
+    }
 
     public String getUser_id() {
         return user_id;

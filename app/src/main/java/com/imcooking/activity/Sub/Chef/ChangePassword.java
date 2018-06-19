@@ -88,7 +88,7 @@ txtChangepass.setOnClickListener(new View.OnClickListener() {
                                    BaseClass.showToast(getApplicationContext(), "Successfully change password");
 
                                } else {
-                                   BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                   BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                }
                            }
                        }

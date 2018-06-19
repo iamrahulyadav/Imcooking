@@ -57,8 +57,8 @@ import java.util.List;
 
 public class ChefEditDish extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
 
-    private String chef_id, dish_id, name, cuisine, price, description, special_note, available, homedelivery, pickup;
-    private EditText edt_name, edt_price, edt_description, edt_special_note;
+    private String chef_id, dish_id, name, cuisine, price, description, special_note,qyt, available, homedelivery, pickup;
+    private EditText edt_name, edt_price, edt_description, edt_special_note, edt_qyt;
     private SwitchCompat switch_1, switch_2, switch_3;
     private String sw_1 = "Yes", sw_2 = "Yes", sw_3 = "Yes";
     private String dish_miles = "10";
@@ -111,7 +111,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     //    layout_photos = findViewById(R.id.edit_dish_photos);
 
 //        tv_photo_name = findViewById(R.id.chef_edit_dish_photo_name);
-
+        edt_qyt = findViewById(R.id.chef_edit_dish_qyt);
         sp_cuisine = findViewById(R.id.chef_edit_dish_spinner_cuisine);
         tv_add_more_photo = findViewById(R.id.edit_dish_add_more);
 
@@ -168,7 +168,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private void getMyIntentData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-
+            qyt = getIntent().getExtras().getString("qyt");
             dish_id = getIntent().getExtras().getString("id");
             name = getIntent().getExtras().getString("name");
             cuisine = getIntent().getExtras().getString("cuisine");
@@ -198,21 +198,21 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             edt_description.setText(description);
             edt_special_note.setText(special_note);
 
-            if(available.equals("Yes")){
+            if(available.equals("Yes")||available.equals("yes")){
                 switch_1.setChecked(true);
-            } else if(available.equals("No")){
+            } else if(available.equals("No")||available.equals("no")){
                 switch_1.setChecked(false);
             } else {}
 
-            if(homedelivery.equals("Yes")){
+            if(homedelivery.equals("Yes")||homedelivery.equals("yes")){
                 switch_2.setChecked(true);
-            } else if(homedelivery.equals("No")){
+            } else if(homedelivery.equals("No")||homedelivery.equals("no")){
                 switch_2.setChecked(false);
             } else {}
 
-            if(pickup.equals("Yes")){
+            if(pickup.equals("Yes")||pickup.equals("yes")){
                 switch_3.setChecked(true);
-            } else if(pickup.equals("No")){
+            } else if(pickup.equals("No")||pickup.equals("no")){
                 switch_3.setChecked(false);
             } else {}
 
@@ -228,7 +228,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         TinyDB tinyDB = new TinyDB(getApplicationContext());
 
         String login_data = tinyDB.getString("login_data");
-        Log.d("LoginData", login_data);
         ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
         userDataBean = new Gson().fromJson(login_data, ApiResponse.UserDataBean.class);
 
@@ -240,7 +239,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         try {
             String s = "";
             JSONObject jsonObject = new JSONObject("{}");
-
 
             layout.setVisibility(View.GONE);
             new GetData(getApplicationContext(), ChefEditDish.this).sendMyData(jsonObject, "cuisine",
@@ -282,8 +280,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         price = edt_price.getText().toString().trim();
         description = edt_description.getText().toString().trim();
         special_note = edt_special_note.getText().toString().trim();
-        //        sw_1   sw_2   sw_3   dish_miles   bitmap_string
-
+        qyt = edt_qyt.getText().toString().trim();
 
         if(!name.isEmpty()){
             if(!price.isEmpty()){
@@ -295,7 +292,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                             } else if(title.equals("editdish")){
                                 editdish(title);
                             }
-
                         } else{
                             BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
                         }
@@ -333,11 +329,11 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
         requestData.setDish_image(arr_photos);
+        requestData.setDish_qyt(qyt);
 
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
-
 
             new GetData(getApplicationContext()).sendMyData(jsonObject, title,
                     ChefEditDish.this, new GetData.MyCallback() {
@@ -350,25 +346,23 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                                     if(job.getBoolean("status")){
                                         if(job.has("message")){
                                             if(job.getString("message").equals("Add dish Successfully")){
-
                                                 BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
                                                 finish();
                                             } else {
-                                                BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                                BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                             }
                                         } else{
-                                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                            BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                         }
                                     } else {
-                                        BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                        BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                     }
                                 } else {
-                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     });
 
@@ -419,16 +413,16 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
                                                 finish();
                                             } else {
-                                                BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                                BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                             }
                                         } else{
-                                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                            BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                         }
                                     } else {
-                                        BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                        BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                     }
                                 } else {
-                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong" );
+                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -448,7 +442,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         if(arr_photos.size() == 3){
             tv_add_more_photo.setVisibility(View.GONE);
         }
-//        Toast.makeText(getApplicationContext(), arr_photos.size()+"", Toast.LENGTH_SHORT).show();
         adapterEditDishPhotos.notifyDataSetChanged();
 
 
@@ -583,16 +576,12 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                 adapterEditDishPhotos.notifyDataSetChanged();
 //                setMyAdapter(arr_photos);
 
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         bitmap = bm;
-        /*imgUser.setImageBitmap(bm);*/
-//        uploadImg(bitmap);
         bitmapString = BaseClass.BitMapToString(bitmap);
 
     }
@@ -622,8 +611,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
         // CALL THIS METHOD TO GET THE ACTUAL PATH
         File finalFile = new File(getRealPathFromURI(tempUri));
-
-        System.out.println(finalFile + "");
 
         String filePath = finalFile + "";
         Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
@@ -688,17 +675,15 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-//        Toast.makeText(this, adapterView.getId() + "", Toast.LENGTH_SHORT).show();
 
         if (adapterView.getId() == R.id.edit_dish_spinner) {
-            dish_miles = adapterView.getItemAtPosition(i).toString();
+            dish_miles = adapterView.getItemAtPosition(i).toString().replace("miles","");
             Log.d("MySpinner", dish_miles);
         } else if(adapterView.getId() == R.id.chef_edit_dish_spinner_cuisine){
             selected_cuisine = adapterView.getItemAtPosition(i).toString();
             selected_cuisine_id = cuisineData.getCuisine_data().get(i).getCuisine_id() + "";
             Log.d("MySpinner", selected_cuisine_id);
         }else{}
-
 
     }
 

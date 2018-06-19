@@ -94,7 +94,27 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         holder.tv_chefname.setText(list.get(position).getChef_name());
         holder.tv_orderid.setText("#"+list.get(position).getOrder_order_id());
         holder.tv_price.setText("£" +String.valueOf(list.get(position).getPrice()));
-        holder.tv_status.setText(list.get(position).getOrder_status());
+        if (list.get(position).getOrder_status()!=null){
+            String status = list.get(position).getOrder_status();
+            if (status.equals("0"))
+            holder.tv_status.setText("New Order");
+            else if (status.equals("1"))
+                holder.tv_status.setText("Accept");
+            else if (status.equals("2"))
+                holder.tv_status.setText("Decline");
+            else if (status.equals("3"))
+                holder.tv_status.setText("In Process");
+            else if (status.equals("4"))
+                holder.tv_status.setText("Decline");
+            else if (status.equals("5"))
+                holder.tv_status.setText("On Way");
+            else if (status.equals("8"))
+                holder.tv_status.setText("Delivered");
+            else if (status.equals("9"))
+                holder.tv_status.setText("Not Delivered");
+        }
+
+
         if (list.get(position).getRating()!=null && list.get(position).getRating().length()>0){
             holder.ratingBar.setRating((Float.parseFloat(list.get(position).getRating())));
         }
@@ -115,6 +135,8 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         holder.txt_order_date.setText(list.get(position).getBookdate());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.chefProfile);
+
+
 
     }
 

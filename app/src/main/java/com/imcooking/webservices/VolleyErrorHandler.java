@@ -10,6 +10,7 @@ import com.android.volley.ParseError;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.imcooking.R;
 import com.imcooking.utils.BaseClass;
 
 public class VolleyErrorHandler {
@@ -22,7 +23,7 @@ public class VolleyErrorHandler {
             BaseClass.showToast(context.getApplicationContext(), "AuthFailureError");
             //TODO
         } else if (error instanceof ServerError) {
-            BaseClass.showToast(context.getApplicationContext(), "Server Error");
+            BaseClass.showToast(context.getApplicationContext(), context.getResources().getString(R.string.error));
             //TODO
         } else if (error instanceof NetworkError) {
             BaseClass.showToast(context.getApplicationContext(), "Please Check our Internet Connection");

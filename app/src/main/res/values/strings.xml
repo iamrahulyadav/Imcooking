@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ImCooking</string>
 
+    <string name="error">Sorry, we are facing some connectivity error, please try again or report us.</string>
     <!--activity login-->
     <string name="txtUserName">USER NAME</string>
     <string name="txtPassword">PASSWORD</string>

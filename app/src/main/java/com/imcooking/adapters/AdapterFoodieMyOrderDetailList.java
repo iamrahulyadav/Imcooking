@@ -57,7 +57,7 @@ public class AdapterFoodieMyOrderDetailList extends RecyclerView.Adapter<Adapter
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_chefname.setText(orderDetailsBeans.get(position).getChef_name());
-
+        holder.txt_dish_name.setText(orderDetailsBeans.get(position).getOrder_dish_name());
         holder.txtQyt.setText("Qyt : "+orderDetailsBeans.get(position).getOrder_quantity());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 orderDetailsBeans.get(position).getOrder_dish_image()).into(holder.dishImg);

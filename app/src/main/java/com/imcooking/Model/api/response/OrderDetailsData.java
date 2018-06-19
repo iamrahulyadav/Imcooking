@@ -70,6 +70,15 @@ public class OrderDetailsData {
         private String order_foodie_phone;
         private String delivery_type;
         private String order_status;
+        private String order_foodie_id;
+
+        public String getOrder_foodie_id() {
+            return order_foodie_id;
+        }
+
+        public void setOrder_foodie_id(String order_foodie_id) {
+            this.order_foodie_id = order_foodie_id;
+        }
 
         public String getDelivery_type() {
             return delivery_type;

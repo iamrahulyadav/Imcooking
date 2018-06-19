@@ -8,15 +8,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.Model.api.response.ApiResponse;
+import com.imcooking.Model.api.response.ChefDishRequestData;
 import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
 import com.imcooking.adapters.AdatperChefMyOrderList;
 import com.imcooking.adapters.AdatperChefMyRequestList;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -32,12 +35,19 @@ public class ChefMyRequestFragment extends Fragment {
 
     TinyDB tinyDB;
     private RecyclerView requestRecyclerView;
+    private LinearLayout no_recordLayout;
+    private LinearLayout layoutToolbar;
+    private String strtext;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chef_request_list, container, false);
+        if (getArguments()!=null){
+            strtext=getArguments().getString("message");
+        }
         return view;
     }
 
@@ -48,8 +58,10 @@ public class ChefMyRequestFragment extends Fragment {
     }
 
     private void init() {
+        no_recordLayout = getView().findViewById(R.id.fragment_my_request_chef_no_record_image);
         requestRecyclerView = getView().findViewById(R.id.fragment_chef_request_list_recycler);
-tinyDB=new TinyDB(getContext());
+        layoutToolbar = getView().findViewById(R.id.chefrequest_txtname);
+        tinyDB=new TinyDB(getContext());
         CustomLayoutManager manager = new CustomLayoutManager(getContext()) {
             @Override
             public boolean canScrollVertically() {
@@ -57,7 +69,9 @@ tinyDB=new TinyDB(getContext());
             }
 
         };
-
+        if (strtext!=null){
+            layoutToolbar.setVisibility(View.VISIBLE);
+        }
         requestRecyclerView.setLayoutManager(manager);
         getorderList();
 
@@ -69,36 +83,35 @@ tinyDB=new TinyDB(getContext());
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         String user_id=apiResponse.getUser_id()+"";
+        String s = "{\"chef_id\":" + user_id + "}";
 
-        // String s = "{\"chef_id\":" + user_id + "}";
-
-        String s = "{\"chef_id\": 1}";
-        Log.d("Tags",s);
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "chef_order_list", getActivity(),
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.DISH_REQUEST_LIST, getActivity(),
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
 
-                            ChefMyorderList chefMyorderList = new ChefMyorderList();
-
-                            chefMyorderList = new Gson().fromJson(result, ChefMyorderList.class);
+                            ChefDishRequestData chefMyorderList = new ChefDishRequestData();
+                            chefMyorderList = new Gson().fromJson(result, ChefDishRequestData.class);
 
                             if(chefMyorderList.isStatus()){
-                                if(!chefMyorderList.getMy_order_list().isEmpty()){
-
-                                    setDishAdapter(chefMyorderList.getMy_order_list());
-
+                                if(chefMyorderList.getChef_dish_details()!=null && chefMyorderList.getChef_dish_details().size()>0){
+                                    requestRecyclerView.setVisibility(View.VISIBLE);
+                                    no_recordLayout.setVisibility(View.GONE);
+                                    setDishAdapter(chefMyorderList.getChef_dish_details());
                                 }
                                 else {
-                                    Toast.makeText(getContext(), "request list is empty", Toast.LENGTH_SHORT).show();
+                                    if (strtext!=null){
+                                        layoutToolbar.setVisibility(View.VISIBLE);
+                                    }
+                                    requestRecyclerView.setVisibility(View.GONE);
+                                    no_recordLayout.setVisibility(View.VISIBLE);
                                 }
                             }
                             else {
-                                Toast.makeText(getContext(), "spmething went wrong", Toast.LENGTH_SHORT).show();
+                                BaseClass.showToast(getContext(),getResources().getString(R.string.error));
                             }
-
                         }
                     });
 
@@ -111,7 +124,7 @@ tinyDB=new TinyDB(getContext());
 
     List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
 
-    private void setDishAdapter(List<ChefMyorderList.MyOrderListBean> list) {
+    private void setDishAdapter(List<ChefDishRequestData.ChefDishDetailsBean> list) {
         AdatperChefMyRequestList chefMyRequestsAdatper = new AdatperChefMyRequestList(getContext(),list);
         requestRecyclerView.setAdapter(chefMyRequestsAdatper);
 

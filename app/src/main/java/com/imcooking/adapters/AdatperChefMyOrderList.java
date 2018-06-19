@@ -1,5 +1,6 @@
 package com.imcooking.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,6 +80,7 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
                 .inflate(R.layout.item_chef_order_list, parent, false);
 
         return new MyViewHolder(itemView); }
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
@@ -87,7 +89,25 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
         holder.txtdishname.setText(list.get(position).getFoodie_name());
         holder.txtfoodiename.setText(list.get(position).getDish_name());
         holder.txtprice.setText("£"+list.get(position).getPrice()+"");
-        holder.txt_order_status.setText(list.get(position).getOrder_status());
+        if (list.get(position).getOrder_status()!=null){
+            String status = list.get(position).getOrder_status();
+            if (status.equals("0"))
+                holder.txt_order_status.setText("New Order");
+            else if (status.equals("1"))
+                holder.txt_order_status.setText("Accept");
+            else if (status.equals("2"))
+                holder.txt_order_status.setText("Decline");
+            else if (status.equals("3"))
+                holder.txt_order_status.setText("In Process");
+            else if (status.equals("4"))
+                holder.txt_order_status.setText("Decline");
+            else if (status.equals("5"))
+                holder.txt_order_status.setText("On Way");
+            else if (status.equals("8"))
+                holder.txt_order_status.setText("Delivered");
+            else if (status.equals("9"))
+                holder.txt_order_status.setText("Not Delivered");
+        }
         holder.txtqty.setText("Qyt : "+list.get(position).getDish_qyt());
 
         float price = Integer.parseInt(list.get(position).getDish_qyt())*Float.parseFloat(list.get(position).getPrice());

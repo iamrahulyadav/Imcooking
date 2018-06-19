@@ -43,9 +43,9 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         }
         chef_id = ChefHome.chef_id;
 
-        if (getIntent().hasExtra("order_id")){
+        if (getIntent().hasExtra("order_id"))
             order_id = getIntent().getStringExtra("order_id");
-        }
+
         init();
     }
 
@@ -106,7 +106,8 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                             if (orderDetailsData.getOrder_details()!=null){
                                 orderDetailsBeans.addAll(orderDetailsData.getOrder_details());
                                 if (orderDetailsBeans.size()>0){
-                                    foodie_id = orderDetailsBeans.get(0).getOrder_foodie_email();
+                                    foodie_id = orderDetailsBeans.get(0).getOrder_foodie_id();
+                                    if (orderDetailsBeans.get(0).getOrder_foodie_name()!=null)
                                     txt_chef_name.setText(orderDetailsBeans.get(0).getOrder_foodie_name()+"");
                                     txt_order_id.setText(orderDetailsBeans.get(0).getOrder_order_id());
                                     txt_date.setText(orderDetailsBeans.get(0).getOrder_from_time()+" - "+orderDetailsBeans.get(0).getOrder_to_time());
@@ -120,7 +121,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     setOrderDetails();
                                 }
                             }
-                            Log.d(ChefOrderDetailsActivity.class.getName(), "Rakhi : "+result);
                         }
                     });
         } catch (JSONException e) {
@@ -246,9 +246,10 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         String s ="{\n" +
                 " \"chef_id\":\""+chef_id+"\",\n" +
                 "   \"foodie_id\":\""+foodie_id+"\",\n" +
-                "   \"request_id\":\""+request_id+"\",\n" +
+                "   \"request_id\":\""+order_id+"\",\n" +
                 "   \"status\":\""+chef_status+"\" \n" +
                 "}";
+        Log.d("TAG", "updateStatus: "+s);
         try {
             JSONObject jsonObject = new JSONObject(s);
 

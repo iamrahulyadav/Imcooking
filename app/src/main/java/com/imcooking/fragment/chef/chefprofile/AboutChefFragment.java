@@ -54,7 +54,8 @@ public class AboutChefFragment extends Fragment {
 //            Toast.makeText(getContext(), s1, Toast.LENGTH_SHORT).show();
 //            String s2 = data.getBestcuisine_name();
 //            String s3 = data.getCuisine_name();
-            tv_description.setText(data.getAbout()+"");
+            if (data.getAbout()!=null)
+                tv_description.setText(data.getAbout()+"");
 //            tv_cuisine.setText(data.getBestcuisine_name());
 
             AdapterChefAboutCuisineList adapter = new AdapterChefAboutCuisineList(getContext(), data.getCuisine_name());

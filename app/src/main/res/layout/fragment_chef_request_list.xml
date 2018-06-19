@@ -1,23 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
     xmlns:android="http://schemas.android.com/apk/res/android" >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:background="@color/home_background"
-        >
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:id="@+id/chefrequest_txtname">
+        <com.imcooking.customtext.CustomTextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragment_chef_request_list_recycler">
-        </android.support.v7.widget.RecyclerView>
-
+            android:layout_height="60dp"
+            android:text="Dish request "
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginLeft="40dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_4"/>
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/colorWhite">
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fragment_chef_request_list_recycler">
+            </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_my_request_chef_no_record_image"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/request_list"/>
+                <com.imcooking.customtext.CustomTextButtonTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="10dp"
+                    android:textSize="@dimen/largesize"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="No Request Found !"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="Add Items to it now."
+                    android:textColor="@color/coloCart"/>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

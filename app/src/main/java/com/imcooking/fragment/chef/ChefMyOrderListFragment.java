@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
@@ -17,6 +19,7 @@ import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefOrderDetailsActivity;
 import com.imcooking.adapters.AdatperChefMyOrderList;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -29,8 +32,10 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOrderList.ChefMyOrderInterface{
-TinyDB tinyDB;
-RecyclerView recyclerView;
+    TinyDB tinyDB;
+    RecyclerView recyclerView;
+    private LinearLayout no_record_Layout;
+    private NestedScrollView nestedScrollView ;
    public ChefMyOrderListFragment() {
         // Required empty public constructor
     }
@@ -50,6 +55,8 @@ RecyclerView recyclerView;
         tinyDB=new TinyDB(getContext());
         getorderList();
         recyclerView = view.findViewById(R.id.fragment_chef_order_list_recycler);
+        no_record_Layout = view.findViewById(R.id.fragment_my_order_chef_no_record_image);
+        nestedScrollView = view.findViewById(R.id.chef_order_list_scroll);
         CustomLayoutManager manager1 = new CustomLayoutManager(getContext()){
             @Override
             public boolean canScrollVertically() {
@@ -58,16 +65,14 @@ RecyclerView recyclerView;
         };
         recyclerView.setLayoutManager(manager1);
 
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
     }
+
     private List<ChefMyorderList.MyOrderListBean> list;
     public void getorderList(){
         list = new ArrayList<>();
@@ -81,23 +86,26 @@ RecyclerView recyclerView;
 
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "chef_order_list", getActivity(),
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.CHEF_ORDER_LIST, getActivity(),
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
                             ChefMyorderList chefMyorderList = new ChefMyorderList();
                             chefMyorderList = new Gson().fromJson(result, ChefMyorderList.class);
                             if(chefMyorderList.isStatus()){
-                              if(!chefMyorderList.getMy_order_list().isEmpty()){
+                              if(chefMyorderList.getMy_order_list()!=null && chefMyorderList.getMy_order_list().size()>0){
                                   list.addAll(chefMyorderList.getMy_order_list());
-                                    setMyAdapter(list);
+                                  nestedScrollView.setVisibility(View.VISIBLE);
+                                  no_record_Layout.setVisibility(View.GONE);
+                                  setMyAdapter(list);
                                 }
                                 else {
-                                    Toast.makeText(getContext(), "Order List is empty", Toast.LENGTH_SHORT).show();
+                                  nestedScrollView.setVisibility(View.GONE);
+                                  no_record_Layout.setVisibility(View.VISIBLE);
                                 }
                             }
                             else {
-                                Toast.makeText(getContext(), "Order List is empty", Toast.LENGTH_SHORT).show();
+                                BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                             }
                         }
                     });

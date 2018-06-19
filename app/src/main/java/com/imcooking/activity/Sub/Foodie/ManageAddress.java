@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.AddDelRequest;
 import com.imcooking.Model.api.response.AddressListData;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
 
 
@@ -20,6 +21,7 @@ import com.imcooking.adapters.AddListAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +30,19 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
    private TextView txtAddress;
    private List<AddressListData.AddressBean>addressBeanList = new ArrayList<>();
    private RecyclerView savedAddress;
- //  CoordinatorLayout layout;
+   private TinyDB tinyDB;
+   private Gson gson = new Gson();
+   ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+   private String foodie_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_address);
-
+        tinyDB = new TinyDB(getApplicationContext());
+        String s = tinyDB.getString("login_data");
+        userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
+        foodie_id = userDataBean.getUser_id()+"";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -68,7 +76,7 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
             addressBeanList.clear();
         }
         new GetData(getApplicationContext(), ManageAddress.this).getResponse("{\"foodie_id\":" +
-                HomeFragment.foodie_id + "}", "addresslist", new GetData.MyCallback() {
+                foodie_id + "}", "addresslist", new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
               runOnUiThread(new Runnable() {
@@ -88,6 +96,8 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
             }
         });
     }
+
+
     private AddListAdatper chefILoveAdatper;
     private void setAddList(){
         chefILoveAdatper = new AddListAdatper(getApplicationContext(), addressBeanList);

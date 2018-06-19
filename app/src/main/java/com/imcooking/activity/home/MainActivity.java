@@ -389,12 +389,18 @@ public class MainActivity extends AppBaseActivity
                 break;
             case R.id.navigation_myrequest:
                 if(user_type.equals("2")) {
-                    BaseClass.callFragment(new FoodieMyRequestFragment(), new FoodieMyRequestFragment().getClass().getName(), getSupportFragmentManager());
+                    BaseClass.callFragment(new FoodieMyRequestFragment(), FoodieMyRequestFragment.class.getName(), getSupportFragmentManager());
                 }
                 else if(user_type.equals("1")){
-                    BaseClass.callFragment(new ChefMyRequestFragment(), new ChefMyRequestFragment().getClass().getName(),
+                    Bundle bundle=new Bundle();
+                    bundle.putString("message", "drawer");
+                    //set Fragmentclass Arguments
+                    ChefMyRequestFragment fragobj=new ChefMyRequestFragment();
+                    fragobj.setArguments(bundle);
+                    BaseClass.callFragment(fragobj, ChefMyRequestFragment.class.getName(),
                             getSupportFragmentManager());
                 }
+
                 break;
             case R.id.navigation_cuisine:
                 if(user_type.equals("2")) {
@@ -408,11 +414,11 @@ public class MainActivity extends AppBaseActivity
                 break;
             case R.id.navigation_myorder:
                 if(user_type.equals("2")) {
-                    BaseClass.callFragment(new FoodieMyOrderFragment(), new FoodieMyOrderFragment().getClass().getName(),
+                    BaseClass.callFragment(new FoodieMyOrderFragment(), FoodieMyOrderFragment.class.getName(),
                             getSupportFragmentManager());
                 }
                 else if(user_type.equals("1")){
-                    BaseClass.callFragment(new ChefMyOrderListFragment(), new ChefMyOrderListFragment().getClass().getName(),
+                    BaseClass.callFragment(new ChefMyOrderListFragment(), ChefMyOrderListFragment.class.getName(),
                             getSupportFragmentManager());
                 } else {}
                 break;

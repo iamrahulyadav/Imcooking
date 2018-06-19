@@ -196,9 +196,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     private void getchefProfile() {
         String s = "{\"chef_id\":" + chef_id + ",\"foodie_id\":" + foodie_id + "}";
-
         Log.d("MyRequest", s);
-
         layout.setVisibility(View.GONE);
 
         new GetData(getContext(), getActivity()).getResponse(s, GetData.CHEF_DETAILS, new GetData.MyCallback() {
@@ -216,17 +214,33 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                             if (chefProfileData1 != null) {
                                 if (chefProfileData1.isStatus()) {
                                     layout.setVisibility(View.VISIBLE);
-                                    txtAddress.setText(chefProfileData1.getChef_data().getAddress());
-//                                    if (chefProfileData1.getChef_data().getChef_name()!=null&&!chefProfileData1.getChef_data().getChef_name().equals("null"))
-                                    txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
-                                    tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                   /* if (chefProfileData1.getChef_data().getAddress()==null
+                                            &&chefProfileData1.getChef_data().getAddress().equalsIgnoreCase("null")){
+                                        txtAddress.setText("Your address");
+                                    } else
+                                       */
+
+                                    //    else txtAddress.setText("Your Address");
+                                    if (chefProfileData1.getChef_data().getChef_full_name()!=null){
+                                        txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
+                                        txtAddress.setText(chefProfileData1.getChef_data().getAddress()+" "+
+                                                chefProfileData1.getChef_data().getChef_city());
+                                    }
+                                    if (chefProfileData1.getChef_data().getChef_phone()!=null)
+                                        tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                     if (chefProfileData1.getChef_data().getRating() != null) {
                                         ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
                                     }
+                                    if (chefProfileData1
+                                            .getChef_data().getChef_image()!=null&&!chefProfileData1
+                                            .getChef_data().getChef_image().equalsIgnoreCase("null")){
+                                        Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
+                                                .getChef_data().getChef_image())
+                                                .into(imgChef);
+                                    } else {
+                                        imgChef.setImageResource(R.drawable.details_profile);
+                                    }
 //                                    tv_deactivate.setText(chefProfileData1.getChef_data().get);
-                                    Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
-                                            .getChef_data().getChef_image())
-                                            .into(imgChef);
 
                                     if (chefProfileData1.getChef_data().getChef_foodie_follow() == 0)
                                         btn_follow.setText("Follow");
@@ -249,7 +263,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     setupViewPager(viewPager);
 
                                 } else {
-                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                    BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                                 }
                             }
                         }
@@ -352,10 +366,7 @@ for(int i=0;i<jsonArray.length();i++){
 
     private void getCuisines(){
         try {
-            String s = "";
             JSONObject jsonObject = new JSONObject("{}");
-
-
 //            layout.setVisibility(View.GONE);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, "cuisine",
                     getActivity(), new GetData.MyCallback() {
@@ -383,6 +394,7 @@ for(int i=0;i<jsonArray.length();i++){
 //            layout.setVisibility(View.GONE);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, "follow",
                     getActivity(), new GetData.MyCallback() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onSuccess(String result) {
 //                            layout.setVisibility(View.VISIBLE);
@@ -403,8 +415,6 @@ for(int i=0;i<jsonArray.length();i++){
                                             -1 + " Followers");
                                     btn_follow.setText("Follow");
                                 }
-
-
                             }else {
                                 Toast.makeText(getContext(), "Something went Wrong", Toast.LENGTH_SHORT).show();
                             }

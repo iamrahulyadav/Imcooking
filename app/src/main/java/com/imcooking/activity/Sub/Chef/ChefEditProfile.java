@@ -42,6 +42,7 @@ import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.EditProfile;
 import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -146,16 +147,16 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         str_zipcode = chefProfileData1.getChef_data().getChef_zipcode();
         str_about = chefProfileData1.getChef_data().getChef_description();
         edt_email.setText(str_email);
-        if (str_name!=null){
+        if (str_name!=null && !str_name.equalsIgnoreCase("null")){
             edt_name.setText(str_name);
             txt_name.setText(str_name);
         } else {
             txt_name.setText("Your Name");
         }
-        if (str_city!=null){
+        if (str_city!=null&&!str_city.equalsIgnoreCase("null")){
             edt_city.setText(str_city);
         }
-        if (str_address!=null){
+        if (str_address!=null&&!str_address.equalsIgnoreCase("null")){
             edt_address.setText(str_address);
             txt_address.setText(str_address);
         } else {
@@ -274,13 +275,13 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                                                         JSONObject job = new JSONObject(result);
                                                         if (job.getBoolean("status")) {
                                                             if (job.getString("msg").equals("chef profile update successfully")) {
-                                                                BaseClass.showToast(getApplicationContext(), "Profle Updated Successfully");
+                                                                BaseClass.showToast(getApplicationContext(), "Profile Updated Successfully");
                                                                 finish();
                                                             } else {
-                                                                BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                                                BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                                             }
                                                         } else {
-                                                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                                            BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                                         }
                                                     } catch (JSONException e) {
                                                         e.printStackTrace();
@@ -578,13 +579,18 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                             JSONObject jsonObject1 = new JSONObject(result);
                             if (jsonObject1.getBoolean("status")){
                                 JSONObject imgObj = jsonObject1.getJSONObject("user_profile_image");
-                                String url = GetData.IMG_BASE_URL+imgObj.getString("user_image");
-                                GetImage task = new GetImage();
-                                // Execute the task
-                                task.execute(new String[] { url });
-                            } else {
-                                progressBar.setVisibility(View.GONE);
+                                String user_image =  imgObj.getString("user_image");
+                                if (user_image!=null && !user_image.equalsIgnoreCase("null")){
+                                    String url = GetData.IMG_BASE_URL + user_image;
+                                    GetImage task = new GetImage();
+                                    // Execute the task
+                                    task.execute(new String[] { url });
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    imgProfile.setImageResource(R.drawable.details_profile);
+                                }
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

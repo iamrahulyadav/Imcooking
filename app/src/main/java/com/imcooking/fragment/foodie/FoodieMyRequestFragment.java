@@ -108,12 +108,13 @@ public class FoodieMyRequestFragment extends Fragment {
                                     else {
                                         rv.setVisibility(View.GONE);
                                         no_recordLayout.setVisibility(View.VISIBLE);
+/*
                                         BaseClass.showToast(getContext(),"No request found");
+*/
                                     }
                                 }
                                 else {
-                                    rv.setVisibility(View.GONE);
-                                    no_recordLayout.setVisibility(View.VISIBLE);
+
                                     BaseClass.showToast(getContext(), "Something went wrong");
                                 }
                             }

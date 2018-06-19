@@ -200,7 +200,7 @@ public class EditProfile extends AppBaseActivity {
 //                                            Toast.makeText(EditProfile.this, ""+s, Toast.LENGTH_SHORT).show();
                                             finish();
                                         } else{
-                                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong, Please Try Again Later");
+                                            BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                         }
 
                                     } catch (JSONException e) {

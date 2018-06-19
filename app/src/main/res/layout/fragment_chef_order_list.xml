@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@color/home_background"
-    >
+    android:background="@color/colorWhite">
+
     <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -22,6 +22,8 @@
         android:background="@color/view_4"/>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:visibility="gone"
+        android:id="@+id/chef_order_list_scroll"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
 
@@ -31,5 +33,41 @@
         </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_my_order_chef_no_record_image"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/my_order"/>
+        <com.imcooking.customtext.CustomTextButtonTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:textSize="@dimen/largesize"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:text="Order List Empty !"/>
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="Add Items to it now."
+            android:textColor="@color/coloCart"/>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

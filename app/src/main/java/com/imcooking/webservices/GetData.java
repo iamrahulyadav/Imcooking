@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.imcooking.R;
 import com.imcooking.activity.main.setup.SignUpActivity;
 import com.imcooking.utils.BaseClass;
 
@@ -60,6 +61,9 @@ public class GetData {
     public static String ORDER_DETAILS = "order_detail";
     public static String CHEF_ACCEPT_REQUEST ="chef_accept_request";
     public static String ADDRESS = "address";
+    public static String DISH_REQUEST_LIST = "DishRequestList";
+    public static String CHEF_ORDER_LIST = "chef_order_list";
+    public static String CHEF_MY_CUISINE_LIST = "chef_my_cuisine_list";
 
 
 
@@ -146,7 +150,7 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
                                 callback.onSuccess(str);
 
                             else
-                                BaseClass.showToast(context, "ServerError");
+                                BaseClass.showToast(context, context.getResources().getString(R.string.error));
 
                         }
                     }, new Response.ErrorListener() {

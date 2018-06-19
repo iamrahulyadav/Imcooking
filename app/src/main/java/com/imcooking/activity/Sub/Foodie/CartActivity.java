@@ -320,7 +320,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     placeOrder.setDishorder(dishorderBeanList);
                     placeOrder.setDelivery_type(delivery_type);
                     placeOrder.setTax("");
-                    placeOrder.setTotal_price(txtTotalprice.getText().toString().trim());
+                    placeOrder.setTotal_price(txtTotalprice.getText().toString().trim().replace("£",""));
                     placeOrder.setAddress(address);
                     placeOrder.setFrom_time(txt_time_picker.getText().toString().trim());
                     placeOrder.setTo_time(txt_to_time_value.getText().toString().trim());
@@ -378,12 +378,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     public void CartInterfaceMethod(int position, String click_type) {
         if(click_type.equals("plus")){
             int i = Integer.parseInt(dishDetails.get(position).getDish_quantity_selected());
-            if(i < Integer.parseInt(dishDetails.get(position).getDish_quantity())) {
-                plus_minus_api(position, (i+1));
-            } else{
-                BaseClass.showToast(getApplicationContext(),
-                        "You have reached maximum number of availablity for this item.");
+            if (dishDetails.get(position).getDish_quantity()!=null){
+                if(i < Integer.parseInt(dishDetails.get(position).getDish_quantity())) {
+                    plus_minus_api(position, (i+1));
+                } else{
+                    BaseClass.showToast(getApplicationContext(),
+                            "You have reached maximum number of availability for this item.");
+                }
             }
+
         } else if(click_type.equals("minus")){
             int i = Integer.parseInt(dishDetails.get(position).getDish_quantity_selected());
             if(i > 1) {

@@ -18,6 +18,7 @@ import com.imcooking.adapters.AdapterFoodieFavCuisines;
 import com.imcooking.adapters.FavrouiteAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
@@ -109,18 +110,24 @@ public class FavoriteCusine extends AppBaseActivity {
 
         String s = "{\"chef_id\":" + user_id + "}";
         try {
-            JSONObject jsonObject = new JSONObject(s);
+            final JSONObject jsonObject = new JSONObject(s);
 
             new GetData(getApplicationContext(), FavoriteCusine.this).sendMyData(jsonObject,
-                    "chef_my_cuisine_list", FavoriteCusine.this, new GetData.MyCallback() {
+                    GetData.CHEF_MY_CUISINE_LIST, FavoriteCusine.this, new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-
                             data = new ModelFoodieFavCuisines();
                             data = new Gson().fromJson(result, ModelFoodieFavCuisines.class);
 
                             if(data.isStatus()){
                                 setMyAdapter(data.getCuisine_data());
+                            } else {
+                                try {
+
+                                    BaseClass.showToast(getApplicationContext(), new JSONObject(result).getString("msg"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     });
@@ -135,7 +142,6 @@ public class FavoriteCusine extends AppBaseActivity {
         for (int i=0; i<cuisineData.size(); i++){
             arrayList.add("1");
         }
-
         adapter = new AdapterFoodieFavCuisines(getApplicationContext(), cuisineData, arrayList);
         recyclerView.setAdapter(adapter);
     }
