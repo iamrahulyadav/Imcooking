@@ -15,7 +15,10 @@ import com.imcooking.R;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,18 +30,19 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
     ChefMyOrderInterface chefMyOrderInterface;
     private Context context;
     List<ChefMyorderList.MyOrderListBean>list=new ArrayList<>();
-
+    String TAG ;
 
     public AdatperChefMyOrderList(Context context,
-                                  List<ChefMyorderList.MyOrderListBean> list, ChefMyOrderInterface chefMyOrderInterface) {
+                                  List<ChefMyorderList.MyOrderListBean> list, ChefMyOrderInterface chefMyOrderInterface,
+                                  String TAG) {
         this.context = context;
         this.list=list;
         this.chefMyOrderInterface = chefMyOrderInterface;
-
+        this.TAG = TAG;
     }
 
     public interface ChefMyOrderInterface{
-        void chefOrderdetails(int pos);
+        void chefOrderdetails(int pos, String TAG);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -68,7 +72,7 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
             tv_view_response.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    chefMyOrderInterface.chefOrderdetails(getAdapterPosition());
+                    chefMyOrderInterface.chefOrderdetails(getAdapterPosition(), TAG);
                 }
             });
             }
@@ -100,7 +104,7 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
             else if (status.equals("3"))
                 holder.txt_order_status.setText("In Process");
             else if (status.equals("4"))
-                holder.txt_order_status.setText("Decline");
+                holder.txt_order_status.setText("Ready");
             else if (status.equals("5"))
                 holder.txt_order_status.setText("On Way");
             else if (status.equals("8"))
@@ -112,7 +116,19 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
 
         float price = Integer.parseInt(list.get(position).getDish_qyt())*Float.parseFloat(list.get(position).getPrice());
         holder.txtTotalAmnt.setText("£"+price);
-        holder.txtTime.setText(list.get(position).getOrdertime());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date myDate = null;
+        try {
+            myDate = timeFormat.parse(list.get(position).getBookdate());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "MMM dd, yyyy HH:mm a");
+        String finalDate = dateFormat.format(myDate);
+        holder.txtTime.setText(finalDate);
 
        Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getFoodie_image()).into(holder.img);

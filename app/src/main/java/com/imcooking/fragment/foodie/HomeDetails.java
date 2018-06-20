@@ -176,86 +176,90 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void run() {
-                            layout.setVisibility(View.VISIBLE);
-                            if (dishDetails.getDish_details().getDish_name()!=null)
-                                txtDishName.setText(dishDetails.getDish_details().getDish_name());
-                            txtChefName.setText(dishDetails.getDish_details().getChef_name());
-                            txtPrice.setText("£"+dishDetails.getDish_details().getDish_price());
-                            chef_id=dishDetails.getDish_details().getChef_id();
-                            dishId=dishDetails.getDish_details().getDish_id();
-                            if (dishDetails.getDish_details().getDish_available().equalsIgnoreCase("yes")){
-                                txtAvailable.setText("Available ");
-                                txtAvailable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_circle, 0);
-                            } else {
-                                txtAvailable.setText("No");
-                            }
-                            if (dishDetails.getDish_details().getFoodie_dish_like()!=null && Integer.parseInt(dishDetails.getDish_details().getFoodie_dish_like())==1)
-                                imgLike.setImageResource(R.drawable.ic_heart_red);
-                            else  if (dishDetails.getDish_details().getFoodie_dish_like()!=null &&
-                                    Integer.parseInt(dishDetails.getDish_details().getFoodie_dish_like())==0)
-                                imgLike.setImageResource(R.drawable.ic_heart);
-                            if (dishDetails.getDish_details().getDish_total_like()!=null)
-                                txtLike.setText(dishDetails.getDish_details().getDish_total_like());
-                            if (dishDetails.getDish_details().getChef_image()!=null){
-                                Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails.getDish_details().getChef_image()).into(imgChef);
-                            } else {
-                                imgChef.setBackgroundResource(R.drawable.details_profile);
-                            }
-                            txtTime.setText(dishDetails.getDish_details().getDish_from()+"-"+dishDetails.getDish_details().getDish_to());
-                            if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
-                                txtDeliverytype.setText("Pickup");
-                            } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
-                                    && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
-                                txtDeliverytype.setText("Home Delivery / Pickup");
-                            } else {
-                                txtDeliverytype.setText("Home Delivery");
-                            }
-                            nameList.add(dishDetails.getDish_details().getDish_special_note());
-                            nameList.add(dishDetails.getDish_details().getDish_description());
-                            if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
-                                txtDeliverytype.setText("Pickup");
-                                imgPickUp.setVisibility(View.VISIBLE);
-                                imgDeliviery.setVisibility(View.GONE);
-                            } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
-                                    && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
-                                txtDeliverytype.setText("Home Delivery / Pickup");
-                                imgDeliviery.setVisibility(View.VISIBLE);
-                                imgPickUp.setVisibility(View.VISIBLE);
-                            } else {
-                                imgDeliviery.setVisibility(View.VISIBLE);
-                                imgPickUp.setVisibility(View.GONE);
-                                txtDeliverytype.setText("Home Delivery");
-                            }
+                            if (dishDetails.getDish_details()!=null){
+                                {
+                                    layout.setVisibility(View.VISIBLE);
+                                    if (dishDetails.getDish_details().getDish_name()!=null)
+                                        txtDishName.setText(dishDetails.getDish_details().getDish_name());
+                                    txtChefName.setText(dishDetails.getDish_details().getChef_name());
+                                    txtPrice.setText("£"+dishDetails.getDish_details().getDish_price());
+                                    chef_id=dishDetails.getDish_details().getChef_id();
+                                    dishId=dishDetails.getDish_details().getDish_id();
+                                    if (dishDetails.getDish_details().getDish_available().equalsIgnoreCase("yes")){
+                                        txtAvailable.setText("Available ");
+                                        txtAvailable.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_circle, 0);
+                                    } else {
+                                        txtAvailable.setText("No");
+                                    }
+                                    if (dishDetails.getDish_details().getFoodie_dish_like()!=null && Integer.parseInt(dishDetails.getDish_details().getFoodie_dish_like())==1)
+                                        imgLike.setImageResource(R.drawable.ic_heart_red);
+                                    else  if (dishDetails.getDish_details().getFoodie_dish_like()!=null &&
+                                            Integer.parseInt(dishDetails.getDish_details().getFoodie_dish_like())==0)
+                                        imgLike.setImageResource(R.drawable.ic_heart);
+                                    if (dishDetails.getDish_details().getDish_total_like()!=null)
+                                        txtLike.setText(dishDetails.getDish_details().getDish_total_like());
+                                    if (dishDetails.getDish_details().getChef_image()!=null){
+                                        Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails.getDish_details().getChef_image()).into(imgChef);
+                                    } else {
+                                        imgChef.setBackgroundResource(R.drawable.details_profile);
+                                    }
+                                    txtTime.setText(dishDetails.getDish_details().getDish_from()+"-"+dishDetails.getDish_details().getDish_to());
+                                    if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
+                                        txtDeliverytype.setText("Pickup");
+                                    } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
+                                            && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
+                                        txtDeliverytype.setText("Home Delivery / Pickup");
+                                    } else {
+                                        txtDeliverytype.setText("Home Delivery");
+                                    }
+                                    nameList.add(dishDetails.getDish_details().getDish_special_note());
+                                    nameList.add(dishDetails.getDish_details().getDish_description());
+                                    if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("No")){
+                                        txtDeliverytype.setText("Pickup");
+                                        imgPickUp.setVisibility(View.VISIBLE);
+                                        imgDeliviery.setVisibility(View.GONE);
+                                    } else if (dishDetails.getDish_details().getDish_homedelivery().equalsIgnoreCase("YES")
+                                            && dishDetails.getDish_details().getDish_pickup().equalsIgnoreCase("YES")){
+                                        txtDeliverytype.setText("Home Delivery / Pickup");
+                                        imgDeliviery.setVisibility(View.VISIBLE);
+                                        imgPickUp.setVisibility(View.VISIBLE);
+                                    } else {
+                                        imgDeliviery.setVisibility(View.VISIBLE);
+                                        imgPickUp.setVisibility(View.GONE);
+                                        txtDeliverytype.setText("Home Delivery");
+                                    }
 
-                            txtLike.setText(dishDetails.getDish_details().getLike() + "");
+                                    txtLike.setText(dishDetails.getDish_details().getLike() + "");
 
-                            txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
-                            if(dishDetails
-                                    .getDish_details().getDish_image().size() != 0)
-                                Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
-                                        .getDish_details().getDish_image().get(0))
+                                    txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
+                                    if(dishDetails
+                                            .getDish_details().getDish_image().size() != 0)
+                                        Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
+                                                .getDish_details().getDish_image().get(0))
 //                                .placeholder( R.drawable.progress_animation )
-                                        .into(imgTop);
+                                                .into(imgTop);
 
-                            adapter=new Pager1(getContext(), nameList);
-                            pager.setAdapter(adapter);
-                            pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                                @Override
-                                public void onTabSelected(TabLayout.Tab tab) {
-                                    pager.setCurrentItem(tab.getPosition());
+                                    adapter=new Pager1(getContext(), nameList);
+                                    pager.setAdapter(adapter);
+                                    pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                                    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                                        @Override
+                                        public void onTabSelected(TabLayout.Tab tab) {
+                                            pager.setCurrentItem(tab.getPosition());
+                                        }
+
+                                        @Override
+                                        public void onTabUnselected(TabLayout.Tab tab) {
+
+                                        }
+
+                                        @Override
+                                        public void onTabReselected(TabLayout.Tab tab) {
+
+                                        }
+                                    });
                                 }
-
-                                @Override
-                                public void onTabUnselected(TabLayout.Tab tab) {
-
-                                }
-
-                                @Override
-                                public void onTabReselected(TabLayout.Tab tab) {
-
-                                }
-                            });
+                            }
                         }
                     });
 
@@ -336,10 +340,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                         txtLike.setText((i-1) + "");
                                         imgLike.setImageDrawable(getActivity().getResources().getDrawable((R.drawable.ic_heart)));
                                     } else{
-                                        BaseClass.showToast(getContext(), "Something Went Wrong");
+                                        BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                                     }
                                 } else{
-                                    BaseClass.showToast(getContext(), "Something Went Wrong");
+                                    BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -396,11 +400,11 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                  dialog.dismiss();
              }
          });
-
-         dialog.show();
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
+
     }
 
     private void createChefDialog(){
@@ -428,12 +432,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
+
         dialog.show();
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

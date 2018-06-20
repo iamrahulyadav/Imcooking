@@ -197,6 +197,7 @@ public class EditProfile extends AppBaseActivity {
 
                                             new TinyDB(getApplicationContext()).putString("login_data", new Gson().toJson(userData));
                                             String s = new TinyDB(getApplicationContext()).getString("login_data");
+                                            Log.d(TAG, "Rakhi: "+s);
 //                                            Toast.makeText(EditProfile.this, ""+s, Toast.LENGTH_SHORT).show();
                                             finish();
                                         } else{

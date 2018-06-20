@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp"
     android:background="@color/colorWhite">
@@ -10,7 +11,7 @@
     <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="My Order List"
+        android:text="My Order"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
         android:gravity="center_vertical"
@@ -25,12 +26,77 @@
         android:visibility="gone"
         android:id="@+id/chef_order_list_scroll"
         android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fragment_chef_order_list_recycler">
-        </android.support.v7.widget.RecyclerView>
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:background="@color/colorWhite">
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:text="Current Order"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:layout_alignParentLeft="true"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:id="@+id/fragment_my_order_current_time"
+                    android:text="Monday. 20:20PM"
+                    android:textColor="@color/text_color_13"
+                    android:textSize="12sp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:background="@color/view_4"/>
+            <android.support.v7.widget.RecyclerView
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fragment_chef_order_list_recycler">
+            </android.support.v7.widget.RecyclerView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="10dp">
+                <com.imcooking.customtext.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:text="Past Order"
+                    android:textColor="@color/text_color_4"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:layout_alignParentLeft="true"/>
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:background="@color/view_4"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_chef_my_orders_past"
+                android:scrollbars="none"
+                android:background="@color/colorWhite"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

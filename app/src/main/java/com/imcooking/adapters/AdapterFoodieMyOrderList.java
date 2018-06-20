@@ -33,18 +33,20 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
     private FragmentManager manager;
     private List<FoodieMyorderList.FoodieOrderListBean> list = new ArrayList();
     private ArrayList<Boolean>visibilityArray;
+    private String TAG;
 
     public AdapterFoodieMyOrderList(Context context, FragmentManager manager, List<FoodieMyorderList.FoodieOrderListBean>list,
-                                    MyorderInterface myorderInterface,  ArrayList<Boolean>visibilityArray) {
+                                    MyorderInterface myorderInterface,  ArrayList<Boolean>visibilityArray, String TAG) {
         this.context = context;
         this.manager = manager;
         this.list = list;
         this.myorderInterface = myorderInterface;
         this.visibilityArray = visibilityArray;
+        this.TAG = TAG;
     }
 
     public interface MyorderInterface{
-        void getDetails(int position);
+        void getDetails(int position, String TAG);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -76,7 +78,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             tv_order_details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    myorderInterface.getDetails(getAdapterPosition());
+                    myorderInterface.getDetails(getAdapterPosition(), TAG);
                 }
             });
         }
@@ -105,7 +107,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             else if (status.equals("3"))
                 holder.tv_status.setText("In Process");
             else if (status.equals("4"))
-                holder.tv_status.setText("Decline");
+                holder.tv_status.setText("Ready");
             else if (status.equals("5"))
                 holder.tv_status.setText("On Way");
             else if (status.equals("8"))
@@ -128,15 +130,14 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         holder.txt_order_id.setVisibility(View.GONE);
         float price = Float.parseFloat(list.get(position).getPrice())*list.get(position).getDish_qyt();
         holder.txt_total_price.setText("£" +price);
-        if (visibilityArray.get(position))
+        holder.layout.setVisibility(View.GONE);
+       /* if (visibilityArray.get(position))
             holder.layout.setVisibility(View.VISIBLE);
-        else holder.layout.setVisibility(View.GONE);
+        else holder.layout.setVisibility(View.GONE);*/
         holder.txtChef.setText(list.get(position).getChef_name());
         holder.txt_order_date.setText(list.get(position).getBookdate());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.chefProfile);
-
-
 
     }
 

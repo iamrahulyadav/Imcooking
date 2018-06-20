@@ -57,8 +57,7 @@
                     <com.imcooking.customtext.CustomTextViewBold
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chef : "
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:id="@+id/item_foodie_my_order_chef"
                         android:textColor="@color/text_color_4"
                         android:textSize="@dimen/largesize"/>

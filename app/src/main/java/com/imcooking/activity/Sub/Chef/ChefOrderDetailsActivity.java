@@ -1,5 +1,6 @@
 package com.imcooking.activity.Sub.Chef;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.OrderDetailsData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterFoodieMyOrderDetailList;
@@ -19,20 +21,27 @@ import com.imcooking.adapters.ChefILoveAdatper;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class ChefOrderDetailsActivity extends AppBaseActivity {
     private RecyclerView recyclerView;
-    private String order_id, delivery_type, chef_status, chef_id, foodie_id="107", request_id;
+    private String order_id, delivery_type, chef_status, chef_id, foodie_id="107", user_type;
     private TextView txt_chef_name, txt_order_type,txt_date, txtAddress, txt_total_price,
             txt_qyt, txt_price, txt_email, txt_pay_mode,txt_phone,txt_order_status,
             txt_order_id;
+    private TinyDB tinyDB;
+    private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +50,12 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        chef_id = ChefHome.chef_id;
+
+        tinyDB = new TinyDB(getApplicationContext());
+        userDataBean = gson.fromJson(tinyDB.getString("login_data"), ApiResponse.UserDataBean.class);
+
+        chef_id = userDataBean.getUser_id()+"";
+        user_type = userDataBean.getUser_type();
 
         if (getIntent().hasExtra("order_id"))
             order_id = getIntent().getStringExtra("order_id");
@@ -69,20 +83,22 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
 
-        txt_order_status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (delivery_type.equals("1")){
-                  //1=delivery
-                    txt_order_status.setText("Delivery");
-                    createDialog(delivery_type);
-                } else if (delivery_type.equals("2")){
-                    //2=pickup
-                    txt_order_status.setText("Pickup");
-                    createDialog(delivery_type);
+        if (user_type.equalsIgnoreCase("1")){
+            txt_order_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (delivery_type.equals("1")){
+                        //1=delivery
+                        createDialog(delivery_type);
+                    } else if (delivery_type.equals("2")){
+                        //2=pickup
+
+                        createDialog(delivery_type);
+                    }
                 }
-            }
-        });
+            });
+
+        }
 
         getOrderDetails();
     }
@@ -90,9 +106,10 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
     private List<OrderDetailsData.OrderDetailsBean>orderDetailsBeans;
 
     private void getOrderDetails(){
-        String s = "{\n" +
+        final String s = "{\n" +
                 " \"order_id\":\""+order_id+"\"\n" +
                 "}";
+        Log.d("TAG", "MyRequest: "+s);
         orderDetailsBeans = new ArrayList<>();
 
         try {
@@ -109,8 +126,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     foodie_id = orderDetailsBeans.get(0).getOrder_foodie_id();
                                     if (orderDetailsBeans.get(0).getOrder_foodie_name()!=null)
                                     txt_chef_name.setText(orderDetailsBeans.get(0).getOrder_foodie_name()+"");
-                                    txt_order_id.setText(orderDetailsBeans.get(0).getOrder_order_id());
-                                    txt_date.setText(orderDetailsBeans.get(0).getOrder_from_time()+" - "+orderDetailsBeans.get(0).getOrder_to_time());
+                                    txt_order_id.setText("#"+orderDetailsBeans.get(0).getOrder_order_id());
                                     txtAddress.setText(orderDetailsBeans.get(0).getOrder_addres());
                                     txt_order_type.setText(orderDetailsBeans.get(0).getOrder_payment_type());
                                     txt_pay_mode.setText(orderDetailsBeans.get(0).getOrder_payment_type());
@@ -118,6 +134,52 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     txt_total_price.setText("£"+orderDetailsBeans.get(0).getOrder_total_price());
                                     txt_phone.setText(orderDetailsBeans.get(0).getOrder_foodie_phone());
                                     delivery_type = orderDetailsBeans.get(0).getDelivery_type();
+
+                                    if (delivery_type.equals("1")){
+                                        //1=delivery
+                                        txt_order_type.setText("Delivery");
+                                        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        Date myDate = null;
+                                        try {
+                                            myDate = timeFormat.parse(orderDetailsBeans.get(0).getOrder_bookdate());
+
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                                "MMM dd, yyyy HH:mm a");
+                                        String finalDate = dateFormat.format(myDate);
+                                        txt_date.setText(finalDate);
+
+                                    } else if (delivery_type.equals("2")){
+                                        //2=pickup
+                                        txt_date.setText(orderDetailsBeans.get(0).getOrder_from_time()+" - "+orderDetailsBeans.get(0).getOrder_to_time());
+                                        txt_order_type.setText("Pickup");
+                                    }
+                                    if (user_type.equalsIgnoreCase("1")){
+                                        txt_order_status.setText("Change Status");
+                                    } else {
+                                        if (orderDetailsBeans.get(0).getOrder_status() != null) {
+                                            String status = orderDetailsBeans.get(0).getOrder_status();
+                                            if (status.equals("0"))
+                                                txt_order_status.setText("New Order");
+                                            else if (status.equals("1"))
+                                                txt_order_status.setText("Accept");
+                                            else if (status.equals("2"))
+                                                txt_order_status.setText("Decline");
+                                            else if (status.equals("3"))
+                                                txt_order_status.setText("In Process");
+                                            else if (status.equals("4"))
+                                                txt_order_status.setText("Decline");
+                                            else if (status.equals("5"))
+                                                txt_order_status.setText("On Way");
+                                            else if (status.equals("8"))
+                                                txt_order_status.setText("Delivered");
+                                            else if (status.equals("9"))
+                                                txt_order_status.setText("Not Delivered");
+                                        }
+                                    }
                                     setOrderDetails();
                                 }
                             }

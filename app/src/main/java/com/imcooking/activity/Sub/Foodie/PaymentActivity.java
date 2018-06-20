@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefOrderDetailsActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
@@ -70,7 +71,7 @@ public class PaymentActivity extends AppBaseActivity {
             }
         });
 
-        txt_price.setText(placeOrder.getTotal_price());
+        txt_price.setText("£"+placeOrder.getTotal_price());
 
         txt_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +97,7 @@ public class PaymentActivity extends AppBaseActivity {
                             try {
                                 JSONObject jsonObject1 = new JSONObject(result);
                                 if (jsonObject1.getBoolean("status")){
-                                    createMyDialog();
+                                    createMyDialog(jsonObject1.getString("booking_id"));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -113,7 +114,7 @@ public class PaymentActivity extends AppBaseActivity {
     }
 
     Dialog dialog ;
-    private void createMyDialog(){
+    private void createMyDialog(final String booking_id){
         dialog= new Dialog(PaymentActivity.this);
         dialog.setContentView(R.layout.dialog_add_to_cart);
         ImageView imgDia = dialog.findViewById(R.id.imageDialog);
@@ -135,6 +136,9 @@ public class PaymentActivity extends AppBaseActivity {
         txtOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+              /*  startActivity(new Intent(PaymentActivity.this, ChefOrderDetailsActivity.class)
+                        .putExtra("order_id",booking_id));*/
+
                 startActivity(new Intent(PaymentActivity.this, MainActivity.class).putExtra("pay","payorder"));
             }
         });

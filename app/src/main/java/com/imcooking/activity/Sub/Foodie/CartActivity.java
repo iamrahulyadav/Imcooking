@@ -84,7 +84,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         if (extras != null) {
             foodie_id = extras.getInt("foodie_id");
-            // and get whatever type user account id is
         }
 
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
@@ -162,12 +161,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         //                    eReminderTime.setText( selectedHour + ":" + selectedMinute);
-                        if (type.equalsIgnoreCase("to")){
-                            txt_to_time_value.setText(selectedHour + " : " + selectedMinute);
-                        } else if (type.equalsIgnoreCase("from")){
-                            txt_time_picker.setText(selectedHour + " : " + selectedMinute);
-                        }
+                        String s = getTime(selectedHour, selectedMinute);
 
+                        if (type.equalsIgnoreCase("to")){
+                            txt_to_time_value.setText(s);
+                           // txt_to_time_value.setText(selectedHour + " : " + selectedMinute);
+                        } else if (type.equalsIgnoreCase("from")){
+                            txt_time_picker.setText(s);
+                            //txt_time_picker.setText(selectedHour + " : " + selectedMinute);
+                        }
                     }
                 }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select Time");
@@ -177,6 +179,36 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     List<AddCart.AddDishBean> dishDetails;
     AddToCart addToCart;
     String TAG = CartActivity.class.getName(),chef_id;
+
+    int hour, minutes;
+
+    private String getTime(int hourOfDay, int minute){
+        hour = hourOfDay;
+        minutes = minute;
+        String timeSet = "";
+        if (hour > 12) {
+            hour -= 12;
+            timeSet = "PM";
+        } else if (hour == 0) {
+            hour += 12;
+            timeSet = "AM";
+        } else if (hour == 12){
+            timeSet = "PM";
+        }else{
+            timeSet = "AM";
+        }
+
+        String min = "";
+        if (minutes < 10)
+            min = "0" + minutes ;
+        else
+            min = String.valueOf(minutes);
+
+        // Append in a StringBuilder
+        String aTime = new StringBuilder().append(hour).append(':')
+                .append(min ).append(" ").append(timeSet).toString();
+        return aTime;
+    }
 
     private void setdetails() {
 
@@ -312,8 +344,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                     PlaceOrder placeOrder = new PlaceOrder();
                     Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat spf= new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
-                    String date = spf.format(currentTime);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String date = format.format(currentTime);
                     Log.d(TAG, "Rakhi "+date);
                     placeOrder.setChef_id(chef_id);
                     placeOrder.setFoodie_id(foodie_id+"");

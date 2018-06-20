@@ -270,7 +270,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                                             ChefEditProfile.this, new GetData.MyCallback() {
                                                 @Override
                                                 public void onSuccess(String result) {
-
                                                     try {
                                                         JSONObject job = new JSONObject(result);
                                                         if (job.getBoolean("status")) {

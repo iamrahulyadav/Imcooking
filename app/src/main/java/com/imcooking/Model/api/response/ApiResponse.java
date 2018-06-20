@@ -77,7 +77,7 @@ public class ApiResponse {
         private String user_name;
         private Object full_name;
         private String user_email;
-        private Object user_phone;
+        private String user_phone;
 
         public int getUser_id() {
             return user_id;
@@ -119,11 +119,11 @@ public class ApiResponse {
             this.user_email = user_email;
         }
 
-        public Object getUser_phone() {
+        public String getUser_phone() {
             return user_phone;
         }
 
-        public void setUser_phone(Object user_phone) {
+        public void setUser_phone(String user_phone) {
             this.user_phone = user_phone;
         }
     }

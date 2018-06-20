@@ -1,11 +1,14 @@
 package com.imcooking.fragment.foodie;
 
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,8 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.FoodieMyorderList;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefOrderDetailsActivity;
+import com.imcooking.activity.Sub.Foodie.PaymentActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterFoodieMyOrderList;
 import com.imcooking.utils.BaseClass;
@@ -27,7 +32,13 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +48,7 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     TinyDB tinyDB;
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView;
-    private TextView txtShop;
+    private TextView txtShop, txtDayTime;
     public FoodieMyOrderFragment() {
         // Required empty public constructor
     }
@@ -64,6 +75,9 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         rv_1 = getView().findViewById(R.id.recycler_foodie_my_orders_current);
         no_record_Layout = getView().findViewById(R.id.fragment_my_order_foodie_no_record_image);
         txtShop = getView().findViewById(R.id.fragment_my_order_shop_now);
+        txtDayTime = getView().findViewById(R.id.fragment_my_order_current_time);
+        Date currentTime = Calendar.getInstance().getTime();
+        txtDayTime.setText(new SimpleDateFormat("EEEE . HH:mm aa").format(currentTime));
 
         CustomLayoutManager manager = new CustomLayoutManager(getContext()){
             @Override
@@ -71,8 +85,7 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                 return false;
             }
         };
-//        LinearLayoutManager horizontalLayoutManagaer
-//                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
         rv_1.setLayoutManager(manager);
 
         rv_2 = getView().findViewById(R.id.recycler_foodie_my_orders_past);
@@ -93,6 +106,8 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         });
         getorderList();
     }
+    List<FoodieMyorderList.FoodieOrderListBean>currentOrderListBeans;
+    List<FoodieMyorderList.FoodieOrderListBean>prevoiusOrderListBeans;
 
     public void getorderList(){
         String login = tinyDB.getString("login_data");
@@ -107,6 +122,8 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                     new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
+                    @SuppressLint("SimpleDateFormat")
+                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
                     FoodieMyorderList foodieMyorder = new FoodieMyorderList();
                     if (visibilityArray!=null){
@@ -122,7 +139,29 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                             }
                             nestedScrollView.setVisibility(View.VISIBLE);
                             no_record_Layout.setVisibility(View.GONE);
-                            setMyAdapter(foodieMyorder.getFoodie_order_list());
+                            currentOrderListBeans = new ArrayList<>();
+                            prevoiusOrderListBeans = new ArrayList<>();
+
+                            for (FoodieMyorderList.FoodieOrderListBean orderListBean : foodieMyorder.getFoodie_order_list()){
+                                String status = orderListBean.getOrder_status();
+
+                                if ((!status.equals("2") && !status.equals("8")&&
+                                        !status.equals("9"))) {
+                                    currentOrderListBeans.add(orderListBean);
+                                    Collections.sort(currentOrderListBeans, new Comparator<FoodieMyorderList.FoodieOrderListBean>() {
+                                        @Override
+                                        public int compare(FoodieMyorderList.FoodieOrderListBean foodieOrderListBean,
+                                                           FoodieMyorderList.FoodieOrderListBean t1) {
+                                            if (foodieOrderListBean.getBookdate() == null || t1.getBookdate() == null)
+                                                return 0;
+                                            return t1.getBookdate().compareTo(foodieOrderListBean.getBookdate());
+                                        }
+                                    });
+                                } else {
+                                    prevoiusOrderListBeans.add(orderListBean);
+                                }
+                            }
+                            setMyAdapter(currentOrderListBeans, prevoiusOrderListBeans);
                         }
                         else {
                             nestedScrollView.setVisibility(View.GONE);
@@ -138,13 +177,16 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
             e.printStackTrace();
         }
     }
-    AdapterFoodieMyOrderList adapterFoodieMyOrder;
-    private void setMyAdapter(List<FoodieMyorderList.FoodieOrderListBean> arrayList){
+    AdapterFoodieMyOrderList adapterFoodieMyOrder, adapterFoodieMyOrder1;
+    private void setMyAdapter(List<FoodieMyorderList.FoodieOrderListBean> currentOrderListBeans,
+                              List<FoodieMyorderList.FoodieOrderListBean> arrayList){
        adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),
-                getFragmentManager(), arrayList, this, visibilityArray);
+                getFragmentManager(), currentOrderListBeans, this, visibilityArray,"current");
         rv_1.setAdapter(adapterFoodieMyOrder);
-
-//        rv_2.setAdapter(adapterFoodieMyOrder);
+        adapterFoodieMyOrder1 = new AdapterFoodieMyOrderList(getContext(),
+                getFragmentManager(), arrayList, this, visibilityArray, "previous");
+        rv_1.setAdapter(adapterFoodieMyOrder);
+        rv_2.setAdapter(adapterFoodieMyOrder1);
     }
 
     @Override
@@ -159,9 +201,18 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     private ArrayList<Boolean>visibilityArray = new ArrayList<>();
 
     @Override
-    public void getDetails(int position) {
-        if (visibilityArray.get(position)) visibilityArray.set(position,false);
-        else visibilityArray.set(position, true);
-        adapterFoodieMyOrder.notifyDataSetChanged();
+    public void getDetails(int position, String TAG) {
+       /* if (visibilityArray.get(position)) visibilityArray.set(position,false);
+        else visibilityArray.set(position, true);*/
+       if (TAG.equals("current")){
+           startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class)
+                   .putExtra("order_id",currentOrderListBeans.get(position).getOrder_order_id()));
+           adapterFoodieMyOrder.notifyDataSetChanged();
+       } else if (TAG.equals("previous")){
+           startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class)
+                   .putExtra("order_id",prevoiusOrderListBeans.get(position).getOrder_order_id()));
+           adapterFoodieMyOrder1.notifyDataSetChanged();
+       }
+
     }
 }

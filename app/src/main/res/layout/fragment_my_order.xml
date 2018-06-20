@@ -57,6 +57,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="45dp"
+                        android:id="@+id/fragment_my_order_current_time"
                         android:text="Monday. 20:20PM"
                         android:textColor="@color/text_color_13"
                         android:textSize="12sp"
@@ -92,15 +93,6 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:layout_alignParentLeft="true"/>
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="45dp"
-                        android:text="Monday. 01:20PM"
-                        android:textColor="@color/text_color_13"
-                        android:textSize="12sp"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
                 <View
@@ -132,7 +124,7 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/cart"/>
+                android:src="@drawable/my_order"/>
             <com.imcooking.customtext.CustomTextButtonTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

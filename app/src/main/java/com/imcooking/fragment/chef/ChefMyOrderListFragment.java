@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefMyorderList;
+import com.imcooking.Model.api.response.FoodieMyorderList;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefOrderDetailsActivity;
 import com.imcooking.adapters.AdatperChefMyOrderList;
@@ -26,6 +26,8 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ import java.util.List;
  */
 public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOrderList.ChefMyOrderInterface{
     TinyDB tinyDB;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, rv_prevoius;
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView ;
    public ChefMyOrderListFragment() {
@@ -49,11 +51,11 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
         return view;
     }
 
-
     private void init(View view) {
 
         tinyDB=new TinyDB(getContext());
         getorderList();
+        rv_prevoius = view.findViewById(R.id.recycler_chef_my_orders_past);
         recyclerView = view.findViewById(R.id.fragment_chef_order_list_recycler);
         no_record_Layout = view.findViewById(R.id.fragment_my_order_chef_no_record_image);
         nestedScrollView = view.findViewById(R.id.chef_order_list_scroll);
@@ -64,7 +66,13 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
             }
         };
         recyclerView.setLayoutManager(manager1);
-
+        CustomLayoutManager manager2 = new CustomLayoutManager(getContext()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        rv_prevoius.setLayoutManager(manager2);
     }
 
     @Override
@@ -73,9 +81,10 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
-    private List<ChefMyorderList.MyOrderListBean> list;
+    private List<ChefMyorderList.MyOrderListBean> currentOrderListBeans;
+    private List<ChefMyorderList.MyOrderListBean> prevoiusOrderListBeans;
     public void getorderList(){
-        list = new ArrayList<>();
+        currentOrderListBeans = new ArrayList<>();
         String login = tinyDB.getString("login_data");
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
@@ -92,12 +101,31 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
                         public void onSuccess(String result) {
                             ChefMyorderList chefMyorderList = new ChefMyorderList();
                             chefMyorderList = new Gson().fromJson(result, ChefMyorderList.class);
+                            prevoiusOrderListBeans = new ArrayList<>();
                             if(chefMyorderList.isStatus()){
                               if(chefMyorderList.getMy_order_list()!=null && chefMyorderList.getMy_order_list().size()>0){
-                                  list.addAll(chefMyorderList.getMy_order_list());
                                   nestedScrollView.setVisibility(View.VISIBLE);
                                   no_record_Layout.setVisibility(View.GONE);
-                                  setMyAdapter(list);
+
+                                  for (ChefMyorderList.MyOrderListBean orderListBean : chefMyorderList.getMy_order_list()){
+                                      String status = orderListBean.getOrder_status();
+
+                                      if ((!status.equals("2") && !status.equals("8")&&
+                                              !status.equals("9"))) {
+                                          currentOrderListBeans.add(orderListBean);
+                                            Collections.sort(currentOrderListBeans, new Comparator<ChefMyorderList.MyOrderListBean>() {
+                                                @Override
+                                                public int compare(ChefMyorderList.MyOrderListBean myOrderListBean, ChefMyorderList.MyOrderListBean t1) {
+                                                    if (myOrderListBean.getBookdate() == null || t1.getBookdate() == null)
+                                                        return 0;
+                                                    return t1.getBookdate().compareTo(myOrderListBean.getBookdate());
+                                                }
+                                            });
+                                      } else {
+                                          prevoiusOrderListBeans.add(orderListBean);
+                                      }
+                                  }
+                                  setMyAdapter(currentOrderListBeans);
                                 }
                                 else {
                                   nestedScrollView.setVisibility(View.GONE);
@@ -117,15 +145,25 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
 
     private void setMyAdapter(List<ChefMyorderList.MyOrderListBean> list){
         AdatperChefMyOrderList adatperChefMyOrderList = new AdatperChefMyOrderList(getContext(),
-                 list, this);
+                 list, this,"current");
         recyclerView.setAdapter(adatperChefMyOrderList);
+
+        AdatperChefMyOrderList adatperChefMyOrderList1 = new AdatperChefMyOrderList(getContext(),
+                prevoiusOrderListBeans, this, "previous");
+        rv_prevoius.setAdapter(adatperChefMyOrderList1);
     }
 
 
     @Override
-    public void chefOrderdetails(int pos) {
-       String orderid = list.get(pos).getOrder_order_id();
-       startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class).putExtra("order_id", orderid));
+    public void chefOrderdetails(int pos, String TAG) {
+        if (TAG.equals("current")){
+            String orderid = currentOrderListBeans.get(pos).getOrder_order_id();
+            startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class).putExtra("order_id", orderid));
+        } else if (TAG.equals("previous")){
+            String orderid = prevoiusOrderListBeans.get(pos).getOrder_order_id();
+            startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class).putExtra("order_id", orderid));
+        }
+
     }
 
 

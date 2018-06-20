@@ -71,6 +71,15 @@ public class OrderDetailsData {
         private String delivery_type;
         private String order_status;
         private String order_foodie_id;
+        private String booking_date;
+
+        public String getOrder_bookdate() {
+            return booking_date;
+        }
+
+        public void setOrder_bookdate(String order_bookdate) {
+            this.booking_date = order_bookdate;
+        }
 
         public String getOrder_foodie_id() {
             return order_foodie_id;
