@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +54,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+
+import static java.util.Calendar.HOUR_OF_DAY;
 
 public class ChefEditDish extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
 
@@ -63,13 +67,14 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private String sw_1 = "Yes", sw_2 = "Yes", sw_3 = "Yes";
     private String dish_miles = "10";
     private Spinner sp;
-    private final int  REQUEST_CAMERA=0, SELECT_FILE = 1;
+    private SeekBar seekBar;
+    private final int  REQUEST_CAMERA=0, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
     Bitmap bitmap;
     boolean result;
     private String userChoosenTask;
 
     private TextView tv_title;
-    private TextView tv_add_more_photo;
+    private TextView tv_add_more_photo, txt_video;
 
     private String bitmapString="a";
 
@@ -109,7 +114,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
     private void init(){
     //    layout_photos = findViewById(R.id.edit_dish_photos);
-
+        txt_video = findViewById(R.id.chef_edit_dish_photos_ttx_select_video);
 //        tv_photo_name = findViewById(R.id.chef_edit_dish_photo_name);
         edt_qyt = findViewById(R.id.chef_edit_dish_qyt);
         sp_cuisine = findViewById(R.id.chef_edit_dish_spinner_cuisine);
@@ -126,10 +131,47 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         switch_1 = findViewById(R.id.edit_dish_switch_current_available);
         switch_2 = findViewById(R.id.edit_dish_switch_home_delivery);
         switch_3 = findViewById(R.id.edit_dish_switch_current_available);
+        seekBar = findViewById(R.id.activity_chef_edit_dish_time);
+        Calendar c= Calendar.getInstance();
+        int hour = c.get(HOUR_OF_DAY);
+
+//        seekBar.setMax(24 * 4); //24 hours and 4 step in one hour.
+
+/*
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                int hours = progress / 4; // it will return hours.
+                int minutes = (progress % 4) * 15; // here will be minutes.
+                Toast.makeText(getApplicationContext(),"seekbar progress: "+hours + "\n"+minutes, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getApplicationContext(),"seekbar touch started!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(getApplicationContext(),"seekbar touch stopped!", Toast.LENGTH_SHORT).show();
+            }
+        });
+*/
+
 
         switch_1.setOnCheckedChangeListener(this);
         switch_2.setOnCheckedChangeListener(this);
         switch_3.setOnCheckedChangeListener(this);
+        txt_video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("video/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Video"),REQUEST_TAKE_GALLERY_VIDEO);
+            }
+        });
 
         ArrayList<String> spinnerData =new ArrayList<>();
         spinnerData.add("10 miles ");
@@ -143,9 +185,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                 R.layout.spinner_row, spinnerData);
         arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
         sp.setAdapter(arrayAdapter);
-
-
-
 
         rv1 = findViewById(R.id.chef_edit_dish_photos_recycler);
 //        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
@@ -179,7 +218,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             homedelivery = getIntent().getExtras().getString("home_delivery");
             pickup = getIntent().getExtras().getString("pickup");
             arrayList = getIntent().getExtras().getStringArrayList("image");
-
+            edt_qyt.setText(qyt);
             for(int i=0; i<arrayList.size(); i++){
                 if(i<3){
                     arr_photos.add(arrayList.get(i));
@@ -214,7 +253,10 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                 switch_3.setChecked(true);
             } else if(pickup.equals("No")||pickup.equals("no")){
                 switch_3.setChecked(false);
-            } else {}
+            } else {
+
+            }
+
 
             title = "editdish";
             tv_title.setText("Edit Dish");
@@ -222,7 +264,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         } else{
             title = "dish";
             tv_title.setText("Add Dish");
-
         }
 
         TinyDB tinyDB = new TinyDB(getApplicationContext());
@@ -293,7 +334,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                                 editdish(title);
                             }
                         } else{
-                            BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
+                            BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
                         }
                     } else{
                         BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
@@ -375,6 +416,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private void editdish(String title){
 
         ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
+        qyt = edt_qyt.getText().toString().trim();
 
         ModelChefEditDish requestData = new ModelChefEditDish();
         requestData.setDish_id(dish_id);
@@ -393,7 +435,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
         requestData.setDish_image(arrayList);
-
+        requestData.setDish_qyt(qyt);
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
@@ -434,7 +476,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             e.printStackTrace();
         }
     }
-
 
     public void add_more_photos(View view){
 
@@ -498,12 +539,14 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         });
         builder.show();
     }
+
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
     }
+
     private void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
@@ -546,8 +589,29 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
-
+            else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO){
+                System.out.println("SELECT_VIDEO");
+                Uri selectedImageUri = data.getData();
+                String selectedPath = getPath(selectedImageUri);
+            }
         }
+    }
+
+    public String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+        cursor.close();
+
+        return path;
     }
 
     private void onSelectFromGalleryResult(Intent data) {

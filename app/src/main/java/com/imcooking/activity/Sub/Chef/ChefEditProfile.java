@@ -18,6 +18,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +43,7 @@ import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.EditProfile;
+import com.imcooking.adapters.AdapterCuisineList;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.BaseClass;
@@ -60,9 +63,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class ChefEditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+public class ChefEditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+        CompoundButton.OnCheckedChangeListener, AdapterCuisineList.click_adapter_cuisine_list {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     }
 
     private CuisineData cuisineData = new CuisineData();
+    private RecyclerView cuisineRecycler;
     private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about;
     private Spinner sp_miles, sp_cuisine;
     private SwitchCompat /*sw_notification,*/ sw_available;
@@ -103,10 +109,12 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         txt_phone = findViewById(R.id.activity_chef_edit_txtPhone);
         sp_miles = findViewById(R.id.chef_edit_profile_spinner_miles);
         sp_cuisine = findViewById(R.id.chef_edit_profile_spinner_select_cuisines);
-
+        cuisineRecycler = findViewById(R.id.chef_edit_profile_recycler_cuisine);
         sp_miles.setOnItemSelectedListener(this);
         sp_cuisine.setOnItemSelectedListener(this);
-
+        LinearLayoutManager horizontalLayoutManagaer
+                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        cuisineRecycler.setLayoutManager(horizontalLayoutManagaer);
 //        sw_notification = findViewById(R.id.chef_edit_profile_notification);
         sw_available = findViewById(R.id.chef_edit_profile_available);
 
@@ -133,6 +141,30 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
         getMyCuisines();
     }
+
+    private ArrayList<String> arrayList = new ArrayList<>(); // (Arrays.asList("0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0"));
+    private AdapterCuisineList adapter;
+
+    private List<CuisineData.CuisineDataBean> cuisionList=new ArrayList<>();
+
+    private void setMyAdapter(CuisineData cuisineData){
+
+        arrayList.clear();
+        for (int i=0; i<cuisineData.getCuisine_data().size(); i++){
+            arrayList.add("0");
+        }
+
+        /*markMyFav(cuisineData);*/
+/*
+        arrayList.set(3, "1");
+        arrayList.set(8, "1");
+        arrayList.set(11, "1");
+*/
+
+        adapter = new AdapterCuisineList(getApplicationContext(), cuisineData, arrayList, this);
+        cuisineRecycler.setAdapter(adapter);
+    }
+
 
     private void getProfileData(){
 
@@ -326,6 +358,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 //                            cuisineList.addAll(cuisineData.getCuisine_data());
 
                             setMyCuisines(cuisineData);
+                            setMyAdapter(cuisineData);
                         }
                     });
         } catch (JSONException e) {
@@ -342,6 +375,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         }
 
         sp_cuisine.setOnItemSelectedListener(this);
+        sp_cuisine.setVisibility(View.GONE);
         ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this,
                 R.layout.spinner_row_1, arrayList);
         arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
@@ -599,6 +633,11 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void click_adapter_cuisine_list_m(int position) {
+
     }
 
     public class GetImage extends AsyncTask<String, Void, Bitmap> {

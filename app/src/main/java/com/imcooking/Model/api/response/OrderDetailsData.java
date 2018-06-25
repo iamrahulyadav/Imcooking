@@ -72,6 +72,41 @@ public class OrderDetailsData {
         private String order_status;
         private String order_foodie_id;
         private String booking_date;
+        private String chef_email;
+        private String chef_phone;
+        private String chef_address;
+
+        public String getBooking_date() {
+            return booking_date;
+        }
+
+        public void setBooking_date(String booking_date) {
+            this.booking_date = booking_date;
+        }
+
+        public String getChef_email() {
+            return chef_email;
+        }
+
+        public void setChef_email(String chef_email) {
+            this.chef_email = chef_email;
+        }
+
+        public String getChef_phone() {
+            return chef_phone;
+        }
+
+        public void setChef_phone(String chef_phone) {
+            this.chef_phone = chef_phone;
+        }
+
+        public String getChef_address() {
+            return chef_address;
+        }
+
+        public void setChef_address(String chef_address) {
+            this.chef_address = chef_address;
+        }
 
         public String getOrder_bookdate() {
             return booking_date;

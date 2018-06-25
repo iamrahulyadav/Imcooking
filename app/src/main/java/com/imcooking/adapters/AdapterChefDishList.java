@@ -118,8 +118,8 @@ public class AdapterChefDishList extends PagerAdapter{
         }
 
         dish_name.setText(chef_dish_list.get(position).getDish_name());
-//        if(chef_dish_list.get(position).getDish_quantity().equals("null"))
-        dish_count.setText("0");
+        if(!chef_dish_list.get(position).getDish_quantity().equals("null"))
+         dish_count.setText(chef_dish_list.get(position).getDish_quantity()+"");
         dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
         dish_likes.setText(chef_dish_list.get(position).getLike_no());
 
@@ -149,6 +149,7 @@ public class AdapterChefDishList extends PagerAdapter{
                 Bundle bundle = new Bundle();
                 bundle.putString("id", chef_dish_list.get(position).getDish_id() + "");
                 bundle.putString("name", chef_dish_list.get(position).getDish_name());
+                bundle.putString("qyt", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("available", chef_dish_list.get(position).getDish_available());
                 bundle.putString("time", chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to());
                 bundle.putString("count", chef_dish_list.get(position).getDish_quantity()+"");

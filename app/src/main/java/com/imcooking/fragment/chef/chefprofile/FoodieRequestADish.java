@@ -286,7 +286,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                                 Log.d("MyRequest", s);
                                 try {
                                     JSONObject jsonObject = new JSONObject(s);
-                                    new GetData(getContext()).sendMyData(jsonObject,"request_dish",
+                                    new GetData(getContext()).sendMyData(jsonObject,GetData.REQUEST_DISH,
                                             getActivity(), new GetData.MyCallback() {
                                                 @Override
                                                 public void onSuccess(String result) {
@@ -308,7 +308,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                                                         edt_dish_note.setText("");
                                                     } else{
                                                         BaseClass.showToast(getContext(),
-                                                                "Something Went Wrong.");
+                                                                getResources().getString(R.string.error));
                                                     }
                                                 }
                                             });

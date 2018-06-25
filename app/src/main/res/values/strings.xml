@@ -13,7 +13,7 @@
 
     <!--Alert Dialog-->
     <string name="gps_sett">GPS is settings</string>
-    <string name="gps_not_enabled">GPS is not enabled. Do you want to go to settings menu?</string>
+    <string name="gps_not_enabled">GPS is not enabled. Do you want t o go to settings menu?</string>
     <string name="settings">Settings</string>
     <string name="cancle">Cancel</string>
 

@@ -25,9 +25,14 @@ import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,6 +94,7 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         String user_id=apiResponse.getUser_id()+"";
+        final String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 
         String s = "{\"chef_id\": "+user_id+"}";
         Log.d("Tags",s);
@@ -109,8 +115,20 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
 
                                   for (ChefMyorderList.MyOrderListBean orderListBean : chefMyorderList.getMy_order_list()){
                                       String status = orderListBean.getOrder_status();
-
-                                      if ((!status.equals("2") && !status.equals("8")&&
+                                      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                                      Date date1 = null;
+                                      try {
+                                          date1 = format.parse(timeStamp);
+                                      } catch (ParseException e) {
+                                          e.printStackTrace();
+                                      }
+                                      Date date2 = null;
+                                      try {
+                                          date2 = format.parse(orderListBean.getBookdate());
+                                      } catch (ParseException e) {
+                                          e.printStackTrace();
+                                      }
+                                      if (date2.compareTo(date1) >0||date2.compareTo(date1) ==0 &&(!status.equals("2") && !status.equals("8")&&
                                               !status.equals("9"))) {
                                           currentOrderListBeans.add(orderListBean);
                                             Collections.sort(currentOrderListBeans, new Comparator<ChefMyorderList.MyOrderListBean>() {
@@ -126,8 +144,7 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
                                       }
                                   }
                                   setMyAdapter(currentOrderListBeans);
-                                }
-                                else {
+                                } else {
                                   nestedScrollView.setVisibility(View.GONE);
                                   no_record_Layout.setVisibility(View.VISIBLE);
                                 }
@@ -137,7 +154,6 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
                             }
                         }
                     });
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -163,7 +179,6 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
             String orderid = prevoiusOrderListBeans.get(pos).getOrder_order_id();
             startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class).putExtra("order_id", orderid));
         }
-
     }
 
 

@@ -14,7 +14,7 @@
         <com.imcooking.customtext.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Dish request "
+            android:text="Dish Requests "
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             android:gravity="center_vertical"

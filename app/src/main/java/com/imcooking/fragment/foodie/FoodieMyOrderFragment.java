@@ -123,7 +123,13 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                 @Override
                 public void onSuccess(String result) {
                     @SuppressLint("SimpleDateFormat")
-                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+                    Date dt = new Date();
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(dt);
+                    c.add(Calendar.DATE, 1);
+                    dt = c.getTime();
+//                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dt);
+                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 
                     FoodieMyorderList foodieMyorder = new FoodieMyorderList();
                     if (visibilityArray!=null){
@@ -144,8 +150,20 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
 
                             for (FoodieMyorderList.FoodieOrderListBean orderListBean : foodieMyorder.getFoodie_order_list()){
                                 String status = orderListBean.getOrder_status();
-
-                                if ((!status.equals("2") && !status.equals("8")&&
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                                Date date1 = null;
+                                try {
+                                    date1 = format.parse(timeStamp);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                Date date2 = null;
+                                try {
+                                    date2 = format.parse(orderListBean.getBookdate());
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                if (date2.compareTo(date1) >0||date2.compareTo(date1) ==0 &&(!status.equals("2") && !status.equals("8")&&
                                         !status.equals("9"))) {
                                     currentOrderListBeans.add(orderListBean);
                                     Collections.sort(currentOrderListBeans, new Comparator<FoodieMyorderList.FoodieOrderListBean>() {

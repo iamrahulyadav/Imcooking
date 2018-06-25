@@ -10,6 +10,7 @@
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#fff</color>
     <color name="colorLightGrey">#E1E1E1</color>
+    <color name="colorDarkGrey">#FFCFCECE</color>
     <color name="colorBlue">#007BB6</color>
     <color name="colorRed">#FF0000</color>
     <color name="colorGreen">#01AD01</color>

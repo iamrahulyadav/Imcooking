@@ -1,12 +1,15 @@
 package com.imcooking.Model.api.response;
 
+import com.android.volley.toolbox.StringRequest;
+
 import java.util.List;
 
 public class ChefDishRequestData {
 
+
     /**
      * status : true
-     * chef_dish_details : [{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"panner","request_date":"5/29/2018","request_quantity":"2","request_cusine_name":"indian"},{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"mater paner","request_date":"30/05/2018","request_quantity":"5","request_cusine_name":"indian"},{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"paner","request_date":"30/05/2018","request_quantity":"5","request_cusine_name":"indian"},{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"paner","request_date":"30/05/2018","request_quantity":"5","request_cusine_name":"indian"},{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"sahi paner","request_date":"30/05/2018","request_quantity":"5","request_cusine_name":"indian"},{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"paner","request_date":"30/05/2018","request_quantity":"5","request_cusine_name":"indian"},{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"paner","request_date":"30/05/2018","request_quantity":"5","request_cusine_name":"indian"},{"foodie_id":5,"foodie_name":"brijesh chef","foodie_email":"brijesh@gmail.com","foodie_phone":987456321,"foodie_address":"noida","dish_name":"paner123","request_date":"30/05/2018","request_quantity":"5","request_cusine_name":"indian"},{"foodie_id":104,"foodie_name":"jatinder","foodie_email":"kh.vaibhav10@gmail.com","foodie_phone":7988961496,"foodie_address":"","dish_name":"hii","request_date":"11/06/18","request_quantity":"6","request_cusine_name":"Indian Food"}]
+     * chef_dish_details : [{"foodie_id":104,"foodie_name":"jatinder","foodie_email":"kh.vaibhav10@gmail.com","foodie_phone":7988961496,"foodie_address":"","dish_name":"test","request_date":"11/06/18","request_quantity":"2","request_cusine_name":"Indian Food","conversation_details":[{"conversation_sender_id":103,"conversation_request_id":2,"conversation_reciver_id":104,"conversation_message":"asdhsjf hiii","conversation_offer_price":"220.00","conversation_staus":"1","conversation_date":"06/21/2018 07:28:47 am"}]},{"foodie_id":116,"foodie_name":"Rakhi","foodie_email":"s.rakhi@askonlinesolutions.com","foodie_phone":958187463,"foodie_address":"","dish_name":"gulab jamun","request_date":"21/06/18","request_quantity":"5","request_cusine_name":"Cajun Food","conversation_details":[]}]
      */
 
     private boolean status;
@@ -30,15 +33,16 @@ public class ChefDishRequestData {
 
     public static class ChefDishDetailsBean {
         /**
-         * foodie_id : 5
-         * foodie_name : brijesh chef
-         * foodie_email : brijesh@gmail.com
-         * foodie_phone : 987456321
-         * foodie_address : noida
-         * dish_name : panner
-         * request_date : 5/29/2018
+         * foodie_id : 104
+         * foodie_name : jatinder
+         * foodie_email : kh.vaibhav10@gmail.com
+         * foodie_phone : 7988961496
+         * foodie_address :
+         * dish_name : test
+         * request_date : 11/06/18
          * request_quantity : 2
-         * request_cusine_name : indian
+         * request_cusine_name : Indian Food
+         * conversation_details : [{"conversation_sender_id":103,"conversation_request_id":2,"conversation_reciver_id":104,"conversation_message":"asdhsjf hiii","conversation_offer_price":"220.00","conversation_staus":"1","conversation_date":"06/21/2018 07:28:47 am"}]
          */
 
         private int foodie_id;
@@ -50,6 +54,16 @@ public class ChefDishRequestData {
         private String request_date;
         private String request_quantity;
         private String request_cusine_name;
+        private String request_id;
+        private List<ConversationDetailsBean> conversation_details;
+
+        public String getRequest_id() {
+            return request_id;
+        }
+
+        public void setRequest_id(String request_id) {
+            this.request_id = request_id;
+        }
 
         public int getFoodie_id() {
             return foodie_id;
@@ -121,6 +135,90 @@ public class ChefDishRequestData {
 
         public void setRequest_cusine_name(String request_cusine_name) {
             this.request_cusine_name = request_cusine_name;
+        }
+
+        public List<ConversationDetailsBean> getConversation_details() {
+            return conversation_details;
+        }
+
+        public void setConversation_details(List<ConversationDetailsBean> conversation_details) {
+            this.conversation_details = conversation_details;
+        }
+
+        public static class ConversationDetailsBean {
+            /**
+             * conversation_sender_id : 103
+             * conversation_request_id : 2
+             * conversation_reciver_id : 104
+             * conversation_message : asdhsjf hiii
+             * conversation_offer_price : 220.00
+             * conversation_staus : 1
+             * conversation_date : 06/21/2018 07:28:47 am
+             */
+
+            private int conversation_sender_id;
+            private int conversation_request_id;
+            private int conversation_reciver_id;
+            private String conversation_message;
+            private String conversation_offer_price;
+            private String conversation_staus;
+            private String conversation_date;
+
+            public int getConversation_sender_id() {
+                return conversation_sender_id;
+            }
+
+            public void setConversation_sender_id(int conversation_sender_id) {
+                this.conversation_sender_id = conversation_sender_id;
+            }
+
+            public int getConversation_request_id() {
+                return conversation_request_id;
+            }
+
+            public void setConversation_request_id(int conversation_request_id) {
+                this.conversation_request_id = conversation_request_id;
+            }
+
+            public int getConversation_reciver_id() {
+                return conversation_reciver_id;
+            }
+
+            public void setConversation_reciver_id(int conversation_reciver_id) {
+                this.conversation_reciver_id = conversation_reciver_id;
+            }
+
+            public String getConversation_message() {
+                return conversation_message;
+            }
+
+            public void setConversation_message(String conversation_message) {
+                this.conversation_message = conversation_message;
+            }
+
+            public String getConversation_offer_price() {
+                return conversation_offer_price;
+            }
+
+            public void setConversation_offer_price(String conversation_offer_price) {
+                this.conversation_offer_price = conversation_offer_price;
+            }
+
+            public String getConversation_staus() {
+                return conversation_staus;
+            }
+
+            public void setConversation_staus(String conversation_staus) {
+                this.conversation_staus = conversation_staus;
+            }
+
+            public String getConversation_date() {
+                return conversation_date;
+            }
+
+            public void setConversation_date(String conversation_date) {
+                this.conversation_date = conversation_date;
+            }
         }
     }
 }

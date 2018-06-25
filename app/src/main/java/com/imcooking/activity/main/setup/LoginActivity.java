@@ -135,11 +135,11 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                                 if (apiResponse.getMsg().equals("Successfully login")) {
 
                                     tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
-                                    BaseClass.showToast(getApplicationContext(), "Login Successfull");
+                                 //   BaseClass.showToast(getApplicationContext(), "Login Successfull");
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                                 } else {
-                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                 }
                             } else {
                                 if (apiResponse.getMsg().equals("User name and password wrong")) {
@@ -195,7 +195,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                                     tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 } else {
-                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                 }
                             } else {
                                 if (apiResponse.getMsg().equals("Sorry, the passcode you provided is not correct, to check your passcode please check your registered email.")) {

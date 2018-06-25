@@ -1,5 +1,6 @@
 package com.imcooking.fragment.chef.chefprofile;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,17 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefDishRequestData;
-import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
-import com.imcooking.adapters.AdatperChefMyOrderList;
 import com.imcooking.adapters.AdatperChefMyRequestList;
+import com.imcooking.adapters.DishReqChefChatAdatper;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
@@ -27,17 +28,22 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
-public class ChefMyRequestFragment extends Fragment {
+public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequestList.ChefMyrequestInterface{
 
     TinyDB tinyDB;
     private RecyclerView requestRecyclerView;
     private LinearLayout no_recordLayout;
     private LinearLayout layoutToolbar;
     private String strtext;
+    private List<ChefDishRequestData.ChefDishDetailsBean>chefDishDetailsBeans;
+    private String sender_id, receiver_id, request_id, msg="",status, offer_price="";
 
 
     @Override
@@ -84,6 +90,7 @@ public class ChefMyRequestFragment extends Fragment {
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         String user_id=apiResponse.getUser_id()+"";
         String s = "{\"chef_id\":" + user_id + "}";
+        sender_id = user_id;
 
         try {
             JSONObject job = new JSONObject(s);
@@ -94,12 +101,13 @@ public class ChefMyRequestFragment extends Fragment {
 
                             ChefDishRequestData chefMyorderList = new ChefDishRequestData();
                             chefMyorderList = new Gson().fromJson(result, ChefDishRequestData.class);
-
-                            if(chefMyorderList.isStatus()){
+                            chefDishDetailsBeans = new ArrayList<>();
+                             if(chefMyorderList.isStatus()){
                                 if(chefMyorderList.getChef_dish_details()!=null && chefMyorderList.getChef_dish_details().size()>0){
                                     requestRecyclerView.setVisibility(View.VISIBLE);
                                     no_recordLayout.setVisibility(View.GONE);
-                                    setDishAdapter(chefMyorderList.getChef_dish_details());
+                                    chefDishDetailsBeans.addAll(chefMyorderList.getChef_dish_details());
+                                    setDishAdapter(chefDishDetailsBeans);
                                 }
                                 else {
                                     if (strtext!=null){
@@ -122,13 +130,200 @@ public class ChefMyRequestFragment extends Fragment {
         }
     }
 
-    List<AddCart.AddDishBean> dishDetails = new ArrayList<>();
-
     private void setDishAdapter(List<ChefDishRequestData.ChefDishDetailsBean> list) {
-        AdatperChefMyRequestList chefMyRequestsAdatper = new AdatperChefMyRequestList(getContext(),list);
+        AdatperChefMyRequestList chefMyRequestsAdatper = new AdatperChefMyRequestList(getContext(),list, this);
         requestRecyclerView.setAdapter(chefMyRequestsAdatper);
 
     }
+
+    private Dialog dialog;
+    private DishReqChefChatAdatper dishReqChatAdatper;
+
+    private void showDialog(final int position, final String receiver_id, final String request_id){
+        TextView txtMsg, txtDesc, txt_accept, txt_decline, txt_reply;
+        final EditText edtPrice;
+        final EditText edtReply;
+        RecyclerView chatrecyclerView;
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_view_response);
+        dialog.setCancelable(true);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
+
+        txtDesc = dialog.findViewById(R.id.dialog_view_response_desc);
+        txtMsg = dialog.findViewById(R.id.dialog_view_response_msg);
+        txt_accept = dialog.findViewById(R.id.view_response_accept);
+        txt_decline = dialog.findViewById(R.id.view_response_decline);
+        txt_reply = dialog.findViewById(R.id.view_response_reply);
+        edtReply = dialog.findViewById(R.id.dialog_view_response_edtReply);
+        chatrecyclerView = dialog.findViewById(R.id.dialog_view_response_recycler);
+        edtPrice = dialog.findViewById(R.id.dialog_view_response_offer_edt);
+
+
+        dialog.findViewById(R.id.view_response_cross).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+//        txtDesc.setText(chefDishDetailsBeans.get(position).getChef_description());
+
+
+
+        CustomLayoutManager manager = new CustomLayoutManager(getContext()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+
+        chatrecyclerView.setLayoutManager(manager);
+
+        txtDesc.setVisibility(View.VISIBLE);
+        txtMsg.setVisibility(View.VISIBLE);
+        dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.GONE);
+        dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.GONE);
+
+        final List<ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean> conversationDetailsBeans = new ArrayList<>();
+        conversationDetailsBeans.addAll(chefDishDetailsBeans.get(position).getConversation_details());
+
+        final String chef_id = sender_id ;
+        final String foodie_id = chefDishDetailsBeans.get(position).getFoodie_id()+"";
+
+        edtPrice.setEnabled(true);
+
+        dishReqChatAdatper = new DishReqChefChatAdatper(getContext(), chef_id, foodie_id,conversationDetailsBeans);
+        chatrecyclerView.setAdapter(dishReqChatAdatper);
+        if (conversationDetailsBeans!=null && conversationDetailsBeans.size()>0){
+            offer_price = conversationDetailsBeans.get(0).getConversation_offer_price();
+            edtPrice.setText(offer_price);
+        }
+
+        txt_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    offer_price = edtPrice.getText().toString().trim();
+                    msg = edtReply.getText().toString().trim();
+
+                    ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean detailsBean
+                            = new ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean();
+                    detailsBean.setConversation_message(msg);
+                    Date currentTime = Calendar.getInstance().getTime();
+                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+                    String date = spf.format(currentTime);
+                    detailsBean.setConversation_sender_id(Integer.parseInt(chef_id));
+                    detailsBean.setConversation_reciver_id(Integer.parseInt(foodie_id));
+                    detailsBean.setConversation_date(date);
+                    detailsBean.setConversation_staus("1");
+                    detailsBean.setConversation_offer_price("");
+                    conversationDetailsBeans.add(detailsBean);
+                    status = "yes";
+                    sendreply(receiver_id,request_id);
+
+            }
+        });
+
+        txt_decline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    offer_price = edtPrice.getText().toString().trim();
+                    msg = edtReply.getText().toString().trim();
+
+                    ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean detailsBean
+                            = new ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean();
+                    detailsBean.setConversation_message(msg);
+                    Date currentTime = Calendar.getInstance().getTime();
+                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+                    String date = spf.format(currentTime);
+                    detailsBean.setConversation_sender_id(Integer.parseInt(chef_id));
+                    detailsBean.setConversation_reciver_id(Integer.parseInt(foodie_id));
+                    detailsBean.setConversation_date(date);
+                    detailsBean.setConversation_staus("1");
+                    detailsBean.setConversation_offer_price("");
+                    conversationDetailsBeans.add(detailsBean);
+                    edtReply.setText("");
+                    status = "no";
+                    sendreply(receiver_id,request_id);
+
+            }
+        });
+
+        edtReply.setVisibility(View.VISIBLE);
+
+        txt_reply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!edtReply.getText().toString().isEmpty()){
+                    offer_price = edtPrice.getText().toString().trim();
+                    msg = edtReply.getText().toString().trim();
+
+                    ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean detailsBean
+                            = new ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean();
+                    detailsBean.setConversation_message(msg);
+                    Date currentTime = Calendar.getInstance().getTime();
+                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+                    String date = spf.format(currentTime);
+                    detailsBean.setConversation_sender_id(Integer.parseInt(chef_id));
+                    detailsBean.setConversation_reciver_id(Integer.parseInt(foodie_id));
+                    detailsBean.setConversation_date(date);
+                    detailsBean.setConversation_staus("1");
+                    detailsBean.setConversation_offer_price("");
+                    conversationDetailsBeans.add(detailsBean);
+                 //   edtReply.setText("");
+                    status = "reply";
+                    sendreply(receiver_id,request_id);
+                } else {
+                    BaseClass.showToast(getContext(), "Please enter message");
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void setresponse(int pos, String TAG) {
+        if (TAG.equals("reply")){
+            receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
+            request_id = chefDishDetailsBeans.get(pos).getRequest_id();
+            showDialog(pos,receiver_id,request_id);
+        } else if (TAG.equals("view")){
+            receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
+        }
+    }
+
+    private void sendreply(String receiver_id,String request_id){
+        if (msg.isEmpty()){
+            msg = " ";
+        }
+        String s = "{\n" +
+                "  \"sender_id\":\""+sender_id+"\",\n" +
+                "  \"receiver_id\":"+receiver_id+",\n" +
+                "  \"request_id\":"+request_id+",\n" +
+                "  \"message\":\""+msg+"\",\n" +
+                "  \"offer_price\":\""+offer_price+"\",\n" +
+                "\"status\":\""+status+"\"\n"+
+                "}";
+
+        Log.d("TAG", "MyRequest: "+s);
+
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.CONVERSATION_CHAT, getActivity(), new GetData.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.d("TAG", "Rakhi: "+result);
+                    dishReqChatAdatper.notifyDataSetChanged();
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
 

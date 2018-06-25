@@ -103,13 +103,13 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         }
 
         tv_dish_time.setText(str_time);
-        if(str_count.equals("null")){
-            tv_dish_count.setText("0");
+        if(str_qyt.equals("null")){
+            tv_dish_count.setText(str_qyt);
         } else{
             tv_dish_count.setText(str_count);
         }
 
-        tv_dish_home_delivery.setText(str_homedelivery);
+//        tv_dish_home_delivery.setText(str_homedelivery);
         if(str_homedelivery.equals("Yes")){
             if(str_pickup.equals("Yes")){
                 tv_dish_home_delivery.setText("Home Delivery / Pick-up");

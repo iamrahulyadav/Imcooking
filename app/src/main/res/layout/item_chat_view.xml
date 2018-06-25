@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#fdfaef">
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/extra_smallsize"
+        android:layout_margin="5dp"
+        android:layout_gravity="right"
+        android:padding="3dp"
+        android:id="@+id/item_chat_view_txt_foodie"/>
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/extra_smallsize"
+        android:layout_margin="5dp"
+        android:padding="3dp"
+        android:layout_gravity="left"
+        android:id="@+id/item_chat_view_txt_chef"/>
+
+
+
+</LinearLayout>

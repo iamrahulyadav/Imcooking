@@ -349,7 +349,7 @@ public class MainActivity extends AppBaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(getSupportFragmentManager().getBackStackEntryCount() == 1) {
+        } else if(getSupportFragmentManager().getBackStackEntryCount() == 0) {
             finishAffinity();
 //            finish();
         } else if(tag1.equals(HomeFragment.class.getName()) || tag1.equals(ChefHome.class.getName())){

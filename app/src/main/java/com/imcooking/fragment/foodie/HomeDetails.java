@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.Sub.Foodie.OtherDishDishActivity;
+import com.imcooking.adapters.DishDetailPagerAdapter;
 import com.imcooking.adapters.Pager1;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -38,6 +40,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,18 +90,18 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         init();
     }
 
-    private ImageView iv_share, imgTop,imgPickUp, imgDeliviery, imgChef;
+    private ImageView iv_share, imgPickUp, imgDeliviery, imgChef;
     private TextView txtDishName, txtChefName, txtAddToCart, txtLike, txtOtherDish, txtDistance, txtPrice,
             txtDeliverytype, txtAvailable,txtTime ;
     private LinearLayout chef_profile, layout;
-    ViewPager pager;
+    ViewPager pager, home_top_pager;
 
     private String TAG  = HomeDetails.class.getName();
 
     private void init(){
+        home_top_pager = getView().findViewById(R.id.fragment_home_auto_scroll_page);
         iv_share = getView().findViewById(R.id.home_details_share);
         imgChef = getView().findViewById(R.id.home_details_user_icon);
-        imgTop = getView().findViewById(R.id.fragment_home_details_img_top);
         txtOtherDish = getView().findViewById(R.id.home_details_txtOtherDish);
         txtAddToCart = getView().findViewById(R.id.tv_add_to_cart);
         txtDishName = getView().findViewById(R.id.fragment_home_details_txtDishName);
@@ -155,6 +159,13 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     ApiResponse apiResponse = new ApiResponse();
     DishDetails dishDetails = new DishDetails();
     ArrayList<String>nameList = new ArrayList<>();
+    private ArrayList<String>imageList ;
+    private DishDetailPagerAdapter dishDetailPagerAdapter;
+    int currentPage = 0;
+    Timer timer;
+    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 3000; // time in milliseconds between successive task executions.
+
 
     private void getDetails(String id){
         layout.setVisibility(View.GONE);
@@ -167,7 +178,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                 new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
-
+                imageList = new ArrayList<>();
                 apiResponse = gson.fromJson(result, ApiResponse.class);
                 apiResponse.dish_details = gson.fromJson(result, DishDetails.class);
                 dishDetails = apiResponse.dish_details;
@@ -232,12 +243,33 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                     txtLike.setText(dishDetails.getDish_details().getLike() + "");
 
                                     txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
-                                    if(dishDetails
-                                            .getDish_details().getDish_image().size() != 0)
-                                        Picasso.with(getContext()).load(GetData.IMG_BASE_URL+dishDetails
-                                                .getDish_details().getDish_image().get(0))
-//                                .placeholder( R.drawable.progress_animation )
-                                                .into(imgTop);
+
+                                    if (dishDetails.getDish_details().getDish_image()!=null)
+
+                                        imageList.addAll(dishDetails.getDish_details().getDish_image());
+
+                                    dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), imageList);
+                                    home_top_pager.setAdapter(dishDetailPagerAdapter);
+
+                                    /*After setting the adapter use the timer */
+                                    final Handler handler = new Handler();
+                                    final Runnable Update = new Runnable() {
+                                        public void run() {
+                                            if (currentPage == imageList.size()-1) {
+                                                currentPage = 0;
+                                            }
+                                            home_top_pager.setCurrentItem(currentPage++, true);
+                                        }
+                                    };
+
+                                    timer = new Timer(); // This will create a new Thread
+                                    timer .schedule(new TimerTask() { // task to be scheduled
+
+                                        @Override
+                                        public void run() {
+                                            handler.post(Update);
+                                        }
+                                    }, DELAY_MS, PERIOD_MS);
 
                                     adapter=new Pager1(getContext(), nameList);
                                     pager.setAdapter(adapter);

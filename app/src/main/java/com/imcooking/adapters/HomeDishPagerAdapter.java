@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,6 +110,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
                 click.click_me(position);
             }
         });
+
         if (chefDishBeans.get(position).getDish_image()!=null&&chefDishBeans.get(position).getDish_image().size()>0){
             Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                     .get(position).getDish_image().get(0)) .into(iv_dish_image);

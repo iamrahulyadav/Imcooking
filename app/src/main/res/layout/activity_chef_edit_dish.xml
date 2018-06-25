@@ -171,6 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:id="@+id/activity_chef_edit_dish_time"
                     android:thumb="@drawable/ic_rectangle"/>
 
 
@@ -249,7 +250,7 @@
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Delivety miles"
+                    android:text="Delivery miles"
                     android:textSize="16sp"
                     android:textColor="@color/text_color_15"
                     android:layout_centerVertical="true"
@@ -370,6 +371,7 @@
                         android:background="@drawable/shape_background_theme"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
+                        android:id="@+id/chef_edit_dish_photos_ttx_select_video"
                         android:paddingRight="15dp"
                         android:paddingLeft="15dp"/>
                     <com.imcooking.customtext.CustomTextView

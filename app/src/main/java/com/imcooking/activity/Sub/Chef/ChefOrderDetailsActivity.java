@@ -124,15 +124,25 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                 orderDetailsBeans.addAll(orderDetailsData.getOrder_details());
                                 if (orderDetailsBeans.size()>0){
                                     foodie_id = orderDetailsBeans.get(0).getOrder_foodie_id();
-                                    if (orderDetailsBeans.get(0).getOrder_foodie_name()!=null)
-                                    txt_chef_name.setText(orderDetailsBeans.get(0).getOrder_foodie_name()+"");
+                                    if (user_type.equals("2")){
+                                        txt_chef_name.setText(orderDetailsBeans.get(0).getChef_name()+"");
+                                        txtAddress.setText(orderDetailsBeans.get(0).getChef_address());
+                                        txt_phone.setText(orderDetailsBeans.get(0).getChef_phone());
+                                        txt_email.setText(orderDetailsBeans.get(0).getChef_email());
+
+                                    } else {
+                                        if (orderDetailsBeans.get(0).getOrder_foodie_name()!=null)
+                                            txt_chef_name.setText(orderDetailsBeans.get(0).getOrder_foodie_name()+"");
+                                        txt_phone.setText(orderDetailsBeans.get(0).getOrder_foodie_phone());
+                                        txtAddress.setText(orderDetailsBeans.get(0).getOrder_addres());
+                                        txt_email.setText(orderDetailsBeans.get(0).getOrder_foodie_email());
+
+                                    }
+
                                     txt_order_id.setText("#"+orderDetailsBeans.get(0).getOrder_order_id());
-                                    txtAddress.setText(orderDetailsBeans.get(0).getOrder_addres());
                                     txt_order_type.setText(orderDetailsBeans.get(0).getOrder_payment_type());
                                     txt_pay_mode.setText(orderDetailsBeans.get(0).getOrder_payment_type());
-                                    txt_email.setText(orderDetailsBeans.get(0).getOrder_foodie_email());
                                     txt_total_price.setText("£"+orderDetailsBeans.get(0).getOrder_total_price());
-                                    txt_phone.setText(orderDetailsBeans.get(0).getOrder_foodie_phone());
                                     delivery_type = orderDetailsBeans.get(0).getDelivery_type();
 
                                     if (delivery_type.equals("1")){

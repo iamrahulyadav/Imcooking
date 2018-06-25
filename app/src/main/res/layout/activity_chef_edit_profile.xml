@@ -349,6 +349,29 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
 
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:track="@drawable/switch_track"
+                android:thumb="@drawable/switch_thumb"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/extra_smallsize"
+                android:text="Select cuisine"
+                android:paddingLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorBlack"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".5dp"
+                android:background="@color/view_2"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chef_edit_profile_recycler_cuisine"/>
+
             <Spinner
                 android:id="@+id/chef_edit_profile_spinner_select_cuisines"
                 style="@style/SpinnerTheme1"

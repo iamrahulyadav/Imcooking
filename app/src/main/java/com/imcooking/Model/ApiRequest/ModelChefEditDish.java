@@ -39,6 +39,15 @@ public class ModelChefEditDish {
     private String pickup;
     private String deliverymiles;
     private String dish_video;
+    private String dish_qyt;
+
+    public String getDish_qyt() {
+        return dish_qyt;
+    }
+
+    public void setDish_qyt(String dish_qyt) {
+        this.dish_qyt = dish_qyt;
+    }
 
     private List<String> dish_image;
 

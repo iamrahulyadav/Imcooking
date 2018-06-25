@@ -20,7 +20,10 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,7 +54,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView tv_order_details,tv_chefname,tv_price,txtQyt,txtChef,tv_orderid,tv_status,
-                txt_order_date, txt_foodie_email,
+                txt_order_date, txt_foodie_email, txt_time,
         txt_order_id, txt_pay_mode, txt_total_price;
         public LinearLayout layout;
         public ImageView chefProfile;
@@ -74,7 +77,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             txt_pay_mode = view.findViewById(R.id.item_foodie_my_order_payment_mode);
             txt_total_price = view.findViewById(R.id.item_foodie_my_order_total_price);
             layout = view.findViewById(R.id.layout_order_details);
-
+            txt_time = view.findViewById(R.id.item_foodie_my_order_time);
             tv_order_details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -116,7 +119,18 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
                 holder.tv_status.setText("Not Delivered");
         }
 
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date myDate = null;
+        try {
+            myDate = timeFormat.parse(list.get(position).getBookdate());
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "MMM dd, yyyy HH:mm a");
+        String finalDate = dateFormat.format(myDate);
+        holder.txt_time.setText(finalDate);
         if (list.get(position).getRating()!=null && list.get(position).getRating().length()>0){
             holder.ratingBar.setRating((Float.parseFloat(list.get(position).getRating())));
         }

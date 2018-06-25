@@ -24,23 +24,31 @@ import java.util.List;
  */
 public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMyRequest.MyViewHolder> {
 
-//    OnItemClickListenerCategory listener;
     private Context context;
     List<FoodieMyRequest.FoodieRequestDishChefDetailsBean> list=new ArrayList<>();
-    //private List<CuisineData.CuisineDataBean>cuisineDataBeans = new ArrayList<>();
+    FoodieMyRequestInterface foodieMyRequestInterface;
 
-    public AdapterFoodieMyRequest(Context context, List<FoodieMyRequest.FoodieRequestDishChefDetailsBean> list) {
+    public AdapterFoodieMyRequest(Context context, List<FoodieMyRequest.FoodieRequestDishChefDetailsBean> list,
+                                  FoodieMyRequestInterface foodieMyRequestInterface) {
         this.context = context;
-this.list=list;
+        this.list=list;
+        this.foodieMyRequestInterface = foodieMyRequestInterface;
     }
+
+    public interface FoodieMyRequestInterface{
+        void viewResponse(int position);
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView tv_view_response,txt_name,txt_address,txt_email,txt_time, txt_phn;
+        public TextView tv_view_response,txtCategory,txtqty,txt_name,txt_address,txt_email,txt_time, txt_status,txt_dish_name, txt_phn;
         public RatingBar ratingBar;
         public ImageView img_profile;
         public MyViewHolder(View view) {
             super(view);
 
+            txtCategory =view.findViewById(R.id.item_chef_my_request_food_category);
+            txtqty=view.findViewById(R.id.item_chef_my_request_qty);
             tv_view_response = view.findViewById(R.id.item_foodie_my_requests_view_response);
             txt_name = view.findViewById(R.id.item_foodie_my_request_name);
             txt_address = view.findViewById(R.id.item_foodie_my_request_address);
@@ -49,6 +57,14 @@ this.list=list;
             img_profile=view.findViewById(R.id.item_foodie_my_request_profile_image);
             ratingBar=view.findViewById(R.id.item_foodie_my_request_rating);
             txt_phn = view.findViewById(R.id.item_foodie_my_request_mob_number);
+            txt_status = view.findViewById(R.id.item_foodie_my_request_txtStatus);
+            txt_dish_name = view.findViewById(R.id.item_foodie_my_request_dish_name);
+            tv_view_response.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    foodieMyRequestInterface.viewResponse(getAdapterPosition());
+                }
+            });
         }
     }
 
@@ -68,20 +84,18 @@ this.list=list;
         holder.txt_address.setText(list.get(position).getChef_address());
         holder.txt_email.setText(list.get(position).getChef_email());
         holder.txt_phn.setText(list.get(position).getChef_phone()+"");
-      //  holder.txt_time.setText(foodie.get());
+        holder.txt_time.setText(list.get(position).getChef_request_datetime());
+        holder.txt_dish_name.setText(list.get(position).getRequest_dishname());
+        if (list.get(position).getChef_accepted()!=null&& list.get(position).getChef_accepted().equals("yes"))
+            holder.txt_status.setText("Accepted");
+        else holder.txt_status.setText("No");
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.img_profile);
-        holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.dialog_view_response);
-                dialog.setCancelable(true);
-                dialog.getWindow().setBackgroundDrawable(null);
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                dialog.show();
-            }
-        });
+        if (list.get(position).getChef_rating()+""!=null)
+            holder.ratingBar.setRating(Float.parseFloat(list.get(position).getChef_rating()+""));
+        holder.txtCategory.setText(list.get(position).getRequest_cusine_name());
+        if (list.get(position).getRequest_quantity()!=null)
+            holder.txtqty.setText(list.get(position).getRequest_quantity());
     }
 
     @Override
