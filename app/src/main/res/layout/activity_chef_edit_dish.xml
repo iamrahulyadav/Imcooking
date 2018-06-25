@@ -175,13 +175,7 @@
                     android:thumb="@drawable/ic_rectangle"/>
 
 
-             <!--<com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
-                    android:id="@+id/rangeSeekbar"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    rsb:absoluteMaxValue="100"
-                    rsb:absoluteMinValue="0" />
--->
+             <!-- -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -262,6 +256,10 @@
                     android:background="@drawable/shape_border_theme">
 
                     <Spinner
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
                         style="@style/SpinnerTheme1"
                         android:spinnerMode="dropdown"
                         android:id="@+id/edit_dish_spinner"
@@ -354,6 +352,7 @@
                     android:layout_height="wrap_content"
                     android:text="Video"
                     android:textSize="16sp"
+                    android:id="@+id/activity_chef_edit_dish_video_txt"
                     android:textColor="@color/text_color_15"
                     android:layout_alignParentLeft="true"/>
                 <LinearLayout
@@ -374,13 +373,6 @@
                         android:id="@+id/chef_edit_dish_photos_ttx_select_video"
                         android:paddingRight="15dp"
                         android:paddingLeft="15dp"/>
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add more Videos"
-                        android:textSize="10sp"
-                        android:textColor="@color/theme_color"
-                        android:layout_marginTop="10dp"/>
 
                 </LinearLayout>
 
@@ -397,6 +389,13 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:onClick="edit_dish_submit"/>
+
+            <VideoView
+                android:id="@+id/vvVideo"
+                android:layout_width="match_parent"
+                android:layout_height="488dp"
+                android:visibility="gone"/>
+
 
 
         </LinearLayout>

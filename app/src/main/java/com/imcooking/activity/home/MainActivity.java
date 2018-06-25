@@ -200,6 +200,7 @@ public class MainActivity extends AppBaseActivity
         if (userDataBean.getFull_name()!=null)
             user_name = userDataBean.getFull_name() + "";
         else user_name="Your Name";
+        if (user_type.equals("1")) navigationView.getMenu().findItem(R.id.navigation_address).setVisible(false);
 
         if (userDataBean.getUser_phone()!=null)
             user_phone = userDataBean.getUser_phone() + "";

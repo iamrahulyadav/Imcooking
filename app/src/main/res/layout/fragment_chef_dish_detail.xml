@@ -19,12 +19,17 @@
             android:layout_width="match_parent"
             android:layout_height="284dp"
             android:fitsSystemWindows="true">
+            <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/fragment_chef_auto_scroll_page"/>
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/details_home"
                 android:scaleType="fitXY"
+                android:visibility="gone"
                 android:id="@+id/fragment_home_details_img_top"
                 android:layout_marginBottom="17dp"/>
             <LinearLayout
@@ -85,11 +90,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"/>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_play_button"
-                        android:layout_centerInParent="true"/>
                 </RelativeLayout>
 
             </LinearLayout>

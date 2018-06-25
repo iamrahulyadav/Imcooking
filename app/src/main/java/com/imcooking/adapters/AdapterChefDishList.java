@@ -115,11 +115,13 @@ public class AdapterChefDishList extends PagerAdapter{
         final ArrayList<String> arrayList = new ArrayList<>();
         for (int i=0; i<chef_dish_list.get(position).getDish_image().size(); i++){
             arrayList.add("" + chef_dish_list.get(position).getDish_image().get(i));
+            Log.d("TAG", "rakhi: "+chef_dish_list.get(position).getDish_image().get(i));
         }
 
         dish_name.setText(chef_dish_list.get(position).getDish_name());
-        if(!chef_dish_list.get(position).getDish_quantity().equals("null"))
+        if(chef_dish_list.get(position).getDish_quantity()!=null && !chef_dish_list.get(position).getDish_quantity().equals("null"))
          dish_count.setText(chef_dish_list.get(position).getDish_quantity()+"");
+        else dish_count.setText("0");
         dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
         dish_likes.setText(chef_dish_list.get(position).getLike_no());
 
@@ -159,6 +161,7 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("description", chef_dish_list.get(position).getDish_description());
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
                 bundle.putString("cuisine", chef_dish_list.get(position).getDish_cuisine());
+                bundle.putString("likeno", chef_dish_list.get(position).getLike_no());
                 bundle.putStringArrayList("image", arrayList);
 //                bundle.putString("cuisine", chef_dish_list.get(position).get);
                 fragment.setArguments(bundle);

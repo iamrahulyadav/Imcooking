@@ -139,6 +139,7 @@
                                     android:layout_marginTop="5dp"
                                     android:paddingLeft="20dp"
                                     android:paddingRight="20dp" />
+
                                 <RatingBar
                                     style="?android:attr/ratingBarStyleSmall"
                                     android:id="@+id/fragment_chef_home_rating"
@@ -150,7 +151,6 @@
                                 <com.imcooking.customtext.CustomTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="1120 Followers"
                                     android:textSize="10sp"
                                     android:id="@+id/activity_chef_txtFollower"
                                     android:textColor="@color/colorWhite"

@@ -24,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
@@ -35,7 +34,6 @@ import com.imcooking.R;
 import com.imcooking.adapters.CartAdatper;
 import com.imcooking.adapters.CartAddListAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
-import com.imcooking.splash.SplashActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
@@ -43,7 +41,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -359,7 +356,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     placeOrder.setBookdate(date);
                     placeOrder.setPayment_type("");
                     placeOrder.setTransaction_id("COD");
-                    startActivity(new Intent(CartActivity.this, PaymentActivity.class)
+                    startActivity(new Intent(CartActivity.this, Payment1Activity.class)
                             .putExtra("order_details", new Gson().toJson(placeOrder))
                             .putExtra("chef_name", txtChef_Name.getText().toString().trim()));
                 }

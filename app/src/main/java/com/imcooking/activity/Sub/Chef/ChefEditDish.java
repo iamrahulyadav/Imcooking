@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -20,7 +21,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,6 +31,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.ModelChefAddDish;
@@ -39,19 +40,27 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterEditDishPhotos;
+import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
-import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -59,7 +68,8 @@ import java.util.List;
 
 import static java.util.Calendar.HOUR_OF_DAY;
 
-public class ChefEditDish extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
+public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCheckedChangeListener,
+        AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
 
     private String chef_id, dish_id, name, cuisine, price, description, special_note,qyt, available, homedelivery, pickup;
     private EditText edt_name, edt_price, edt_description, edt_special_note, edt_qyt;
@@ -77,9 +87,9 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private TextView tv_add_more_photo, txt_video;
 
     private String bitmapString="a";
-
+    private ArrayList<String> imgBase64List;
     private String title;
-
+    private VideoView videoView;
     private LinearLayout layout_photos, layout;
 //    public TextView addMore;
 
@@ -102,7 +112,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     }
 
     private TextView tv_photo_name;
-    private RecyclerView rv1;
+    private RecyclerView photorv1;
     private ArrayList<String> arr_photos = new ArrayList<>();
     private int pos;
     private Spinner sp_cuisine;
@@ -113,14 +123,16 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private ArrayList<String> arrayList = new ArrayList<>();
 
     private void init(){
+        videoView = findViewById(R.id.vvVideo);
     //    layout_photos = findViewById(R.id.edit_dish_photos);
         txt_video = findViewById(R.id.chef_edit_dish_photos_ttx_select_video);
 //        tv_photo_name = findViewById(R.id.chef_edit_dish_photo_name);
         edt_qyt = findViewById(R.id.chef_edit_dish_qyt);
         sp_cuisine = findViewById(R.id.chef_edit_dish_spinner_cuisine);
         tv_add_more_photo = findViewById(R.id.edit_dish_add_more);
-
+        imgBase64List = new ArrayList<>();
         tv_title = findViewById(R.id.chef_edit_dish_title);
+        txt_video = findViewById(R.id.activity_chef_edit_dish_video_txt);
         //addMore=findViewById(R.id.addMore);
         edt_name = findViewById(R.id.chef_edit_dish_name);
 //        edt_cuisine = findViewById(R.id.chef_edit_dish_cuisine);
@@ -186,7 +198,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
         arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
         sp.setAdapter(arrayAdapter);
 
-        rv1 = findViewById(R.id.chef_edit_dish_photos_recycler);
+        photorv1 = findViewById(R.id.chef_edit_dish_photos_recycler);
 //        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
 //            @Override
 //            public boolean canScrollVertically() {
@@ -194,10 +206,10 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 //            }
 //        };
 
-        rv1.setHasFixedSize(false);
+        photorv1.setHasFixedSize(false);
         LinearLayoutManager manager
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        rv1.setLayoutManager(manager);
+        photorv1.setLayoutManager(manager);
         arr_photos.clear();
         arr_photos.add("Photo");
 
@@ -218,14 +230,17 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             homedelivery = getIntent().getExtras().getString("home_delivery");
             pickup = getIntent().getExtras().getString("pickup");
             arrayList = getIntent().getExtras().getStringArrayList("image");
-            edt_qyt.setText(qyt);
+            if (!qyt.equals("null")){
+                edt_qyt.setText(qyt);
+            } else edt_qyt.setText("0");
+
             for(int i=0; i<arrayList.size(); i++){
                 if(i<3){
                     arr_photos.add(arrayList.get(i));
                 }
             }
             adapterEditDishPhotos.notifyDataSetChanged();
-
+            Log.d("TAG", "getMyIntentData: "+arrayList.size());
             if(arr_photos.size() == 3){
                 tv_add_more_photo.setVisibility(View.GONE);
             }
@@ -256,8 +271,6 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
             } else {
 
             }
-
-
             title = "editdish";
             tv_title.setText("Edit Dish");
 
@@ -491,8 +504,9 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
     private AdapterEditDishPhotos adapterEditDishPhotos;
 
     private void setMyAdapter(ArrayList<String> arr_p){
+
         adapterEditDishPhotos = new AdapterEditDishPhotos(ChefEditDish.this, arr_p, this/*,addMore*/);
-        rv1.setAdapter(adapterEditDishPhotos);
+        photorv1.setAdapter(adapterEditDishPhotos);
 //        adapterEditDishPhotos.notifyDataSetChanged();
     }
 
@@ -593,6 +607,21 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
                 System.out.println("SELECT_VIDEO");
                 Uri selectedImageUri = data.getData();
                 String selectedPath = getPath(selectedImageUri);
+                Log.d("TAG", "rakhi: "+selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+
+//                upload video
+
+             //   int reponse=upLoad2Server(""+selectedPath);
+
+                txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                videoView.setVideoURI(selectedImageUri);
+                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.setLooping(true);
+                        videoView.start();
+                    }
+                });
             }
         }
     }
@@ -624,16 +653,13 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
                 // CALL THIS METHOD TO GET THE ACTUAL PATH
                 File finalFile = new File(getRealPathFromURI(tempUri));
-
-                System.out.println(finalFile + "");
-
                 String filePath = finalFile + "";
                 Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
-
 
 /*                if(arr_photos.size() == 1){
                     arr_photos.clear();
                 }*/
+
 //                arr_photos.remove(arr_photos.size()-1);
 //                arr_photos.add(filePath.substring(filePath.lastIndexOf("/") + 1));
                 arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
@@ -647,6 +673,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
         bitmap = bm;
         bitmapString = BaseClass.BitMapToString(bitmap);
+        imgBase64List.add(bitmapString);
 
     }
 
@@ -692,6 +719,7 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 //        imgUser.setImageBitmap(thumbnail);
 //        uploadImg(bitmap);
         bitmapString = BaseClass.BitMapToString(bitmap);
+        imgBase64List.add(bitmapString);
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -776,6 +804,97 @@ public class ChefEditDish extends AppCompatActivity implements CompoundButton.On
 
     }
 
+    private static int serverResponseCode;
 
+    public static int upLoad2Server(String sourceFileUri) {
+        String upLoadServerUri = "your remote server link";
+        // String [] string = sourceFileUri;
+        String fileName = sourceFileUri;
+
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        DataInputStream inStream = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        String responseFromServer = "";
+
+        File sourceFile = new File(sourceFileUri);
+        if (!sourceFile.isFile()) {
+            Log.e("Huzza", "Source File Does not exist");
+            return 0;
+        }
+        try { // open a URL connection to the Servlet
+            FileInputStream fileInputStream = new FileInputStream(sourceFile);
+            URL url = new URL(upLoadServerUri);
+            conn = (HttpURLConnection) url.openConnection(); // Open a HTTP  connection to  the URL
+            conn.setDoInput(true); // Allow Inputs
+            conn.setDoOutput(true); // Allow Outputs
+            conn.setUseCaches(false); // Don't use a Cached Copy
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            conn.setRequestProperty("uploaded_file", fileName);
+            dos = new DataOutputStream(conn.getOutputStream());
+
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""+ fileName + "\"" + lineEnd);
+            dos.writeBytes(lineEnd);
+
+            bytesAvailable = fileInputStream.available(); // create a buffer of  maximum size
+            Log.i("Huzza", "Initial .available : " + bytesAvailable);
+
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            buffer = new byte[bufferSize];
+
+            // read file and write it into form...
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+            while (bytesRead > 0) {
+                dos.write(buffer, 0, bufferSize);
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            }
+
+            // send multipart form data necesssary after file data...
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+            // Responses from the server (code and message)
+            serverResponseCode = conn.getResponseCode();
+            String serverResponseMessage = conn.getResponseMessage();
+
+            Log.i("Upload file to server", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
+            // close streams
+            Log.i("Upload file to server", fileName + " File is written");
+            fileInputStream.close();
+            dos.flush();
+            dos.close();
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+            Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//this block will give the response of upload link
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn
+                    .getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                Log.i("Huzza", "RES Message: " + line);
+            }
+            rd.close();
+        } catch (IOException ioex) {
+            Log.e("Huzza", "error: " + ioex.getMessage(), ioex);
+        }
+        return serverResponseCode;  // like 200 (Ok)
+
+    } // end upLoad2Server
 
 }

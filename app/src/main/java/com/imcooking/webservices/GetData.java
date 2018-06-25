@@ -67,6 +67,8 @@ public class GetData {
     public static String CONVERSATION_CHAT ="conversation_chat";
     public static String REQUEST_DISH = "request_dish";
     public static String CONVER_CHEF_FOODIE_DISH_ACCEPT  ="conversation_chat_chef_foofie";
+    public static String CHEF_PROFILE_UPDATE = "chef_profile_update";
+    public static String CUISINE = "cuisine";
 
 
     public GetData(final Context context, Activity activity) {

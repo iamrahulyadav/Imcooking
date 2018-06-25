@@ -116,6 +116,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             JSONObject jsonObject = new JSONObject(s);
             new GetData(getApplicationContext(), ChefOrderDetailsActivity.this).sendMyData(jsonObject,
                     GetData.ORDER_DETAILS, ChefOrderDetailsActivity.this, new GetData.MyCallback() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onSuccess(String result) {
                             OrderDetailsData orderDetailsData = new OrderDetailsData();
@@ -123,7 +124,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                             if (orderDetailsData.getOrder_details()!=null){
                                 orderDetailsBeans.addAll(orderDetailsData.getOrder_details());
                                 if (orderDetailsBeans.size()>0){
-                                    foodie_id = orderDetailsBeans.get(0).getOrder_foodie_id();
+                                    foodie_id = orderDetailsBeans.get(0).getOrder_foodie_id()+"";
                                     if (user_type.equals("2")){
                                         txt_chef_name.setText(orderDetailsBeans.get(0).getChef_name()+"");
                                         txtAddress.setText(orderDetailsBeans.get(0).getChef_address());
@@ -132,7 +133,8 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
 
                                     } else {
                                         if (orderDetailsBeans.get(0).getOrder_foodie_name()!=null)
-                                            txt_chef_name.setText(orderDetailsBeans.get(0).getOrder_foodie_name()+"");
+                                            txt_chef_name.setText(orderDetailsBeans.get(0).
+                                                    getOrder_foodie_name()+"");
                                         txt_phone.setText(orderDetailsBeans.get(0).getOrder_foodie_phone());
                                         txtAddress.setText(orderDetailsBeans.get(0).getOrder_addres());
                                         txt_email.setText(orderDetailsBeans.get(0).getOrder_foodie_email());
@@ -151,7 +153,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                         Date myDate = null;
                                         try {
-                                            myDate = timeFormat.parse(orderDetailsBeans.get(0).getOrder_bookdate());
+                                            myDate = timeFormat.parse(orderDetailsBeans.get(0).getBooking_date());
 
                                         } catch (ParseException e) {
                                             e.printStackTrace();

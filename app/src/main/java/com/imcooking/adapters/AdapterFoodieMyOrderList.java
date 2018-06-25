@@ -1,5 +1,6 @@
 package com.imcooking.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -94,11 +95,11 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_chefname.setText(list.get(position).getChef_name());
         holder.tv_orderid.setText("#"+list.get(position).getOrder_order_id());
-        holder.tv_price.setText("£" +String.valueOf(list.get(position).getPrice()));
         if (list.get(position).getOrder_status()!=null){
             String status = list.get(position).getOrder_status();
             if (status.equals("0"))
@@ -127,7 +128,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "MMM dd, yyyy HH:mm a");
         String finalDate = dateFormat.format(myDate);
         holder.txt_time.setText(finalDate);
@@ -142,8 +143,11 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
 
         holder.txt_pay_mode.setText(list.get(position).getPayment_mode());
         holder.txt_order_id.setVisibility(View.GONE);
-        float price = Float.parseFloat(list.get(position).getPrice())*list.get(position).getDish_qyt();
+
+        float price = Float.parseFloat(list.get(position).getPrice())*(list.get(position).getDish_qyt());
         holder.txt_total_price.setText("£" +price);
+        holder.tv_price.setText("£" +String.valueOf(price));
+
         holder.layout.setVisibility(View.GONE);
        /* if (visibilityArray.get(position))
             holder.layout.setVisibility(View.VISIBLE);

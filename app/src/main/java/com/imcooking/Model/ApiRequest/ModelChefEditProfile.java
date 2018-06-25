@@ -24,6 +24,15 @@ public class ModelChefEditProfile {
     private String cuisine_list;
     private String available;
     private String about;
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getChef_id() {
         return chef_id;

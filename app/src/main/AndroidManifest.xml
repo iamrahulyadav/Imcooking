@@ -94,10 +94,10 @@
         <activity android:name=".activity.Sub.Chef.ChangePassword" />
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />
-        <activity android:name=".activity.Sub.Foodie.PaymentActivity" />
+        <activity android:name=".activity.Sub.Foodie.Payment1Activity" />
         <activity android:name=".activity.Sub.Foodie.FoodieOrderDetailActivity" />
         <activity android:name=".activity.Sub.ChefOrderDeatilsActivity" />
-        <activity android:name=".activity.Sub.Chef.ChefOrderDetailsActivity"></activity>
+        <activity android:name=".activity.Sub.Chef.ChefOrderDetailsActivity" />
     </application>
 
 </manifest>

@@ -4,10 +4,12 @@ package com.imcooking.fragment.chef;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +21,14 @@ import android.widget.TextView;
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
+import com.imcooking.adapters.DishDetailPagerAdapter;
 import com.imcooking.adapters.Pager1;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,8 +58,14 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
 
     private TextView tv_dish_name, tv_dish_likes, tv_dish_text_available, tv_dish_time, tv_dish_count, tv_dish_home_delivery,
     tv_dish_price, /*tv_dish_description,*/ tv_edit_dish ;
+    private DishDetailPagerAdapter dishDetailPagerAdapter;
+    int currentPage = 0;
+    Timer timer;
+    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long PERIOD_MS = 3000; // time in milliseconds between successive task executions.
 
-    private String str_id, str_name, str_likes, str_available, str_time, str_count, str_homedelivery, str_pickup, str_price,
+    ViewPager home_top_pager;
+    private String str_id, str_name, str_likes, str_available,str_like, str_time, str_count, str_homedelivery, str_pickup, str_price,
             str_description, str_special_note, str_cuisine, str_qyt;
 
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -62,7 +73,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
     private ImageView iv_home_delivery_icon, iv_pickup_icon;
 
     private void init(){
-
+        home_top_pager = getView().findViewById(R.id.fragment_chef_auto_scroll_page);
         tv_dish_name = getView().findViewById(R.id.chef_dish_detalis_dish_name);
         tv_dish_likes = getView().findViewById(R.id.chef_dish_detalis_dish_likes);
         tv_dish_text_available = getView().findViewById(R.id.chef_dish_detalis_dish_available);
@@ -92,9 +103,10 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         str_special_note = getArguments().getString("special_note");
         str_cuisine = getArguments().getString("cuisine");
         arrayList = getArguments().getStringArrayList("image");
+        str_like = getArguments().getString("likeno");
+
+        Log.d("TAG", "getMyData: "+arrayList.size());
         str_qyt = getArguments().getString("qyt");
-
-
         tv_dish_name.setText(str_name);
         if(str_available.equalsIgnoreCase("Yes")){
             tv_dish_text_available.setText("Available");
@@ -103,10 +115,10 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         }
 
         tv_dish_time.setText(str_time);
-        if(str_qyt.equals("null")){
+        if(!str_qyt.equals("null")){
             tv_dish_count.setText(str_qyt);
         } else{
-            tv_dish_count.setText(str_count);
+            tv_dish_count.setText("0");
         }
 
 //        tv_dish_home_delivery.setText(str_homedelivery);
@@ -130,6 +142,33 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         if (str_description!=null){
 //            tv_dish_description.setText(str_description);
         }
+
+        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList);
+        home_top_pager.setAdapter(dishDetailPagerAdapter);
+
+        /*After setting the adapter use the timer */
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            public void run() {
+                if (currentPage == arrayList.size()-1) {
+                    currentPage = 0;
+                }
+                home_top_pager.setCurrentItem(currentPage++, true);
+            }
+        };
+
+        if (str_like!=null){
+            tv_dish_likes.setText(str_like);
+        } else tv_dish_likes.setText("0");
+        timer = new Timer(); // This will create a new Thread
+        timer .schedule(new TimerTask() { // task to be scheduled
+
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, DELAY_MS, PERIOD_MS);
+
 
         final ViewPager viewPager = getView().findViewById(R.id.chef_dish_details_view_pager);
         TabLayout tabLayout = getView().findViewById(R.id.chef_dish_details_tab_layout);
@@ -176,7 +215,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
                     .putExtra("home_delivery", str_homedelivery)
                     .putExtra("pickup", str_pickup)
                     .putExtra("image", arrayList)
-                    .putExtra("qyt","1")
+                    .putExtra("qyt",str_qyt)
             );
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else{}
