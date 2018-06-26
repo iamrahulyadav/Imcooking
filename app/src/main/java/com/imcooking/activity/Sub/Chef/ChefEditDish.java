@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -48,6 +49,7 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -211,7 +213,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         photorv1.setLayoutManager(manager);
         arr_photos.clear();
-        arr_photos.add("Photo");
+//        arr_photos.add("Photo");
 
         setMyAdapter(arr_photos);
     }
@@ -229,7 +231,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             available = getIntent().getExtras().getString("available");
             homedelivery = getIntent().getExtras().getString("home_delivery");
             pickup = getIntent().getExtras().getString("pickup");
+
             arrayList = getIntent().getExtras().getStringArrayList("image");
+
             if (!qyt.equals("null")){
                 edt_qyt.setText(qyt);
             } else edt_qyt.setText("0");
@@ -239,11 +243,18 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     arr_photos.add(arrayList.get(i));
                 }
             }
+
             adapterEditDishPhotos.notifyDataSetChanged();
+
             Log.d("TAG", "getMyIntentData: "+arrayList.size());
+
             if(arr_photos.size() == 3){
                 tv_add_more_photo.setVisibility(View.GONE);
             }
+
+
+
+
 
             edt_name.setText(name);
 //            sp_cuisine.setSelection();
@@ -277,6 +288,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         } else{
             title = "dish";
             tv_title.setText("Add Dish");
+            arr_photos.add("Photo");
         }
 
         TinyDB tinyDB = new TinyDB(getApplicationContext());
@@ -340,15 +352,24 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             if(!price.isEmpty()){
                 if(!description.isEmpty()){
                     if(!special_note.isEmpty()){
-                        if(!bitmapString.equals("a")) {
+                       /* if(!bitmapString.equals("a")) {*/
                             if(title.equals("dish")){
+
+                                if(!bitmapString.equals("a")) {
+                                } else{
+                                    BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
+                                }
                                 adddish(title);
                             } else if(title.equals("editdish")){
-                                editdish(title);
+                                try {
+                                    editdish(title);
+                                } catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } else{
+                       /* } else{
                             BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
-                        }
+                        }*/
                     } else{
                         BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
                     }
@@ -426,7 +447,42 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     }
 
-    private void editdish(String title){
+    private void editdish(String title) throws MalformedURLException {
+
+
+        ArrayList<String> arr_edit_photos_base64 = new ArrayList<>();
+        for(int k=0; k<arr_photos.size(); k++){
+            String imageUrl = GetData.BASE_URL + arr_photos.get(k);
+
+            Bitmap bm = BitmapFactory.decodeFile(imageUrl);
+            String s = BaseClass.BitMapToString(bm);
+            Log.d("MyBase64", s);
+            arr_edit_photos_base64.add(s);
+
+
+
+
+
+
+           /*
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+            byte[] b = baos.toByteArray(); */
+
+
+
+
+            /*  URL url = new URL(imageUrl);
+            try {
+                BufferedInputStream bis = new BufferedInputStream(url.openConnection().getInputStream());
+                Log.d("MyBase64", bis + "");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+        }
+
+
+
 
         ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
         qyt = edt_qyt.getText().toString().trim();
@@ -447,7 +503,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(arrayList);
+        requestData.setDish_image(arr_photos);
         requestData.setDish_qyt(qyt);
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
