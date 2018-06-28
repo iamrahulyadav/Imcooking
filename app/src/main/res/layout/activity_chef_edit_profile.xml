@@ -367,6 +367,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorBlack"/>
 
+<!--
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".5dp"
@@ -383,6 +384,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:paddingRight="20dp"/>
+-->
 
             <View
                 android:layout_width="match_parent"
@@ -394,10 +396,20 @@
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Select Cuisines"
+                android:textColor="@color/colorBlack"
+                android:paddingLeft="10dp"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:onClick="select_cuisines"/>
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/chef_edit_profile_select_cuisine"
                 android:text="Select Cuisine"
                 android:textColor="@color/colorBlack"
                 android:paddingLeft="10dp"
-                android:onClick="select_cuisines"/>
+                android:layout_marginTop="10dp" />
 
             <View
                 android:layout_width="match_parent"

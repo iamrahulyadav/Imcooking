@@ -126,8 +126,10 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 //        chef_id = userDataBean.getUser_id() + "";
 
         init();
+/*
         getchefProfile();
         getCuisines();
+*/
 //        getUserProfile(foodie_id);
 
 //        setMyData();
@@ -466,6 +468,9 @@ for(int i=0;i<jsonArray.length();i++){
         } else {
 
         }
+
+        getchefProfile();
+        getCuisines();
 
 //        getchefProfile();
     }

@@ -44,6 +44,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.CuisineList;
 import com.imcooking.activity.Sub.Foodie.EditProfile;
 import com.imcooking.adapters.AdapterCuisineList;
 import com.imcooking.fragment.chef.ChefHome;
@@ -85,7 +86,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 //    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
     private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about, edt_phn;
-    private Spinner sp_miles, sp_cuisine;
+    private Spinner sp_miles/*, sp_cuisine*/;
+    private TextView tv_select_cuisine;
     private SwitchCompat /*sw_notification,*/ sw_available;
     private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles,
             str_cuisine = "Indian Food"/*, str_notification*/,
@@ -95,6 +97,9 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     private ImageView imgProfile;
     private ApiResponse.UserDataBean userDataBean;
     private ProgressBar progressBar;
+
+    ChefProfileData1.ChefDataBean.CuisineNameBean cuisineNameBean;
+    List<String> cuisine_list = new ArrayList<>();
 
     private void init(){
 
@@ -114,10 +119,11 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         txt_address = findViewById(R.id.activity_chef_edit_txtAddress);
         txt_phone = findViewById(R.id.activity_chef_edit_txtPhone);
         sp_miles = findViewById(R.id.chef_edit_profile_spinner_miles);
-        sp_cuisine = findViewById(R.id.chef_edit_profile_spinner_select_cuisines);
+        tv_select_cuisine = findViewById(R.id.chef_edit_profile_select_cuisine);
+//        sp_cuisine = findViewById(R.id.chef_edit_profile_spinner_select_cuisines);
 //        cuisineRecycler = findViewById(R.id.chef_edit_profile_recycler_cuisine);
         sp_miles.setOnItemSelectedListener(this);
-        sp_cuisine.setOnItemSelectedListener(this);
+//        sp_cuisine.setOnItemSelectedListener(this);
 //        LinearLayoutManager horizontalLayoutManagaer
 //                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 //        cuisineRecycler.setLayoutManager(horizontalLayoutManagaer);
@@ -137,7 +143,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                 R.layout.spinner_row, spinnerData);
         arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
         sp_miles.setAdapter(arrayAdapter);
-        sp_cuisine.setAdapter(arrayAdapter);
+//        sp_cuisine.setAdapter(arrayAdapter);
 
         String login_data = tinyDB.getString("login_data");
 
@@ -151,7 +157,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     private ArrayList<String> arrayList = new ArrayList<>();
     private AdapterCuisineList adapter;
 
-    private List<CuisineData.CuisineDataBean> cuisionList=new ArrayList<>();
+    private List<ChefProfileData1.ChefDataBean.CuisineNameBean> cuisineList=new ArrayList<>();
+    private ArrayList<String> cuisiness_list = new ArrayList<>();
 
     private void setMyAdapter(CuisineData cuisineData){
 
@@ -175,6 +182,26 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         str_email = chefProfileData1.getChef_data().getChef_email() + "";
         str_zipcode = chefProfileData1.getChef_data().getChef_zipcode();
         str_about = chefProfileData1.getChef_data().getChef_description();
+
+
+        cuisineList = chefProfileData1.getChef_data().getCuisine_name();
+        cuisiness_list.clear();
+        String str_name11 = ""/*, str_id = ""*/;
+        for(int i=0; i<cuisineList.size(); i++){
+            cuisiness_list.add(cuisineList.get(i).getCuisine_name());
+            if(str_name11.length() == 0) {
+                str_name11 = str_name11 + cuisineList.get(i).getCuisine_name();
+//                        str_id = str_id + cuisineList.get(i);
+            } else{
+                str_name11 = str_name11 + ", " + cuisineList.get(i).getCuisine_name();
+//                        str_id = str_id + "," + cuisineList.get(i);
+            }
+        }
+        tv_select_cuisine.setText(str_name11);
+        if(cuisineList.size() == 0){
+            tv_select_cuisine.setText("Select Cuisines");
+        }
+
 
         edt_email.setText(str_email);
         if (str_name!=null && !str_name.equalsIgnoreCase("null")){
@@ -239,11 +266,11 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
             str_miles = adapterView.getItemAtPosition(i).toString();
 
-        } else if (id == R.id.chef_edit_profile_spinner_select_cuisines){
+        } /*else if (id == R.id.chef_edit_profile_spinner_select_cuisines){
 
             str_cuisine = adapterView.getItemAtPosition(i).toString();
 
-        } else {}
+        }*/ else {}
     }
 
     @Override
@@ -268,7 +295,11 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
     public void select_cuisines(View view){
 
-        startActivityForResult(new Intent(ChefEditProfile.this, SelectCuisines.class), 143);
+        Intent i = new Intent(ChefEditProfile.this, SelectCuisines.class);
+
+        i.putStringArrayListExtra("cuisine_list", cuisiness_list);
+
+        startActivityForResult(i, 143);
         overridePendingTransition(R.anim.enter, R.anim.exit);
 
     }
@@ -285,8 +316,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         str_phn = edt_phn.getText().toString().trim();
 //        str_miles , str_notification, str_available, str_cuisine
 
-        ArrayList<String> cuisine_list = new ArrayList<>();
-        cuisine_list.add(str_cuisine);
 
         ModelChefEditProfile data = new ModelChefEditProfile();
 
@@ -298,7 +327,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setZipcode(str_zipcode);
         data.setDefault_miles(str_miles);
         data.setAvailable(str_available);
-        data.setCuisine_list(str_cuisine);
+        data.setCuisine_list(str_cuisine_ids);
         data.setAbout(str_about);
         data.setPhone(str_phn);
 
@@ -373,7 +402,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                             cuisineData = new Gson().fromJson(result, CuisineData.class);
 //                            cuisineList.addAll(cuisineData.getCuisine_data());
 
-                            setMyCuisines(cuisineData);
+//                            setMyCuisines(cuisineData);
 //                            setMyAdapter(cuisineData);
                         }
                     });
@@ -385,6 +414,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
     private void setMyCuisines(CuisineData cuisines){
 
+/*
         ArrayList<String> arrayList = new ArrayList<>();
         for(int i=0; i<cuisines.getCuisine_data().size(); i++){
             arrayList.add(cuisines.getCuisine_data().get(i).getCuisine_name());
@@ -397,6 +427,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
         sp_cuisine.setAdapter(arrayAdapter1);
         sp_cuisine.setOnItemSelectedListener(this);
+*/
     }
 
     public void change_dp(View view){
@@ -585,6 +616,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
+    private String str_cuisine_ids;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
@@ -594,7 +626,11 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
             else if(requestCode == 143){
-                Toast.makeText(this, "yeah", Toast.LENGTH_SHORT).show();
+                String strname = data.getExtras().getString("cuisineName");
+                str_cuisine_ids = data.getExtras().getString("cuisineId");
+                tv_select_cuisine.setText(strname);
+                Log.d("SelectCuisinee", strname + "\n" + str_cuisine_ids);
+//                Toast.makeText(this, "yeah", Toast.LENGTH_SHORT).show();
             } else {}
 
         }

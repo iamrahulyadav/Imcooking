@@ -38,9 +38,11 @@ import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.ModelChefAddDish;
 import com.imcooking.Model.ApiRequest.ModelChefEditDish;
 import com.imcooking.Model.api.response.ApiResponse;
+import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterEditDishPhotos;
+import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -109,8 +111,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         }
         layout = findViewById(R.id.layout_chef_edit_dish);
 
-        getMyCuisines();
         init();
+        getMyCuisines();
         getMyIntentData();
     }
 
@@ -247,9 +249,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 if(i<3){
                     arr_photos.add(arrayList.get(i));
 
-                    Bitmap bm = BaseClass.getBitmapFromURL(GetData.IMG_BASE_URL + "1521269701cajun.jpg", ChefEditDish.this );//arrayList.get(i));
-                    String base_64 = BaseClass.BitMapToString(bm);
-                    Log.d("MyBase64", base_64);
+//                    Bitmap bm = BaseClass.getBitmapFromURL(GetData.IMG_BASE_URL + "1521269701cajun.jpg", ChefEditDish.this );//arrayList.get(i));
+//                    String base_64 = BaseClass.BitMapToString(bm);
+//                    Log.d("MyBase64", base_64);
 
 
 
@@ -391,6 +393,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void getMyCuisines() {
 
+/*
         try {
             String s = "";
             JSONObject jsonObject = new JSONObject("{}");
@@ -410,14 +413,21 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         } catch (JSONException e) {
             e.printStackTrace();
         }
+*/
+
+        list = ChefHome.chefProfileData1.getChef_data().getCuisine_name();
+//        Log.d(TAG, "getMyCuisines: ");
+        setMyCuisines(list);
 
     }
 
-    private void setMyCuisines(CuisineData cuisines){
+    private List<ChefProfileData1.ChefDataBean.CuisineNameBean> list = new ArrayList<>();
+
+    private void setMyCuisines(List<ChefProfileData1.ChefDataBean.CuisineNameBean> list){
 
         ArrayList<String> arrayList = new ArrayList<>();
-        for(int i=0; i<cuisines.getCuisine_data().size(); i++){
-            arrayList.add(cuisines.getCuisine_data().get(i).getCuisine_name());
+        for(int i=0; i<list.size(); i++){
+            arrayList.add(list.get(i).getCuisine_name());
         }
 
         sp_cuisine.setOnItemSelectedListener(this);
@@ -927,7 +937,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             Log.d("MySpinner", dish_miles);
         } else if(adapterView.getId() == R.id.chef_edit_dish_spinner_cuisine){
             selected_cuisine = adapterView.getItemAtPosition(i).toString();
-            selected_cuisine_id = cuisineData.getCuisine_data().get(i).getCuisine_id() + "";
+            selected_cuisine_id = list.get(i).getCuisine_id() + "";
             Log.d("MySpinner", selected_cuisine_id);
         }else{}
 
