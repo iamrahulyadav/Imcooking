@@ -64,6 +64,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class HomeFragment extends Fragment implements
@@ -541,7 +543,7 @@ public class HomeFragment extends Fragment implements
 
     private void filterCuisine(int position, String cuision){
         cuisionChefList = new ArrayList<>();
-        for (HomeData.ChefDishBean  bean: chefDishBeans){
+      /*  for (HomeData.ChefDishBean  bean: chefDishBeans){
             if (bean.getDish_cuisine()!=null&&bean.getDish_cuisine().size()>0){
                 String cuisionVa = bean.getDish_cuisine().get(0).getCuisine_name();
                 if (cuision.equalsIgnoreCase(cuisionVa)){
@@ -549,6 +551,8 @@ public class HomeFragment extends Fragment implements
                 }
             }
         }
+    */
+        cuisionChefList = getByName(chefDishBeans, cuision);
         if (cuisionChefList.size()>0){
             layout_no_record_found.setVisibility(View.GONE);
             viewPager.setVisibility(View.VISIBLE);
@@ -563,6 +567,22 @@ public class HomeFragment extends Fragment implements
         for(int i=0; i<cuisionChefList.size(); i++){
             arr_like_status_1.add(cuisionChefList.get(i).getDishlike());
         }
+    }
+
+    private List<HomeData.ChefDishBean> getByName(List<HomeData.ChefDishBean>people, String name){
+        HomeData.ChefDishBean person = null;
+
+        List<HomeData.ChefDishBean>cuisionChefList = new ArrayList<>();
+        for (HomeData.ChefDishBean person1: people){
+            for (HomeData.ChefDishBean.DishCuisineBean dishCuisineBean : person1.getDish_cuisine()){
+                if (name.equalsIgnoreCase(dishCuisineBean.getCuisine_name())){
+                    person = person1;
+                    cuisionChefList.add(person);
+                }
+            }
+
+        }
+        return cuisionChefList;
     }
 
     @Override

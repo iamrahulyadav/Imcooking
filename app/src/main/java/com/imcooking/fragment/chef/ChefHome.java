@@ -181,6 +181,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     }
 
+
     private void setupViewPager(ViewPager viewPager) {
 
         AdapterChefHomeViewPager adapter = new AdapterChefHomeViewPager(getChildFragmentManager());

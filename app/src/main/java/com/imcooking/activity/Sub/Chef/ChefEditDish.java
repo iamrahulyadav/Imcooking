@@ -179,7 +179,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         });
 */
 
-
         switch_1.setOnCheckedChangeListener(this);
         switch_2.setOnCheckedChangeListener(this);
         switch_3.setOnCheckedChangeListener(this);
@@ -971,7 +970,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     private static int serverResponseCode;
 
     public static int upLoad2Server(String sourceFileUri) {
-        String upLoadServerUri = "your remote server link";
+        String upLoadServerUri = GetData.BASE_URL+"upload_video";
         // String [] string = sourceFileUri;
         String fileName = sourceFileUri;
 

@@ -198,6 +198,7 @@ public class HomeDishPagerAdapter extends PagerAdapter{
             }
         });
 */
+
         tv_dish_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

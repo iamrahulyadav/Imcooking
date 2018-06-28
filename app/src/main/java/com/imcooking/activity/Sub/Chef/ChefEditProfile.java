@@ -354,7 +354,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                                                             } else {
                                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                                             }
-                                                        } else {
+                                                          } else {
                                                             BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                                         }
                                                     } catch (JSONException e) {
