@@ -112,6 +112,8 @@ public class HomeFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Toast.makeText(getContext(), "Home", Toast.LENGTH_SHORT).show();
+
         getLocationBtn = (Button)getView().findViewById(R.id.getLocationBtn);
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 

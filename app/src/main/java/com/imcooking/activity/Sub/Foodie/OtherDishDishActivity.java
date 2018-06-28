@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.OtherDish;
 import com.imcooking.R;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.OtherDishAdatper;
+import com.imcooking.fragment.foodie.HomeDetails;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
@@ -162,10 +164,22 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
     @Override
     public void OtherDishInterfaceMethod(View view, int position, String TAG) {
         if (TAG.equalsIgnoreCase("name_detail")){
-            Intent filrestintent=new Intent();
-            filrestintent.putExtra("dish_id", chefDishBeans.get(position).getDish_id() + "");
-            setResult(OTHER_DISH_CODE,filrestintent);
-            finish();
+            if(MainActivity.my_tag.equals(new HomeFragment().getClass().getName())) {
+
+                HomeDetails fragment = new HomeDetails();
+                Bundle bundle = new Bundle();
+                bundle.putString("dish_id", chefDishBeans.get(position).getDish_id() + "");
+                fragment.setArguments(bundle);
+
+                BaseClass.callFragment(fragment, fragment
+                        .getClass().getName(), getSupportFragmentManager());
+
+            } else {
+                Intent filrestintent = new Intent();
+                filrestintent.putExtra("dish_id", chefDishBeans.get(position).getDish_id() + "");
+                setResult(OTHER_DISH_CODE, filrestintent);
+                finish();
+            }
         } else if (TAG.equalsIgnoreCase("like")){
             dishlike(chefDishBeans.get(position).getDish_id()+"",position);
         }

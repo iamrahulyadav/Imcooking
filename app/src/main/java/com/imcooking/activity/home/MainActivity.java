@@ -346,6 +346,7 @@ public class MainActivity extends AppBaseActivity
         } else {
 //            tag1 = getSupportFragmentManager().getBackStackEntryAt(i).getName();
         }
+        Log.d("MyTag", tag1);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -375,7 +376,6 @@ public class MainActivity extends AppBaseActivity
             my_tag = getSupportFragmentManager().getBackStackEntryAt(i-1).getName();
 //        Toast.makeText(this, my_tag, Toast.LENGTH_SHORT).show();
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

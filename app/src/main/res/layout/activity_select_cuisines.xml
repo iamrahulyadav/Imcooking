@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context=".activity.Sub.Chef.SelectCuisines">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Select Your Cuisines"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:layout_marginLeft="40dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/view_4"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chef_profile_recycler_select_cuisine"
+            android:background="@color/colorWhite"
+            android:padding="10dp"
+            android:layout_above="@+id/select_cuisine_btn"
+            android:layout_alignParentTop="true"/>
+
+        <com.imcooking.customtext.CustomTextButtonTextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/select_cuisine_btn"
+            android:text="Done"
+            android:textColor="@color/colorWhite"
+            android:padding="10dp"
+            app:textAllCaps="true"
+            android:background="@drawable/button_bg"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:onClick="select_cuisine_done"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -81,8 +81,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         getProfileData();
     }
 
-    private CuisineData cuisineData = new CuisineData();
-    private RecyclerView cuisineRecycler;
+    public static CuisineData cuisineData = new CuisineData();
+//    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
     private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about, edt_phn;
     private Spinner sp_miles, sp_cuisine;
@@ -115,12 +115,12 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         txt_phone = findViewById(R.id.activity_chef_edit_txtPhone);
         sp_miles = findViewById(R.id.chef_edit_profile_spinner_miles);
         sp_cuisine = findViewById(R.id.chef_edit_profile_spinner_select_cuisines);
-        cuisineRecycler = findViewById(R.id.chef_edit_profile_recycler_cuisine);
+//        cuisineRecycler = findViewById(R.id.chef_edit_profile_recycler_cuisine);
         sp_miles.setOnItemSelectedListener(this);
         sp_cuisine.setOnItemSelectedListener(this);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        cuisineRecycler.setLayoutManager(horizontalLayoutManagaer);
+//        LinearLayoutManager horizontalLayoutManagaer
+//                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+//        cuisineRecycler.setLayoutManager(horizontalLayoutManagaer);
 //        sw_notification = findViewById(R.id.chef_edit_profile_notification);
         sw_available = findViewById(R.id.chef_edit_profile_available);
 
@@ -155,13 +155,13 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
     private void setMyAdapter(CuisineData cuisineData){
 
-        arrayList.clear();
+/*        arrayList.clear();
         for (int i=0; i<cuisineData.getCuisine_data().size(); i++){
             arrayList.add("0");
         }
 
         adapter = new AdapterCuisineList(getApplicationContext(), cuisineData, arrayList, this);
-        cuisineRecycler.setAdapter(adapter);
+        cuisineRecycler.setAdapter(adapter);*/
     }
 
     private void getProfileData(){
@@ -264,6 +264,13 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             if(b) str_available = "1";
             else  str_available = "0";
         } else {}
+    }
+
+    public void select_cuisines(View view){
+
+        startActivityForResult(new Intent(ChefEditProfile.this, SelectCuisines.class), 143);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+
     }
 
     public void chef_edit_profile_save(View view){
@@ -586,6 +593,9 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
+            else if(requestCode == 143){
+                Toast.makeText(this, "yeah", Toast.LENGTH_SHORT).show();
+            } else {}
 
         }
     }

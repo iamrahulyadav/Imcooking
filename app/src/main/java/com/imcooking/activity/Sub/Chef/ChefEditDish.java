@@ -59,6 +59,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -115,7 +116,10 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private TextView tv_photo_name;
     private RecyclerView photorv1;
+
     private ArrayList<String> arr_photos = new ArrayList<>();
+    private ArrayList<String> arr_edit_photos_base64 = new ArrayList<>();
+
     private int pos;
     private Spinner sp_cuisine;
     private List<CuisineData.CuisineDataBean> cuisineList=new ArrayList<>();
@@ -213,6 +217,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         photorv1.setLayoutManager(manager);
         arr_photos.clear();
+        arr_edit_photos_base64.clear();
 //        arr_photos.add("Photo");
 
         setMyAdapter(arr_photos);
@@ -241,6 +246,90 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             for(int i=0; i<arrayList.size(); i++){
                 if(i<3){
                     arr_photos.add(arrayList.get(i));
+
+                    Bitmap bm = BaseClass.getBitmapFromURL(GetData.IMG_BASE_URL + "1521269701cajun.jpg", ChefEditDish.this );//arrayList.get(i));
+                    String base_64 = BaseClass.BitMapToString(bm);
+                    Log.d("MyBase64", base_64);
+
+
+
+
+
+/*
+//                    Log.d("MyImageUrl", src);
+                    final Bitmap[] b = new Bitmap[1];
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+                                URL url = new URL("http://webdevelopmentreviews.net/imcooking/upload/1521269701cajun.jpg");
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                connection.setDoInput(true);
+                                connection.connect();
+                                InputStream input;
+                                input = connection.getInputStream();
+                                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                                b[0] = myBitmap ; //return myBitmap;
+                            } catch (IOException e) {
+                                // Log exception
+                                b[0] = null; //return null;
+                            }
+                        }
+                    });
+
+
+                    String base_64 = BaseClass.BitMapToString(b[0]);
+                    Log.d("MyBase64", base_64);
+*/
+
+
+
+
+
+
+
+
+
+//                    String base_64 = BaseClass.convertToBase64(GetData.IMG_BASE_URL + arrayList.get(i));
+//                    Log.d("MyBase64", base_64);
+
+
+  /*                  URL url = null;
+                    try {
+                        url = new URL(GetData.IMG_BASE_URL + arrayList.get(i));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+*/
+/*
+                    final Bitmap[] bm = {null};
+                    final URL finalUrl = url;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                BufferedInputStream bis = new BufferedInputStream(finalUrl.openConnection()
+                                        .getInputStream());
+                                bm[0] = BitmapFactory.decodeStream(bis);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                    String s = BaseClass.BitMapToString(bm[0]);
+*/
+                 /*   Bitmap bm = BitmapFactory.decodeFile(url + "");
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                    byte[] b = baos.toByteArray();
+//                    Log.d("MyBase64", s);
+
+//                    arr_edit_photos_base64.add(s);
+*/
+
                 }
             }
 
@@ -452,11 +541,20 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         ArrayList<String> arr_edit_photos_base64 = new ArrayList<>();
         for(int k=0; k<arr_photos.size(); k++){
-            String imageUrl = GetData.BASE_URL + arr_photos.get(k);
+            String imageUrl = GetData.IMG_BASE_URL + arr_photos.get(k);
 
-            Bitmap bm = BitmapFactory.decodeFile(imageUrl);
+            URL url = new URL(imageUrl);
+
+            Bitmap bm = null;
+            try {
+                bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             String s = BaseClass.BitMapToString(bm);
+
             Log.d("MyBase64", s);
+
             arr_edit_photos_base64.add(s);
 
 

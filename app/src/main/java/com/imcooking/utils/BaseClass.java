@@ -3,6 +3,7 @@ package com.imcooking.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
@@ -32,6 +34,9 @@ import com.mukesh.tinydb.TinyDB;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -142,6 +147,48 @@ public class BaseClass {
         }
         return temp;
     }
+
+    public static Bitmap getBitmapFromURL(String src, Activity activity) {
+        Log.d("MyImageUrl", src);
+        try {
+            URL url = new URL("http://webdevelopmentreviews.net/imcooking/upload/1521269701cajun.jpg");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+
+    public static String convertToBase64(String imagePath) {
+
+//        Bitmap bm = BitmapFactory.decodeFile(imagePath);
+
+        Bitmap bm = null;
+        try {
+            URL url = new URL(imagePath);
+            bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch(IOException e) {
+            System.out.println(e);
+        }
+        
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        byte[] byteArrayImage = baos.toByteArray();
+
+        String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+
+        return encodedImage;
+
+    }
+
 
     public static StringBuffer getAddress(Context context, LatLng latLng) throws IOException {
         Geocoder geocoder;

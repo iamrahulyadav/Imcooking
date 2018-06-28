@@ -3,6 +3,8 @@ package com.imcooking.activity.Sub.Foodie;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetDialog;
@@ -41,6 +43,10 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,7 +80,14 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }*/
-
+     /*   String imageUrl= "https://www.gettyimages.ca/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg";
+        try {
+            URL url = new URL(imageUrl);
+            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            Log.d(TAG, "imgbit"+image);
+        } catch(IOException e) {
+            System.out.println(e);
+        }*/
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

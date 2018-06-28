@@ -98,6 +98,7 @@
         <activity android:name=".activity.Sub.Foodie.FoodieOrderDetailActivity" />
         <activity android:name=".activity.Sub.ChefOrderDeatilsActivity" />
         <activity android:name=".activity.Sub.Chef.ChefOrderDetailsActivity" />
+        <activity android:name=".activity.Sub.Chef.SelectCuisines"></activity>
     </application>
 
 </manifest>
