@@ -328,7 +328,11 @@ public class MainActivity extends AppBaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+/*
+        Bitmap bitmap = BaseClass.getBitmapFromURL1("S");
 
+        String s = BaseClass.BitMapToString(bitmap);
+        Log.d("MyBase64", s);*/
     }
 
     public void open_menu(View view){

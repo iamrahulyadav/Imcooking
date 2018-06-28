@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -66,6 +67,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -459,11 +461,20 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 }
                                 adddish(title);
                             } else if(title.equals("editdish")){
-                                try {
-                                    editdish(title);
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
+                                String urls[] = new String[arr_photos.size()];
+
+                                arr_edit_photos_base64.clear();
+
+                                for(int k=0; k<arr_photos.size(); k++) {
+                                    String imageUrl = "https://api.androidhive.info/images/minion.jpg";//GetData.IMG_BASE_URL + arr_photos.get(k);
+                                    urls[k] = imageUrl;
+                                    GetImage task = new GetImage();
+                                    // Execute the task
+                                    task.execute(urls);
+
                                 }
+
+
                             }
                        /* } else{
                             BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
@@ -547,12 +558,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void editdish(String title) throws MalformedURLException {
 
+//        ArrayList<String> arr_edit_photos_base64 = new ArrayList<>();
 
-        ArrayList<String> arr_edit_photos_base64 = new ArrayList<>();
-        for(int k=0; k<arr_photos.size(); k++){
-            String imageUrl = GetData.IMG_BASE_URL + arr_photos.get(k);
 
-            URL url = new URL(imageUrl);
+
+   /*         URL url = new URL(imageUrl);
 
             Bitmap bm = null;
             try {
@@ -562,9 +572,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
             String s = BaseClass.BitMapToString(bm);
 
-            Log.d("MyBase64", s);
+   */
 
-            arr_edit_photos_base64.add(s);
 
 
 
@@ -586,12 +595,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
-        }
+//        }
 
 
 
 
-        ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
+//        ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
         qyt = edt_qyt.getText().toString().trim();
 
         ModelChefEditDish requestData = new ModelChefEditDish();
@@ -610,8 +619,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(arr_photos);
+        requestData.setDish_image(arr_edit_photos_base64);
         requestData.setDish_qyt(qyt);
+        Log.d("MyArraySize", arr_edit_photos_base64.size()+"");
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
@@ -1059,5 +1069,82 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         return serverResponseCode;  // like 200 (Ok)
 
     } // end upLoad2Server
+
+    public class GetImage extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap map = null;
+            for (String url : urls) {
+                map = downloadImage(url);
+            }
+            return map;
+        }
+
+        // Sets the Bitmap returned by doInBackground
+        @Override
+        protected void onPostExecute(Bitmap result) {
+///            progressBar.setVisibility(View.GONE);
+
+            String s = BaseClass.BitMapToString(result);
+            Log.d("MyBase64", s);
+            arr_edit_photos_base64.add(s);
+            Log.d("TAG", "onPostExecute: "+arr_edit_photos_base64.size());
+            if(arr_edit_photos_base64.size() == arr_photos.size()){
+                try {
+
+                    Log.d("TAG", "edit_dish_submit:aa "+arr_edit_photos_base64.size()+arr_photos.size());
+                    editdish(title);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+//            imgProfile.setImageBitmap(result);
+        }
+
+        // Creates Bitmap from InputStream and returns it
+        private Bitmap downloadImage(String url) {
+            Bitmap bitmap = null;
+            InputStream stream = null;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inSampleSize = 1;
+
+            try {
+                stream = getHttpConnection(url);
+                bitmap = BitmapFactory.
+                        decodeStream(stream, null, bmOptions);
+                stream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
+        }
+    }
 
 }

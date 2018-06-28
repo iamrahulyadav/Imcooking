@@ -164,6 +164,21 @@ public class BaseClass {
         }
     }
 
+    public static Bitmap getBitmapFromURL1(String strURL) {
+        try {
+            URL url = new URL("https://api.androidhive.info/images/minion.jpg");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String convertToBase64(String imagePath) {
 
 //        Bitmap bm = BitmapFactory.decodeFile(imagePath);
