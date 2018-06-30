@@ -4,8 +4,12 @@ package com.imcooking.fragment.foodie;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -17,16 +21,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.Test1;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.Sub.Foodie.OtherDishDishActivity;
 import com.imcooking.adapters.DishDetailPagerAdapter;
@@ -50,6 +59,19 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     TabLayout tabLayout;
     Pager1 adapter;
     Dialog dialog ;
+
+    private static final String VIDEO_SAMPLE =
+            "https://developers.google.com/training/images/tacoma_narrows.mp4";
+
+    private VideoView mVideoView;
+    private TextView mBufferingTextView;
+
+    // Current playback position (in milliseconds).
+    private int mCurrentPosition = 0;
+
+    // Tag for the instance state bundle.
+    private static final String PLAYBACK_TIME = "play_time";
+
     int foodie_id;
     ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     Gson gson = new Gson();
@@ -71,6 +93,9 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         String login_data= tinyDB.getString("login_data");
         userDataBean  = gson.fromJson(login_data, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id();
+        if (savedInstanceState != null) {
+            mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
+        }
 /*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity'selectedValue onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -95,6 +120,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             txtDeliverytype, txtAvailable,txtTime ;
     private LinearLayout chef_profile, layout;
     ViewPager pager, home_top_pager;
+
 
     private String TAG  = HomeDetails.class.getName();
 
@@ -123,14 +149,25 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         tabLayout.addTab(tabLayout.newTab().setText("Know Chef"));
         pager = getView().findViewById(R.id.cardet_viewpager);
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        mVideoView = getView().findViewById(R.id.videoview);
+        mBufferingTextView = getView().findViewById(R.id.buffering_textview);
+
+
+
+        // Set up the media controller widget and attach it to the video view.
+        MediaController controller = new MediaController(getContext());
+        controller.setMediaPlayer(mVideoView);
+        mVideoView.setMediaController(controller);
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         chef_profile = getView().findViewById(R.id.home_details_chef_profile);
         chef_profile.setOnClickListener(this);
         layout = getView().findViewById(R.id.home_details_layout);
         txtOtherDish.setOnClickListener(this);
         txtAddToCart.setOnClickListener(this);
     }
+
 
     @Override
     public void onResume() {
@@ -401,7 +438,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                     public void run() {
                                         ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
                                         if (apiResponse.isStatus()){
-                                            if (apiResponse.getMsg().equalsIgnoreCase("Adds cart Successfully")){
+                                            if (apiResponse.getMsg().equalsIgnoreCase("Add cart Successfully")){
                                                 createMyDialog();
                                             }
                                         } else if (apiResponse.getMsg().equalsIgnoreCase("This chef already added")){
@@ -486,4 +523,112 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Load the media each time onStart() is called.
+        initializePlayer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // In Android versions less than N (7.0, API 24), onPause() is the
+        // end of the visual lifecycle of the app.  Pausing the video here
+        // prevents the sound from continuing to play even after the app
+        // disappears.
+        //
+        // This is not a problem for more recent versions of Android because
+        // onStop() is now the end of the visual lifecycle, and that is where
+        // most of the app teardown should take place.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            mVideoView.pause();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // Media playback takes a lot of resources, so everything should be
+        // stopped and released at this time.
+        releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save the current playback position (in milliseconds) to the
+        // instance state bundle.
+        outState.putInt(PLAYBACK_TIME, mVideoView.getCurrentPosition());
+    }
+
+    private void initializePlayer() {
+        // Show the "Buffering..." message while the video loads.
+        mBufferingTextView.setVisibility(VideoView.VISIBLE);
+
+        // Buffer and decode the video sample.
+        Uri videoUri = getMedia(VIDEO_SAMPLE);
+        mVideoView.setVideoURI(videoUri);
+
+        // Listener for onPrepared() event (runs after the media is prepared).
+        mVideoView.setOnPreparedListener(
+                new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+
+                        // Hide buffering message.
+                        mBufferingTextView.setVisibility(VideoView.INVISIBLE);
+
+                        // Restore saved position, if available.
+                        if (mCurrentPosition > 0) {
+                            mVideoView.seekTo(mCurrentPosition);
+                        } else {
+                            // Skipping to 1 shows the first frame of the video.
+                            mVideoView.seekTo(1);
+                        }
+
+                        // Start playing!
+                        mVideoView.start();
+                    }
+                });
+
+        // Listener for onCompletion() event (runs after media has finished
+        // playing).
+        mVideoView.setOnCompletionListener(
+                new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        Toast.makeText(getContext(),
+                                "Video end",
+                                Toast.LENGTH_SHORT).show();
+
+                        // Return the video position to the start.
+                        mVideoView.seekTo(0);
+                    }
+                });
+    }
+
+
+    // Release all media-related resources. In a more complicated app this
+    // might involve unregistering listeners or releasing audio focus.
+    private void releasePlayer() {
+        mVideoView.stopPlayback();
+    }
+
+    // Get a Uri for the media sample regardless of whether that sample is
+    // embedded in the app resources or available on the internet.
+    private Uri getMedia(String mediaName) {
+        if (URLUtil.isValidUrl(mediaName)) {
+            // Media name is an external URL.
+            return Uri.parse(mediaName);
+        } else {
+            // Media name is a raw resource embedded in the app.
+            return Uri.parse("android.resource://" + getActivity().getPackageName() +
+                    "/raw/" + mediaName);
+        }
+    }
 }

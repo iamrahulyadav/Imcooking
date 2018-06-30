@@ -173,7 +173,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         if(user_type.equals("2")){
             like_dislike(position, click_type);
         } else{
-            dish_likers();
+            dish_likers(chef_dish_list.get(position).getDish_id()+"");
         }
 //        BaseClass.showToast(getContext(), position + "");
 
@@ -228,11 +228,11 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 //                                int i = Integer.parseInt(homeData.getChef_dish().get(position).getDishlikeno());
 //                                homeData.getChef_dish().get(position).setDishlikeno((i-1) + "");
                             } else{
-                                BaseClass.showToast(getContext(), "Something Went Wrong");
+                                BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                             }
 
                         } else{
-                            BaseClass.showToast(getContext(), "Something Went Wrong");
+                            BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -245,8 +245,12 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void dish_likers(){
+    private void dish_likers(String dish_id){
+        Bundle bundle = new Bundle();
+        bundle.putString("dish_id", dish_id);
+        DishLikersFragment dishLikersFragment = new DishLikersFragment();
+        dishLikersFragment.setArguments(bundle);
 
-        BaseClass.callFragment(new DishLikersFragment(),DishLikersFragment.class.getName(),getParentFragment().getFragmentManager());
+        BaseClass.callFragment(dishLikersFragment,DishLikersFragment.class.getName(),getParentFragment().getFragmentManager());
     }
 }

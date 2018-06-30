@@ -10,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.imcooking.Model.api.response.ChefFollowers;
+import com.imcooking.Model.api.response.DishLikeData;
 import com.imcooking.R;
+import com.imcooking.webservices.GetData;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +26,10 @@ public class AdatperDishLikers extends RecyclerView.Adapter<AdatperDishLikers.My
 
 //    OnItemClickListenerCategory listener;
     private Context context;
-  private   List<ChefFollowers.FoodieDetailsListBean>list=new ArrayList<>();
+  private   List<DishLikeData.DishLikeFoodieListBean>list=new ArrayList<>();
 
 
-    public AdatperDishLikers(Context context, FragmentManager fragmentManager, List<ChefFollowers.FoodieDetailsListBean> list) {
+    public AdatperDishLikers(Context context,  List<DishLikeData.DishLikeFoodieListBean> list) {
         this.context = context;
         this.list=list;
 
@@ -49,8 +52,6 @@ public ImageView img;
     }
     }
 
-    int row_index=-1;
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -62,18 +63,18 @@ public ImageView img;
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-       /* if(holder.img!=null && holder.txtfoodiename!=null && holder.txtaddress!=null
+        if(holder.img!=null && holder.txtfoodiename!=null && holder.txtaddress!=null
                 && holder.txtEmail!=null && holder.txtPhone!=null){
-           holder.txtPhone.setText(list.get(position).getFoodie_phone()+"");
+           holder.txtPhone.setText(list.get(position).getUser_phone()+"");
           //  Toast.makeText(context, list.get(position).getFoodie_phone(), Toast.LENGTH_SHORT).show();
-            holder.txtaddress.setText(list.get(position).getFoodie_address());
-            holder.txtEmail.setText(list.get(position).getFoodie_email());
+            holder.txtaddress.setText(list.get(position).getUser_address());
+            holder.txtEmail.setText(list.get(position).getUser_email());
             holder.txtfoodiename.setText(list.get(position).getFoodie_name());
             Picasso.with(context).load(GetData.IMG_BASE_URL +
                     list.get(position).getFoodie_image()).into(holder.img);
 
         }
-*//*
+/*
         holder.tv_view_response.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +86,7 @@ public ImageView img;
 
     @Override
     public int getItemCount() {
-        return 5;
+        return list.size();
 
     }
 }

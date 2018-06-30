@@ -14,12 +14,12 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
             android:name=".splash.SplashActivity"
@@ -30,6 +30,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".activity.home.HomeSearchActivity1" />
         <activity
@@ -97,11 +98,10 @@
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />
         <activity android:name=".activity.Sub.Foodie.Payment1Activity" />
-        <activity android:name=".activity.Sub.Foodie.FoodieOrderDetailActivity" />
         <activity android:name=".activity.Sub.ChefOrderDeatilsActivity" />
         <activity android:name=".activity.Sub.Chef.ChefOrderDetailsActivity" />
         <activity android:name=".activity.Sub.Chef.SelectCuisines" />
-        <activity android:name=".activity.Sub.Chef.Test">
+        <activity android:name=".activity.Sub.Chef.Test1">
 
         </activity>
     </application>

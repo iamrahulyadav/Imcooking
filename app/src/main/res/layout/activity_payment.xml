@@ -7,10 +7,12 @@
     android:orientation="vertical"
     android:background="@color/colorWhite"
     tools:context=".activity.Sub.Foodie.Payment1Activity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <com.imcooking.customtext.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -20,15 +22,11 @@
             android:gravity="center_vertical"
             android:padding="10dp"
             android:layout_marginLeft="40dp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/view_4"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1.5dp"
-            android:background="@color/colorLightGrey"/>
 
 
         <RadioGroup
@@ -49,9 +47,9 @@
                 android:textColor="@color/colorBlack"/>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height=".3dp"
                 android:layout_margin="5dp"
-                android:background="@color/colorLightGrey"/>
+                android:background="@color/view_6"/>
 
             <RadioButton
                 style="@style/MyRadioButtonStyle"
@@ -69,7 +67,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_margin="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <LinearLayout

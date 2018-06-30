@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Toast.makeText(getContext(), "Home", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Home", Toast.LENGTH_SHORT).show();
 
         getLocationBtn = (Button)getView().findViewById(R.id.getLocationBtn);
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -287,7 +287,7 @@ public class HomeFragment extends Fragment implements
         data.setFoodie_id(foodie_id);
         Log.d("MyRequest", new Gson().toJson(data));
         layout.setVisibility(View.GONE);
-        new GetData(getContext(), getActivity()).getResponse(new Gson().toJson(data), "home", new GetData.MyCallback() {
+        new GetData(getContext(), getActivity()).getResponse(new Gson().toJson(data), GetData.HOME, new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
 

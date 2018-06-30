@@ -167,12 +167,22 @@
                     android:textSize="16sp"
                     android:textColor="@color/text_color_15" />
 
-                <SeekBar
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/activity_chef_edit_dish_time"
-                    android:thumb="@drawable/ic_rectangle"/>
+                    android:layout_marginTop="10dp">
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/activity_chef_edit_dish_time"
+                        android:thumb="@drawable/ic_rectangle"
+                        android:background="@drawable/shape_border_theme"
+                        android:progressTint="@color/colorWhite"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"/>
+
+                </LinearLayout>
 
 
              <!-- -->

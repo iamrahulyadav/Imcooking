@@ -3,6 +3,7 @@ package com.imcooking.activity.Sub.Foodie;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -77,7 +78,7 @@ public class Payment1Activity extends AppBaseActivity {
             }
         });
 
-        txt_price.setText("£"+placeOrder.getTotal_price());
+        txt_price.setText("Total Price: £"+placeOrder.getTotal_price());
 
         txt_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,11 +133,16 @@ public class Payment1Activity extends AppBaseActivity {
     private void createMyDialog(final String booking_id){
         dialog= new Dialog(Payment1Activity.this);
         dialog.setContentView(R.layout.dialog_add_to_cart);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         ImageView imgDia = dialog.findViewById(R.id.imageDialog);
         TextView txtDialog = dialog.findViewById(R.id.imgdialog_text);
         TextView txtOk = dialog.findViewById(R.id.txtdialog_ok);
+
         imgDia.setImageResource(R.drawable.ordersuccess);
+
         txtDialog.setText("Your Order has been Successfully Place with \"" +chef_name+"\" ");
+
         dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

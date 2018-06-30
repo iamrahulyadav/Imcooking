@@ -60,15 +60,13 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
     AdapterChefSearch adapter ;
     RecyclerView rvChef;
     EditText etSearchHome;
-    private String token,cityname, languagecode, keyword;
+    private String cityname,  keyword;
     List<String> listChef;
     //    ImageView imgBack;
     TinyDB tinyDB;
 
     private void init(){
         tinyDB = new TinyDB(getContext());
-        token  = tinyDB.getString("access_token") ;
-        languagecode = tinyDB.getString("language_code");
 
         //        setLanguages(languagecode);
         // actionBar=getSupportActionBar();
@@ -124,12 +122,12 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
     private void getChefList(String keyword)
             throws JSONException {
 
-        String s = "{  \"keyword\":" + keyword + "}" ;
+        String s = "{\"keyword\":" + keyword + "}" ;
         JSONObject jsonObject = new JSONObject(s);
 
         Log.d("getchef", jsonObject.toString());
         new GetData(getContext(),getActivity()).sendMyData(jsonObject,
-                "search", getActivity(), new GetData.MyCallback() {
+                GetData.SEARCH, getActivity(), new GetData.MyCallback() {
                     @Override
                     public void onSuccess(String result) {
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.imcooking.Model.api.response.FoodieMyorderList;
@@ -32,6 +33,7 @@ import java.util.List;
  * Contact Number : +91 9796173066
  */
 public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodieMyOrderList.MyViewHolder> {
+
     private MyorderInterface myorderInterface;
     private Context context;
     private FragmentManager manager;
@@ -40,13 +42,15 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
     private String TAG;
 
     public AdapterFoodieMyOrderList(Context context, FragmentManager manager, List<FoodieMyorderList.FoodieOrderListBean>list,
-                                    MyorderInterface myorderInterface,  ArrayList<Boolean>visibilityArray, String TAG) {
+                                    MyorderInterface myorderInterface,  ArrayList<Boolean>visibilityArray,
+                                    String TAG) {
         this.context = context;
         this.manager = manager;
         this.list = list;
         this.myorderInterface = myorderInterface;
         this.visibilityArray = visibilityArray;
         this.TAG = TAG;
+//        this.click = click;
     }
 
     public interface MyorderInterface{
@@ -57,12 +61,15 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         public TextView tv_order_details,tv_chefname,tv_price,txtQyt,txtChef,tv_orderid,tv_status,
                 txt_order_date, txt_foodie_email, txt_time,
         txt_order_id, txt_pay_mode, txt_total_price;
-        public LinearLayout layout;
+//        public LinearLayout layout;
         public ImageView chefProfile;
         RatingBar ratingBar;
+        public LinearLayout layout_rate;
 
         public MyViewHolder(View view) {
             super(view);
+
+            layout_rate = view.findViewById(R.id.item_foodie_my_order_ratingbar_layout);
             txtChef = view.findViewById(R.id.item_foodie_my_order_chef);
             tv_order_details = view.findViewById(R.id.item_foodie_orders_order_details);
             tv_chefname = view.findViewById(R.id.item_foodie_my_order_ChefName);
@@ -77,12 +84,20 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             txt_order_id = view.findViewById(R.id.item_foodie_my_order_id);
             txt_pay_mode = view.findViewById(R.id.item_foodie_my_order_payment_mode);
             txt_total_price = view.findViewById(R.id.item_foodie_my_order_total_price);
-            layout = view.findViewById(R.id.layout_order_details);
+//            layout = view.findViewById(R.id.layout_order_details);
             txt_time = view.findViewById(R.id.item_foodie_my_order_time);
             tv_order_details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     myorderInterface.getDetails(getAdapterPosition(), TAG);
+                }
+            });
+
+            layout_rate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Toast.makeText(context, "a", Toast.LENGTH_SHORT).show();
+                    myorderInterface.getDetails(getAdapterPosition(), "ratingbar");
                 }
             });
         }
@@ -148,7 +163,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         holder.txt_total_price.setText("£" +price);
         holder.tv_price.setText("£" +String.valueOf(price));
 
-        holder.layout.setVisibility(View.GONE);
+//        holder.layout.setVisibility(View.GONE);
        /* if (visibilityArray.get(position))
             holder.layout.setVisibility(View.VISIBLE);
         else holder.layout.setVisibility(View.GONE);*/
@@ -156,11 +171,11 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         holder.txt_order_date.setText(list.get(position).getBookdate());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.chefProfile);
-
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
+
 }

@@ -1,6 +1,5 @@
 package com.imcooking.fragment.foodie;
 
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -227,6 +226,10 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
            startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class)
                    .putExtra("order_id",prevoiusOrderListBeans.get(position).getOrder_order_id()));
            adapterFoodieMyOrder1.notifyDataSetChanged();
+       } else if (TAG.equals("ratingbar")){
+           BaseClass.showToast(getContext(), "Rate & Review");
+       } else {
+
        }
 
     }

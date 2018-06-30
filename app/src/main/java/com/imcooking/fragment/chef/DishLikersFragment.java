@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefFollowers;
+import com.imcooking.Model.api.response.DishLikeData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdatperChefFollowers;
 import com.imcooking.adapters.AdatperDishLikers;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -35,9 +37,13 @@ public class DishLikersFragment extends Fragment {
     TinyDB tinyDB;
     List<ChefFollowers.FoodieDetailsListBean> list=new ArrayList<>();
     private RecyclerView recyclerView;
+    String dish_id;
 
     public DishLikersFragment() {
         // Required empty public constructor
+        if (getArguments()!=null){
+            dish_id = getArguments().getString("dish_id");
+        }
     }
 
     @Override
@@ -82,48 +88,40 @@ public class DishLikersFragment extends Fragment {
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         String user_id=apiResponse.getUser_id()+"";
 
-        // String s = "{\"chef_id\":" + user_id + "}";
-//        String s = "{\"Chef_id\": 5}";
-        String s = "{\"chef_id\": 5}";
+         String s = "{\"chef_id\":" + user_id + ",\"dish_id\":"+dish_id+"}";
         Log.d("MyRequest", s);
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "foodie_details_follw_chef", getActivity(),
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.DISH_LIKE_LIST, getActivity(),
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
 
-                            ChefFollowers chefFollowers = new ChefFollowers();
+                            DishLikeData dishLikeData = new DishLikeData();
 
-                            chefFollowers = new Gson().fromJson(result, ChefFollowers.class);
+                            dishLikeData = new Gson().fromJson(result, DishLikeData.class);
 
-                            if(chefFollowers.isStatus()){
-                                if(!chefFollowers.getFoodie_details_list().isEmpty()){
-
-                                    setMyAdapter(chefFollowers.getFoodie_details_list());
-
+                            if(dishLikeData.isStatus()){
+                                if(!dishLikeData.getDish_like_foodie_list().isEmpty()){
+                                    setMyAdapter(dishLikeData.getDish_like_foodie_list());
                                 }
                                 else {
                                     Toast.makeText(getContext(), "Likers list is empty", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else {
-                                Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
+                                BaseClass.showToast(getContext(),getResources().getString(R.string.error));
                             }
-
                         }
                     });
-
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-    private void setMyAdapter(List<ChefFollowers.FoodieDetailsListBean> list){
+
+    private void setMyAdapter(List<DishLikeData.DishLikeFoodieListBean> list){
         AdatperDishLikers adatperDishLikers = new AdatperDishLikers(getContext(),
-                getFragmentManager(), list);
+                 list);
         recyclerView.setAdapter(adatperDishLikers);
     }
-
 }

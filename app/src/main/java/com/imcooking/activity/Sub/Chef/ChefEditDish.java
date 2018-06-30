@@ -44,11 +44,21 @@ import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterEditDishPhotos;
 import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.utils.AndroidMultiPartEntity;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -776,15 +786,15 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
-            else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO){
+            else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                 System.out.println("SELECT_VIDEO");
                 Uri selectedImageUri = data.getData();
-                String selectedPath = getPath(selectedImageUri);
-                Log.d("TAG", "rakhi: "+selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                selectedPath = getPath(selectedImageUri);
+                Log.d("TAG", "rakhi: " + selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
 
 //                upload video
 
-             //   int reponse=upLoad2Server(""+selectedPath);
+                //   int reponse=upLoad2Server(""+selectedPath);
 
                 txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
                 videoView.setVideoURI(selectedImageUri);
@@ -798,6 +808,98 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
         }
     }
+    long totalSize;
+    String selectedPath;
+
+    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            // setting progress bar to zero
+          //  progressBar.setProgress(0);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            // Making progress bar visible
+        //    progressBar.setVisibility(View.VISIBLE);
+
+            // updating progress bar value
+        //    progressBar.setProgress(progress[0]);
+
+            // updating percentage value
+//            textView.setText(String.valueOf(progress[0]) + "%");
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return uploadFile();
+        }
+
+        @SuppressWarnings("deprecation")
+        private String uploadFile() {
+            String responseString = null;
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(GetData.BASE_URL+"upload_video");
+
+            try {
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                        new AndroidMultiPartEntity.ProgressListener() {
+
+                            @Override
+                            public void transferred(long num) {
+                                publishProgress((int) ((num / (float) totalSize) * 100));
+                            }
+                        });
+
+                File sourceFile = new File(selectedPath);
+
+                // Adding file data to http body
+                entity.addPart("myFile", new FileBody(sourceFile));
+
+                // Extra parameters if you want to pass to server
+                entity.addPart("dish_id",
+                        new StringBody(dish_id));
+                entity.addPart("chef_id", new StringBody(chef_id));
+
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode;
+                }
+
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+
+            return responseString;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e("TAG", "Response from server: " + result);
+
+            // showing the server response in an alert dialog
+            //  showAlert(result);
+            super.onPostExecute(result);
+        }
+
+    }
+
 
     public String getPath(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
@@ -1099,6 +1201,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
                     Log.d("TAG", "edit_dish_submit:aa "+arr_edit_photos_base64.size()+arr_photos.size());
                     editdish(title);
+
+                   // new UploadFileToServer().execute();
+
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }

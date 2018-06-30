@@ -88,7 +88,7 @@ public class ChefFollowersFragment extends Fragment {
         Log.d("MyRequest", s);
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "foodie_details_follw_chef", getActivity(),
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.FOODIE_DETAILS_FOLLOW_CHEF, getActivity(),
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {

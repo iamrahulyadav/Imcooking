@@ -48,7 +48,8 @@ public class GetData {
     private Context context;
     private Activity activity;
 //...................................  API ...................................
-
+    public static String HOME ="home";
+    public static String SEARCH = "search";
     public static String PROFILE_IMAGE="profileimage";
     public static String GETPROFILE_PIC ="get_user_profileimage";
     public static String ADD_CART = "addcart";
@@ -69,7 +70,8 @@ public class GetData {
     public static String CONVER_CHEF_FOODIE_DISH_ACCEPT  ="conversation_chat_chef_foofie";
     public static String CHEF_PROFILE_UPDATE = "chef_profile_update";
     public static String CUISINE = "cuisine";
-
+    public static String FOODIE_DETAILS_FOLLOW_CHEF = "foodie_details_follw_chef";
+    public static String DISH_LIKE_LIST ="dish_like_list";
 
     public GetData(final Context context, Activity activity) {
 /*

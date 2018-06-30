@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.AddToCart;
@@ -59,11 +60,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,
             txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
+
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
     RadioGroup radioGroup;
-    private Spinner addressSpi;
+//    private Spinner addressSpi;
     RadioButton radioButtoncheck;
     LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,
             linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
@@ -104,7 +106,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         txt_time_picker = findViewById(R.id.actvity_cart_txtFromTimeValue);
         txt_add_address = findViewById(R.id.cart_addnewaddress);
         txtChef_Name=findViewById(R.id.chef_name);
-        addressSpi =  findViewById(R.id.activity_cart_spinner);
+
+//        addressSpi =  findViewById(R.id.activity_cart_spinner);
+
         txtTax=findViewById(R.id.tv_tax);
         txt_pick_add = findViewById(R.id.activity_cart_current_add);
         txt_address = findViewById(R.id.activity_cart_txtAddress);
@@ -337,7 +341,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                  * bookdate : 1
                  */
                 String address;
-                if (txt_address.getText().toString().trim().isEmpty()&& txt_pick_add.getText().toString().trim().isEmpty()){
+                if (txt_address.getText().toString().equals("Select an Address")){
                     BaseClass.showToast(getApplicationContext(), "Please select an address");
                 } else {
                     List<PlaceOrder.DishorderBean>dishorderBeanList = new ArrayList<>();
@@ -380,11 +384,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     private void addressDialog(final List<AddressListData.AddressBean> addressBeanList) {
-        txt_address.setOnClickListener(new View.OnClickListener() {
+        LinearLayout ll = findViewById(R.id.cart_item_right1);
+
+        ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Toast.makeText(CartActivity.this, "h", Toast.LENGTH_SHORT).show();
                 openDialog(addressBeanList);
             }
         });
@@ -506,6 +512,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private BottomSheetDialog dialog;
+
     private void openDialog(List<AddressListData.AddressBean> addressBeanList){
         dialog = new BottomSheetDialog(CartActivity.this);
         dialog.setContentView(R.layout.dialog_cart_address);
