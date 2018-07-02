@@ -14,8 +14,8 @@
         <include layout="@layout/custom_toolbar"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/colorLightGrey"/>
+            android:layout_height="1dp"
+            android:background="@color/view_6"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
