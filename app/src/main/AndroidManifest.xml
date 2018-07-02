@@ -30,7 +30,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".activity.home.HomeSearchActivity1" />
         <activity
@@ -81,7 +80,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_KEY" />
 
-        <activity android:name=".activity.Sub.Foodie.FilterHomeActivity" />
         <activity android:name=".activity.Sub.Foodie.OtherDishDishActivity" />
         <activity
             android:name=".activity.Sub.Foodie.AddAddressActivity"
@@ -101,9 +99,8 @@
         <activity android:name=".activity.Sub.ChefOrderDeatilsActivity" />
         <activity android:name=".activity.Sub.Chef.ChefOrderDetailsActivity" />
         <activity android:name=".activity.Sub.Chef.SelectCuisines" />
-        <activity android:name=".activity.Sub.Chef.Test1">
-
-        </activity>
+        <activity android:name=".activity.Sub.Chef.Test1"></activity>
+        <activity android:name=".activity.Sub.Foodie.FilterActivity"></activity>
     </application>
 
 </manifest>
