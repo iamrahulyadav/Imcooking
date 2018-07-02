@@ -2,6 +2,11 @@ package com.imcooking.fragment.chef;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,16 +20,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
+import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.adapters.DishDetailPagerAdapter;
 import com.imcooking.adapters.Pager1;
+import com.imcooking.utils.BaseClass;
+import com.imcooking.webservices.GetData;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -33,8 +50,18 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChefDishDetail extends Fragment implements View.OnClickListener {
+public class ChefDishDetail extends Fragment implements View.OnClickListener, DishDetailPagerAdapter.DishDetailPlayClick {
 
+    private  String VIDEO_SAMPLE =
+            "https://developers.google.com/training/images/tacoma_narrows.mp4";
+
+    private VideoView mVideoView;
+    private TextView mBufferingTextView;
+    // Current playback position (in milliseconds).
+    private int mCurrentPosition = 0;
+
+    // Tag for the instance state bundle.
+    private static final String PLAYBACK_TIME = "play_time";
 
     public ChefDishDetail() {
         // Required empty public constructor
@@ -85,6 +112,15 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         tv_edit_dish = getView().findViewById(R.id.chef_home_details_edit_dish);
         tv_edit_dish.setOnClickListener(this);
 
+
+        mVideoView = getView().findViewById(R.id.fragment_chef_dish_details_videoview);
+        mBufferingTextView = getView().findViewById(R.id.buffering_textview);
+
+        // Set up the media controller widget and attach it to the video view.
+        MediaController controller = new MediaController(getContext());
+        controller.setMediaPlayer(mVideoView);
+        mVideoView.setMediaController(controller);
+
         iv_home_delivery_icon = getView().findViewById(R.id.chef_dish_detalis_icon_home_delivery);
         iv_pickup_icon = getView().findViewById(R.id.chef_dish_detalis_icon_pickup);
     }
@@ -104,8 +140,22 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         str_cuisine = getArguments().getString("cuisine");
         arrayList = getArguments().getStringArrayList("image");
         str_like = getArguments().getString("likeno");
+        VIDEO_SAMPLE = getArguments().getString("video");
+        if (VIDEO_SAMPLE!=null)
+            if (arrayList.size()>0)
+            arrayList.add(arrayList.get(0));
 
+        base64Array = new ArrayList<>();
         Log.d("TAG", "getMyData: "+arrayList.size());
+
+        for (int i=0;i<arrayList.size();i++){
+            String urls[] = new String[arrayList.size()];
+            String imageUrl = GetData.IMG_BASE_URL+arrayList.get(i);
+            urls[i] = imageUrl;
+           // Execute the task
+            new GetImage().execute(urls);
+        }
+
         str_qyt = getArguments().getString("qyt");
         tv_dish_name.setText(str_name);
         if(str_available.equalsIgnoreCase("Yes")){
@@ -120,6 +170,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         } else{
             tv_dish_count.setText("0");
         }
+
 
 //        tv_dish_home_delivery.setText(str_homedelivery);
         if(str_homedelivery.equals("Yes")){
@@ -143,9 +194,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
 //            tv_dish_description.setText(str_description);
         }
 
-        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList);
-        home_top_pager.setAdapter(dishDetailPagerAdapter);
-
+        setAdapter();
         /*After setting the adapter use the timer */
         final Handler handler = new Handler();
         final Runnable Update = new Runnable() {
@@ -199,6 +248,13 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         });
     }
 
+    private void setAdapter() {
+        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList,this);
+        home_top_pager.setAdapter(dishDetailPagerAdapter);
+
+    }
+
+
     @Override
     public void onClick(View view) {
 
@@ -216,6 +272,9 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
                     .putExtra("pickup", str_pickup)
                     .putExtra("image", arrayList)
                     .putExtra("qyt",str_qyt)
+                    .putExtra("video",VIDEO_SAMPLE)
+                    .putExtra("imageBAse", base64Array)
+
             );
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else{}
@@ -239,6 +298,182 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Load the media each time onStart() is called.
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // In Android versions less than N (7.0, API 24), onPause() is the
+        // end of the visual lifecycle of the app.  Pausing the video here
+        // prevents the sound from continuing to play even after the app
+        // disappears.
+        //
+        // This is not a problem for more recent versions of Android because
+        // onStop() is now the end of the visual lifecycle, and that is where
+        // most of the app teardown should take place.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            mVideoView.pause();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // Media playback takes a lot of resources, so everything should be
+        // stopped and released at this time.
+        releasePlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save the current playback position (in milliseconds) to the
+        // instance state bundle.
+        outState.putInt(PLAYBACK_TIME, mVideoView.getCurrentPosition());
+    }
+
+    private void initializePlayer() {
+        // Show the "Buffering..." message while the video loads.
+        //    mBufferingTextView.setVisibility(VideoView.VISIBLE);
+
+        // Buffer and decode the video sample.
+        Uri videoUri = getMedia(VIDEO_SAMPLE);
+        mVideoView.setVideoURI(videoUri);
+        // Listener for onPrepared() event (runs after the media is prepared).
+        mVideoView.setOnPreparedListener(
+                new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        // Hide buffering message.
+                        //  mBufferingTextView.setVisibility(VideoView.INVISIBLE);
+
+                        // Restore saved position, if available.
+                        if (mCurrentPosition > 0) {
+                            mVideoView.seekTo(mCurrentPosition);
+                        } else {
+                            // Skipping to 1 shows the first frame of the video.
+                            mVideoView.seekTo(1);
+                        }
+
+                        // Start playing!
+                        mVideoView.start();
+                    }
+                });
+
+        // Listener for onCompletion() event (runs after media has finished
+        // playing).
+        mVideoView.setOnCompletionListener(
+                new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        Toast.makeText(getContext(),
+                                "Video end",
+                                Toast.LENGTH_SHORT).show();
+
+                        // Return the video position to the start.
+                        mVideoView.seekTo(0);
+                    }
+                });
+    }
+
+    private void releasePlayer() {
+        mVideoView.stopPlayback();
+    }
+
+    private Uri getMedia(String mediaName) {
+        if (URLUtil.isValidUrl(mediaName)) {
+            // Media name is an external URL.
+            return Uri.parse(mediaName);
+        } else {
+            // Media name is a raw resource embedded in the app.
+            return Uri.parse("android.resource://" + getActivity().getPackageName() +
+                    "/raw/" + mediaName);
+        }
+    }
+
+    @Override
+    public void playVideo(int pos, String tag) {
+            if (VIDEO_SAMPLE!=null)
+            initializePlayer();
+            mVideoView.setVisibility(View.VISIBLE);
+            mBufferingTextView.setVisibility(View.VISIBLE);
+            home_top_pager.setVisibility(View.GONE);
+
+    }
+
+    private ArrayList<String>base64Array;
+
+    public class GetImage extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap map = null;
+            for (String url : urls) {
+                map = downloadImage(url);
+            }
+            return map;
+        }
+
+        // Sets the Bitmap returned by doInBackground
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            String s = BaseClass.BitMapToString(result);
+            base64Array.add(s);
+        }
+
+        // Creates Bitmap from InputStream and returns it
+        private Bitmap downloadImage(String url) {
+            Bitmap bitmap = null;
+            InputStream stream = null;
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inSampleSize = 1;
+            try {
+                stream = getHttpConnection(url);
+                bitmap = BitmapFactory.
+                        decodeStream(stream, null, bmOptions);
+                stream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        // Makes HttpURLConnection and returns InputStream
+        private InputStream getHttpConnection(String urlString)
+                throws IOException {
+            InputStream stream = null;
+            URL url = new URL(urlString);
+            URLConnection connection = url.openConnection();
+
+            try {
+                HttpURLConnection httpConnection = (HttpURLConnection) connection;
+                httpConnection.setRequestMethod("GET");
+                httpConnection.connect();
+
+                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    stream = httpConnection.getInputStream();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return stream;
         }
     }
 

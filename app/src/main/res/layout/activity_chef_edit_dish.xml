@@ -361,11 +361,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Video"
-                    android:textSize="16sp"
+                    android:layout_toLeftOf="@+id/browse_video"
+                    android:layout_marginRight="8dp"
+                    android:textSize="@dimen/smallsize"
                     android:id="@+id/activity_chef_edit_dish_video_txt"
                     android:textColor="@color/text_color_15"
                     android:layout_alignParentLeft="true"/>
                 <LinearLayout
+                    android:id="@+id/browse_video"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -399,13 +402,6 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:onClick="edit_dish_submit"/>
-
-            <VideoView
-                android:id="@+id/vvVideo"
-                android:layout_width="match_parent"
-                android:layout_height="488dp"
-                android:visibility="gone"/>
-
 
 
         </LinearLayout>

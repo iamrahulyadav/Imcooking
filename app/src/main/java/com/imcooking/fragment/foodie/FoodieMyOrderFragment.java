@@ -114,7 +114,7 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
 
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "myorder", getActivity(),
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.FOODIE_MY_ORDER, getActivity(),
                     new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
@@ -159,8 +159,8 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
-                                if (date2.compareTo(date1) >0||date2.compareTo(date1) ==0 &&(!status.equals("2") && !status.equals("8")&&
-                                        !status.equals("9"))) {
+                                if (date2.compareTo(date1) >0||date2.compareTo(date1) ==0 &&(!status.equals("2")
+                                        && !status.equals("8")&& !status.equals("9"))) {
                                     currentOrderListBeans.add(orderListBean);
                                     Collections.sort(currentOrderListBeans, new Comparator<FoodieMyorderList.FoodieOrderListBean>() {
                                         @Override
@@ -195,10 +195,10 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     private void setMyAdapter(List<FoodieMyorderList.FoodieOrderListBean> currentOrderListBeans,
                               List<FoodieMyorderList.FoodieOrderListBean> arrayList){
        adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),
-                getFragmentManager(), currentOrderListBeans, this, visibilityArray,"current");
+                getFragmentManager(), currentOrderListBeans, this, "current");
         rv_1.setAdapter(adapterFoodieMyOrder);
         adapterFoodieMyOrder1 = new AdapterFoodieMyOrderList(getContext(),
-                getFragmentManager(), arrayList, this, visibilityArray, "previous");
+                getFragmentManager(), arrayList, this,  "previous");
         rv_1.setAdapter(adapterFoodieMyOrder);
         rv_2.setAdapter(adapterFoodieMyOrder1);
     }

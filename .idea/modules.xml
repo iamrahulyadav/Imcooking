@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Imcooking.iml" filepath="$PROJECT_DIR$/.idea/Imcooking.iml" />
       <module fileurl="file://$PROJECT_DIR$/Imcooking.iml" filepath="$PROJECT_DIR$/Imcooking.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/gd_helper-release/gd_helper-release.iml" filepath="$PROJECT_DIR$/gd_helper-release/gd_helper-release.iml" />

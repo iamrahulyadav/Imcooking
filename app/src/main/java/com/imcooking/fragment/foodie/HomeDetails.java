@@ -55,16 +55,16 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeDetails extends Fragment implements View.OnClickListener {
+public class HomeDetails extends Fragment implements View.OnClickListener, DishDetailPagerAdapter.DishDetailPlayClick {
     TabLayout tabLayout;
     Pager1 adapter;
     Dialog dialog ;
 
-    private static final String VIDEO_SAMPLE =
+    private  String VIDEO_SAMPLE =
             "https://developers.google.com/training/images/tacoma_narrows.mp4";
 
     private VideoView mVideoView;
-    private TextView mBufferingTextView;
+    private ProgressBar mBufferingTextView;
 
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
@@ -153,8 +153,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         mVideoView = getView().findViewById(R.id.videoview);
         mBufferingTextView = getView().findViewById(R.id.buffering_textview);
 
-
-
         // Set up the media controller widget and attach it to the video view.
         MediaController controller = new MediaController(getContext());
         controller.setMediaPlayer(mVideoView);
@@ -167,7 +165,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         txtOtherDish.setOnClickListener(this);
         txtAddToCart.setOnClickListener(this);
     }
-
 
     @Override
     public void onResume() {
@@ -201,7 +198,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 3000; // time in milliseconds between successive task executions.
+    final long PERIOD_MS = 2000; // time in milliseconds between successive task executions.
 
 
     private void getDetails(String id){
@@ -280,14 +277,14 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                                     txtLike.setText(dishDetails.getDish_details().getLike() + "");
 
                                     txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
+                                    if (dishDetails.getDish_details().getDish_video()!=null
+                                            &&dishDetails.getDish_details().getDish_video().toString().length()>0)
+                                        imageList.add(dishDetails.getDish_details().getDish_image().get(0));
 
                                     if (dishDetails.getDish_details().getDish_image()!=null)
-
                                         imageList.addAll(dishDetails.getDish_details().getDish_image());
 
-                                    dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), imageList);
-                                    home_top_pager.setAdapter(dishDetailPagerAdapter);
-
+                                    setAdapter();
                                     /*After setting the adapter use the timer */
                                     final Handler handler = new Handler();
                                     final Runnable Update = new Runnable() {
@@ -343,6 +340,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                 }
 
         });
+    }
+
+    private void setAdapter(){
+        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), imageList, this);
+        home_top_pager.setAdapter(dishDetailPagerAdapter);
+
     }
 
     @Override
@@ -528,7 +531,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         super.onStart();
 
         // Load the media each time onStart() is called.
-        initializePlayer();
+
     }
 
     @Override
@@ -573,13 +576,11 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
         // Buffer and decode the video sample.
         Uri videoUri = getMedia(VIDEO_SAMPLE);
         mVideoView.setVideoURI(videoUri);
-
         // Listener for onPrepared() event (runs after the media is prepared).
         mVideoView.setOnPreparedListener(
                 new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
-
                         // Hide buffering message.
                         mBufferingTextView.setVisibility(VideoView.INVISIBLE);
 
@@ -612,15 +613,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
                 });
     }
 
-
-    // Release all media-related resources. In a more complicated app this
-    // might involve unregistering listeners or releasing audio focus.
     private void releasePlayer() {
         mVideoView.stopPlayback();
     }
 
-    // Get a Uri for the media sample regardless of whether that sample is
-    // embedded in the app resources or available on the internet.
     private Uri getMedia(String mediaName) {
         if (URLUtil.isValidUrl(mediaName)) {
             // Media name is an external URL.
@@ -630,5 +626,16 @@ public class HomeDetails extends Fragment implements View.OnClickListener {
             return Uri.parse("android.resource://" + getActivity().getPackageName() +
                     "/raw/" + mediaName);
         }
+    }
+
+    @Override
+    public void playVideo(int pos, String tag) {
+
+            VIDEO_SAMPLE = GetData.IMG_BASE_URL+dishDetails.getDish_details().getDish_video()+"";
+            initializePlayer();
+            mVideoView.setVisibility(View.VISIBLE);
+            mBufferingTextView.setVisibility(View.VISIBLE);
+            home_top_pager.setVisibility(View.GONE);
+
     }
 }

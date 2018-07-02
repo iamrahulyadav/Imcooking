@@ -37,18 +37,16 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
     private MyorderInterface myorderInterface;
     private Context context;
     private FragmentManager manager;
-    private List<FoodieMyorderList.FoodieOrderListBean> list = new ArrayList();
-    private ArrayList<Boolean>visibilityArray;
+    private List<FoodieMyorderList.FoodieOrderListBean> list ;
     private String TAG;
 
     public AdapterFoodieMyOrderList(Context context, FragmentManager manager, List<FoodieMyorderList.FoodieOrderListBean>list,
-                                    MyorderInterface myorderInterface,  ArrayList<Boolean>visibilityArray,
+                                    MyorderInterface myorderInterface,
                                     String TAG) {
         this.context = context;
         this.manager = manager;
         this.list = list;
         this.myorderInterface = myorderInterface;
-        this.visibilityArray = visibilityArray;
         this.TAG = TAG;
 //        this.click = click;
     }
@@ -58,9 +56,8 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView tv_order_details,tv_chefname,tv_price,txtQyt,txtChef,tv_orderid,tv_status,
-                txt_order_date, txt_foodie_email, txt_time,
-        txt_order_id, txt_pay_mode, txt_total_price;
+        public TextView tv_order_details,tv_chefname,tv_price,txtQyt,tv_orderid,tv_status,
+                  txt_time;
 //        public LinearLayout layout;
         public ImageView chefProfile;
         RatingBar ratingBar;
@@ -70,7 +67,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             super(view);
 
             layout_rate = view.findViewById(R.id.item_foodie_my_order_ratingbar_layout);
-            txtChef = view.findViewById(R.id.item_foodie_my_order_chef);
+
             tv_order_details = view.findViewById(R.id.item_foodie_orders_order_details);
             tv_chefname = view.findViewById(R.id.item_foodie_my_order_ChefName);
             tv_orderid = view.findViewById(R.id.item_foodie_my_order_orderid);
@@ -79,11 +76,6 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             tv_status = view.findViewById(R.id.item_foodie_my_order_status);
             chefProfile = view.findViewById(R.id.item_foodie_my_order_chef_profile_image);
             ratingBar=view.findViewById(R.id.item_foodie_my_order_rating);
-            txt_order_date = view.findViewById(R.id.item_foodie_my_order_placed_date);
-            txt_foodie_email = view.findViewById(R.id.item_foodie_my_order_foodie_email);
-            txt_order_id = view.findViewById(R.id.item_foodie_my_order_id);
-            txt_pay_mode = view.findViewById(R.id.item_foodie_my_order_payment_mode);
-            txt_total_price = view.findViewById(R.id.item_foodie_my_order_total_price);
 //            layout = view.findViewById(R.id.layout_order_details);
             txt_time = view.findViewById(R.id.item_foodie_my_order_time);
             tv_order_details.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +84,6 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
                     myorderInterface.getDetails(getAdapterPosition(), TAG);
                 }
             });
-
             layout_rate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -150,25 +141,8 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         if (list.get(position).getRating()!=null && list.get(position).getRating().length()>0){
             holder.ratingBar.setRating((Float.parseFloat(list.get(position).getRating())));
         }
-
-        holder.txtQyt.setText("Qyt : "+list.get(position).getDish_qyt());
-        if (list.get(position).getFoodie_email()!=null){
-            holder.txt_foodie_email.setText(list.get(position).getFoodie_email());
-        }
-
-        holder.txt_pay_mode.setText(list.get(position).getPayment_mode());
-        holder.txt_order_id.setVisibility(View.GONE);
-
         float price = Float.parseFloat(list.get(position).getPrice())*(list.get(position).getDish_qyt());
-        holder.txt_total_price.setText("£" +price);
         holder.tv_price.setText("£" +String.valueOf(price));
-
-//        holder.layout.setVisibility(View.GONE);
-       /* if (visibilityArray.get(position))
-            holder.layout.setVisibility(View.VISIBLE);
-        else holder.layout.setVisibility(View.GONE);*/
-        holder.txtChef.setText(list.get(position).getChef_name());
-        holder.txt_order_date.setText(list.get(position).getBookdate());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.chefProfile);
     }

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.fragment.chef.ChefDishDetail;
@@ -27,6 +31,12 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +46,7 @@ public class AdapterChefDishList extends PagerAdapter{
     private FragmentManager manager;
     private Context context;
     private Activity activity;
-
+    private ArrayList<String>base64Array = new ArrayList<>();
     private List<ChefProfileData1.ChefDishBean> chef_dish_list = new ArrayList<>();
     private ArrayList<String> arr_like = new ArrayList<>();
 
@@ -114,6 +124,8 @@ public class AdapterChefDishList extends PagerAdapter{
 
         final ArrayList<String> arrayList = new ArrayList<>();
         for (int i=0; i<chef_dish_list.get(position).getDish_image().size(); i++){
+
+
             arrayList.add("" + chef_dish_list.get(position).getDish_image().get(i));
             Log.d("TAG", "rakhi: "+chef_dish_list.get(position).getDish_image().get(i));
         }
@@ -162,6 +174,8 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
                 bundle.putString("cuisine", chef_dish_list.get(position).getDish_cuisine());
                 bundle.putString("likeno", chef_dish_list.get(position).getLike_no());
+                if (chef_dish_list.get(position).getDish_video()!=null && chef_dish_list.get(position).getDish_video().length()>0)
+                    bundle.putString("video",GetData.IMG_BASE_URL+chef_dish_list.get(position).getDish_video()+"");
                 bundle.putStringArrayList("image", arrayList);
 //                bundle.putString("cuisine", chef_dish_list.get(position).get);
                 fragment.setArguments(bundle);
@@ -260,4 +274,7 @@ public class AdapterChefDishList extends PagerAdapter{
 
         public void click_me_chef_dish_list(int position, String click_type);
     }
+
+
+
 }

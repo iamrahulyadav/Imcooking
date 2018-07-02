@@ -72,6 +72,8 @@ public class GetData {
     public static String CUISINE = "cuisine";
     public static String FOODIE_DETAILS_FOLLOW_CHEF = "foodie_details_follw_chef";
     public static String DISH_LIKE_LIST ="dish_like_list";
+    public static String FOODIE_MY_ORDER ="myorder";
+
 
     public GetData(final Context context, Activity activity) {
 /*

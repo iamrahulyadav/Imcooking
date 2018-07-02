@@ -19,6 +19,28 @@
             android:layout_width="match_parent"
             android:layout_height="284dp"
             android:fitsSystemWindows="true">
+
+            <VideoView
+                android:visibility="gone"
+                android:id="@+id/fragment_chef_dish_details_videoview"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/buffering_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Buffering..."
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"/>
+
             <android.support.v4.view.ViewPager
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

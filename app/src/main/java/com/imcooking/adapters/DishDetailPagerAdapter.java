@@ -30,12 +30,17 @@ public class DishDetailPagerAdapter extends PagerAdapter{
 
     LayoutInflater mLayoutInflater;
     Context context;
-    List<String> chefDishBeans = new ArrayList<>();
-    private ArrayList<String> arr_like;
+    List<String> chefDishBeans ;
+   private DishDetailPlayClick dishDetailPlayClick;
 
-    public DishDetailPagerAdapter(Context context, List<String> chefDishBeans) {
+    public interface DishDetailPlayClick{
+        void playVideo(int pos, String tag);
+    }
+
+    public DishDetailPagerAdapter(Context context, List<String> chefDishBeans,DishDetailPlayClick dishDetailPlayClick) {
         this.context = context;
         this.chefDishBeans = chefDishBeans;
+        this.dishDetailPlayClick = dishDetailPlayClick;
         mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -61,6 +66,12 @@ public class DishDetailPagerAdapter extends PagerAdapter{
             imgPlay.setVisibility(View.GONE);
         }
 
+        imgPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dishDetailPlayClick.playVideo(position, "play");
+            }
+        });
         Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                 .get(position)).into(iv_dish_image);
         ((ViewPager)container).addView(view);

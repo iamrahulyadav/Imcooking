@@ -88,7 +88,8 @@ import static java.util.Calendar.HOUR_OF_DAY;
 public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCheckedChangeListener,
         AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
 
-    private String chef_id, dish_id, name, cuisine, price, description, special_note,qyt, available, homedelivery, pickup;
+    private String chef_id, dish_id, name, cuisine, price, description, special_note,qyt, available, homedelivery,
+            pickup,video_sample;
     private EditText edt_name, edt_price, edt_description, edt_special_note, edt_qyt;
     private SwitchCompat switch_1, switch_2, switch_3;
     private String sw_1 = "Yes", sw_2 = "Yes", sw_3 = "Yes";
@@ -101,12 +102,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     private String userChoosenTask;
 
     private TextView tv_title;
-    private TextView tv_add_more_photo, txt_video;
+    private TextView tv_add_more_photo, txt_video, btn_browse_video;
 
     private String bitmapString="a";
+    private ArrayList<String>base;
     private ArrayList<String> imgBase64List;
     private String title;
-    private VideoView videoView;
     private LinearLayout layout_photos, layout;
 //    public TextView addMore;
 
@@ -143,9 +144,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     private ArrayList<String> arrayList = new ArrayList<>();
 
     private void init(){
-        videoView = findViewById(R.id.vvVideo);
+
     //    layout_photos = findViewById(R.id.edit_dish_photos);
-        txt_video = findViewById(R.id.chef_edit_dish_photos_ttx_select_video);
+        btn_browse_video = findViewById(R.id.chef_edit_dish_photos_ttx_select_video);
 //        tv_photo_name = findViewById(R.id.chef_edit_dish_photo_name);
         edt_qyt = findViewById(R.id.chef_edit_dish_qyt);
         sp_cuisine = findViewById(R.id.chef_edit_dish_spinner_cuisine);
@@ -164,37 +165,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         switch_2 = findViewById(R.id.edit_dish_switch_home_delivery);
         switch_3 = findViewById(R.id.edit_dish_switch_current_available);
         seekBar = findViewById(R.id.activity_chef_edit_dish_time);
-        Calendar c= Calendar.getInstance();
-        int hour = c.get(HOUR_OF_DAY);
-
-//        seekBar.setMax(24 * 4); //24 hours and 4 step in one hour.
-
-/*
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser) {
-                int hours = progress / 4; // it will return hours.
-                int minutes = (progress % 4) * 15; // here will be minutes.
-                Toast.makeText(getApplicationContext(),"seekbar progress: "+hours + "\n"+minutes, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(),"seekbar touch started!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(getApplicationContext(),"seekbar touch stopped!", Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
 
         switch_1.setOnCheckedChangeListener(this);
         switch_2.setOnCheckedChangeListener(this);
         switch_3.setOnCheckedChangeListener(this);
-        txt_video.setOnClickListener(new View.OnClickListener() {
+        btn_browse_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -237,6 +212,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     }
 
     private void getMyIntentData() {
+        base = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             qyt = getIntent().getExtras().getString("qyt");
@@ -249,8 +225,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             available = getIntent().getExtras().getString("available");
             homedelivery = getIntent().getExtras().getString("home_delivery");
             pickup = getIntent().getExtras().getString("pickup");
+            if (getIntent().hasExtra("video")){
+                video_sample = getIntent().getExtras().getString("video");
+                if (video_sample!=null)
+                txt_video.setText(video_sample.replace(GetData.IMG_BASE_URL,""));
+            }
 
             arrayList = getIntent().getExtras().getStringArrayList("image");
+            base = getIntent().getExtras().getStringArrayList("imageBAse");
 
             if (!qyt.equals("null")){
                 edt_qyt.setText(qyt);
@@ -259,89 +241,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             for(int i=0; i<arrayList.size(); i++){
                 if(i<3){
                     arr_photos.add(arrayList.get(i));
-
-//                    Bitmap bm = BaseClass.getBitmapFromURL(GetData.IMG_BASE_URL + "1521269701cajun.jpg", ChefEditDish.this );//arrayList.get(i));
-//                    String base_64 = BaseClass.BitMapToString(bm);
-//                    Log.d("MyBase64", base_64);
-
-
-
-
-
-/*
-//                    Log.d("MyImageUrl", src);
-                    final Bitmap[] b = new Bitmap[1];
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            try {
-                                URL url = new URL("http://webdevelopmentreviews.net/imcooking/upload/1521269701cajun.jpg");
-                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                                connection.setDoInput(true);
-                                connection.connect();
-                                InputStream input;
-                                input = connection.getInputStream();
-                                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                                b[0] = myBitmap ; //return myBitmap;
-                            } catch (IOException e) {
-                                // Log exception
-                                b[0] = null; //return null;
-                            }
-                        }
-                    });
-
-
-                    String base_64 = BaseClass.BitMapToString(b[0]);
-                    Log.d("MyBase64", base_64);
-*/
-
-
-
-
-
-
-
-
-
-//                    String base_64 = BaseClass.convertToBase64(GetData.IMG_BASE_URL + arrayList.get(i));
-//                    Log.d("MyBase64", base_64);
-
-
-  /*                  URL url = null;
-                    try {
-                        url = new URL(GetData.IMG_BASE_URL + arrayList.get(i));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
-*/
-/*
-                    final Bitmap[] bm = {null};
-                    final URL finalUrl = url;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                BufferedInputStream bis = new BufferedInputStream(finalUrl.openConnection()
-                                        .getInputStream());
-                                bm[0] = BitmapFactory.decodeStream(bis);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    });
-
-                    String s = BaseClass.BitMapToString(bm[0]);
-*/
-                 /*   Bitmap bm = BitmapFactory.decodeFile(url + "");
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                    byte[] b = baos.toByteArray();
-//                    Log.d("MyBase64", s);
-
-//                    arr_edit_photos_base64.add(s);
-*/
 
                 }
             }
@@ -353,11 +252,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             if(arr_photos.size() == 3){
                 tv_add_more_photo.setVisibility(View.GONE);
             }
-
-
-
-
-
             edt_name.setText(name);
 //            sp_cuisine.setSelection();
 //            edt_cuisine.setText(cuisine);
@@ -404,30 +298,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void getMyCuisines() {
 
-/*
-        try {
-            String s = "";
-            JSONObject jsonObject = new JSONObject("{}");
-
-            layout.setVisibility(View.GONE);
-            new GetData(getApplicationContext(), ChefEditDish.this).sendMyData(jsonObject, "cuisine",
-                    ChefEditDish.this, new GetData.MyCallback() {
-                        @Override
-                        public void onSuccess(String result) {
-                            layout.setVisibility(View.VISIBLE);
-                            cuisineData = new Gson().fromJson(result, CuisineData.class);
-//                            cuisineList.addAll(cuisineData.getCuisine_data());
-
-                            setMyCuisines(cuisineData);
-                        }
-                    });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-*/
-
         list = ChefHome.chefProfileData1.getChef_data().getCuisine_name();
-//        Log.d(TAG, "getMyCuisines: ");
         setMyCuisines(list);
 
     }
@@ -474,17 +345,21 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 String urls[] = new String[arr_photos.size()];
 
                                 arr_edit_photos_base64.clear();
+                                try {
+                                    editdish(title);
+                                } catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                }
 
+/*
                                 for(int k=0; k<arr_photos.size(); k++) {
-                                    String imageUrl = "https://api.androidhive.info/images/minion.jpg";//GetData.IMG_BASE_URL + arr_photos.get(k);
+                                    String imageUrl = GetData.IMG_BASE_URL+arr_photos.get(k);
                                     urls[k] = imageUrl;
                                     GetImage task = new GetImage();
                                     // Execute the task
                                     task.execute(urls);
-
                                 }
-
-
+*/
                             }
                        /* } else{
                             BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
@@ -522,7 +397,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(arr_photos);
+        requestData.setDish_image(base);
         requestData.setDish_qyt(qyt);
 
         try {
@@ -568,51 +443,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void editdish(String title) throws MalformedURLException {
 
-//        ArrayList<String> arr_edit_photos_base64 = new ArrayList<>();
-
-
-
-   /*         URL url = new URL(imageUrl);
-
-            Bitmap bm = null;
-            try {
-                bm = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String s = BaseClass.BitMapToString(bm);
-
-   */
-
-
-
-
-
-
-
-           /*
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-            byte[] b = baos.toByteArray(); */
-
-
-
-
-            /*  URL url = new URL(imageUrl);
-            try {
-                BufferedInputStream bis = new BufferedInputStream(url.openConnection().getInputStream());
-                Log.d("MyBase64", bis + "");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-//        }
-
-
-
-
-//        ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
         qyt = edt_qyt.getText().toString().trim();
-
         ModelChefEditDish requestData = new ModelChefEditDish();
         requestData.setDish_id(dish_id);
         requestData.setUser_id(chef_id);
@@ -629,7 +460,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(arr_edit_photos_base64);
+        requestData.setDish_image(base);
         requestData.setDish_qyt(qyt);
         Log.d("MyArraySize", arr_edit_photos_base64.size()+"");
         try {
@@ -647,9 +478,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                     if(job.getBoolean("status")){
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
-
-                                                BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
                                                 finish();
+                                                BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                             }
@@ -680,8 +510,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             tv_add_more_photo.setVisibility(View.GONE);
         }
         adapterEditDishPhotos.notifyDataSetChanged();
-
-
     }
 
     private AdapterEditDishPhotos adapterEditDishPhotos;
@@ -777,7 +605,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 break;
         }
     }
-
+    int duration;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
@@ -787,27 +615,20 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
-                System.out.println("SELECT_VIDEO");
                 Uri selectedImageUri = data.getData();
                 selectedPath = getPath(selectedImageUri);
-                Log.d("TAG", "rakhi: " + selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
-
-//                upload video
-
-                //   int reponse=upLoad2Server(""+selectedPath);
-
-                txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
-                videoView.setVideoURI(selectedImageUri);
-                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.setLooping(true);
-                        videoView.start();
-                    }
-                });
+                MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
+               duration = mp.getDuration();
+                Log.d("TAG", "video:path "+duration);
+                if (duration>20000){
+                    BaseClass.showToast(this, "Your Video is too large ");
+                } else {
+                    txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                }
             }
         }
     }
+
     long totalSize;
     String selectedPath;
 
@@ -891,6 +712,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         @Override
         protected void onPostExecute(String result) {
+            finish();
+
             Log.e("TAG", "Response from server: " + result);
 
             // showing the server response in an alert dialog
@@ -931,15 +754,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 String filePath = finalFile + "";
                 Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
 
-/*                if(arr_photos.size() == 1){
-                    arr_photos.clear();
-                }*/
-
-//                arr_photos.remove(arr_photos.size()-1);
-//                arr_photos.add(filePath.substring(filePath.lastIndexOf("/") + 1));
                 arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
                 adapterEditDishPhotos.notifyDataSetChanged();
-//                setMyAdapter(arr_photos);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -948,7 +764,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         bitmap = bm;
         bitmapString = BaseClass.BitMapToString(bitmap);
-        imgBase64List.add(bitmapString);
+        base.add(bitmapString);
 
     }
 
@@ -979,22 +795,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         File finalFile = new File(getRealPathFromURI(tempUri));
 
         String filePath = finalFile + "";
-        Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
 
-
-/*                if(arr_photos.size() == 1){
-                    arr_photos.clear();
-                }*/
-//                arr_photos.remove(arr_photos.size()-1);
-//                arr_photos.add(filePath.substring(filePath.lastIndexOf("/") + 1));
         arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
         adapterEditDishPhotos.notifyDataSetChanged();
-//                setMyAdapter(arr_photos);
-
-//        imgUser.setImageBitmap(thumbnail);
-//        uploadImg(bitmap);
         bitmapString = BaseClass.BitMapToString(bitmap);
-        imgBase64List.add(bitmapString);
+        base.add(bitmapString);
+
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -1079,99 +885,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     }
 
-    private static int serverResponseCode;
-
-    public static int upLoad2Server(String sourceFileUri) {
-        String upLoadServerUri = GetData.BASE_URL+"upload_video";
-        // String [] string = sourceFileUri;
-        String fileName = sourceFileUri;
-
-        HttpURLConnection conn = null;
-        DataOutputStream dos = null;
-        DataInputStream inStream = null;
-        String lineEnd = "\r\n";
-        String twoHyphens = "--";
-        String boundary = "*****";
-        int bytesRead, bytesAvailable, bufferSize;
-        byte[] buffer;
-        int maxBufferSize = 1 * 1024 * 1024;
-        String responseFromServer = "";
-
-        File sourceFile = new File(sourceFileUri);
-        if (!sourceFile.isFile()) {
-            Log.e("Huzza", "Source File Does not exist");
-            return 0;
-        }
-        try { // open a URL connection to the Servlet
-            FileInputStream fileInputStream = new FileInputStream(sourceFile);
-            URL url = new URL(upLoadServerUri);
-            conn = (HttpURLConnection) url.openConnection(); // Open a HTTP  connection to  the URL
-            conn.setDoInput(true); // Allow Inputs
-            conn.setDoOutput(true); // Allow Outputs
-            conn.setUseCaches(false); // Don't use a Cached Copy
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
-            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-            conn.setRequestProperty("uploaded_file", fileName);
-            dos = new DataOutputStream(conn.getOutputStream());
-
-            dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""+ fileName + "\"" + lineEnd);
-            dos.writeBytes(lineEnd);
-
-            bytesAvailable = fileInputStream.available(); // create a buffer of  maximum size
-            Log.i("Huzza", "Initial .available : " + bytesAvailable);
-
-            bufferSize = Math.min(bytesAvailable, maxBufferSize);
-            buffer = new byte[bufferSize];
-
-            // read file and write it into form...
-            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-            while (bytesRead > 0) {
-                dos.write(buffer, 0, bufferSize);
-                bytesAvailable = fileInputStream.available();
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-            }
-
-            // send multipart form data necesssary after file data...
-            dos.writeBytes(lineEnd);
-            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
-            // Responses from the server (code and message)
-            serverResponseCode = conn.getResponseCode();
-            String serverResponseMessage = conn.getResponseMessage();
-
-            Log.i("Upload file to server", "HTTP Response is : " + serverResponseMessage + ": " + serverResponseCode);
-            // close streams
-            Log.i("Upload file to server", fileName + " File is written");
-            fileInputStream.close();
-            dos.flush();
-            dos.close();
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
-            Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//this block will give the response of upload link
-        try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn
-                    .getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                Log.i("Huzza", "RES Message: " + line);
-            }
-            rd.close();
-        } catch (IOException ioex) {
-            Log.e("Huzza", "error: " + ioex.getMessage(), ioex);
-        }
-        return serverResponseCode;  // like 200 (Ok)
-
-    } // end upLoad2Server
-
     public class GetImage extends AsyncTask<String, Void, Bitmap> {
         @Override
         protected void onPreExecute() {
@@ -1190,26 +903,21 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         // Sets the Bitmap returned by doInBackground
         @Override
         protected void onPostExecute(Bitmap result) {
-///            progressBar.setVisibility(View.GONE);
-
             String s = BaseClass.BitMapToString(result);
-            Log.d("MyBase64", s);
             arr_edit_photos_base64.add(s);
-            Log.d("TAG", "onPostExecute: "+arr_edit_photos_base64.size());
-            if(arr_edit_photos_base64.size() == arr_photos.size()){
+            imgBase64List.add(s);
+            if(imgBase64List.size() == arr_photos.size()){
                 try {
-
-                    Log.d("TAG", "edit_dish_submit:aa "+arr_edit_photos_base64.size()+arr_photos.size());
+                    Log.d("TAG", "edit_dish_submit:aa "+imgBase64List.size()+arr_photos.size());
                     editdish(title);
-
-                   // new UploadFileToServer().execute();
-
+                    if (selectedPath!=null){
+                        if (duration<=20000)
+                        new UploadFileToServer().execute();
+                    }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
             }
-
-//            imgProfile.setImageBitmap(result);
         }
 
         // Creates Bitmap from InputStream and returns it
@@ -1218,7 +926,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             InputStream stream = null;
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             bmOptions.inSampleSize = 1;
-
             try {
                 stream = getHttpConnection(url);
                 bitmap = BitmapFactory.

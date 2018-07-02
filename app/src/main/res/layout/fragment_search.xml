@@ -19,19 +19,20 @@
             android:id="@+id/etSearch_home"
             android:gravity="center_vertical"
             android:padding="15dp"
-            android:textAlignment="viewStart"
-            android:theme="@style/Widget.AppCompat.EditText"
+
+
             android:textColor="@color/colorBlack"
             android:drawableRight="@drawable/places_ic_search"
             android:drawablePadding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorLightGrey"
+            android:textColorHint="@color/colorBlack"
             android:maxLines="1"
+
             android:imeOptions="actionDone"
-            android:inputType="text"
-            android:textSize="16sp"
-            android:hint="type dish name or chef name"
+
+            android:textSize="@dimen/extra_smallsize"
+            android:hint="Type Dish Name or Chef Name"
             tools:ignore="RtlCompat" />
 
     </LinearLayout>
