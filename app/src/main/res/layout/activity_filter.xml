@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context=".activity.Sub.Foodie.FilterActivity">
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Filter"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:layout_marginLeft="40dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/view_4"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/home_background"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_background_white_10"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_filter_txtRating"
+                android:textColor="@color/text_color_4"
+                android:textSize="13sp"
+                android:layout_marginBottom="10dp"/>
+            <android.support.v7.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/filter_ratingbar"
+                android:layout_gravity="center"
+                android:numStars="5"
+                android:theme="@style/RatingBar"
+                android:progressTint="@color/theme_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:background="@color/view_6"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"/>
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_filter_txtPrice"
+                android:textColor="@color/text_color_4"
+                android:textSize="13sp"
+                android:layout_marginBottom="10dp"/>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/filter_seekbar_text"
+                android:textColor="#FFF"
+                android:textSize="10sp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center"
+                android:background="@drawable/seekbar_text"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp"
+                android:text="0" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@drawable/shape_border_theme"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/filter_seekbar"
+                    android:progressTint="#FFF"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:background="@color/view_6"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"/>
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_4"
+                android:textSize="13sp"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_check_home"
+                    android:text="Home Delivery"
+                    android:textSize="10sp"
+                    android:paddingLeft="5dp"
+                    android:buttonTint="@color/colorAccent"
+                    android:textColor="@color/text_color_4"/>
+                <CheckBox
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_check_pickup"
+                    android:text="Pick-up"
+                    android:textSize="10sp"
+                    android:paddingLeft="5dp"
+                    android:buttonTint="@color/colorAccent"
+                    android:textColor="@color/text_color_4"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="bottom"
+            android:layout_margin="10dp">
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="RESET"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:background="@drawable/shape_background_theme_2"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:onClick="filter_reset"/>
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="FILTER"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp"
+                android:background="@drawable/shape_background_theme_2"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:onClick="filter_apply"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

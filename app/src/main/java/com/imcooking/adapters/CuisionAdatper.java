@@ -24,22 +24,18 @@ import java.util.List;
  * Contact Number : +91 9796173066
  */
 public class CuisionAdatper extends RecyclerView.Adapter<CuisionAdatper.MyViewHolder> {
+
     private Context context;
-    CuisionInterface cuisionInterface;
-    private List<CuisineData.CuisineDataBean>cuisineDataBeans;
+    private ArrayList<String> arrayList = new ArrayList<>();
+    private ArrayList<String> arrayList_status = new ArrayList<>();
+    private Interface_CuisineAdapter click;
 
-    public CuisionAdatper(Context context, CuisionInterface cuisionInterface,
-                          List<CuisineData.CuisineDataBean> cuisineDataBeans) {
+    public CuisionAdatper(Context context, ArrayList<String> arrayList, ArrayList<String> arrayList_status,
+                          Interface_CuisineAdapter click) {
         this.context = context;
-        this.cuisionInterface = cuisionInterface;
-        this.cuisineDataBeans = cuisineDataBeans;
-    }
-
-    public interface CuisionInterface {
-        void CuisionInterfaceMethod(View view, int position);
-    }
-    public void CuisionInterfaceMethod(CuisionInterface quoteInterface) {
-        this.cuisionInterface = quoteInterface;
+        this.arrayList = arrayList;
+        this.arrayList_status = arrayList_status;
+        this.click = click;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -49,21 +45,14 @@ public class CuisionAdatper extends RecyclerView.Adapter<CuisionAdatper.MyViewHo
             super(view);
 
             txtName = (TextView) view.findViewById(R.id.txtCuisionName);
-            }
-
-        void bindListener(final int position, final CuisionInterface listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
+            txtName.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    row_index=position;
-                    notifyDataSetChanged();
-                    listener.CuisionInterfaceMethod(itemView,position);
+                public void onClick(View view) {
+                    click.method_CuisineAdapter(getAdapterPosition());
                 }
             });
         }
     }
-
-    int row_index=-1;
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -76,11 +65,11 @@ public class CuisionAdatper extends RecyclerView.Adapter<CuisionAdatper.MyViewHo
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtName.setText(cuisineDataBeans.get(position).getCuisine_name());
-        holder.bindListener(position,cuisionInterface );
+        holder.txtName.setText(arrayList.get(position));
 
-        if (row_index==position){
-            holder.txtName.setBackground(context.getResources().getDrawable(R.drawable.shape_background_theme_1));
+
+        if (arrayList_status.get(position).equals("1")){
+            holder.txtName.setBackground(context.getResources().getDrawable(R.drawable.shape_background_theme));
             holder.txtName.setTextColor(context.getResources().getColor(R.color.colorWhite));
         } else {
             holder.txtName.setTextColor(context.getResources().getColor(R.color.colorBlack));
@@ -90,7 +79,10 @@ public class CuisionAdatper extends RecyclerView.Adapter<CuisionAdatper.MyViewHo
 
     @Override
     public int getItemCount() {
-        return cuisineDataBeans.size();
+        return arrayList.size();
     }
 
+    public interface Interface_CuisineAdapter{
+        public void method_CuisineAdapter(int position);
+    }
 }
