@@ -98,7 +98,7 @@ public class SelectCuisines extends AppBaseActivity implements AdapterSelectCuis
 
     @Override
     public void method_select_cuisine(int position) {
-        if(position>0) {
+        if(position>=0) {
             if (arrayList_status.get(position).equals("0")) {
                 arrayList_status.set(position, "1");
             } else {
