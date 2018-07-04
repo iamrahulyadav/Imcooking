@@ -404,7 +404,8 @@ for(int i=0;i<jsonArray.length();i++){
                             FollowUnfollow followUnfollow = new Gson().fromJson(result, FollowUnfollow.class);
                             if(followUnfollow.isStatus()){
                                 if (followUnfollow.getMsg().equals("Successfully follow")){
-                                    Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
+                                    BaseClass.showToast(getContext(), "Successfully Followed");
                                     btn_follow.setText("Unfollow");
 
                                     txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
@@ -413,7 +414,7 @@ for(int i=0;i<jsonArray.length();i++){
 //                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText()));
                                 }
                                 else if (followUnfollow.getMsg().equals("Successfully unfollow")){
-                                    Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
+                                    BaseClass.showToast(getContext(), "Successfully Unfollowed");
                                     txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace(" Followers",""))
                                             -1 + " Followers");
                                     btn_follow.setText("Follow");

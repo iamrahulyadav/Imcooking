@@ -33,8 +33,8 @@ public class ChefProfile extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_profile);
 
-        chefId = getIntent().getStringExtra("chef_id");
-        foodie_id = getIntent().getStringExtra("foodie_id");
+        chefId = getIntent().getExtras().getString("chef_id");
+        foodie_id = getIntent().getExtras().getString("foodie_id");
 
        ChefHome fragment = new ChefHome();
 

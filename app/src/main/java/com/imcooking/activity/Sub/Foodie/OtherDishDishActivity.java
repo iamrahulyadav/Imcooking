@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.OtherDish;
@@ -56,10 +58,14 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
         }
 
         init();
-
     }
 
+    private LinearLayout layout_main;
+    private FrameLayout frame_main;
+
     private void init(){
+        layout_main = findViewById(R.id.other_dish_activity_layout);
+        frame_main = findViewById(R.id.other_dish_activity_layout_frame);
         layout = findViewById(R.id.chef_dish);
         recyclerView = findViewById(R.id.activity_other_dish_recycler);
         txtLike = findViewById(R.id.activity_other_dish_txtChefLike);
@@ -148,6 +154,9 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+
+        layout_main.setVisibility(View.VISIBLE);
+        frame_main.setVisibility(View.GONE);
     }
 
     @Override
@@ -164,15 +173,21 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
     @Override
     public void OtherDishInterfaceMethod(View view, int position, String TAG) {
         if (TAG.equalsIgnoreCase("name_detail")){
-            if(MainActivity.my_tag.equals(new HomeFragment().getClass().getName())) {
+            if(MainActivity.my_tag.equals(new HomeFragment().getClass().getName()) ||
+                    MainActivity.my_tag.equals(new HomeDetails().getClass().getName())) {
 
                 HomeDetails fragment = new HomeDetails();
                 Bundle bundle = new Bundle();
                 bundle.putString("dish_id", chefDishBeans.get(position).getDish_id() + "");
                 fragment.setArguments(bundle);
 
-                BaseClass.callFragment(fragment, fragment
-                        .getClass().getName(), getSupportFragmentManager());
+                getSupportFragmentManager().beginTransaction().replace(R.id.other_dish_activity_layout_frame, fragment)
+//                        .addToBackStack("")
+                        .commit();
+                frame_main.setVisibility(View.VISIBLE);
+                layout_main.setVisibility(View.GONE);
+//                BaseClass.callFragment(fragment, fragment
+//                        .getClass().getName(), getSupportFragmentManager());
 
             } else {
                 Intent filrestintent = new Intent();
@@ -229,6 +244,15 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+//        frame_main.setVisibility(View.GONE);
+//        layout_main.setVisibility(View.VISIBLE);
+//        int i = getSupportFragmentManager().getBackStackEntryCount();
+//        Toast.makeText(this, i + "", Toast.LENGTH_SHORT).show();
 
 
+    }
 }

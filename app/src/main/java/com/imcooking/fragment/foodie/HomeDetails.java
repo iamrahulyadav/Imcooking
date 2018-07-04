@@ -4,6 +4,8 @@ package com.imcooking.fragment.foodie;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -36,6 +38,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.Test1;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.Sub.Foodie.OtherDishDishActivity;
 import com.imcooking.adapters.DishDetailPagerAdapter;
@@ -365,7 +368,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         } else if(id == R.id.home_details_chef_profile) {
             startActivityForResult(new Intent(getContext(), ChefProfile.class)
                             .putExtra("chef_id", chef_id)
-                            .putExtra("foodie_id", foodie_id),
+                            .putExtra("foodie_id", foodie_id + ""),
                     ChefProfile.CHEF_PROFILE_CODE);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
@@ -473,10 +476,14 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
              @Override
              public void onClick(View view) {
                  dialog.dismiss();
+                 startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                         userDataBean.getUser_id()));
+//                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
              }
          });
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
 
@@ -509,7 +516,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         });
 
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
     }
@@ -527,7 +534,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
             } else{}
         } else{}
     }
-
 
     @Override
     public void onStart() {
