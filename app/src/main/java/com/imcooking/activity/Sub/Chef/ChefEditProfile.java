@@ -72,6 +72,24 @@ import java.util.List;
 
 public class ChefEditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
         CompoundButton.OnCheckedChangeListener, AdapterCuisineList.click_adapter_cuisine_list {
+    public static CuisineData cuisineData = new CuisineData();
+    //    private RecyclerView cuisineRecycler;
+    private RatingBar ratingBar;
+    private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about, edt_phn;
+    private Spinner sp_miles/*, sp_cuisine*/;
+    private TextView tv_select_cuisine;
+    private SwitchCompat /*sw_notification,*/ sw_available;
+    private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles,
+            str_cuisine = "Indian Food"/*, str_notification*/,
+            str_available = "0", str_about, str_phn;
+    private TextView txt_name, txt_address, txt_phone;
+    private TinyDB tinyDB;
+    private ImageView imgProfile;
+    private ApiResponse.UserDataBean userDataBean;
+    private ProgressBar progressBar;
+
+    ChefProfileData1.ChefDataBean.CuisineNameBean cuisineNameBean;
+    List<String> cuisine_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,24 +100,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         getProfileData();
     }
 
-    public static CuisineData cuisineData = new CuisineData();
-//    private RecyclerView cuisineRecycler;
-    private RatingBar ratingBar;
-    private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about, edt_phn;
-    private Spinner sp_miles/*, sp_cuisine*/;
-    private TextView tv_select_cuisine;
-    private SwitchCompat /*sw_notification,*/ sw_available;
-    private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles,
-            str_cuisine = "Indian Food"/*, str_notification*/,
-                    str_available = "0", str_about, str_phn;
-    private TextView txt_name, txt_address, txt_phone;
-    private TinyDB tinyDB;
-    private ImageView imgProfile;
-    private ApiResponse.UserDataBean userDataBean;
-    private ProgressBar progressBar;
-
-    ChefProfileData1.ChefDataBean.CuisineNameBean cuisineNameBean;
-    List<String> cuisine_list = new ArrayList<>();
 
     private void init(){
 
@@ -191,10 +191,10 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             cuisiness_list.add(cuisineList.get(i).getCuisine_name());
             if(str_name11.length() == 0) {
                 str_name11 = str_name11 + cuisineList.get(i).getCuisine_name();
-//                        str_id = str_id + cuisineList.get(i);
+                str_cuisine_ids = str_cuisine_ids + cuisineList.get(i).getCuisine_id();
             } else{
                 str_name11 = str_name11 + ", " + cuisineList.get(i).getCuisine_name();
-//                        str_id = str_id + "," + cuisineList.get(i);
+                str_cuisine_ids = str_cuisine_ids + "," + cuisineList.get(i).getCuisine_id();
             }
         }
         tv_select_cuisine.setText(str_name11);
@@ -241,21 +241,21 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     protected void onResume() {
         super.onResume();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        }*/
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        }*/
     }
 
     @Override
@@ -386,7 +386,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     }
 
     public void chef_edit_profile_cancel(View view){
-
+        finish();
     }
 
     private void getMyCuisines() {
@@ -616,7 +616,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
-    private String str_cuisine_ids;
+    private String str_cuisine_ids="";
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {

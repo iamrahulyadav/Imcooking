@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
    private TextView txtAddress;
    private List<AddressListData.AddressBean>addressBeanList = new ArrayList<>();
    private RecyclerView savedAddress;
+   private LinearLayout saveAddLayout;
    private TinyDB tinyDB;
    private Gson gson = new Gson();
    private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
@@ -49,6 +51,7 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
         }
 
 //        find id
+        saveAddLayout = findViewById(R.id.save_add_view);
         txtAddress = findViewById(R.id.activity_manage_address_txtAddAddress);
         savedAddress  = findViewById(R.id.activity_manage_address_recycler);
         //layout = findViewById(R.id.address_layout);
@@ -88,6 +91,9 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
                           addressListData = new Gson().fromJson(result, AddressListData.class);
                           if (addressListData.getAddress()!=null){
                               addressBeanList.addAll(addressListData.getAddress());
+                              if(addressBeanList.size() == 0){
+                                  saveAddLayout.setVisibility(View.GONE);
+                              }else saveAddLayout.setVisibility(View.VISIBLE);
                               setAddList();
                           }
                       }

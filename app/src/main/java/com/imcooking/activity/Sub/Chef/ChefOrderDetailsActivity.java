@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_qyt, txt_price, txt_email, txt_pay_mode,txt_phone,txt_order_status,
             txt_order_id;
     private TinyDB tinyDB;
+    private NestedScrollView nestedScrollView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private Gson gson = new Gson();
 
@@ -67,6 +69,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
 
     private void init(){
 
+        nestedScrollView = findViewById(R.id.chef_order_list_scroll);
         recyclerView = findViewById(R.id.order_details_recycler);
         txt_chef_name = findViewById(R.id.item_foodie_my_order_chef);
         txt_date = findViewById(R.id.item_foodie_my_order_placed_date);
@@ -80,7 +83,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         txtAddress = findViewById(R.id.item_foodie_my_order_address);
         txt_phone = findViewById(R.id.item_foodie_my_order_foodie_phone);
         txt_order_status = findViewById(R.id.item_foodie_my_order_details_status);
-
+        nestedScrollView.setVisibility(View.GONE);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
@@ -121,6 +124,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void onSuccess(String result) {
+                            nestedScrollView.setVisibility(View.VISIBLE);
                             OrderDetailsData orderDetailsData = new OrderDetailsData();
                             orderDetailsData = new Gson().fromJson(result, OrderDetailsData.class);
                             if (orderDetailsData.getOrder_details()!=null){

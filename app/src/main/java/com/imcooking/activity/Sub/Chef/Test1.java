@@ -1,10 +1,14 @@
 package com.imcooking.activity.Sub.Chef;
 
+import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -32,11 +36,20 @@ public class Test1 extends AppCompatActivity {
     private static final String PLAYBACK_TIME = "play_time";
 
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test1);
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        }
 
         mVideoView = findViewById(R.id.videoview);
         mBufferingTextView = findViewById(R.id.buffering_textview);

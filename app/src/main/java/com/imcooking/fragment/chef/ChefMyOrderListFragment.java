@@ -169,7 +169,6 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
         rv_prevoius.setAdapter(adatperChefMyOrderList1);
     }
 
-
     @Override
     public void chefOrderdetails(int pos, String TAG) {
         if (TAG.equals("current")){
