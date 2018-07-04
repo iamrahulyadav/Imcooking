@@ -1,5 +1,6 @@
 package com.imcooking.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,13 +55,16 @@ public class AdapterFoodieMyOrderDetailList extends RecyclerView.Adapter<Adapter
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_chefname.setText(orderDetailsBeans.get(position).getChef_name());
         holder.txt_dish_name.setText(orderDetailsBeans.get(position).getOrder_dish_name());
         holder.txtQyt.setText("Qyt : "+orderDetailsBeans.get(position).getOrder_quantity());
+        if (orderDetailsBeans.get(position).getOrder_dish_image()!=null && orderDetailsBeans.get(position)
+                .getOrder_dish_image().size()>0 )
         Picasso.with(context).load(GetData.IMG_BASE_URL +
-                orderDetailsBeans.get(position).getOrder_dish_image()).into(holder.dishImg);
+                orderDetailsBeans.get(position).getOrder_dish_image().get(0).getDishimage_image()).into(holder.dishImg);
         holder.tv_price.setText("£"+orderDetailsBeans.get(position).getOrder_price());
 
     }

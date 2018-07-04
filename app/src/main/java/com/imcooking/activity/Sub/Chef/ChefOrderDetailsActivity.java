@@ -191,7 +191,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                             else if (status.equals("4"))
                                                 txt_order_status.setText("Decline");
                                             else if (status.equals("5"))
-                                                txt_order_status.setText("On Way");
+                                                txt_order_status.setText("On The Way");
                                             else if (status.equals("8"))
                                                 txt_order_status.setText("Delivered");
                                             else if (status.equals("9"))
@@ -208,12 +208,13 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         }
     }
 
-    AdapterFoodieMyOrderDetailList myOrderDetailList;
     private void setOrderDetails(){
-        myOrderDetailList = new AdapterFoodieMyOrderDetailList(getApplicationContext(), orderDetailsBeans);
+        AdapterFoodieMyOrderDetailList myOrderDetailList = new AdapterFoodieMyOrderDetailList(getApplicationContext(),
+                orderDetailsBeans);
         recyclerView.setAdapter(myOrderDetailList);
     }
-    Dialog dialog;
+
+    private Dialog dialog;
     private void createDialog(String delivery_type){
         dialog = new Dialog(ChefOrderDetailsActivity.this);
         dialog.setContentView(R.layout.dialog_view_response);
