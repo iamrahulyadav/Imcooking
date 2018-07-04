@@ -277,7 +277,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                         txtDeliverytype.setText("Home Delivery");
                                     }
                                     VIDEO_SAMPLE = GetData.IMG_BASE_URL+dishDetails.getDish_details().getDish_video()+"";
-                                    if (VIDEO_SAMPLE!=null)
+                                    String video = dishDetails.getDish_details().getDish_video()+"";
+                                    if (video.length() > 0)
                                         isVideo = "yes";
                                     else isVideo = "no";
                                     txtLike.setText(dishDetails.getDish_details().getDish_total_like() + "");

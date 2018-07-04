@@ -30,36 +30,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
 
-            <TextView
+            <ProgressBar
                 android:visibility="gone"
                 android:id="@+id/buffering_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Buffering..."
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_centerInParent="true"/>
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-                android:id="@+id/progress_bar_chef_dish"/>
 
             <android.support.v4.view.ViewPager
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/fragment_chef_auto_scroll_page"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/details_home"
-                android:scaleType="fitXY"
-                android:visibility="gone"
-                android:id="@+id/fragment_home_details_img_top"
-                android:layout_marginBottom="17dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,15 +57,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="17dp">
-                    <!--
-
-                                        <ImageView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:src="@drawable/ic_left_arrow_white"
-                                            android:layout_alignParentLeft="true"/>
-                    -->
-
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -87,17 +64,6 @@
                         android:id="@+id/chef_dish_detalis_heart"
                         android:src="@drawable/ic_heart"
                         android:layout_alignParentRight="true"/>
-
-<!--                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Today"
-                        android:textSize="14dp"
-                        android:textColor="@color/colorWhite"
-                        android:layout_toLeftOf="@+id/home_details_heart"
-                        android:layout_toStartOf="@+id/home_details_heart"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="10dp"/>-->
 
                     <TextView
                         android:id="@+id/chef_dish_detalis_dish_likes"

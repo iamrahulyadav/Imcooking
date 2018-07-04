@@ -92,17 +92,9 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_order_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (delivery_type.equals("1")){
-                        //1=delivery
-                        createDialog(delivery_type);
-                    } else if (delivery_type.equals("2")){
-                        //2=pickup
-
-                        createDialog(delivery_type);
-                    }
+                    createDialog(delivery_type);
                 }
             });
-
         }
 
         getOrderDetails();
@@ -156,6 +148,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     if (delivery_type.equals("1")){
                                         //1=delivery
                                         txt_order_type.setText("Delivery");
+                                        @SuppressLint("SimpleDateFormat")
                                         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                         Date myDate = null;
                                         try {
@@ -183,7 +176,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                             if (status.equals("0"))
                                                 txt_order_status.setText("New Order");
                                             else if (status.equals("1"))
-                                                txt_order_status.setText("Accept");
+                                                txt_order_status.setText("Accepted");
                                             else if (status.equals("2"))
                                                 txt_order_status.setText("Decline");
                                             else if (status.equals("3"))
@@ -237,13 +230,16 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             dialog.findViewById(R.id.layout_accept_view).setVisibility(View.GONE);
             dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.VISIBLE);
             dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.VISIBLE);
+
         } else if (delivery_type.equals("2")){
             dialog.findViewById(R.id.layout_accept_view).setVisibility(View.VISIBLE);
             dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.VISIBLE);
             dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.VISIBLE);
         }
+
         dialog.findViewById(R.id.dialog_view_response_offer_price).setVisibility(View.GONE);
         dialog.findViewById(R.id.dialog_view_response_offer_edt).setVisibility(View.GONE);
+        dialog.findViewById(R.id.dialog_view_response_edtReply).setVisibility(View.GONE);
 
         txt_decline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +262,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             public void onClick(View view) {
                 chef_status = "4";
                 updateStatus();
-
             }
         });
 
@@ -284,7 +279,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             public void onClick(View view) {
                 chef_status = "5";
                 updateStatus();
-
             }
         });
 

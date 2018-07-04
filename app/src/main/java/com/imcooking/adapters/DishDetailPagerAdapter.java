@@ -74,7 +74,7 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         imgPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imgPlay.setVisibility(View.GONE);
+
                 dishDetailPlayClick.playVideo(position, "play");
             }
         });

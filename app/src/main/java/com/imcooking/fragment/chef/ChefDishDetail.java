@@ -58,7 +58,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
             "", isVideo;
 
     private VideoView mVideoView;
-    private TextView mBufferingTextView;
+    private ProgressBar mBufferingTextView;
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
 
@@ -102,7 +102,6 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     private ImageView iv_home_delivery_icon, iv_pickup_icon;
 
     private void init(){
-        progressBar = getView().findViewById(R.id.progress_bar_chef_dish);
         home_top_pager = getView().findViewById(R.id.fragment_chef_auto_scroll_page);
         tv_dish_name = getView().findViewById(R.id.chef_dish_detalis_dish_name);
         tv_dish_likes = getView().findViewById(R.id.chef_dish_detalis_dish_likes);
@@ -353,7 +352,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
     private void initializePlayer() {
         // Show the "Buffering..." message while the video loads.
-        //    mBufferingTextView.setVisibility(VideoView.VISIBLE);
+        mBufferingTextView.setVisibility(VideoView.VISIBLE);
 
         // Buffer and decode the video sample.
         Uri videoUri = getMedia(VIDEO_SAMPLE);
@@ -364,7 +363,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
                         // Hide buffering message.
-                        //  mBufferingTextView.setVisibility(VideoView.INVISIBLE);
+                        mBufferingTextView.setVisibility(VideoView.INVISIBLE);
 
                         // Restore saved position, if available.
                         if (mCurrentPosition > 0) {
@@ -412,17 +411,10 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
     @Override
     public void playVideo(int pos, String tag) {
-            if (VIDEO_SAMPLE!=null){
-                initializePlayer();
-                mVideoView.setVisibility(View.VISIBLE);
-                mBufferingTextView.setVisibility(View.VISIBLE);
-                home_top_pager.setVisibility(View.GONE);
-            } else {
-                mVideoView.setVisibility(View.GONE);
-                mBufferingTextView.setVisibility(View.GONE);
-                home_top_pager.setVisibility(View.VISIBLE);
-            }
-
+        home_top_pager.setVisibility(View.GONE);
+        initializePlayer();
+        mVideoView.setVisibility(View.VISIBLE);
+        mBufferingTextView.setVisibility(View.VISIBLE);
     }
 
     public static ArrayList<String>base64Array;
@@ -431,7 +423,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
+          //  progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -448,7 +440,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         protected void onPostExecute(Bitmap result) {
             String s = BaseClass.BitMapToString(result);
             base64Array.add(s);
-            progressBar.setVisibility(View.GONE);
+           // progressBar.setVisibility(View.GONE);
         }
 
         // Creates Bitmap from InputStream and returns it

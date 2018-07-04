@@ -488,7 +488,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                     if(job.getBoolean("status")){
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
-                                                finish();
+                                                /*finish();*/
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
@@ -652,8 +652,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         }
     }
 
-    long totalSize;
-    String selectedPath;
+    private long totalSize;
+    private String selectedPath;
 
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         @Override
@@ -735,8 +735,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         @Override
         protected void onPostExecute(String result) {
-            finish();
-
             Log.e("TAG", "Response from server: " + result);
             finish();
 
@@ -913,78 +911,5 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     }
 
-    public class GetImage extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-            Bitmap map = null;
-            for (String url : urls) {
-                map = downloadImage(url);
-            }
-            return map;
-        }
-
-        // Sets the Bitmap returned by doInBackground
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            String s = BaseClass.BitMapToString(result);
-            arr_edit_photos_base64.add(s);
-            imgBase64List.add(s);
-            if(imgBase64List.size() == arr_photos.size()){
-                try {
-                    Log.d("TAG", "edit_dish_submit:aa " + imgBase64List.size() + arr_photos.size());
-                    editdish(title);
-                    if (selectedPath!=null){
-                        if (duration<=20000)
-                        new UploadFileToServer().execute();
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        // Creates Bitmap from InputStream and returns it
-        private Bitmap downloadImage(String url) {
-            Bitmap bitmap = null;
-            InputStream stream = null;
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inSampleSize = 1;
-            try {
-                stream = getHttpConnection(url);
-                bitmap = BitmapFactory.
-                        decodeStream(stream, null, bmOptions);
-                stream.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        // Makes HttpURLConnection and returns InputStream
-        private InputStream getHttpConnection(String urlString)
-                throws IOException {
-            InputStream stream = null;
-            URL url = new URL(urlString);
-            URLConnection connection = url.openConnection();
-
-            try {
-                HttpURLConnection httpConnection = (HttpURLConnection) connection;
-                httpConnection.setRequestMethod("GET");
-                httpConnection.connect();
-
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    stream = httpConnection.getInputStream();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return stream;
-        }
-    }
 
 }
