@@ -401,6 +401,7 @@ public class HomeFragment extends Fragment implements
                 chefDishBeans.clear();
             }
 
+            chefDishBeans.clear();
             if (homeData.getChef_dish() != null && homeData.getChef_dish().size() > 0) {
                 chefDishBeans.addAll(homeData.getChef_dish());
             } /*else {

@@ -280,7 +280,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                     if (VIDEO_SAMPLE!=null)
                                         isVideo = "yes";
                                     else isVideo = "no";
-                                    txtLike.setText(dishDetails.getDish_details().getLike() + "");
+                                    txtLike.setText(dishDetails.getDish_details().getDish_total_like() + "");
 
                                     txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
                                     if (dishDetails.getDish_details().getDish_video()!=null
