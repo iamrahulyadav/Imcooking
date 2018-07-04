@@ -148,6 +148,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private SeekBar seekBar_available_time;
     private TextView tv_seekbar_text, tv_time_1, tv_time_2;
+    private String str_time_1 = "00:00 AM", str_time_2 = "02:00 AM";
 
     private void init(){
 
@@ -156,6 +157,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         tv_seekbar_text = findViewById(R.id.edit_dish_seekbar_text);
         tv_time_1 = findViewById(R.id.edit_dish_time_1);
         tv_time_2 = findViewById(R.id.edit_dish_time_2);
+
+        seekBar_available_time.setProgress(0);
+        seekBar_available_time.setMax(24);
 
         ShapeDrawable thumb = new ShapeDrawable( new RectShape() );
         thumb.getPaint().setColor(getResources().getColor(R.color.theme_color));
@@ -406,8 +410,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDescription(description);
         requestData.setSpecial_note(special_note);
         requestData.setDish_price(price);
-        requestData.setDish_from("12:10 AM");
-        requestData.setDish_to("4:10 AM");
+        requestData.setDish_from(str_time_1/*"12:10 AM"*/);
+        requestData.setDish_to(str_time_2/*"4:10 AM"*/);
         requestData.setAvailable(sw_1);
         requestData.setHomedeliver(sw_2);
         requestData.setPickup(sw_3);
@@ -478,8 +482,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDescription(description);
         requestData.setSpecial_note(special_note);
         requestData.setDish_price(price);
-        requestData.setDish_from("12:10 AM");
-        requestData.setDish_to("4:10 AM");
+        requestData.setDish_from(str_time_1/*"12:10 AM"*/);
+        requestData.setDish_to(str_time_2/*"4:10 AM"*/);
         requestData.setAvailable(sw_1);
         requestData.setHomedeliver(sw_2);
         requestData.setPickup(sw_3);
@@ -688,59 +692,86 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         String text = "";
         if(progress == 0){
             text = "From:00:00AM \t To:02:00AM";
+            str_time_1 = "00:00 AM"; str_time_2 = "02:00 AM";
         } else if(progress == 1){
             text = "From:00:00AM \t To:02:00AM";
+            str_time_1 = "00:00 AM"; str_time_2 = "02:00 AM";
         } else if(progress == 2){
             text = "From:01:00AM \t To:03:00AM";
+            str_time_1 = "01:00 AM"; str_time_2 = "03:00 AM";
         } else if(progress == 3){
             text = "From:02:00AM \t To:04:00AM";
+            str_time_1 = "02:00 AM"; str_time_2 = "04:00 AM";
         } else if(progress == 4){
             text = "From:03:00AM \t To:05:00AM";
+            str_time_1 = "03:00 AM"; str_time_2 = "05:00 AM";
         } else if(progress == 5){
             text = "From:04:00AM \t To:06:00AM";
+            str_time_1 = "04:00 AM"; str_time_2 = "06:00 AM";
         } else if(progress == 6){
             text = "From:05:00AM \t To:07:00AM";
+            str_time_1 = "05:00 AM"; str_time_2 = "07:00 AM";
         } else if(progress == 7){
             text = "From:06:00AM \t To:08:00AM";
+            str_time_1 = "06:00 AM"; str_time_2 = "08:00 AM";
         } else if(progress == 8){
             text = "From:07:00AM \t To:09:00AM";
+            str_time_1 = "07:00 AM"; str_time_2 = "09:00 AM";
         } else if(progress == 9){
             text = "From:08:00AM \t To:10:00AM";
+            str_time_1 = "08:00 AM"; str_time_2 = "10:00 AM";
         } else if(progress == 10){
             text = "From:09:00AM \t To:11:00AM";
+            str_time_1 = "09:00 AM"; str_time_2 = "11:00 AM";
         } else if(progress == 11){
             text = "From:10:00AM \t To:12:00PM";
+            str_time_1 = "10:00 AM"; str_time_2 = "12:00 PM";
         } else if(progress == 12){
             text = "From:11:00AM \t To:01:00PM";
+            str_time_1 = "11:00 AM"; str_time_2 = "01:00 PM";
         } else if(progress == 13){
             text = "From:12:00PM \t To:02:00PM";
+            str_time_1 = "12:00 PM"; str_time_2 = "02:00 PM";
         } else if(progress == 14){
             text = "From:01:00PM \t To:03:00PM";
+            str_time_1 = "01:00 PM"; str_time_2 = "03:00 PM";
         } else if(progress == 15){
             text = "From:02:00PM \t To:04:00PM";
+            str_time_1 = "02:00 PM"; str_time_2 = "04:00 PM";
         } else if(progress == 16){
             text = "From:03:00PM \t To:05:00PM";
+            str_time_1 = "03:00 PM"; str_time_2 = "05:00 PM";
         } else if(progress == 17){
             text = "From:04:00PM \t To:06:00PM";
+            str_time_1 = "04:00 PM"; str_time_2 = "06:00 PM";
         } else if(progress == 18){
             text = "From:05:00PM \t To:07:00PM";
+            str_time_1 = "05:00 PM"; str_time_2 = "07:00 PM";
         } else if(progress == 19){
             text = "From:06:00PM \t To:08:00PM";
+            str_time_1 = "06:00 PM"; str_time_2 = "08:00 PM";
         }else if(progress == 20){
             text = "From:07:00PM \t To:09:00PM";
+            str_time_1 = "07:00 PM"; str_time_2 = "09:00 PM";
         } else if(progress == 21){
             text = "From:08:00PM \t To:10:00PM";
+            str_time_1 = "08:00 PM"; str_time_2 = "10:00 PM";
         } else if(progress == 22){
             text = "From:09:00PM \t To:11:00PM";
+            str_time_1 = "09:00 PM"; str_time_2 = "11:00 PM";
         } else if(progress == 23){
             text = "From:10:00PM \t To:12:00AM";
+            str_time_1 = "10:00 PM"; str_time_2 = "12:00 AM";
         } else if(progress == 24){
             text = "From:10:00PM \t To:12:00AM";
-        }
+            str_time_1 = "10:00 PM"; str_time_2 = "12:00 AM";
+        } else {}
+
+        tv_time_1.setText(str_time_1);
+        tv_time_2.setText(str_time_2);
 
         return text;
     }
-
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {

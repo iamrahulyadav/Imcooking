@@ -172,6 +172,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/text_color_15" />
 
+<!--
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -187,6 +188,7 @@
                         android:paddingRight="10dp"/>
 
                 </LinearLayout>
+-->
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
@@ -198,7 +200,7 @@
                     android:background="@drawable/seekbar_text"
                     android:paddingTop="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="0" />
+                    android:text="From:00:00AM 	 To:02:00AM" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
@@ -211,8 +213,8 @@
                         android:layout_height="match_parent"
                         android:id="@+id/edit_dish_seekbar"
                         android:progressTint="#FFF"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"/>
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp"/>
 
                 </LinearLayout>
 

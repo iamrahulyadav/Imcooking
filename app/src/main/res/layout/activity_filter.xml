@@ -91,8 +91,8 @@
                     android:layout_height="match_parent"
                     android:id="@+id/filter_seekbar"
                     android:progressTint="#FFF"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"/>
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"/>
 
             </LinearLayout>
 
