@@ -151,7 +151,7 @@ public class Payment1Activity extends AppBaseActivity {
         });
         dialog.setCancelable(true);
         dialog.show();
-        dialog.getWindow().setBackgroundDrawable(null);
+//        dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         txtOk.setOnClickListener(new View.OnClickListener() {
