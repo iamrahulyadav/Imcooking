@@ -143,9 +143,13 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
 
     @Override
     public void viewResponse(int position) {
-        receiver_id = requestDishChefDetailsBeans.get(position).getChef_id()+"";
-        request_id = requestDishChefDetailsBeans.get(position).getRequest_id()+"";
-        showDialog(position);
+        if(requestDishChefDetailsBeans.get(position).getConversation_details().size()>0) {
+            receiver_id = requestDishChefDetailsBeans.get(position).getChef_id() + "";
+            request_id = requestDishChefDetailsBeans.get(position).getRequest_id() + "";
+            showDialog(position);
+        } else{
+            BaseClass.showToast(getContext(), "You haven't recieve any request yet.");
+        }
     }
 
     private   DishReqChatAdatper dishReqChatAdatper;
@@ -160,6 +164,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
+
         txtDesc = dialog.findViewById(R.id.dialog_view_response_desc);
         txtMsg = dialog.findViewById(R.id.dialog_view_response_msg);
         txt_accept = dialog.findViewById(R.id.view_response_accept);
@@ -169,7 +174,9 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         chatrecyclerView = dialog.findViewById(R.id.dialog_view_response_recycler);
         txtOfferPrice = dialog.findViewById(R.id.dialog_view_response_offer_price);
         txtOfferValue = dialog.findViewById(R.id.dialog_view_response_offer_edt);
+
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         dialog.findViewById(R.id.view_response_cross).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,8 +206,12 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
             offer_price = conversationDetailsBeans.get(0).getConversation_offer_price();
             txtOfferValue.setText("£"+conversationDetailsBeans.get(0).getConversation_offer_price());
         }
+
         dishReqChatAdatper = new DishReqChatAdatper(getContext(),conversationDetailsBeans, chef_id, foodie_id);
         chatrecyclerView.setAdapter(dishReqChatAdatper);
+
+//        if(conversationDetailsBeans.get(position).getConversation_message().)
+
         txt_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
