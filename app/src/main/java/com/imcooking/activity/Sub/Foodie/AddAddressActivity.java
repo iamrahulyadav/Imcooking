@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,8 +28,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +45,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -70,7 +74,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, RadioGroup.OnCheckedChangeListener {
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -186,17 +190,33 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     EditText edtMsg;
     RadioButton radioHome, radioOffice,radioOther;
     TextView txtCanel, txtSave, txtCancleIcon;
+    private RadioGroup radioGroup;
 
     private void createMyDialog(){
 
         dialog = new Dialog(AddAddressActivity.this);
         dialog.setContentView(R.layout.dialog_save_address);
-        dialog.getWindow().setBackgroundDrawable(null);
+//        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         edtMsg = dialog.findViewById(R.id.dialog_address_edtMsg);
+
+        radioGroup = dialog.findViewById(R.id.dialog_address_radiogroup);
         radioHome = dialog.findViewById(R.id.dialog_address_radioHome);
         radioOther = dialog.findViewById(R.id.dialog_address_radioOther);
         radioOffice = dialog.findViewById(R.id.dialog_address_radioOffice);
+
+        radioGroup.setOnCheckedChangeListener(this);
+//        radioHome.setChecked(true);
+/*
+        radioOther.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                edtMsg.setFocusable(true);
+            }
+        });
+*/
+
         txtSave = dialog.findViewById(R.id.dialog_address_txtSave);
         txtCanel = dialog.findViewById(R.id.dialog_address_txtCancel);
         txtCancleIcon = dialog.findViewById(R.id.cancel_icon);
@@ -213,6 +233,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 dialog.dismiss();
             }
         });
+/*
         if (address_id!=null){
             if (title.equalsIgnoreCase("Home"))
                 radioHome.setChecked(true);
@@ -220,6 +241,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 radioOffice.setChecked(true);
             else radioOther.setChecked(true);
         }
+*/
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -251,6 +273,26 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         });
         dialog.show();
     }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+        if(radioGroup.getId() == R.id.dialog_address_radiogroup){
+
+            int id = radioGroup.getCheckedRadioButtonId();
+            RadioButton radioButton = radioGroup.findViewById(id);
+            if(radioButton.getId() == R.id.dialog_address_radioOther){
+                edtMsg.setVisibility(View.VISIBLE);
+                edtMsg.setFocusable(true);
+            } else{
+                edtMsg.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+
+
 
     LatLng latLng=mCenterLatLong;
     JSONObject jsonObject2;
@@ -367,11 +409,19 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 if (checked){
                     edtMsg.setVisibility(View.VISIBLE);
                     title= edtMsg.getText().toString().trim();
+                    edtMsg.setFocusable(true);
 
                 }
                     break;
         }
     }
+
+
+
+
+
+
+
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
@@ -473,6 +523,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             mGoogleApiClient.disconnect();
         }
     }
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addConnectionCallbacks(this)
@@ -588,8 +639,8 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 }
             }
         });
-
     }
+
 }
 
 
