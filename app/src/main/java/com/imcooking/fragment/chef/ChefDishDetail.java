@@ -1,6 +1,7 @@
 package com.imcooking.fragment.chef;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,6 +24,7 @@ import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -53,7 +55,7 @@ import java.util.TimerTask;
 public class ChefDishDetail extends Fragment implements View.OnClickListener, DishDetailPagerAdapter.DishDetailPlayClick {
 
     private  String VIDEO_SAMPLE =
-            "https://developers.google.com/training/images/tacoma_narrows.mp4";
+            "", isVideo;
 
     private VideoView mVideoView;
     private TextView mBufferingTextView;
@@ -90,7 +92,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 3000; // time in milliseconds between successive task executions.
-
+    private ProgressBar progressBar;
     ViewPager home_top_pager;
     private String str_id, str_name, str_likes, str_available,str_like, str_time, str_count, str_homedelivery, str_pickup, str_price,
             str_description, str_special_note, str_cuisine, str_qyt;
@@ -100,6 +102,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     private ImageView iv_home_delivery_icon, iv_pickup_icon;
 
     private void init(){
+        progressBar = getView().findViewById(R.id.progress_bar_chef_dish);
         home_top_pager = getView().findViewById(R.id.fragment_chef_auto_scroll_page);
         tv_dish_name = getView().findViewById(R.id.chef_dish_detalis_dish_name);
         tv_dish_likes = getView().findViewById(R.id.chef_dish_detalis_dish_likes);
@@ -141,9 +144,11 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         arrayList = getArguments().getStringArrayList("image");
         str_like = getArguments().getString("likeno");
         VIDEO_SAMPLE = getArguments().getString("video");
+        Log.d("TAG", "getMyData: "+VIDEO_SAMPLE);
+
         if (VIDEO_SAMPLE!=null)
-            if (arrayList.size()>0)
-            arrayList.add(arrayList.get(0));
+            isVideo = "yes";
+        else isVideo = "no";
 
         base64Array = new ArrayList<>();
         Log.d("TAG", "getMyData: "+arrayList.size());
@@ -153,7 +158,8 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
             String imageUrl = GetData.IMG_BASE_URL+arrayList.get(i);
             urls[i] = imageUrl;
            // Execute the task
-            new GetImage().execute(urls);
+            new GetImage().execute(GetData.IMG_BASE_URL+arrayList.get(i));
+
         }
 
         str_qyt = getArguments().getString("qyt");
@@ -209,9 +215,9 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         if (str_like!=null){
             tv_dish_likes.setText(str_like);
         } else tv_dish_likes.setText("0");
+
         timer = new Timer(); // This will create a new Thread
         timer .schedule(new TimerTask() { // task to be scheduled
-
             @Override
             public void run() {
                 handler.post(Update);
@@ -249,11 +255,9 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     }
 
     private void setAdapter() {
-        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList,this);
+        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList,this, isVideo);
         home_top_pager.setAdapter(dishDetailPagerAdapter);
-
     }
-
 
     @Override
     public void onClick(View view) {
@@ -273,7 +277,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                     .putExtra("image", arrayList)
                     .putExtra("qyt",str_qyt)
                     .putExtra("video",VIDEO_SAMPLE)
-                    .putExtra("imageBAse", base64Array)
+
 
             );
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -406,20 +410,26 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
     @Override
     public void playVideo(int pos, String tag) {
-            if (VIDEO_SAMPLE!=null)
-            initializePlayer();
-            mVideoView.setVisibility(View.VISIBLE);
-            mBufferingTextView.setVisibility(View.VISIBLE);
-            home_top_pager.setVisibility(View.GONE);
+            if (VIDEO_SAMPLE!=null){
+                initializePlayer();
+                mVideoView.setVisibility(View.VISIBLE);
+                mBufferingTextView.setVisibility(View.VISIBLE);
+                home_top_pager.setVisibility(View.GONE);
+            } else {
+                mVideoView.setVisibility(View.GONE);
+                mBufferingTextView.setVisibility(View.GONE);
+                home_top_pager.setVisibility(View.VISIBLE);
+            }
 
     }
 
-    private ArrayList<String>base64Array;
+    public static ArrayList<String>base64Array;
 
     public class GetImage extends AsyncTask<String, Void, Bitmap> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -436,6 +446,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         protected void onPostExecute(Bitmap result) {
             String s = BaseClass.BitMapToString(result);
             base64Array.add(s);
+            progressBar.setVisibility(View.GONE);
         }
 
         // Creates Bitmap from InputStream and returns it
@@ -466,7 +477,6 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                 HttpURLConnection httpConnection = (HttpURLConnection) connection;
                 httpConnection.setRequestMethod("GET");
                 httpConnection.connect();
-
                 if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     stream = httpConnection.getInputStream();
                 }

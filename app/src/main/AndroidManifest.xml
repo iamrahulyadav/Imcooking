@@ -9,8 +9,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <application
         android:allowBackup="true"
@@ -31,24 +32,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".utils.AppBaseActivity"/>
+
         <activity android:name=".activity.home.HomeSearchActivity1" />
         <activity
             android:name=".activity.main.setup.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.main.setup.SignUpActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.main.setup.ForgotPassActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.home.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.Sub.Foodie.ManageAddress"
             android:screenOrientation="portrait" />
@@ -70,7 +73,7 @@
         <activity android:name=".activity.Sub.Foodie.Help1" />
         <activity
             android:name=".activity.Sub.Foodie.EditProfile"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".activity.Sub.Foodie.ChefProfile" />
 
         <meta-data
@@ -83,15 +86,15 @@
         <activity android:name=".activity.Sub.Foodie.OtherDishDishActivity" />
         <activity
             android:name=".activity.Sub.Foodie.AddAddressActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activity.Sub.Foodie.SelectLocActivity" />
         <activity android:name=".activity.Sub.Foodie.CartActivity" />
         <activity
             android:name=".activity.Sub.Chef.ChefEditDish"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.Sub.Chef.ChefEditProfile"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activity.Sub.Chef.ChangePassword" />
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />

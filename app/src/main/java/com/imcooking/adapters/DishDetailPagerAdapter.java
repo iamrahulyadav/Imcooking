@@ -31,16 +31,18 @@ public class DishDetailPagerAdapter extends PagerAdapter{
     LayoutInflater mLayoutInflater;
     Context context;
     List<String> chefDishBeans ;
+    String video;
    private DishDetailPlayClick dishDetailPlayClick;
 
     public interface DishDetailPlayClick{
         void playVideo(int pos, String tag);
     }
 
-    public DishDetailPagerAdapter(Context context, List<String> chefDishBeans,DishDetailPlayClick dishDetailPlayClick) {
+    public DishDetailPagerAdapter(Context context, List<String> chefDishBeans,DishDetailPlayClick dishDetailPlayClick, String video) {
         this.context = context;
         this.chefDishBeans = chefDishBeans;
         this.dishDetailPlayClick = dishDetailPlayClick;
+        this.video = video;
         mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -59,9 +61,12 @@ public class DishDetailPagerAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         View view = mLayoutInflater.inflate(R.layout.item_dish_details_pager, container, false);
-        ImageView iv_dish_image, imgPlay;
+        final ImageView iv_dish_image, imgPlay;
         iv_dish_image = view.findViewById(R.id.home_image);
         imgPlay = view.findViewById(R.id.item_video_play);
+        if (video.equalsIgnoreCase("no")){
+            imgPlay.setVisibility(View.GONE);
+        }
         if (position>0){
             imgPlay.setVisibility(View.GONE);
         }
@@ -69,6 +74,7 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         imgPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imgPlay.setVisibility(View.GONE);
                 dishDetailPlayClick.playVideo(position, "play");
             }
         });

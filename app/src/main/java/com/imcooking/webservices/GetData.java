@@ -73,6 +73,7 @@ public class GetData {
     public static String FOODIE_DETAILS_FOLLOW_CHEF = "foodie_details_follw_chef";
     public static String DISH_LIKE_LIST ="dish_like_list";
     public static String FOODIE_MY_ORDER ="myorder";
+    public static String CHEF_I_LOVE = "cheflove";
 
 
     public GetData(final Context context, Activity activity) {
@@ -154,7 +155,6 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
                             str = jsonObject.toString();
                             if (jsonObject.has("status"))
-
                                 callback.onSuccess(str);
 
                             else

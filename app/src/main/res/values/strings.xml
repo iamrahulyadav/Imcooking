@@ -2,6 +2,7 @@
     <string name="app_name">ImCooking</string>
 
     <string name="error">Sorry, we are facing some connectivity error, please try again or report us.</string>
+    <!--<string name="server_error">Server Error</string>-->
     <!--activity login-->
     <string name="txtUserName">USER NAME</string>
     <string name="txtPassword">PASSWORD</string>
@@ -55,4 +56,7 @@
 
     <!--activity payment -->
     <string name="activity_payment_txt_place_order">PLACE ORDER</string>
+
+    <!--EditDish-->
+    <string name="dish_updated_failed">Dish Updated Failed</string>
 </resources>

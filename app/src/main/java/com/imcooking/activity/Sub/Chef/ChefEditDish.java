@@ -43,6 +43,7 @@ import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterEditDishPhotos;
+import com.imcooking.fragment.chef.ChefDishDetail;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.utils.AndroidMultiPartEntity;
 import com.imcooking.utils.AppBaseActivity;
@@ -88,7 +89,7 @@ import static java.util.Calendar.HOUR_OF_DAY;
 public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCheckedChangeListener,
         AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
 
-    private String chef_id, dish_id, name, cuisine, price, description, special_note,qyt, available, homedelivery,
+    private String chef_id="", dish_id="", name, cuisine, price, description, special_note,qyt, available, homedelivery,
             pickup,video_sample;
     private EditText edt_name, edt_price, edt_description, edt_special_note, edt_qyt;
     private SwitchCompat switch_1, switch_2, switch_3;
@@ -172,10 +173,19 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         btn_browse_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"Select Video"),REQUEST_TAKE_GALLERY_VIDEO);
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions(ChefEditDish.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_TAKE_GALLERY_VIDEO);
+                } else {
+                    Log.e("DB", "PERMISSION GRANTED");
+                    result = true;
+                    Intent intent = new Intent();
+                    intent.setType("video/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent,"Select Video"),REQUEST_TAKE_GALLERY_VIDEO);
+                }
             }
         });
 
@@ -232,7 +242,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
 
             arrayList = getIntent().getExtras().getStringArrayList("image");
-            base = getIntent().getExtras().getStringArrayList("imageBAse");
+            base = ChefDishDetail.base64Array;
 
             if (!qyt.equals("null")){
                 edt_qyt.setText(qyt);
@@ -285,6 +295,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             title = "dish";
             tv_title.setText("Add Dish");
             arr_photos.add("Photo");
+            base.add("MyBase64String");
         }
 
         TinyDB tinyDB = new TinyDB(getApplicationContext());
@@ -342,24 +353,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 }
                                 adddish(title);
                             } else if(title.equals("editdish")){
-                                String urls[] = new String[arr_photos.size()];
-
-                                arr_edit_photos_base64.clear();
                                 try {
                                     editdish(title);
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
                                 }
-
-/*
-                                for(int k=0; k<arr_photos.size(); k++) {
-                                    String imageUrl = GetData.IMG_BASE_URL+arr_photos.get(k);
-                                    urls[k] = imageUrl;
-                                    GetImage task = new GetImage();
-                                    // Execute the task
-                                    task.execute(urls);
-                                }
-*/
                             }
                        /* } else{
                             BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
@@ -400,6 +398,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDish_image(base);
         requestData.setDish_qyt(qyt);
 
+
+        Log.d("Base64Size", base.size() + "");
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
@@ -415,8 +415,15 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                     if(job.getBoolean("status")){
                                         if(job.has("message")){
                                             if(job.getString("message").equals("Add dish Successfully")){
+                                                dish_id = job.getString("last_insertid");
                                                 BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
-                                                finish();
+
+                                                if (selectedPath!=null){
+                                                    if (duration<=20000)
+                                                        new UploadFileToServer().execute();
+                                                } else {
+                                                    finish();
+                                                }
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                             }
@@ -462,7 +469,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDish_video("abc");
         requestData.setDish_image(base);
         requestData.setDish_qyt(qyt);
-        Log.d("MyArraySize", arr_edit_photos_base64.size()+"");
+        Log.d("MyArraySize", base.size() + "");
+        if (selectedPath!=null){
+            if (duration<=20000)
+                new UploadFileToServer().execute();
+        }
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
@@ -481,7 +492,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                                 finish();
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
                                             } else {
-                                                BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
+                                                BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
                                             }
                                         } else{
                                             BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
@@ -506,6 +517,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     public void add_more_photos(View view){
 
         arr_photos.add("Photo");
+        base.add("MyBase64String");
         if(arr_photos.size() == 3){
             tv_add_more_photo.setVisibility(View.GONE);
         }
@@ -603,6 +615,16 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 //                        Toast.makeText(getApplicationContext(), "file Permission granted", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case REQUEST_TAKE_GALLERY_VIDEO:
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    Toast.makeText(getApplicationContext(), "file Permission not granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    result =true;
+                    if(result){}
+//                        galleryIntent();
+//                        Toast.makeText(getApplicationContext(), "file Permission granted", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
     int duration;
@@ -617,13 +639,15 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                 Uri selectedImageUri = data.getData();
                 selectedPath = getPath(selectedImageUri);
-                MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
-               duration = mp.getDuration();
-                Log.d("TAG", "video:path "+duration);
-                if (duration>20000){
-                    BaseClass.showToast(this, "Your Video is too large ");
-                } else {
-                    txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                if (selectedPath!=null) {
+                    MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
+                    duration = mp.getDuration();
+                    Log.d("TAG", "video:path " + duration);
+                    if (duration > 20000) {
+                        BaseClass.showToast(this, "Your Video is too large ");
+                    } else {
+                        txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                    }
                 }
             }
         }
@@ -715,6 +739,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             finish();
 
             Log.e("TAG", "Response from server: " + result);
+            finish();
 
             // showing the server response in an alert dialog
             //  showAlert(result);
@@ -725,6 +750,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
 
     public String getPath(Uri uri) {
+        String path = null;
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
@@ -735,7 +761,10 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
         cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+        if (cursor!=null && cursor.moveToFirst()){
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+
+        }
         cursor.close();
 
         return path;
@@ -764,7 +793,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         bitmap = bm;
         bitmapString = BaseClass.BitMapToString(bitmap);
-        base.add(bitmapString);
+        base.set(pos, bitmapString);
 
     }
 
@@ -798,8 +827,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
         adapterEditDishPhotos.notifyDataSetChanged();
+
         bitmapString = BaseClass.BitMapToString(bitmap);
-        base.add(bitmapString);
+        base.set(pos, bitmapString);
 
     }
 
@@ -908,7 +938,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             imgBase64List.add(s);
             if(imgBase64List.size() == arr_photos.size()){
                 try {
-                    Log.d("TAG", "edit_dish_submit:aa "+imgBase64List.size()+arr_photos.size());
+                    Log.d("TAG", "edit_dish_submit:aa " + imgBase64List.size() + arr_photos.size());
                     editdish(title);
                     if (selectedPath!=null){
                         if (duration<=20000)

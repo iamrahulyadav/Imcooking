@@ -308,7 +308,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
                 break;
             case R.id.cart_tv_addnewitem:
-                startActivity(new Intent(CartActivity.this, OtherDishDishActivity.class).putExtra("chef_id", chef_id));
+                startActivity(new Intent(CartActivity.this, OtherDishDishActivity.class)
+                        .putExtra("chef_id", chef_id));
                 break;
             case R.id.radioGroup:
                 //if(){}

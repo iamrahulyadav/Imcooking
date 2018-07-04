@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_dish_name"
                 android:hint="Dish Name"
+                android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:textColorHint="@color/text_color_7"
                 android:textSize="16sp"
@@ -77,6 +78,7 @@
                 android:id="@+id/chef_edit_dish_price"
                 android:hint="Price (in £)"
                 android:inputType="number"
+                android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:textColorHint="@color/text_color_7"
                 android:textSize="16sp"
@@ -95,6 +97,7 @@
                 android:id="@+id/chef_edit_dish_description"
                 android:hint="Ingredients of Recipe"
                 android:textSize="16sp"
+                android:imeOptions="actionNext"
                 android:textColorHint="@color/text_color_7"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent"  />
@@ -110,6 +113,7 @@
                 android:id="@+id/chef_edit_dish_special_note"
                 android:hint="Special Note"
                 android:textSize="16sp"
+
                 android:textColorHint="@color/text_color_7"
                 android:textColor="@color/text_color_4"
                 android:background="@android:color/transparent" />
@@ -125,6 +129,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_dish_qyt"
                 android:hint="Quantity"
+                android:imeOptions="actionNext"
                 android:inputType="number"
                 android:singleLine="true"
                 android:textColorHint="@color/text_color_7"

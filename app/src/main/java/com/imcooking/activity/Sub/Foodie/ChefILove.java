@@ -71,12 +71,13 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
     }
 
     ChefIloveData chefIloveData = new ChefIloveData();
+
     private void getChefLove(String foodie_id){
 
         String request = "{\"foodie_id\":" + foodie_id + "}";
         try {
             JSONObject jsonObject = new JSONObject(request);
-            new GetData(getApplicationContext()).sendMyData(jsonObject, "cheflove", ChefILove.this,
+            new GetData(getApplicationContext()).sendMyData(jsonObject, GetData.CHEF_I_LOVE, ChefILove.this,
                     new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
@@ -108,26 +109,26 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
 
     @Override
     public void click_me_chef_i_love(int position, String click_type) {
-
+        String chef_id =  chefIloveData.getCheflove().get(position).getChef_id()+"";
         if(click_type.equals("layout")){
 
             startActivityForResult(new Intent(getApplicationContext(), ChefProfile.class)
-                            .putExtra("chef_id", "72"/*chefIloveData.getCheflove().get(position).getChef_id()*/)
+                            .putExtra("chef_id",chef_id)
                             .putExtra("foodie_id", foodie_id),
                     ChefProfile.CHEF_PROFILE_CODE);
             overridePendingTransition(R.anim.enter, R.anim.exit);
-
         } else {
-            remove_chef(position);
+            remove_chef(position, chef_id);
         }
     }
 
-    private void remove_chef(final int position){
+    private void remove_chef(final int position, String chef_id){
 
         try {
             String s = "{\n" +
-                    "  \"chef_id\":" + "72" + ",\n" +
-                    "  \"foodie_id\":" + foodie_id + "}";
+                    "\"chef_id\":" + chef_id + ",\n" +
+                    "\"foodie_id\":" + foodie_id + "}";
+
             JSONObject jsonObject = new JSONObject(s);
 
             new GetData(getApplicationContext(), ChefILove.this).sendMyData(jsonObject, "follow",
@@ -137,7 +138,7 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
                             FollowUnfollow followUnfollow = new Gson().fromJson(result, FollowUnfollow.class);
                             if(followUnfollow.isStatus()){
                                 if (followUnfollow.getMsg().equals("Successfully follow")){
-                                   BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                   BaseClass.showToast(getApplicationContext(), "Successfully unfollow");
                                 }
                                 else if (followUnfollow.getMsg().equals("Successfully unfollow")){
                                     BaseClass.showToast(getApplicationContext(),

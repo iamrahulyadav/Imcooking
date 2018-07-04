@@ -40,6 +40,12 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_centerInParent="true"/>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:id="@+id/progress_bar_chef_dish"/>
 
             <android.support.v4.view.ViewPager
                 android:layout_width="match_parent"

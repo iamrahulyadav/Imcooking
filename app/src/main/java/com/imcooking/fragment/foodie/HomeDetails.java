@@ -61,7 +61,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     Dialog dialog ;
 
     private  String VIDEO_SAMPLE =
-            "https://developers.google.com/training/images/tacoma_narrows.mp4";
+            "",isVideo;
 
     private VideoView mVideoView;
     private ProgressBar mBufferingTextView;
@@ -273,7 +273,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                         imgPickUp.setVisibility(View.GONE);
                                         txtDeliverytype.setText("Home Delivery");
                                     }
-
+                                    VIDEO_SAMPLE = GetData.IMG_BASE_URL+dishDetails.getDish_details().getDish_video()+"";
+                                    if (VIDEO_SAMPLE!=null)
+                                        isVideo = "yes";
+                                    else isVideo = "no";
                                     txtLike.setText(dishDetails.getDish_details().getLike() + "");
 
                                     txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
@@ -343,7 +346,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     }
 
     private void setAdapter(){
-        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), imageList, this);
+        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), imageList, this, isVideo);
         home_top_pager.setAdapter(dishDetailPagerAdapter);
 
     }
@@ -631,7 +634,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     @Override
     public void playVideo(int pos, String tag) {
 
-            VIDEO_SAMPLE = GetData.IMG_BASE_URL+dishDetails.getDish_details().getDish_video()+"";
             initializePlayer();
             mVideoView.setVisibility(View.VISIBLE);
             mBufferingTextView.setVisibility(View.VISIBLE);

@@ -115,6 +115,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             Login data = new Login();
             data.setUser_name(uname);
             data.setPassword(pass);
+            data.setDevice_id("cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q");
 
             new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data), "login", new GetData.MyCallback() {
                 @Override

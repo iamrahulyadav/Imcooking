@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -35,7 +36,7 @@ import com.imcooking.activity.main.setup.LoginActivity;
 import com.imcooking.utils.AppBaseActivity;
 import com.mukesh.tinydb.TinyDB;
 
-public class SplashActivity extends AppBaseActivity {
+public class SplashActivity extends AppCompatActivity {
     ImageView imgSplash, imgLogo;
     private Scene scene0;
     LocationManager locManager;
@@ -68,9 +69,52 @@ public class SplashActivity extends AppBaseActivity {
         imgSplash.startAnimation(animation);
         imgLogo.startAnimation(animationLogo);
 
-
     }
+
+    public boolean checkGPSStatus()
+    {
+        LocationManager locationManager =(LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean isGPSProviderEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if(!isGPSProviderEnable)
+        {
+            showSettingsAlert();
+        }
+        return true;
+    }
+    private void showSettingsAlert(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS is settings");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        });
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                checkGPSStatus();
+            }
+        });
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -97,8 +141,6 @@ public class SplashActivity extends AppBaseActivity {
                         })
                         .create()
                         .show();
-
-
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
@@ -110,7 +152,6 @@ public class SplashActivity extends AppBaseActivity {
             return true;
         }
     }
-
 
     private void callGps(){
         locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -175,8 +216,6 @@ public class SplashActivity extends AppBaseActivity {
 
                 } else {
                     checkLocationPermission();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
 
                 }
                 return;

@@ -48,6 +48,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
     private TextView txtShop;
     private String sender_id, receiver_id, request_id, msg, offer_price="", status;
     private List<FoodieMyRequest.FoodieRequestDishChefDetailsBean> list = new ArrayList();
+
     public FoodieMyRequestFragment() {
         // Required empty public constructor
     }
@@ -270,7 +271,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
                     edtReply.setText("");
                     status = "reply";
                     sendreply();
-                }  BaseClass.showToast(getContext(), "Please enter message");
+                }  else BaseClass.showToast(getContext(), "Please enter message");
             }
         });
 

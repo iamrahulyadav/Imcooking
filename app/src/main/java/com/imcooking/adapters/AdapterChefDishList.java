@@ -124,8 +124,6 @@ public class AdapterChefDishList extends PagerAdapter{
 
         final ArrayList<String> arrayList = new ArrayList<>();
         for (int i=0; i<chef_dish_list.get(position).getDish_image().size(); i++){
-
-
             arrayList.add("" + chef_dish_list.get(position).getDish_image().get(i));
             Log.d("TAG", "rakhi: "+chef_dish_list.get(position).getDish_image().get(i));
         }

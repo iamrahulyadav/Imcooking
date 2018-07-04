@@ -741,8 +741,13 @@ public class HomeFragment extends Fragment implements
             chefDishBeans_filter_all.addAll(chefDishBeans);
             adapter.notifyDataSetChanged();
 
-            layout_no_record_found.setVisibility(View.GONE);
-            viewPager.setVisibility(View.VISIBLE);
+            if(chefDishBeans_filter_all!=null && chefDishBeans_filter_all.size()>0) {
+                layout_no_record_found.setVisibility(View.GONE);
+                viewPager.setVisibility(View.VISIBLE);
+            } else{
+                layout_no_record_found.setVisibility(View.VISIBLE);
+                viewPager.setVisibility(View.GONE);
+            }
 
         } else{
             for(int i=0; i<arr_cuisines.size(); i++){
