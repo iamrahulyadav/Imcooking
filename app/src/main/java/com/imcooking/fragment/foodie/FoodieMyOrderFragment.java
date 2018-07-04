@@ -191,7 +191,7 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
             e.printStackTrace();
         }
     }
-    AdapterFoodieMyOrderList adapterFoodieMyOrder, adapterFoodieMyOrder1;
+    private AdapterFoodieMyOrderList adapterFoodieMyOrder, adapterFoodieMyOrder1;
     private void setMyAdapter(List<FoodieMyorderList.FoodieOrderListBean> currentOrderListBeans,
                               List<FoodieMyorderList.FoodieOrderListBean> arrayList){
        adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),

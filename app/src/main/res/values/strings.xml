@@ -59,4 +59,9 @@
 
     <!--EditDish-->
     <string name="dish_updated_failed">Dish Updated Failed</string>
+    <!--dialog view response -->
+    <string name="dialog_view_response_offer_price">Offer Price</string>
+
+    <!--dialog save address -->
+    <string name="dialog_save_address_save_this_address">Save this address</string>
 </resources>

@@ -233,7 +233,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 dialog.dismiss();
             }
         });
-/*
         if (address_id!=null){
             if (title.equalsIgnoreCase("Home"))
                 radioHome.setChecked(true);
@@ -241,11 +240,13 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 radioOffice.setChecked(true);
             else radioOther.setChecked(true);
         }
-*/
         txtSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (title!=null){
+                    if(radioGroup.getCheckedRadioButtonId() == R.id.dialog_address_radioOther){
+                        title = edtMsg.getText().toString().trim();
+                    }
                     address = txtLocatName.getText().toString().trim();
                     if (!edtHouse.getText().toString().trim().isEmpty()){
                         address = address + " , "+ edtHouse.getText().toString().trim();
@@ -257,7 +258,10 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                         @Override
                         public void run() {
                             if (!edtMsg.getText().toString().trim().isEmpty()){
-                             title= edtMsg.getText().toString().trim();
+//                             title= edtMsg.getText().toString().trim();
+                                /*if (title.equals("Others")){
+                                    title = edtMsg.getText().toString().trim();
+                                }*/
                             }
                             if (address_id!=null){
                                 addAddress(title,address,address_id);
@@ -281,6 +285,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
 
             int id = radioGroup.getCheckedRadioButtonId();
             RadioButton radioButton = radioGroup.findViewById(id);
+            title = radioButton.getText().toString();
             if(radioButton.getId() == R.id.dialog_address_radioOther){
                 edtMsg.setVisibility(View.VISIBLE);
                 edtMsg.setFocusable(true);
@@ -292,10 +297,8 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
 
 
 
-
-
-    LatLng latLng=mCenterLatLong;
-    JSONObject jsonObject2;
+    private LatLng latLng=mCenterLatLong;
+    private JSONObject jsonObject2;
 
     public LatLng getLatLong(String place){
         final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
@@ -415,11 +418,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                     break;
         }
     }
-
-
-
-
-
 
 
 

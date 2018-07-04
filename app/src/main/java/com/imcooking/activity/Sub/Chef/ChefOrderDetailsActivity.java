@@ -2,7 +2,10 @@ package com.imcooking.activity.Sub.Chef;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +43,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_qyt, txt_price, txt_email, txt_pay_mode,txt_phone,txt_order_status,
             txt_order_id;
     private TinyDB tinyDB;
+    private NestedScrollView nestedScrollView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private Gson gson = new Gson();
 
@@ -65,6 +69,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
 
     private void init(){
 
+        nestedScrollView = findViewById(R.id.chef_order_list_scroll);
         recyclerView = findViewById(R.id.order_details_recycler);
         txt_chef_name = findViewById(R.id.item_foodie_my_order_chef);
         txt_date = findViewById(R.id.item_foodie_my_order_placed_date);
@@ -78,7 +83,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         txtAddress = findViewById(R.id.item_foodie_my_order_address);
         txt_phone = findViewById(R.id.item_foodie_my_order_foodie_phone);
         txt_order_status = findViewById(R.id.item_foodie_my_order_details_status);
-
+        nestedScrollView.setVisibility(View.GONE);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
@@ -119,6 +124,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void onSuccess(String result) {
+                            nestedScrollView.setVisibility(View.VISIBLE);
                             OrderDetailsData orderDetailsData = new OrderDetailsData();
                             orderDetailsData = new Gson().fromJson(result, OrderDetailsData.class);
                             if (orderDetailsData.getOrder_details()!=null){
@@ -185,7 +191,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                             else if (status.equals("4"))
                                                 txt_order_status.setText("Decline");
                                             else if (status.equals("5"))
-                                                txt_order_status.setText("On Way");
+                                                txt_order_status.setText("On The Way");
                                             else if (status.equals("8"))
                                                 txt_order_status.setText("Delivered");
                                             else if (status.equals("9"))
@@ -202,17 +208,18 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         }
     }
 
-    AdapterFoodieMyOrderDetailList myOrderDetailList;
     private void setOrderDetails(){
-        myOrderDetailList = new AdapterFoodieMyOrderDetailList(getApplicationContext(), orderDetailsBeans);
+        AdapterFoodieMyOrderDetailList myOrderDetailList = new AdapterFoodieMyOrderDetailList(getApplicationContext(),
+                orderDetailsBeans);
         recyclerView.setAdapter(myOrderDetailList);
     }
-    Dialog dialog;
+
+    private Dialog dialog;
     private void createDialog(String delivery_type){
         dialog = new Dialog(ChefOrderDetailsActivity.this);
         dialog.setContentView(R.layout.dialog_view_response);
         dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
         TextView txtAccept, txt_decline, txtreply, txtin_process, txt_ready, txt_on_way, txt_delivered, txt_not_delivered;

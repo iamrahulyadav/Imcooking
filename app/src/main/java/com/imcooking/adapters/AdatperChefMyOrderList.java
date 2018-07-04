@@ -112,10 +112,12 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
             else if (status.equals("9"))
                 holder.txt_order_status.setText("Not Delivered");
         }
-        holder.txtqty.setText("Qyt : "+list.get(position).getDish_qyt());
 
+        holder.txtqty.setText("Qyt : "+list.get(position).getDish_qyt());
+        holder.txtqty.setVisibility(View.VISIBLE);
         float price = Integer.parseInt(list.get(position).getDish_qyt())*Float.parseFloat(list.get(position).getPrice());
         holder.txtTotalAmnt.setText("£"+price);
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date myDate = null;
         try {

@@ -36,7 +36,8 @@ TinyDB tinyDB;
         etNewpass=findViewById(R.id.activity_change_password_et_newpass);
         etConfirmpass=findViewById(R.id.activity_change_password_et_confirm);
         txtChangepass=findViewById(R.id.activity_change_password_tv_changepass);
-txtChangepass.setOnClickListener(new View.OnClickListener() {
+        txtChangepass.setOnClickListener(new View.OnClickListener() {
+
     @Override
     public void onClick(View v) {
         try {
@@ -45,7 +46,7 @@ txtChangepass.setOnClickListener(new View.OnClickListener() {
             e.printStackTrace();
         }
     }
-});
+        });
 
     }
 

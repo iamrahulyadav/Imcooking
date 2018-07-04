@@ -348,6 +348,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             mGoogleApiClient.disconnect();
         }
     }
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addConnectionCallbacks(this)

@@ -153,6 +153,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
     }
 
     private   DishReqChatAdatper dishReqChatAdatper;
+
     private void showDialog(final int position){
         TextView txtMsg, txtDesc, txt_accept,txtOfferPrice, txt_decline, txt_reply;
         final EditText edtReply,txtOfferValue;

@@ -14,10 +14,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefFollowers;
-import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
 import com.imcooking.adapters.AdatperChefFollowers;
-import com.imcooking.adapters.AdatperChefMyOrderList;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -71,12 +70,12 @@ public class ChefFollowersFragment extends Fragment {
         };
         recyclerView.setLayoutManager(manager1);
 
-        getorderList();
+        getFollowerList();
 
 
     }
 
-    public void getorderList(){
+    public void getFollowerList(){
 
         String login = tinyDB.getString("login_data");
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
@@ -84,7 +83,6 @@ public class ChefFollowersFragment extends Fragment {
         String user_id=apiResponse.getUser_id()+"";
 
          String s = "{\"chef_id\":" + user_id + "}";
-//       String s = "{\"Chef_id\": 5}";
         Log.d("MyRequest", s);
         try {
             JSONObject job = new JSONObject(s);
@@ -104,7 +102,7 @@ public class ChefFollowersFragment extends Fragment {
                                 }
                             }
                             else {
-                                Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
+                                BaseClass.showToast(getContext(),"No Followers Found!");
                             }
                         }
                     });
