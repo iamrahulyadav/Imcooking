@@ -153,15 +153,17 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         base64Array = new ArrayList<>();
         Log.d("TAG", "getMyData: "+arrayList.size());
 
-        for (int i=0;i<arrayList.size();i++){
-            String urls[] = new String[arrayList.size()];
-            String imageUrl = GetData.IMG_BASE_URL+arrayList.get(i);
-            urls[i] = imageUrl;
-           // Execute the task
-            new GetImage().execute(GetData.IMG_BASE_URL+arrayList.get(i));
+        if (arrayList.size()>0){
+            for (int i=0;i<arrayList.size();i++){
+                String urls[] = new String[arrayList.size()];
+                String imageUrl = GetData.IMG_BASE_URL+arrayList.get(i);
+                urls[i] = imageUrl;
+                // Execute the task
+                new GetImage().execute(GetData.IMG_BASE_URL+arrayList.get(i));
+
+            }
 
         }
-
         str_qyt = getArguments().getString("qyt");
         tv_dish_name.setText(str_name);
         if(str_available.equalsIgnoreCase("Yes")){

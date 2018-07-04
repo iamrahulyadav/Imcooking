@@ -251,7 +251,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             for(int i=0; i<arrayList.size(); i++){
                 if(i<3){
                     arr_photos.add(arrayList.get(i));
-
                 }
             }
 

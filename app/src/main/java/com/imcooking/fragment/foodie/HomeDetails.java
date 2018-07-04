@@ -508,10 +508,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
             }
         });
 
-        dialog.show();
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
     }
 
     @Override
