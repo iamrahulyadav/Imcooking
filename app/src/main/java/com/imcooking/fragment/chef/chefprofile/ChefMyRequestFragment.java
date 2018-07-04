@@ -1,6 +1,8 @@
 package com.imcooking.fragment.chef.chefprofile;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -148,7 +150,7 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         dialog.setContentView(R.layout.dialog_view_response);
         dialog.setCancelable(true);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
 

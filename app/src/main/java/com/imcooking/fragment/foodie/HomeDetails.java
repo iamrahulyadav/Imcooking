@@ -4,6 +4,8 @@ package com.imcooking.fragment.foodie;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -476,7 +478,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
              }
          });
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
 
@@ -509,7 +511,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         });
 
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
     }

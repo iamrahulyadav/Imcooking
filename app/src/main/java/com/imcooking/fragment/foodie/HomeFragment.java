@@ -764,6 +764,7 @@ public class HomeFragment extends Fragment implements
     }
 
     List<HomeData.ChefDishBean>cuisionChefList;
+
     private void filterCuisine(int position, String cuision){
         cuisionChefList = new ArrayList<>();
         for (HomeData.ChefDishBean  bean: chefDishBeans){
@@ -794,22 +795,6 @@ public class HomeFragment extends Fragment implements
             arr_like_status_1_filter_all.add(cuisionChefList.get(i).getDishlike());
         }
         adapter.notifyDataSetChanged();
-    }
-
-    private List<HomeData.ChefDishBean> getByName(List<HomeData.ChefDishBean>people, String name){
-        HomeData.ChefDishBean person = null;
-
-        List<HomeData.ChefDishBean>cuisionChefList = new ArrayList<>();
-        for (HomeData.ChefDishBean person1: people){
-            for (HomeData.ChefDishBean.DishCuisineBean dishCuisineBean : person1.getDish_cuisine()){
-                if (name.equalsIgnoreCase(dishCuisineBean.getCuisine_name())){
-                    person = person1;
-                    cuisionChefList.add(person);
-                }
-            }
-
-        }
-        return cuisionChefList;
     }
 
 }

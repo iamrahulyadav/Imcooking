@@ -685,7 +685,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(GetData.BASE_URL+"upload_video");
+            HttpPost httppost = new HttpPost(GetData.BASE_URL+GetData.UPLOAD_VIDEO);
 
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
@@ -746,7 +746,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         }
 
     }
-
 
     public String getPath(Uri uri) {
         String path = null;

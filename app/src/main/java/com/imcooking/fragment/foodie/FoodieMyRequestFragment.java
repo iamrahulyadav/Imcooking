@@ -2,6 +2,8 @@ package com.imcooking.fragment.foodie;
 
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -147,6 +149,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
     }
 
     private   DishReqChatAdatper dishReqChatAdatper;
+
     private void showDialog(final int position){
         TextView txtMsg, txtDesc, txt_accept,txtOfferPrice, txt_decline, txt_reply;
         final EditText edtReply,txtOfferValue;
@@ -154,7 +157,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_view_response);
         dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
         txtDesc = dialog.findViewById(R.id.dialog_view_response_desc);

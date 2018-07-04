@@ -32,7 +32,7 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
    private RecyclerView savedAddress;
    private TinyDB tinyDB;
    private Gson gson = new Gson();
-   ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+   private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
    private String foodie_id;
 
     @Override
@@ -97,8 +97,8 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
         });
     }
 
-
     private AddListAdatper chefILoveAdatper;
+
     private void setAddList(){
         chefILoveAdatper = new AddListAdatper(getApplicationContext(), addressBeanList);
         savedAddress.setAdapter(chefILoveAdatper);

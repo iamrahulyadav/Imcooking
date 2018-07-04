@@ -2,6 +2,8 @@ package com.imcooking.activity.Sub.Chef;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -212,7 +214,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         dialog = new Dialog(ChefOrderDetailsActivity.this);
         dialog.setContentView(R.layout.dialog_view_response);
         dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
         TextView txtAccept, txt_decline, txtreply, txtin_process, txt_ready, txt_on_way, txt_delivered, txt_not_delivered;
