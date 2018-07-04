@@ -399,9 +399,11 @@ public class HomeFragment extends Fragment implements
 //        if(!isFilterApplied) {
             if (chefDishBeans != null) {
                 chefDishBeans.clear();
+//                chefDishBeans = null;
             }
 
-            chefDishBeans.clear();
+
+//            chefDishBeans.clear();
             if (homeData.getChef_dish() != null && homeData.getChef_dish().size() > 0) {
                 chefDishBeans.addAll(homeData.getChef_dish());
             } /*else {
@@ -797,5 +799,4 @@ public class HomeFragment extends Fragment implements
         }
         adapter.notifyDataSetChanged();
     }
-
 }
