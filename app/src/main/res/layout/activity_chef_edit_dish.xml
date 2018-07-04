@@ -180,10 +180,37 @@
                     <SeekBar
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/activity_chef_edit_dish_time"
                         android:thumb="@drawable/ic_rectangle"
                         android:background="@drawable/shape_border_theme"
                         android:progressTint="@color/colorWhite"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"/>
+
+                </LinearLayout>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_dish_seekbar_text"
+                    android:textColor="#FFF"
+                    android:textSize="10sp"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:background="@drawable/seekbar_text"
+                    android:paddingTop="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="0" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@drawable/shape_border_theme"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/edit_dish_seekbar"
+                        android:progressTint="#FFF"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"/>
 
@@ -199,6 +226,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/edit_dish_time_1"
                         android:text="00:00 AM"
                         android:textSize="14sp"
                         android:textColor="@color/theme_color"
@@ -207,6 +235,7 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/edit_dish_time_2"
                         android:text="23:59 PM"
                         android:textSize="14sp"
                         android:textColor="@color/theme_color"
