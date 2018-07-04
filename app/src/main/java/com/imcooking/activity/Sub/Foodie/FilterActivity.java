@@ -45,7 +45,7 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
         ShapeDrawable thumb = new ShapeDrawable( new RectShape() );
         thumb.getPaint().setColor(getResources().getColor(R.color.theme_color));
         thumb.setIntrinsicHeight( 80 );
-        thumb.setIntrinsicWidth( 300 );
+        thumb.setIntrinsicWidth( 200 );
         seekBar.setThumb( thumb );
 
         seekBar.setOnSeekBarChangeListener(this);
@@ -54,9 +54,9 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
     }
 
     public void filter_apply(View view){
-        if(str_check_home.equals("0") && str_check_pickup.equals("0")){
+        /*if(str_check_home.equals("0") && str_check_pickup.equals("0")){
             BaseClass.showToast(getApplicationContext(), "Please Select either \"Home Delivery\" or \"Pick-up\" or both.");
-        } else {
+        } else {*/
             str_ratings = ratingBar.getRating() + "";
 
             Intent intent = new Intent();
@@ -67,7 +67,7 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
             intent.putExtra("check_pickup", str_check_pickup);
             setResult(0143, intent);
             finish();
-        }
+//        }
     }
 
     public void filter_reset(View view){

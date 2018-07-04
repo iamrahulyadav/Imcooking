@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -87,7 +89,7 @@ import java.util.List;
 import static java.util.Calendar.HOUR_OF_DAY;
 
 public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCheckedChangeListener,
-        AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
+        AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo, SeekBar.OnSeekBarChangeListener {
 
     private String chef_id="", dish_id="", name, cuisine, price, description, special_note,qyt, available, homedelivery,
             pickup,video_sample;
@@ -96,7 +98,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     private String sw_1 = "Yes", sw_2 = "Yes", sw_3 = "Yes";
     private String dish_miles = "10";
     private Spinner sp;
-    private SeekBar seekBar;
+//    private SeekBar seekBar;
     private final int  REQUEST_CAMERA=0, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
     Bitmap bitmap;
     boolean result;
@@ -144,7 +146,24 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private ArrayList<String> arrayList = new ArrayList<>();
 
+    private SeekBar seekBar_available_time;
+    private TextView tv_seekbar_text, tv_time_1, tv_time_2;
+
     private void init(){
+
+
+        seekBar_available_time = findViewById(R.id.edit_dish_seekbar);
+        tv_seekbar_text = findViewById(R.id.edit_dish_seekbar_text);
+        tv_time_1 = findViewById(R.id.edit_dish_time_1);
+        tv_time_2 = findViewById(R.id.edit_dish_time_2);
+
+        ShapeDrawable thumb = new ShapeDrawable( new RectShape() );
+        thumb.getPaint().setColor(getResources().getColor(R.color.theme_color));
+        thumb.setIntrinsicHeight( 80 );
+        thumb.setIntrinsicWidth( 200 );
+        seekBar_available_time.setThumb( thumb );
+
+        seekBar_available_time.setOnSeekBarChangeListener(this);
 
     //    layout_photos = findViewById(R.id.edit_dish_photos);
         btn_browse_video = findViewById(R.id.chef_edit_dish_photos_ttx_select_video);
@@ -165,7 +184,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         switch_1 = findViewById(R.id.edit_dish_switch_current_available);
         switch_2 = findViewById(R.id.edit_dish_switch_home_delivery);
         switch_3 = findViewById(R.id.edit_dish_switch_current_available);
-        seekBar = findViewById(R.id.activity_chef_edit_dish_time);
+//        seekBar = findViewById(R.id.activity_chef_edit_dish_time);
 
         switch_1.setOnCheckedChangeListener(this);
         switch_2.setOnCheckedChangeListener(this);
@@ -654,6 +673,84 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     long totalSize;
     String selectedPath;
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+        if(seekBar.getId() == R.id.edit_dish_seekbar){
+            String text = getMySeekbarText(i);
+            tv_seekbar_text.setText(text);
+        }
+    }
+
+    private String getMySeekbarText(int progress){
+
+        String text = "";
+        if(progress == 0){
+            text = "From:00:00AM \t To:02:00AM";
+        } else if(progress == 1){
+            text = "From:00:00AM \t To:02:00AM";
+        } else if(progress == 2){
+            text = "From:01:00AM \t To:03:00AM";
+        } else if(progress == 3){
+            text = "From:02:00AM \t To:04:00AM";
+        } else if(progress == 4){
+            text = "From:03:00AM \t To:05:00AM";
+        } else if(progress == 5){
+            text = "From:04:00AM \t To:06:00AM";
+        } else if(progress == 6){
+            text = "From:05:00AM \t To:07:00AM";
+        } else if(progress == 7){
+            text = "From:06:00AM \t To:08:00AM";
+        } else if(progress == 8){
+            text = "From:07:00AM \t To:09:00AM";
+        } else if(progress == 9){
+            text = "From:08:00AM \t To:10:00AM";
+        } else if(progress == 10){
+            text = "From:09:00AM \t To:11:00AM";
+        } else if(progress == 11){
+            text = "From:10:00AM \t To:12:00PM";
+        } else if(progress == 12){
+            text = "From:11:00AM \t To:01:00PM";
+        } else if(progress == 13){
+            text = "From:12:00PM \t To:02:00PM";
+        } else if(progress == 14){
+            text = "From:01:00PM \t To:03:00PM";
+        } else if(progress == 15){
+            text = "From:02:00PM \t To:04:00PM";
+        } else if(progress == 16){
+            text = "From:03:00PM \t To:05:00PM";
+        } else if(progress == 17){
+            text = "From:04:00PM \t To:06:00PM";
+        } else if(progress == 18){
+            text = "From:05:00PM \t To:07:00PM";
+        } else if(progress == 19){
+            text = "From:06:00PM \t To:08:00PM";
+        }else if(progress == 20){
+            text = "From:07:00PM \t To:09:00PM";
+        } else if(progress == 21){
+            text = "From:08:00PM \t To:10:00PM";
+        } else if(progress == 22){
+            text = "From:09:00PM \t To:11:00PM";
+        } else if(progress == 23){
+            text = "From:10:00PM \t To:12:00AM";
+        } else if(progress == 24){
+            text = "From:10:00PM \t To:12:00AM";
+        }
+
+        return text;
+    }
+
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         @Override
