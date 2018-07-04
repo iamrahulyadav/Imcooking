@@ -644,12 +644,12 @@ public class HomeFragment extends Fragment implements
                         JSONObject jsonObject = new JSONObject(result);
                         if(jsonObject.getBoolean("status")){
                             if(jsonObject.getString("msg").equals("Successfully dish like")){
-                                arr_like_status_1.set(position, "1");
+                                arr_like_status_1_filter_all.set(position, "1");
                                 BaseClass.showToast(getContext(), "Successfully Liked");
                                 int i = Integer.parseInt(homeData.getChef_dish().get(position).getDishlikeno());
                                 homeData.getChef_dish().get(position).setDishlikeno((i+1) + "");
                             } else if(jsonObject.getString("msg").equals("Successfully unlike")){
-                                arr_like_status_1.set(position, "0");
+                                arr_like_status_1_filter_all.set(position, "0");
                                 BaseClass.showToast(getContext(), "Dish Successfully unliked");
                                 int i = Integer.parseInt(homeData.getChef_dish().get(position).getDishlikeno());
                                 homeData.getChef_dish().get(position).setDishlikeno((i-1) + "");

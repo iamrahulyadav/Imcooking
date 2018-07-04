@@ -93,7 +93,9 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_chef_rating = view.findViewById(R.id.home_chef_rating);
         tv_dish_address = view.findViewById(R.id.home_dish_address);
         imgLike = view.findViewById(R.id.home_heart);
+
         tv_dish_likes.setText(chefDishBeans.get(position).getDishlikeno() + "");
+
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
         tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
