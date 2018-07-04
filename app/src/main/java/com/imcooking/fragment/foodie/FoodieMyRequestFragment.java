@@ -148,7 +148,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
             request_id = requestDishChefDetailsBeans.get(position).getRequest_id() + "";
             showDialog(position);
         } else{
-            BaseClass.showToast(getContext(), "You haven't recieve any request yet.");
+            BaseClass.showToast(getContext(), "You haven't recieve any reply from the chef yet.");
         }
     }
 

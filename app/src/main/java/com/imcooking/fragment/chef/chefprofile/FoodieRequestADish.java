@@ -186,7 +186,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
 
         } else if (id == R.id.foodie_request_a_dish_qty_minus) {
 
-            if (Integer.parseInt(tv_qty.getText().toString()) > 0) {
+            if (Integer.parseInt(tv_qty.getText().toString()) > 1) {
                 tv_qty.setText(Integer.parseInt(tv_qty.getText().toString()) - 1 + "");
             }
         } else if (id == R.id.foodie_request_a_dish_btn) {

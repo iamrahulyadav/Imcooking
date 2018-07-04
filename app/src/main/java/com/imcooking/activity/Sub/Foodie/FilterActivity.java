@@ -1,6 +1,8 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.content.Intent;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRatingBar;
@@ -39,6 +41,12 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
         checkBox_home = findViewById(R.id.filter_check_home);
         checkBox_pickup = findViewById(R.id.filter_check_pickup);
         seekBar = findViewById(R.id.filter_seekbar);
+
+        ShapeDrawable thumb = new ShapeDrawable( new RectShape() );
+        thumb.getPaint().setColor(getResources().getColor(R.color.theme_color));
+        thumb.setIntrinsicHeight( 80 );
+        thumb.setIntrinsicWidth( 300 );
+        seekBar.setThumb( thumb );
 
         seekBar.setOnSeekBarChangeListener(this);
         checkBox_home.setOnCheckedChangeListener(this);
