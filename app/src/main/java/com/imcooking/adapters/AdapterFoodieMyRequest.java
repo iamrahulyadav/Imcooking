@@ -88,7 +88,7 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
         holder.txt_dish_name.setText(list.get(position).getRequest_dishname());
         if (list.get(position).getChef_accepted()!=null&& list.get(position).getChef_accepted().equals("yes"))
             holder.txt_status.setText("Accepted");
-        else holder.txt_status.setText("No");
+        else holder.txt_status.setText("New Order");
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.img_profile);
         if (list.get(position).getChef_rating()+""!=null)
