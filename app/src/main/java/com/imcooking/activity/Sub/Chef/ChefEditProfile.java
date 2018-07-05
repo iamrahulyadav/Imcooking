@@ -18,14 +18,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -38,17 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.imcooking.Model.ApiRequest.ModelChefEditProfile;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.Foodie.CuisineList;
-import com.imcooking.activity.Sub.Foodie.EditProfile;
+import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
 import com.imcooking.adapters.AdapterCuisineList;
 import com.imcooking.fragment.chef.ChefHome;
-import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -56,7 +48,6 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,17 +62,18 @@ import java.util.List;
 
 
 public class ChefEditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
-        CompoundButton.OnCheckedChangeListener, AdapterCuisineList.click_adapter_cuisine_list {
+        CompoundButton.OnCheckedChangeListener, AdapterCuisineList.click_adapter_cuisine_list, View.OnClickListener {
     public static CuisineData cuisineData = new CuisineData();
     //    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
+    public static int SELECT_LOC =2;
     private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about, edt_phn;
     private Spinner sp_miles/*, sp_cuisine*/;
     private TextView tv_select_cuisine;
     private SwitchCompat /*sw_notification,*/ sw_available;
     private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles,
             str_cuisine = "Indian Food"/*, str_notification*/,
-            str_available = "0", str_about, str_phn;
+            str_available = "0", str_about, str_phn, latitudeq,longitudeq;
     private TextView txt_name, txt_address, txt_phone;
     private TinyDB tinyDB;
     private ImageView imgProfile;
@@ -120,6 +112,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         txt_phone = findViewById(R.id.activity_chef_edit_txtPhone);
         sp_miles = findViewById(R.id.chef_edit_profile_spinner_miles);
         tv_select_cuisine = findViewById(R.id.chef_edit_profile_select_cuisine);
+        edt_address.setOnClickListener(this);
 //        sp_cuisine = findViewById(R.id.chef_edit_profile_spinner_select_cuisines);
 //        cuisineRecycler = findViewById(R.id.chef_edit_profile_recycler_cuisine);
         sp_miles.setOnItemSelectedListener(this);
@@ -152,6 +145,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         str_id = userDataBean.getUser_id() + "";
 
         getMyCuisines();
+
     }
 
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -159,17 +153,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
     private List<ChefProfileData1.ChefDataBean.CuisineNameBean> cuisineList=new ArrayList<>();
     private ArrayList<String> cuisiness_list = new ArrayList<>();
-
-    private void setMyAdapter(CuisineData cuisineData){
-
-/*        arrayList.clear();
-        for (int i=0; i<cuisineData.getCuisine_data().size(); i++){
-            arrayList.add("0");
-        }
-
-        adapter = new AdapterCuisineList(getApplicationContext(), cuisineData, arrayList, this);
-        cuisineRecycler.setAdapter(adapter);*/
-    }
 
     private void getProfileData(){
         ChefProfileData1 chefProfileData1 = new ChefProfileData1();
@@ -182,7 +165,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         str_email = chefProfileData1.getChef_data().getChef_email() + "";
         str_zipcode = chefProfileData1.getChef_data().getChef_zipcode();
         str_about = chefProfileData1.getChef_data().getChef_description();
-
+        latitudeq = chefProfileData1.getChef_data().getUser_latitude();
+        longitudeq = chefProfileData1.getChef_data().getUser_longitude();
 
         cuisineList = chefProfileData1.getChef_data().getCuisine_name();
         cuisiness_list.clear();
@@ -316,7 +300,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         str_phn = edt_phn.getText().toString().trim();
 //        str_miles , str_notification, str_available, str_cuisine
 
-
         ModelChefEditProfile data = new ModelChefEditProfile();
 
         data.setChef_id(str_id);
@@ -330,41 +313,43 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setCuisine_list(str_cuisine_ids);
         data.setAbout(str_about);
         data.setPhone(str_phn);
+        data.setLat(latitudeq);
+        data.setLang(longitudeq);
 
         if(!str_name.isEmpty()) {
             if(!str_address.isEmpty()){
                 if(!str_city.isEmpty()){
                         if(!str_zipcode.isEmpty()){
                             if(!str_about.isEmpty()) {
-                                if (( android.util.Patterns.PHONE.matcher(str_phn).matches())){
-                                try {
-                                    JSONObject jsonObject = new JSONObject(new Gson().toJson(data));
+                                if (isValidMobile(str_phn)){
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(new Gson().toJson(data));
 
-                                    Log.d("MyRequest", jsonObject.toString());
-                                    new GetData(getApplicationContext()).sendMyData(jsonObject, GetData.CHEF_PROFILE_UPDATE,
-                                            ChefEditProfile.this, new GetData.MyCallback() {
-                                                @Override
-                                                public void onSuccess(String result) {
-                                                    try {
-                                                        JSONObject job = new JSONObject(result);
-                                                        if (job.getBoolean("status")) {
-                                                            if (job.getString("msg").equals("chef profile update successfully")) {
-                                                                BaseClass.showToast(getApplicationContext(), "Profile Updated Successfully");
-                                                                finish();
-                                                            } else {
+                                        Log.d("MyRequest", jsonObject.toString());
+                                        new GetData(getApplicationContext()).sendMyData(jsonObject, GetData.CHEF_PROFILE_UPDATE,
+                                                ChefEditProfile.this, new GetData.MyCallback() {
+                                                    @Override
+                                                    public void onSuccess(String result) {
+                                                        try {
+                                                            JSONObject job = new JSONObject(result);
+                                                            if (job.getBoolean("status")) {
+                                                                if (job.getString("msg").equals("chef profile update successfully")) {
+                                                                    BaseClass.showToast(getApplicationContext(), "Profile Updated Successfully");
+                                                                    finish();
+                                                                } else {
+                                                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
+                                                                }
+                                                              } else {
                                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                                             }
-                                                          } else {
-                                                            BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
                                                         }
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
                                                     }
-                                                }
-                                            });
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                                });
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 } else {
                                     BaseClass.showToast(getApplicationContext(), "Please enter valid phone number");
                                 }
@@ -383,6 +368,10 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         }  else{
             BaseClass.showToast(getApplicationContext(), "All Fields Required");
         }
+    }
+
+    private boolean isValidMobile(String phone) {
+        return android.util.Patterns.PHONE.matcher(phone).matches();
     }
 
     public void chef_edit_profile_cancel(View view){
@@ -429,10 +418,9 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         selectImage();
     }
 
-    Bitmap bitmap;
+    private Bitmap bitmap;
     private String bitmapString="a",userChoosenTask;
     private boolean result;
-
 
     private void onSelectFromGalleryResult(Intent data) {
 
@@ -603,22 +591,40 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == SELECT_FILE)
-                if (data!=null)
-                onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
-                if (data!=null)
-                onCaptureImageResult(data);
+            if (requestCode == SELECT_FILE) {
+                if (data != null) {
+                    onSelectFromGalleryResult(data);
+                }
+            }
+            else if (requestCode == REQUEST_CAMERA) {
+                    if (data != null) {
+                        onCaptureImageResult(data);
+                    }
+                }
             else if(requestCode == 143){
                 String strname = data.getExtras().getString("cuisineName");
                 str_cuisine_ids = data.getExtras().getString("cuisineId");
                 tv_select_cuisine.setText(strname);
-                Log.d("SelectCuisinee", strname + "\n" + str_cuisine_ids);
-//                Toast.makeText(this, "yeah", Toast.LENGTH_SHORT).show();
-            } else {}
 
+            } else if (requestCode== 112){
+
+                latitudeq = data.getDoubleExtra("latitude",0)+"";
+                longitudeq = data.getDoubleExtra("longitude",0)+"";
+                str_city = data.getStringExtra("city");
+                str_zipcode = data.getStringExtra("postalcode");
+                str_address = data.getStringExtra("name");
+                edt_address.setText(str_address);
+                edt_city.setText(str_city);
+                edt_zipcoede.setText(str_zipcode);
+
+                Log.d("TAG", "Rakhi: "+latitudeq+"\n"+longitudeq+"\n");
+            }
+            else{
+
+                }
         }
     }
+
 
     private void uploadProfile(String base64){
         String request = "{\"user_id\":" + str_id + ",\"image\":\"" + base64 + "\"}";
@@ -676,6 +682,17 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     @Override
     public void click_adapter_cuisine_list_m(int position) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.chef_edit_profile_address){
+            Intent i = new Intent(ChefEditProfile.this, SelectLocActivity.class);
+            i.putExtra("enter_address", 112);
+            startActivityForResult(i, 112);
+
+        }
+//        BaseClass.showToast(getApplicationContext(), "k");
     }
 
     public class GetImage extends AsyncTask<String, Void, Bitmap> {

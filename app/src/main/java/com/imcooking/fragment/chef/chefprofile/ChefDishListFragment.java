@@ -1,6 +1,9 @@
 package com.imcooking.fragment.chef.chefprofile;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -71,15 +74,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
     private void init(){
 
-/*
-        int i11 = new MainActivity().getSupportFragmentManager().getBackStackEntryCount();
-        String tag = new MainActivity().getSupportFragmentManager()
-                .getBackStackEntryAt(i11-1).getName();
-        if(tag.equals(new SearchFragment().getTag())){
-            Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
-        }
-*/
-
+        createMyDialog();
 
         layout_current_dish_no_record = getView().findViewById(R.id.chef_dish_list_current_dish_no_record);
         layout_old_dish_no_record = getView().findViewById(R.id.chef_dish_list_old_dish_no_record);
@@ -153,6 +148,36 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
             tv_add_dish.setVisibility(View.GONE);
         }
     }
+
+    private Dialog dialog;
+    private TextView tv_dialog, tv_ok_dialog, tv_cross_dialog;
+
+    private void createMyDialog(){
+
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_add_dish);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
+        tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
+
+        tv_ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tv_cross_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
 
     @Override
     public void onClick(View view) {

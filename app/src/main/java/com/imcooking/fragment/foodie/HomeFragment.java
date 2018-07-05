@@ -31,6 +31,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefEditProfile;
 import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.FilterActivity;
 import com.imcooking.activity.Sub.Foodie.SelectLocActivity;
@@ -88,11 +89,10 @@ public class HomeFragment extends Fragment implements
     String min_miles = "0";
     String max_miles = "10";
     public static String foodie_id = "4";
-    String country = "101";
+    String country = "101", selectedValue,selectedmiles;
     private CuisineData cuisineData = new CuisineData();
     private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
     private List<CuisineData.CuisineDataBean>cuisionList_filter_all=new ArrayList<>();
-
     private boolean isFilterApplied;
 
     @Override
@@ -184,8 +184,7 @@ public class HomeFragment extends Fragment implements
         milesSpinner();
     }
 
-    String selectedValue;
-    String selectedmiles;
+
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
                 R.layout.spinner_row, spinnerData);
@@ -497,12 +496,16 @@ public class HomeFragment extends Fragment implements
                     userDataBean.getUser_id()));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (v.getId()==R.id.fragment_home_txtcity){
-            startActivityForResult(new Intent(getActivity(), SelectLocActivity.class),2);
+            Intent i = new Intent(getContext(), SelectLocActivity.class);
+            i.putExtra("enter_address", 113);
+            startActivityForResult(i, 113);
+
         } else if (v.getId()==R.id.fragment_home_search_img){
             BaseClass.callFragment1(new SearchFragment(), new SearchFragment().getClass().getName()
                     , getFragmentManager());
         } else {}
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -522,7 +525,7 @@ public class HomeFragment extends Fragment implements
 
                 //                filter_data(data.getFloatExtra("ratingvalue", 0),
 //                        data.getIntExtra("progressChangedValue", 0));
-            } else if (requestCode==2){
+            } else if (requestCode==113){
                 latitudeq = data.getDoubleExtra("latitude",0)+"";
                 longitudeq = data.getDoubleExtra("longitude",0)+"";
                 txtCityName.setText(data.getStringExtra("name"));

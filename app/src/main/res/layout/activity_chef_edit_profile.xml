@@ -170,13 +170,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_address"
                     android:hint="Address"
+                    android:editable="false"
                     android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
                     android:imeOptions="actionNext"
                     android:background="@android:color/transparent"
                     android:textColor="@color/colorBlack"
                     android:paddingLeft="10dp"
-                    android:paddingTop="10dp" />
+                    android:paddingTop="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
             <View

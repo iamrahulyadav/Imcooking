@@ -72,20 +72,25 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
     private MapView mMapView;
     AutoCompleteTextView autocompleteView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
-    private TextView txtPlaceName, txtLocatName, txtConfirm;
+    private TextView  txtLocatName, txtConfirm;
     TinyDB  tinyDB ;
     String title,foodie_id,address;
     private Gson gson = new Gson();
+
+    private int get_address_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_loc);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             BaseClass.setLightStatusBar(getWindow().getDecorView(),SelectLocActivity.this);
         }
+
+
         mContext = this;
         tinyDB = new TinyDB(mContext);
         String  login_data = tinyDB.getString("login_data");
@@ -100,9 +105,13 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                     1);
             return;
         }
+
+
+        Intent i = getIntent();
+        if(i != null){
+            get_address_code = i.getExtras().getInt("enter_address");
+        }
         mMapView = (MapView) findViewById(R.id.mapView);
-        txtLocatName = findViewById(R.id.activity_add_aaddres_txtLocaname);
-        txtPlaceName = findViewById(R.id.activity_add_aaddres_txtLoc);
         txtConfirm = findViewById(R.id.add_address_btnConfirm);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
@@ -147,7 +156,6 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                 // Get data associated with the specified position
                 // in the list (AdapterView)
                 String description = (String) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
 
               getLatLong(description);
 
@@ -160,12 +168,24 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
 
               if (latLng!=null){
                   Intent intent = new Intent();
-                  intent.putExtra("latitude",latLng.latitude);
-                  intent.putExtra("longitude", latLng.longitude);
-                  intent.putExtra("name", autocompleteView.getText().toString().trim());
-                  setResult(2,intent);
-//                Log.d("VKK", gson.toJson(listModel));
-                  finish();
+
+                  if (get_address_code==113){
+                      intent.putExtra("latitude",latLng.latitude);
+                      intent.putExtra("longitude", latLng.longitude);
+                      intent.putExtra("name", city);
+                      setResult(get_address_code, intent);
+                      finish();
+                  } else if (get_address_code==112){
+                      intent.putExtra("latitude",latLng.latitude);
+                      intent.putExtra("longitude", latLng.longitude);
+                      intent.putExtra("name", autocompleteView.getText().toString().trim());
+                      intent.putExtra("postalcode", postalCode);
+                      intent.putExtra("city", city);
+                      setResult(get_address_code, intent);
+
+                      finish();
+                  }
+
               }
             }
         });
@@ -194,7 +214,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                             double pickUplat = jsonObject2.getDouble("lat");
                             double pickUplang = jsonObject2.getDouble("lng");
                             latLng = new LatLng(pickUplat,pickUplang);
-//                    Log.d(TAG, "onResponse:d "+lat +"\n" +longi );
+
                             if (latLng!=null){
                                 CameraPosition cameraPosition = new CameraPosition.Builder()
                                         .target(latLng).zoom(19f).tilt(70).build();
@@ -214,7 +234,6 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                                 mMap.animateCamera(CameraUpdateFactory
                                         .newCameraPosition(cameraPosition));
                             }
-                            Log.d(TAG, "onActivityResult: "+pickUplat+"\n"+pickUplang);
                             progressDialog.dismiss();
                         }
                     } catch (JSONException e) {
@@ -312,7 +331,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             e.printStackTrace();
         }
     }
-
+    private String city,postalCode;
     public StringBuffer getAddress(LatLng latLng) throws IOException {
         Geocoder geocoder;
         List<Address> addresses;
@@ -322,12 +341,12 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         try {
             addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
-            String state = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
-            String postalCode = addresses.get(0).getPostalCode();
+            city = addresses.get(0).getLocality();
+           /* state = addresses.get(0).getAdminArea();
+            country = addresses.get(0).getCountryName();*/
+            postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();
-            result.append(city);
+            result.append(address);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -435,7 +454,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             @SuppressLint("SetTextI18n")
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                Log.d("Camera postion change" + "", cameraPosition + "");
+                Log.d("Camera position change" + "", cameraPosition + "");
                 mCenterLatLong = cameraPosition.target;
                 //   mMap.clear();
 
@@ -444,10 +463,10 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                     Location mLocation = new Location("");
                     mLocation.setLatitude(mCenterLatLong.latitude);
                     mLocation.setLongitude(mCenterLatLong.longitude);
+                    latLng = new LatLng(mCenterLatLong.latitude, mCenterLatLong.longitude);
                     StringBuffer stringBuffer  = new StringBuffer();
                     try {
                         stringBuffer=getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
-                        txtPlaceName.setText(stringBuffer);
                         autocompleteView.setText(stringBuffer);
                     } catch (IOException e) {
                         e.printStackTrace();
