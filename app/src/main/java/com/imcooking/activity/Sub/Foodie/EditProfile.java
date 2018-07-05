@@ -413,8 +413,10 @@ public class EditProfile extends AppBaseActivity {
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == SELECT_FILE)
+                if (data!=null)
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
+                if (data!=null)
                 onCaptureImageResult(data);
 
         }

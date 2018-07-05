@@ -412,24 +412,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
     }
 
-    private void setMyCuisines(CuisineData cuisines){
-
-/*
-        ArrayList<String> arrayList = new ArrayList<>();
-        for(int i=0; i<cuisines.getCuisine_data().size(); i++){
-            arrayList.add(cuisines.getCuisine_data().get(i).getCuisine_name());
-        }
-
-        sp_cuisine.setOnItemSelectedListener(this);
-
-        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this,
-                R.layout.spinner_row_1, arrayList);
-        arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
-        sp_cuisine.setAdapter(arrayAdapter1);
-        sp_cuisine.setOnItemSelectedListener(this);
-*/
-    }
-
     public void change_dp(View view){
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
@@ -622,8 +604,10 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == SELECT_FILE)
+                if (data!=null)
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
+                if (data!=null)
                 onCaptureImageResult(data);
             else if(requestCode == 143){
                 String strname = data.getExtras().getString("cuisineName");

@@ -1,6 +1,8 @@
 package com.imcooking.activity.main.setup;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,7 +74,7 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
         dialog = new Dialog(SignUpActivity.this);
         dialog.setContentView(R.layout.dialog_signup);
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         tv = dialog.findViewById(R.id.dialog_signup_text);
@@ -105,7 +107,7 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                         data.setConfirmpassword(conf_pass);
 
                         new GetData(getApplicationContext(), SignUpActivity.this)
-                                .getResponse(new Gson().toJson(data), "signup",
+                                .getResponse(new Gson().toJson(data), GetData.SIGNUP,
                                 new GetData.MyCallback() {
                                     @Override
                                     public void onSuccess(String result) {

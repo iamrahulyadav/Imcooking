@@ -88,6 +88,7 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
 
     private List<ChefMyorderList.MyOrderListBean> currentOrderListBeans;
     private List<ChefMyorderList.MyOrderListBean> prevoiusOrderListBeans;
+
     public void getorderList(){
         currentOrderListBeans = new ArrayList<>();
         String login = tinyDB.getString("login_data");

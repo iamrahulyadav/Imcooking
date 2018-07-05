@@ -3,6 +3,8 @@ package com.imcooking.activity.main.setup;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -73,7 +75,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         dialog = new Dialog(LoginActivity.this);
         dialog.setContentView(R.layout.dialog_verification);
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         edt_passcode = dialog.findViewById(R.id.dialog_verification_edit);
@@ -117,7 +119,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             data.setPassword(pass);
             data.setDevice_id("cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q");
 
-            new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data), "login", new GetData.MyCallback() {
+            new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data),
+                    GetData.LOGIN, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     //           Log.d("Show Response", response);

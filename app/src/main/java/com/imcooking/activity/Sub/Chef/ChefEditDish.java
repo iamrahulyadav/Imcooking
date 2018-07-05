@@ -370,10 +370,10 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                             if(title.equals("dish")){
 
                                 if(!bitmapString.equals("a")) {
+                                    adddish(title);
                                 } else{
                                     BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
                                 }
-                                adddish(title);
                             } else if(title.equals("editdish")){
                                 try {
                                     editdish(title);
@@ -491,7 +491,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDish_video("abc");
         requestData.setDish_image(base);
         requestData.setDish_qyt(qyt);
-        Log.d("MyArraySize", base.size() + "");
+
         if (selectedPath!=null){
             if (duration<=20000)
                 new UploadFileToServer().execute();
@@ -504,15 +504,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     ChefEditDish.this, new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-
                             try {
                                 JSONObject job = new JSONObject(result);
                                 if(job.has("status")){
                                     if(job.getBoolean("status")){
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
-                                                /*finish();*/
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
+                                                finish();
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
                                             }
@@ -655,22 +654,28 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == SELECT_FILE)
+                if (data!=null)
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
-                onCaptureImageResult(data);
-            else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
-                Uri selectedImageUri = data.getData();
-                selectedPath = getPath(selectedImageUri);
-                if (selectedPath!=null) {
-                    MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
-                    duration = mp.getDuration();
-                    Log.d("TAG", "video:path " + duration);
-                    if (duration > 20000) {
-                        BaseClass.showToast(this, "Your Video is too large ");
-                    } else {
-                        txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                    if (data!=null){
+                        onCaptureImageResult(data);
                     }
-                }
+            else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
+                        if (data!=null){
+
+                            Uri selectedImageUri = data.getData();
+                            selectedPath = getPath(selectedImageUri);
+                            if (selectedPath!=null) {
+                                MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
+                                duration = mp.getDuration();
+                                Log.d("TAG", "video:path " + duration);
+                                if (duration > 20000) {
+                                    BaseClass.showToast(this, "Your Video is too large ");
+                                } else {
+                                    txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                                }
+                            }
+                        }
             }
         }
     }

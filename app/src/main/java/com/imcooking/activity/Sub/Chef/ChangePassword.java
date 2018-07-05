@@ -63,7 +63,7 @@ TinyDB tinyDB;
 
         if(!oldpass.isEmpty() && !newpass.isEmpty() && !confirmpass.isEmpty()) {
 
-            String s = "{\"oldpassword\":" +oldpass+ ",\"new_password\":"+newpass+"," +
+            String s = "{\"oldpassword\":\"" +oldpass+ "\",\"new_password\":"+newpass+"," +
                     "\"confirmpassword\":"+confirmpass+",\"user_id\":\""+user_id+"\"}" ;
 
 //                   JSONObject jsonObject = new JSONObject(s);
@@ -71,7 +71,7 @@ TinyDB tinyDB;
 
 
             new GetData(getApplicationContext(), ChangePassword.this)
-                    .getResponse(s, "changepassword", new GetData.MyCallback() {
+                    .getResponse(s, GetData.CHANGE_PASS, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                                Log.d("ShowResponseresult", result);
@@ -91,6 +91,8 @@ TinyDB tinyDB;
                                } else {
                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                }
+                           } else {
+                               BaseClass.showToast(getApplicationContext(), "Old Password does not match!");
                            }
                        }
                    });

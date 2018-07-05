@@ -150,6 +150,7 @@ public class AdapterChefDishList extends PagerAdapter{
             iv_home_delivery_image.setVisibility(View.VISIBLE);
             dish_home_delivery.setText("Pick-up");
         }
+        String tim =  chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to();
 
         dish_name.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -48,6 +48,9 @@ public class GetData {
     private Context context;
     private Activity activity;
 //...................................  API ...................................
+    public static String LOGIN = "login";
+    public static String SIGNUP = "signup";
+    public static String CHANGE_PASS = "changepassword";
     public static String HOME ="home";
     public static String SEARCH = "search";
     public static String PROFILE_IMAGE="profileimage";
