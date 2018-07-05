@@ -490,6 +490,7 @@ public class HomeFragment extends Fragment implements
             startActivityForResult(new Intent(getContext(), FilterActivity.class), 0143);
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
+
         else if (v.getId() == R.id.fragment_home_img_cart)
         {
             startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
