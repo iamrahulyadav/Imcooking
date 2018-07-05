@@ -125,7 +125,6 @@ public class HomeFragment extends Fragment implements
     private ArrayList<String> arr_like_status_1 = new ArrayList<>();
     private ArrayList<String> arr_like_status_1_filter_all = new ArrayList<>();
     private ArrayList<String> arr_like_status_1_filter_cuisine = new ArrayList<>();
-
     private ArrayList<String> arr_like_status_2 = new ArrayList<>();
 
     private void init(){
@@ -599,7 +598,6 @@ public class HomeFragment extends Fragment implements
         }
     }
 
-
     public StringBuffer getAddress(LatLng latLng) throws IOException {
         Geocoder geocoder;
         List<Address> addresses = null;
@@ -770,7 +768,7 @@ public class HomeFragment extends Fragment implements
         }
     }
 
-    List<HomeData.ChefDishBean>cuisionChefList;
+    private List<HomeData.ChefDishBean>cuisionChefList;
 
     private void filterCuisine(int position, String cuision){
         cuisionChefList = new ArrayList<>();
@@ -803,4 +801,5 @@ public class HomeFragment extends Fragment implements
         }
         adapter.notifyDataSetChanged();
     }
+
 }

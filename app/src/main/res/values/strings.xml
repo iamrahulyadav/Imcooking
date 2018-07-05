@@ -68,4 +68,7 @@
     <!--chefprofile-->
     <string name="dialog_add_dish_text">To add a Dish to your profile you must need to Update your Profile.</string>
 
+    <!--fragment profile -->
+    <string name="fragment_profile_change_pass">Change Password</string>
+
 </resources>

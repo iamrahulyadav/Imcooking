@@ -86,8 +86,7 @@ TinyDB tinyDB;
                            Log.d("ShowResponse", apiResponse.getMsg());
                            if (apiResponse.isStatus()) {
                                if (apiResponse.getMsg().equals("Successfully change password")) {
-                                   BaseClass.showToast(getApplicationContext(), "Successfully change password");
-
+                                   BaseClass.showToast(getApplicationContext(), "Password Successfully changed");
                                } else {
                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                }
