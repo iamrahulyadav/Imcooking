@@ -201,33 +201,6 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private Dialog dialog;
-    private TextView tv_ok_dialog, tv_cross_dialog;
-    private void createMyDialog(){
-
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_add_dish);
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-        tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
-        tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
-
-        tv_ok_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        tv_cross_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-    }
 
     @Override
     public void click_me_chef_dish_list(int position, String click_type) {

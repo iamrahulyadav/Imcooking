@@ -368,7 +368,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     if(!special_note.isEmpty()){
                        /* if(!bitmapString.equals("a")) {*/
                             if(title.equals("dish")){
-
                                 if(!bitmapString.equals("a")) {
                                     adddish(title);
                                 } else{
@@ -653,16 +652,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == SELECT_FILE)
-                if (data!=null)
+            if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
-                    if (data!=null){
+            }
+            else if (requestCode == REQUEST_CAMERA){
                         onCaptureImageResult(data);
                     }
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                         if (data!=null){
-
                             Uri selectedImageUri = data.getData();
                             selectedPath = getPath(selectedImageUri);
                             if (selectedPath!=null) {
@@ -676,6 +673,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 }
                             }
                         }
+            } else {
             }
         }
     }
