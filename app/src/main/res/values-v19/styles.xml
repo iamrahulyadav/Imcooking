@@ -16,9 +16,9 @@
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#FFF</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <!--<item name="windowNoTitle">true</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 
 </resources>

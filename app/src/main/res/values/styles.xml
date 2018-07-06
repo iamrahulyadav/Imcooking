@@ -6,27 +6,30 @@
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#FFF</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <!--<item name="windowNoTitle">true</item>-->
+        <!--/<item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>-->
     </style>
     <style name="MyRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/customradiobtn</item>
     </style>
 
+    <style name="AppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
+    </style>
     <style name="Trans_Status_Bar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFF</item>
         <item name="colorPrimaryDark">#FFF</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <!--<item name="windowNoTitle">true</item>-->
+        <!--<item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation" tools:ignore="NewApi">true</item>-->
 
     </style>
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/colorAccent</item>
      //  <item name="colorControlActivated">@color/colorLightGrey</item>
-        <item name="android:colorControlNormal">#a92727</item>
+        <item name="android:colorControlNormal" tools:ignore="NewApi">#a92727</item>
     </style>
 
     <style name="AppThemeSkeekbar" parent="Theme.AppCompat.Light">
@@ -76,7 +79,7 @@
 
         <!-- color of the menu overflow icon -->
         <item name="android:textColorSecondary">@color/theme_color</item>
-        <item name="windowNoTitle">true</item>
+        <!--<item name="windowNoTitle">true</item>-->
         <!--<item name="android:elevation">0dp</item>-->
     </style>
 

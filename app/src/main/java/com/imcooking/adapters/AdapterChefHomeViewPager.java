@@ -36,5 +36,4 @@ public class AdapterChefHomeViewPager extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
     }
-
 }

@@ -94,6 +94,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_chef_edit_profile);
 
         init();

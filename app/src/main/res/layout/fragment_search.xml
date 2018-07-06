@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:paddingTop="24dp"
     tools:context=".activity.home.HomeSearchActivity1">
 
     <LinearLayout

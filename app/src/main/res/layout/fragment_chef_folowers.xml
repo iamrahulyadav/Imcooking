@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
+    android:paddingTop="24dp"
     tools:context=".fragment.chef.ChefFollowersFragment">
     <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"

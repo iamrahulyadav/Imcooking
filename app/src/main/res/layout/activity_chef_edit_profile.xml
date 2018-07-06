@@ -13,7 +13,6 @@
         android:id="@+id/chef_dish"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        android:fitsSystemWindows="true"
         tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
 
         <LinearLayout

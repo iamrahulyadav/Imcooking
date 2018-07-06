@@ -1,6 +1,7 @@
 package com.imcooking.activity.Sub.Chef;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,10 +32,20 @@ TinyDB tinyDB;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
         tinyDB = new TinyDB(getApplicationContext());
         etOldpass=findViewById(R.id.activity_change_password_et_oldpass);
         etNewpass=findViewById(R.id.activity_change_password_et_newpass);
         etConfirmpass=findViewById(R.id.activity_change_password_et_confirm);
+
         txtChangepass=findViewById(R.id.activity_change_password_tv_changepass);
         txtChangepass.setOnClickListener(new View.OnClickListener() {
 
