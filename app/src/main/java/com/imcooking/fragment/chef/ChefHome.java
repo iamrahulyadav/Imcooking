@@ -111,10 +111,11 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     public static CuisineData cuisineData = new CuisineData();
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         getMyintentData();
 
@@ -182,7 +183,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         }
 
     }
-
 
     private void setupViewPager(ViewPager viewPager) {
 
@@ -439,7 +439,7 @@ for(int i=0;i<jsonArray.length();i++){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -489,7 +489,7 @@ for(int i=0;i<jsonArray.length();i++){
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
-            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
     }
 
@@ -576,5 +576,4 @@ for(int i=0;i<jsonArray.length();i++){
     public boolean onMenuItemClick(MenuItem item) {
         return false;
     }
-
 }

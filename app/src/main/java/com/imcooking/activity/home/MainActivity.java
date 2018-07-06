@@ -81,6 +81,7 @@ public class MainActivity extends AppBaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
 
         drawerLayout1 = findViewById(R.id.drawer_layout);
@@ -90,8 +91,11 @@ public class MainActivity extends AppBaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
+//            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
         }
+
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
 
         frame_view = (LinearLayout) findViewById(R.id.frame_view);
 
@@ -163,6 +167,7 @@ public class MainActivity extends AppBaseActivity
         } else if (getIntent().hasExtra("pay")) {
             BaseClass.callFragment(new FoodieMyOrderFragment(), FoodieMyOrderFragment.class.getName(), getSupportFragmentManager());
         } else { // 2
+//            setTheme(R.style.AppTheme1);
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
     }

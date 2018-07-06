@@ -66,6 +66,9 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     }
 
     private void init() {
+
+        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         no_recordLayout = getView().findViewById(R.id.fragment_my_request_chef_no_record_image);
         requestRecyclerView = getView().findViewById(R.id.fragment_chef_request_list_recycler);
         layoutToolbar = getView().findViewById(R.id.chefrequest_txtname);

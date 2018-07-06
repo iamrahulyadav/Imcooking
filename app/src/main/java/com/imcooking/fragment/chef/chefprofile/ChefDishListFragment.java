@@ -22,6 +22,8 @@ import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.activity.main.setup.SignUpActivity;
 import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.DishLikersFragment;
@@ -144,6 +146,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
 
+        Log.d("UserData", loginData);
         if(user_type.equals("2")){
             tv_add_dish.setVisibility(View.GONE);
         }
@@ -183,12 +186,47 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
     public void onClick(View view) {
         int id = view.getId();
 
-        if(id == R.id.chef_dish_list_add_dish){
-            startActivity(new Intent(getContext(), ChefEditDish.class));
-            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        } else {
+        if(id == R.id.chef_dish_list_add_dish) {
+            if (ChefHome.chefProfileData1.getChef_data().getAddress().equals("") ||
+                    ChefHome.chefProfileData1.getChef_data().getAddress() == null) {
+
+                dialog.show();
+//                BaseClass.showToast(getContext(), "To add a Dish to your profile you must need to update your Address.");
+            } else {
+                startActivity(new Intent(getContext(), ChefEditDish.class));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        }else {
 
         }
+    }
+
+    private Dialog dialog;
+    private TextView tv_ok_dialog, tv_cross_dialog;
+    private void createMyDialog(){
+
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_add_dish);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
+        tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
+
+        tv_ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tv_cross_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     @Override

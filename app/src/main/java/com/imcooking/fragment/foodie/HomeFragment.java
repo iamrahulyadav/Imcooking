@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -110,6 +111,10 @@ public class HomeFragment extends Fragment implements
 
         getLocationBtn = (Button)getView().findViewById(R.id.getLocationBtn);
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
+        }
 
         LinearLayout toolbar_left = getView().findViewById(R.id.toolbar_left);
         toolbar_left.setOnClickListener(new View.OnClickListener() {
@@ -394,8 +399,18 @@ public class HomeFragment extends Fragment implements
 
     private void setMyData(/*ArrayList<String> like_1, ArrayList<String> like_2*/){
 
+        // Set Cuisine All as blue
+        for(int i=0; i<arr_cuisines.size(); i++){
+            arr_cuisines_status.set(i, "0");
+        }
+        arr_cuisines_status.set(0, "1");
+        cuisionAdatper.notifyDataSetChanged();
+
+
+
+
 //        if(!isFilterApplied) {
-            if (chefDishBeans != null) {
+            if (chefDishBeans != null || chefDishBeans.size()>0) {
                 chefDishBeans.clear();
 //                chefDishBeans = null;
             }
@@ -432,6 +447,7 @@ public class HomeFragment extends Fragment implements
     private HomeDishPagerAdapter adapter;
     private void setMyViewPager(List<HomeData.ChefDishBean> mylist, ArrayList<String> arr_like_status_1) {
 
+        chefDishBeans_filter_all.clear(); arr_like_status_1_filter_all.clear();
         if(mylist != null && mylist.size()>0) {
             chefDishBeans_filter_all.addAll(mylist);
             arr_like_status_1_filter_all.addAll(arr_like_status_1);
@@ -772,11 +788,12 @@ public class HomeFragment extends Fragment implements
 
     private void filterCuisine(int position, String cuision){
         cuisionChefList = new ArrayList<>();
-        for (HomeData.ChefDishBean  bean: chefDishBeans){
+        for (HomeData.ChefDishBean  bean: homeData.getChef_dish()){
+//            bean.getDish_cuisine().get(0).getCuisine_name()
             if (bean.getDish_cuisine()!=null && bean.getDish_cuisine().size()>0){
                 String cuisionVa = bean.getDish_cuisine().get(0).getCuisine_name();
                 if (cuision.equalsIgnoreCase(cuisionVa)){
-                    cuisionChefList.add(chefDishBeans.get(position));
+                    cuisionChefList.add(bean/*homeData.getChef_dish().get(position)*/);
                 }
             }
         }
