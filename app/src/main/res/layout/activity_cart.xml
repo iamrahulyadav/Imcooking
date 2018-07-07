@@ -214,6 +214,7 @@
                         android:id="@+id/cart_tv_place_order"
                         android:textColor="@color/colorWhite"
                         android:textSize="14sp" />
+
                 </LinearLayout>
 
             </LinearLayout>
