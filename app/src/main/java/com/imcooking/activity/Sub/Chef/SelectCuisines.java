@@ -112,6 +112,6 @@ public class SelectCuisines extends AppBaseActivity implements AdapterSelectCuis
     public void onBackPressed() {
         super.onBackPressed();
 
-        BaseClass.showToast(getApplicationContext(), "No Filters Applied!");
+//        BaseClass.showToast(getApplicationContext(), "No Filters Applied!");
     }
 }

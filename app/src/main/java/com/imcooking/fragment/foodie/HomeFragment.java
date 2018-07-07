@@ -521,7 +521,6 @@ public class HomeFragment extends Fragment implements
         } else {}
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

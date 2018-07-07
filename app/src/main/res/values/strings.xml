@@ -70,6 +70,7 @@
 
 
     <!--chefprofile-->
-    <string name="dialog_add_dish_text">To add a Dish to your profile you must need to Update your Profile.</string>
+    <string name="dialog_add_dish_text_1">To add a Dish to your profile you must need to Update your Profile.</string>
+    <string name="dialog_add_dish_text_2">To add a Dish to your profile you must need to Add Cuisines to your Profile.</string>
 
 </resources>

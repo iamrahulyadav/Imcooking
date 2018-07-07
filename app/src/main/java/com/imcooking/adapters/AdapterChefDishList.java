@@ -165,6 +165,8 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("qyt", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("available", chef_dish_list.get(position).getDish_available());
                 bundle.putString("time", chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to());
+                bundle.putString("time1", chef_dish_list.get(position).getDish_from());
+                bundle.putString("time2", chef_dish_list.get(position).getDish_to());
                 bundle.putString("count", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("home_delivery", chef_dish_list.get(position).getDish_homedelivery());
                 bundle.putString("pickup", chef_dish_list.get(position).getDish_pickup());

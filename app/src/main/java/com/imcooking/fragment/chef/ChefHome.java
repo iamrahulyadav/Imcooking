@@ -115,7 +115,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         getMyintentData();
 
@@ -410,16 +410,30 @@ for(int i=0;i<jsonArray.length();i++){
                                     BaseClass.showToast(getContext(), "Successfully Followed");
                                     btn_follow.setText("Unfollow");
 
-                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
-                                            .replace(" Followers",""))+1 + " Followers");
-
+                                    if(!txtFollowers.getText().toString().trim().equals("0 Follower")) {
+                                        if (txtFollowers.getText().toString().equals("1 Follower")) {
+                                            txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
+                                                    .replace(" Follower", "")) + 1 + " Followers");
+                                        } else {
+                                            txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
+                                                    .replace(" Followers", "")) + 1 + " Followers");
+                                        }
+                                    } else{
+                                        txtFollowers.setText("1 Follower");
+                                    }
 //                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText()));
                                 }
-                                else if (followUnfollow.getMsg().equals("Successfully unfollow")){
+                                else if (followUnfollow.getMsg().equals("Successfully unfollow")) {
                                     BaseClass.showToast(getContext(), "Successfully Unfollowed");
-                                    txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString().replace(" Followers",""))
-                                            -1 + " Followers");
                                     btn_follow.setText("Follow");
+
+                                    if (txtFollowers.getText().toString().trim().equals("1 Follower")) {
+                                        txtFollowers.setText("0 Follower");
+                                    } else {
+                                        txtFollowers.setText(Integer.parseInt(txtFollowers.getText().toString()
+                                                .replace(" Followers", ""))
+                                                - 1 + " Followers");
+                                    }
                                 }
                             }else {
                                 Toast.makeText(getContext(), "Something went Wrong", Toast.LENGTH_SHORT).show();

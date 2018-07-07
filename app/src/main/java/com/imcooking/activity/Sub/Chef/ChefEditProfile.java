@@ -62,7 +62,7 @@ import java.util.List;
 
 
 public class ChefEditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
-        CompoundButton.OnCheckedChangeListener, AdapterCuisineList.click_adapter_cuisine_list, View.OnClickListener {
+        AdapterCuisineList.click_adapter_cuisine_list, View.OnClickListener {
     public static CuisineData cuisineData = new CuisineData();
     //    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
@@ -94,6 +94,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     }
 
 
+//    private TextImputLayout
     private void init(){
 
         tinyDB = new TinyDB(getApplicationContext());
@@ -122,10 +123,10 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 //                = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 //        cuisineRecycler.setLayoutManager(horizontalLayoutManagaer);
 //        sw_notification = findViewById(R.id.chef_edit_profile_notification);
-        sw_available = findViewById(R.id.chef_edit_profile_available);
+//        sw_available = findViewById(R.id.chef_edit_profile_available);
 
 //        sw_notification.setOnCheckedChangeListener(this);
-        sw_available.setOnCheckedChangeListener(this);
+//        sw_available.setOnCheckedChangeListener(this);
 
         ArrayList<String> spinnerData =new ArrayList<>();
         spinnerData.add("10 miles ");
@@ -263,20 +264,20 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
     }
 
-    @Override
+   /* @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
         int id = compoundButton.getId();
-       /* if(id == R.id.chef_edit_profile_notification){
+       *//* if(id == R.id.chef_edit_profile_notification){
             if(b) str_notification = "1";
             else  str_notification = "0";
 
-        } else */
+        } else *//*
        if(id == R.id.chef_edit_profile_available){
             if(b) str_available = "1";
             else  str_available = "0";
         } else {}
-    }
+    }*/
 
     public void select_cuisines(View view){
 
@@ -310,7 +311,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setEmail(str_email);
         data.setZipcode(str_zipcode);
         data.setDefault_miles(str_miles);
-        data.setAvailable(str_available);
+        data.setAvailable(str_available);           // No Use
         data.setCuisine_list(str_cuisine_ids);
         data.setAbout(str_about);
         data.setPhone(str_phn);
@@ -322,34 +323,38 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                 if(!str_city.isEmpty()){
                         if(!str_zipcode.isEmpty()){
                             if(!str_about.isEmpty()) {
-                                if (isValidMobile(str_phn)){
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(new Gson().toJson(data));
+                                if (isValidMobile(str_phn)) {
+                                    if (!tv_select_cuisine.getText().toString().equals("Select Cuisines")) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(new Gson().toJson(data));
 
-                                        Log.d("MyRequest", jsonObject.toString());
-                                        new GetData(getApplicationContext()).sendMyData(jsonObject, GetData.CHEF_PROFILE_UPDATE,
-                                                ChefEditProfile.this, new GetData.MyCallback() {
-                                                    @Override
-                                                    public void onSuccess(String result) {
-                                                        try {
-                                                            JSONObject job = new JSONObject(result);
-                                                            if (job.getBoolean("status")) {
-                                                                if (job.getString("msg").equals("chef profile update successfully")) {
-                                                                    BaseClass.showToast(getApplicationContext(), "Profile Updated Successfully");
-                                                                    finish();
+                                            Log.d("MyRequest", jsonObject.toString());
+                                            new GetData(getApplicationContext()).sendMyData(jsonObject, GetData.CHEF_PROFILE_UPDATE,
+                                                    ChefEditProfile.this, new GetData.MyCallback() {
+                                                        @Override
+                                                        public void onSuccess(String result) {
+                                                            try {
+                                                                JSONObject job = new JSONObject(result);
+                                                                if (job.getBoolean("status")) {
+                                                                    if (job.getString("msg").equals("chef profile update successfully")) {
+                                                                        BaseClass.showToast(getApplicationContext(), "Profile Updated Successfully");
+                                                                        finish();
+                                                                    } else {
+                                                                        BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
+                                                                    }
                                                                 } else {
                                                                     BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                                                 }
-                                                              } else {
-                                                                BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
                                                             }
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
                                                         }
-                                                    }
-                                                });
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                                    });
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        BaseClass.showToast(getApplicationContext(), "Please add cuisines to your profile");
                                     }
                                 } else {
                                     BaseClass.showToast(getApplicationContext(), "Please enter valid phone number");

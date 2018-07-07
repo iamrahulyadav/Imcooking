@@ -94,7 +94,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     final long PERIOD_MS = 3000; // time in milliseconds between successive task executions.
     private ProgressBar progressBar;
     ViewPager home_top_pager;
-    private String str_id, str_name, str_likes, str_available,str_like, str_time, str_count, str_homedelivery, str_pickup, str_price,
+    private String str_id, str_name, str_likes, str_available,str_like, str_time, str_time_1, str_time_2, str_count, str_homedelivery, str_pickup, str_price,
             str_description, str_special_note, str_cuisine, str_qyt;
 
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -133,6 +133,8 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         str_name = getArguments().getString("name");
         str_available = getArguments().getString("available");
         str_time = getArguments().getString("time");
+        str_time_1 = getArguments().getString("time1");
+        str_time_2 = getArguments().getString("time2");
         str_count = getArguments().getString("count");
         str_homedelivery = getArguments().getString("home_delivery");
         str_pickup = getArguments().getString("pickup");
@@ -278,6 +280,8 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                     .putExtra("image", arrayList)
                     .putExtra("qyt",str_qyt)
                     .putExtra("video",VIDEO_SAMPLE)
+                    .putExtra("time1", str_time_1)
+                    .putExtra("time2", str_time_2)
 
 
             );
