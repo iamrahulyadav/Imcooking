@@ -165,6 +165,8 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("qyt", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("available", chef_dish_list.get(position).getDish_available());
                 bundle.putString("time", chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to());
+                bundle.putString("time1", chef_dish_list.get(position).getDish_from());
+                bundle.putString("time2", chef_dish_list.get(position).getDish_to());
                 bundle.putString("count", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("home_delivery", chef_dish_list.get(position).getDish_homedelivery());
                 bundle.putString("pickup", chef_dish_list.get(position).getDish_pickup());
@@ -173,6 +175,7 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
                 bundle.putString("cuisine", chef_dish_list.get(position).getDish_cuisine());
                 bundle.putString("likeno", chef_dish_list.get(position).getLike_no());
+
                 if (chef_dish_list.get(position).getDish_video()!=null && chef_dish_list.get(position).getDish_video().length()>0)
                     bundle.putString("video",GetData.IMG_BASE_URL+chef_dish_list.get(position).getDish_video()+"");
                 bundle.putStringArrayList("image", arrayList);

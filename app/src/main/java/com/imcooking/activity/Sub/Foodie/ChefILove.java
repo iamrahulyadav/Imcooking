@@ -34,8 +34,8 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
     private List<ChefIloveData.ChefloveBean>chefloveBeanList= new ArrayList<>();
     private Gson gson = new Gson();
     private ChefILoveAdatper chefILoveAdatper;
-    private LinearLayout layoutNoRecord;
-    private TextView txtShopNow;
+    private LinearLayout layoutNoRecord, layout_top;
+    private TextView txtShopNow, title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +51,22 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
         }
 
 //        find id
+        title = findViewById(R.id.chef_i_love_title);
+        layout_top = findViewById(R.id.chef_i_love_layout_top);
         layoutNoRecord = findViewById(R.id.activity_chef_ilove_no_record_image);
         recyclerView = findViewById(R.id.activity_chef_ilove_recycler);
         txtShopNow = findViewById(R.id.activity_chef_ilove_shop_now);
+
+        Bundle bundle = new Bundle();
+        bundle = getIntent().getExtras();
+        if(bundle != null){
+//            bundle = i.getExtras();
+            layout_top.setVisibility(View.VISIBLE);
+            title.setText("Request a dish");
+        } else{
+            layout_top.setVisibility(View.GONE);
+            title.setText("Chef i love");
+        }
 
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -96,7 +109,7 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
                             }   else {
                                 recyclerView.setVisibility(View.GONE);
                                 layoutNoRecord.setVisibility(View.VISIBLE);
-                                BaseClass.showToast(getApplicationContext(), "You are not following any chef yet.");
+//                                BaseClass.showToast(getApplicationContext(), "You are not following any chef yet.");
                             }
                         }
                     });
@@ -149,6 +162,14 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
                                             "Successfully Unfollowed");
                                     chefloveBeanList.remove(position);
                                     chefILoveAdatper.notifyDataSetChanged();
+
+                                    if(chefloveBeanList.size() == 0){
+                                        recyclerView.setVisibility(View.GONE);
+                                        layoutNoRecord.setVisibility(View.VISIBLE);
+                                    } else{
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        layoutNoRecord.setVisibility(View.GONE);
+                                    }
                                 } else {
                                     BaseClass.showToast(getApplicationContext(),
                                             "Something Went Wrong");

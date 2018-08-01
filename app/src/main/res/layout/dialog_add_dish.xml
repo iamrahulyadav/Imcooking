@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/dialog_add_dish_text"
-            android:text="@string/dialog_add_dish_text"
+            android:text="@string/dialog_add_dish_text_1"
             android:textColor="@color/text_color_10"
             android:textSize="16sp"
             android:layout_marginBottom="20dp"

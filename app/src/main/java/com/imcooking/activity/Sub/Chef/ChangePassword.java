@@ -97,6 +97,7 @@ TinyDB tinyDB;
                            Log.d("ShowResponse", apiResponse.getMsg());
                            if (apiResponse.isStatus()) {
                                if (apiResponse.getMsg().equals("Successfully change password")) {
+                                   refreshText();
                                    BaseClass.showToast(getApplicationContext(), "Password Successfully changed");
                                } else {
                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
@@ -111,5 +112,11 @@ TinyDB tinyDB;
         } else{
             BaseClass.showToast(getApplicationContext(), "All fields are required.");
         }
+    }
+
+    private void refreshText(){
+        etConfirmpass.setText("");
+        etNewpass.setText("");
+        etOldpass.setText("");
     }
 }

@@ -78,6 +78,7 @@ public class GetData {
     public static String FOODIE_MY_ORDER ="myorder";
     public static String CHEF_I_LOVE = "cheflove";
     public static String UPLOAD_VIDEO ="upload_video";
+    public static String LOGOUT = "logout";
 
 
     public GetData(final Context context, Activity activity) {

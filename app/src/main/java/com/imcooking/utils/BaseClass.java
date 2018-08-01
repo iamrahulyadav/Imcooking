@@ -68,6 +68,7 @@ public class BaseClass {
         //  vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
     private static Toast t;
     public static void showToast(Context context, String msg){
         if(t != null)

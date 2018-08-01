@@ -1,127 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="100dp"
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="101dp"
     android:id="@+id/item_chef_i_love_layout"
-    android:padding="15dp"
+    android:orientation="vertical"
     android:background="@color/colorPrimary"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:id="@+id/chef_i_love_profile"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentLeft="true">
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:padding="15dp">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:id="@+id/chef_love_img_profile"
-            android:src="@drawable/details_profile"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"/>
-        <TextView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/shape_circle"
-            android:layout_margin="3dp"
-            android:layout_alignParentRight="true"/>
+            android:id="@+id/chef_i_love_profile"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/chef_love_img_profile"
+                android:src="@drawable/details_profile"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"/>
+            <TextView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/shape_circle"
+                android:layout_margin="3dp"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@+id/chef_i_love_profile">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abhishek Gupta"
+                android:id="@+id/chef_love_txtName"
+                android:textColor="@color/colorBlack"
+                android:textSize="13dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginRight="3dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginRight="3dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginRight="3dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginRight="3dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginRight="5dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.6 km"
+                    android:id="@+id/chef_i_love_txtDistance"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="11dp"
+                    android:drawableLeft="@drawable/ic_distance"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:layout_marginRight="20dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indian"
+                    android:id="@+id/chef_i_love_txtCuision"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"
+                    android:background="@drawable/shape_background_theme"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_chef_i_love_heart_icon"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_like"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:layout_toRightOf="@+id/chef_i_love_profile">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".3dp"
+        android:background="@color/view_6" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Abhishek Gupta"
-            android:id="@+id/chef_love_txtName"
-            android:textColor="@color/colorBlack"
-            android:textSize="13dp"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star"
-                android:layout_marginRight="3dp"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star"
-                android:layout_marginRight="3dp"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star"
-                android:layout_marginRight="3dp"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star"
-                android:layout_marginRight="3dp" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star"
-                android:layout_marginRight="5dp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2.6 km"
-                android:id="@+id/chef_i_love_txtDistance"
-                android:layout_gravity="center"
-                android:textColor="@color/colorBlack"
-                android:textSize="11dp"
-                android:drawableLeft="@drawable/ic_distance"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:layout_marginRight="20dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Indian"
-                android:id="@+id/chef_i_love_txtCuision"
-                android:textColor="@color/colorWhite"
-                android:textSize="11sp"
-                android:background="@drawable/shape_background_theme"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_chef_i_love_heart_icon"
-        android:layout_centerInParent="true"
-        android:layout_alignParentRight="true"
-        android:padding="10dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_like"/>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

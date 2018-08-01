@@ -140,6 +140,9 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
                                     tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
                                  //   BaseClass.showToast(getApplicationContext(), "Login Successfull");
+                                    String loginData = tinyDB.getString("login_data");
+                                    Log.d("LoginData", loginData);
+
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                                 } else {

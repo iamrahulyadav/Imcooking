@@ -163,6 +163,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
+        tv_dialog = dialog.findViewById(R.id.dialog_add_dish_text);
         tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
         tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
 
@@ -190,8 +191,11 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
             if (ChefHome.chefProfileData1.getChef_data().getAddress().equals("") ||
                     ChefHome.chefProfileData1.getChef_data().getAddress() == null) {
 
+                tv_dialog.setText(getResources().getString(R.string.dialog_add_dish_text_1));
                 dialog.show();
-//                BaseClass.showToast(getContext(), "To add a Dish to your profile you must need to update your Address.");
+            } else if(ChefHome.chefProfileData1.getChef_data().getCuisine_name().size() == 0) {
+                tv_dialog.setText(getResources().getString(R.string.dialog_add_dish_text_2));
+                dialog.show();
             } else {
                 startActivity(new Intent(getContext(), ChefEditDish.class));
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -201,6 +205,8 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         }
     }
 
+//    private Dialog dialog;
+//    private TextView tv_ok_dialog, tv_cross_dialog;
 
     @Override
     public void click_me_chef_dish_list(int position, String click_type) {

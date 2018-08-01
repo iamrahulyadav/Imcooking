@@ -44,6 +44,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterEditDishPhotos;
 import com.imcooking.fragment.chef.ChefDishDetail;
 import com.imcooking.fragment.chef.ChefHome;
@@ -92,14 +93,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo, SeekBar.OnSeekBarChangeListener {
 
     private String chef_id="", dish_id="", name, cuisine, price, description, special_note,qyt, available, homedelivery,
-            pickup,video_sample;
+            pickup,video_sample, time_1, time_2;
     private EditText edt_name, edt_price, edt_description, edt_special_note, edt_qyt;
     private SwitchCompat switch_1, switch_2, switch_3;
-    private String sw_1 = "Yes", sw_2 = "Yes", sw_3 = "Yes";
+    private String sw_1 = "No", sw_2 = "No", sw_3 = "No";
     private String dish_miles = "10";
-    private Spinner sp;
+//    private Spinner sp;
 //    private SeekBar seekBar;
-    private final int  REQUEST_CAMERA=0, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
+    private final int  REQUEST_CAMERA=3, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
     Bitmap bitmap;
     boolean result;
     private String userChoosenTask;
@@ -152,7 +153,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void init(){
 
-
         seekBar_available_time = findViewById(R.id.edit_dish_seekbar);
         tv_seekbar_text = findViewById(R.id.edit_dish_seekbar_text);
         tv_time_1 = findViewById(R.id.edit_dish_time_1);
@@ -187,7 +187,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         switch_1 = findViewById(R.id.edit_dish_switch_current_available);
         switch_2 = findViewById(R.id.edit_dish_switch_home_delivery);
-        switch_3 = findViewById(R.id.edit_dish_switch_current_available);
+        switch_3 = findViewById(R.id.edit_dish_switch_pickup);
 //        seekBar = findViewById(R.id.activity_chef_edit_dish_time);
 
         switch_1.setOnCheckedChangeListener(this);
@@ -212,6 +212,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
         });
 
+/*
         ArrayList<String> spinnerData =new ArrayList<>();
         spinnerData.add("10 miles ");
         spinnerData.add("20 miles ");
@@ -224,6 +225,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 R.layout.spinner_row, spinnerData);
         arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
         sp.setAdapter(arrayAdapter);
+*/
 
         photorv1 = findViewById(R.id.chef_edit_dish_photos_recycler);
 //        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
@@ -258,13 +260,23 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             available = getIntent().getExtras().getString("available");
             homedelivery = getIntent().getExtras().getString("home_delivery");
             pickup = getIntent().getExtras().getString("pickup");
+            time_1 = getIntent().getExtras().getString("time1");
+            time_2 = getIntent().getExtras().getString("time2");
+            tv_time_1.setText(time_1);
+            tv_time_2.setText(time_2);
+            tv_seekbar_text.setText("From:" + time_1 + "\t To:" + time_2);
+            setMySeekbarProgress("From:" + time_1 + " \t To:" + time_2);
+
             if (getIntent().hasExtra("video")){
                 video_sample = getIntent().getExtras().getString("video");
                 if (video_sample!=null)
                 txt_video.setText(video_sample.replace(GetData.IMG_BASE_URL,""));
             }
 
-            arrayList = getIntent().getExtras().getStringArrayList("image");
+//            arrayList = getIntent().getExtras().getStringArrayList("image");
+            String s = getIntent().getExtras().getString("image");
+            arrayList = new Gson().fromJson(s,ArrayList.class);
+
             base = ChefDishDetail.base64Array;
 
             if (!qyt.equals("null")){
@@ -291,6 +303,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             edt_description.setText(description);
             edt_special_note.setText(special_note);
 
+            Log.d("ChefEditDishData", "Available = " + available + "\n HomeDelivery = "
+                    + homedelivery + "\n Pickup = " + pickup);
             if(available.equals("Yes")||available.equals("yes")){
                 switch_1.setChecked(true);
             } else if(available.equals("No")||available.equals("no")){
@@ -368,6 +382,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     if(!special_note.isEmpty()){
                        /* if(!bitmapString.equals("a")) {*/
                             if(title.equals("dish")){
+
                                 if(!bitmapString.equals("a")) {
                                     adddish(title);
                                 } else{
@@ -510,6 +525,10 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
+//                                                MainActivity.isProfile = true;
+//                                                BaseClass.callFragment(new ChefHome(),
+//                                                        new ChefHome().getClass().getName(),
+//                                                         getSupportFragmentManager());
                                                 finish();
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
@@ -653,11 +672,15 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == SELECT_FILE){
-                onSelectFromGalleryResult(data);
+                if (data!=null)
+                    onSelectFromGalleryResult(data);
             }
-            else if (requestCode == REQUEST_CAMERA){
-                        onCaptureImageResult(data);
-                    }
+            else if (requestCode == REQUEST_CAMERA)
+            {
+                if (data!=null){
+                    onCaptureImageResult(data);
+                }
+            }
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                         if (data!=null){
                             Uri selectedImageUri = data.getData();
@@ -673,7 +696,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 }
                             }
                         }
-            } else {
             }
         }
     }
@@ -763,17 +785,69 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             text = "From:09:00PM \t To:11:00PM";
             str_time_1 = "09:00 PM"; str_time_2 = "11:00 PM";
         } else if(progress == 23){
-            text = "From:10:00PM \t To:12:00AM";
-            str_time_1 = "10:00 PM"; str_time_2 = "12:00 AM";
+            text = "From:10:00PM \t To:00:00AM";
+            str_time_1 = "10:00 PM"; str_time_2 = "00:00 AM";
         } else if(progress == 24){
-            text = "From:10:00PM \t To:12:00AM";
-            str_time_1 = "10:00 PM"; str_time_2 = "12:00 AM";
+            text = "From:10:00PM \t To:00:00AM";
+            str_time_1 = "10:00 PM"; str_time_2 = "00:00 AM";
         } else {}
 
         tv_time_1.setText(str_time_1);
         tv_time_2.setText(str_time_2);
 
         return text;
+    }
+
+    private void setMySeekbarProgress(String progress_time){
+        if(progress_time.equals("From:00:00 AM \t To:02:00 AM")){
+            seekBar_available_time.setProgress(1);
+        } else if(progress_time.equals("From:01:00 AM \t To:03:00 AM")){
+            seekBar_available_time.setProgress(2);
+        } else if(progress_time.equals("From:02:00 AM \t To:04:00 AM")){
+            seekBar_available_time.setProgress(3);
+        } else if(progress_time.equals("From:03:00 AM \t To:05:00 AM")){
+            seekBar_available_time.setProgress(4);
+        } else if(progress_time.equals("From:04:00 AM \t To:06:00 AM")){
+            seekBar_available_time.setProgress(5);
+        } else if(progress_time.equals("From:05:00 AM \t To:07:00 AM")){
+            seekBar_available_time.setProgress(6);
+        } else if(progress_time.equals("From:06:00 AM \t To:08:00 AM")){
+            seekBar_available_time.setProgress(7);
+        } else if(progress_time.equals("From:07:00 AM \t To:09:00 AM")){
+            seekBar_available_time.setProgress(8);
+        } else if(progress_time.equals("From:08:00 AM \t To:10:00 AM")){
+            seekBar_available_time.setProgress(9);
+        } else if(progress_time.equals("From:09:00 AM \t To:11:00 AM")){
+            seekBar_available_time.setProgress(10);
+        } else if(progress_time.equals("From:10:00 AM \t To:12:00 PM")){
+            seekBar_available_time.setProgress(11);
+        } else if(progress_time.equals("From:11:00 AM \t To:01:00 PM")){
+            seekBar_available_time.setProgress(12);
+        } else if(progress_time.equals("From:12:00 PM \t To:02:00 PM")){
+            seekBar_available_time.setProgress(13);
+        } else if(progress_time.equals("From:01:00 PM \t To:03:00 PM")){
+            seekBar_available_time.setProgress(14);
+        } else if(progress_time.equals("From:02:00 PM \t To:04:00 PM")){
+            seekBar_available_time.setProgress(15);
+        } else if(progress_time.equals("From:03:00 PM \t To:05:00 PM")){
+            seekBar_available_time.setProgress(16);
+        } else if(progress_time.equals("From:04:00 PM \t To:06:00 PM")){
+            seekBar_available_time.setProgress(17);
+        } else if(progress_time.equals("From:05:00 PM \t To:07:00 PM")){
+            seekBar_available_time.setProgress(18);
+        } else if(progress_time.equals("From:06:00 PM \t To:08:00 PM")){
+            seekBar_available_time.setProgress(19);
+        } else if(progress_time.equals("From:07:00 PM \t To:09:00 PM")){
+            seekBar_available_time.setProgress(20);
+        } else if(progress_time.equals("From:08:00 PM \t To:10:00 PM")){
+            seekBar_available_time.setProgress(21);
+        } else if(progress_time.equals("From:09:00 PM \t To:11:00 PM")){
+            seekBar_available_time.setProgress(22);
+        } else if(progress_time.equals("From:10:00 PM \t To:00:00 AM")){
+            seekBar_available_time.setProgress(23);
+        } else if(progress_time.equals("From:11:00 PM \t To:00:00 AM")){
+            seekBar_available_time.setProgress(24);
+        } else {}
     }
 
     @Override
@@ -1005,11 +1079,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-        if (adapterView.getId() == R.id.edit_dish_spinner) {
-            dish_miles = adapterView.getItemAtPosition(i).toString().replace("miles","");
-            Log.d("MySpinner", dish_miles);
-        } else if(adapterView.getId() == R.id.chef_edit_dish_spinner_cuisine){
+        if(adapterView.getId() == R.id.chef_edit_dish_spinner_cuisine){
             selected_cuisine = adapterView.getItemAtPosition(i).toString();
             selected_cuisine_id = list.get(i).getCuisine_id() + "";
             Log.d("MySpinner", selected_cuisine_id);
