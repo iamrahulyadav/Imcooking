@@ -237,7 +237,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/edit_dish_time_2"
-                        android:text="23:59 PM"
+                        android:text="02:00 AM"
                         android:textSize="14sp"
                         android:textColor="@color/theme_color"
                         android:textStyle="bold"
@@ -281,94 +281,6 @@
                 android:text="Pick up only"
                 android:layout_marginTop="20dp"/>
 
-            <!--<RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
-
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Delivery miles"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_color_15"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentLeft="true"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/shape_border_theme">
-
-                    <Spinner
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="3dp"
-                        style="@style/SpinnerTheme1"
-                        android:spinnerMode="dropdown"
-                        android:id="@+id/edit_dish_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingRight="20dp"/>
-
-                </LinearLayout>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_color_15"
-                    android:background="@drawable/shape_border_theme"
-                    android:drawableRight="@drawable/ic_down_arrow_1"
-                    android:drawablePadding="25dp"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:visibility="gone"/>
-
-
-            </RelativeLayout>-->
-<!--
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
-
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/chef_edit_dish_photo_name"
-                    android:text="Photo1"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_color_15"
-                    android:layout_alignParentLeft="true"/>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_alignParentRight="true">
-
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Browse"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorWhite"
-                        android:background="@drawable/shape_background_theme"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:paddingRight="15dp"
-                        android:paddingLeft="15dp"
-                        android:onClick="edit_dish_browse_photo"/>
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
--->
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

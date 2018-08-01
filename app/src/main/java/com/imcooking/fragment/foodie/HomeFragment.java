@@ -779,7 +779,6 @@ public class HomeFragment extends Fragment implements
             }
             cuisionAdatper.notifyDataSetChanged();
             filterCuisine(position, arr_cuisines.get(position));
-
         }
     }
 

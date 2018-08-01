@@ -44,6 +44,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterEditDishPhotos;
 import com.imcooking.fragment.chef.ChefDishDetail;
 import com.imcooking.fragment.chef.ChefHome;
@@ -99,7 +100,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     private String dish_miles = "10";
 //    private Spinner sp;
 //    private SeekBar seekBar;
-    private final int  REQUEST_CAMERA=0, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
+    private final int  REQUEST_CAMERA=3, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
     Bitmap bitmap;
     boolean result;
     private String userChoosenTask;
@@ -186,7 +187,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         switch_1 = findViewById(R.id.edit_dish_switch_current_available);
         switch_2 = findViewById(R.id.edit_dish_switch_home_delivery);
-        switch_3 = findViewById(R.id.edit_dish_switch_current_available);
+        switch_3 = findViewById(R.id.edit_dish_switch_pickup);
 //        seekBar = findViewById(R.id.activity_chef_edit_dish_time);
 
         switch_1.setOnCheckedChangeListener(this);
@@ -272,7 +273,10 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 txt_video.setText(video_sample.replace(GetData.IMG_BASE_URL,""));
             }
 
-            arrayList = getIntent().getExtras().getStringArrayList("image");
+//            arrayList = getIntent().getExtras().getStringArrayList("image");
+            String s = getIntent().getExtras().getString("image");
+            arrayList = new Gson().fromJson(s,ArrayList.class);
+
             base = ChefDishDetail.base64Array;
 
             if (!qyt.equals("null")){
@@ -299,6 +303,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             edt_description.setText(description);
             edt_special_note.setText(special_note);
 
+            Log.d("ChefEditDishData", "Available = " + available + "\n HomeDelivery = "
+                    + homedelivery + "\n Pickup = " + pickup);
             if(available.equals("Yes")||available.equals("yes")){
                 switch_1.setChecked(true);
             } else if(available.equals("No")||available.equals("no")){
@@ -519,6 +525,10 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
+//                                                MainActivity.isProfile = true;
+//                                                BaseClass.callFragment(new ChefHome(),
+//                                                        new ChefHome().getClass().getName(),
+//                                                         getSupportFragmentManager());
                                                 finish();
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
@@ -661,16 +671,18 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == SELECT_FILE)
+            if (requestCode == SELECT_FILE){
                 if (data!=null)
-                onSelectFromGalleryResult(data);
+                    onSelectFromGalleryResult(data);
+            }
             else if (requestCode == REQUEST_CAMERA)
-                    if (data!=null){
-                        onCaptureImageResult(data);
-                    }
+            {
+                if (data!=null){
+                    onCaptureImageResult(data);
+                }
+            }
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                         if (data!=null){
-
                             Uri selectedImageUri = data.getData();
                             selectedPath = getPath(selectedImageUri);
                             if (selectedPath!=null) {

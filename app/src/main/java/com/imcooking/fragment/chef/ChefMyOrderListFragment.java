@@ -62,7 +62,7 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     private void init(View view) {
 
         tinyDB=new TinyDB(getContext());
-        getorderList();
+
         rv_prevoius = view.findViewById(R.id.recycler_chef_my_orders_past);
         recyclerView = view.findViewById(R.id.fragment_chef_order_list_recycler);
         no_record_Layout = view.findViewById(R.id.fragment_my_order_chef_no_record_image);
@@ -95,6 +95,14 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
 //        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
         tv_current_time.setText(dayOfTheWeek + "  " + currentDateTimeString);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getorderList();
 
     }
 

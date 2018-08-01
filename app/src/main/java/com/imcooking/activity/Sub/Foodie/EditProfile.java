@@ -66,6 +66,7 @@ public class EditProfile extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_edit_profile);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -138,20 +139,13 @@ public class EditProfile extends AppBaseActivity {
     protected void onResume() {
         super.onResume();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-         }
+
     }
     JSONObject jsonObject;
 

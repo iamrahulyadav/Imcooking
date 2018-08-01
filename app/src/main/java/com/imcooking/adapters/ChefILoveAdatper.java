@@ -43,7 +43,7 @@ public class ChefILoveAdatper extends RecyclerView.Adapter<ChefILoveAdatper.MyVi
         public TextView txtChefName, tv_distance;
         public ImageView imgDish;
         public LinearLayout heart;
-        public RelativeLayout layout;
+        public LinearLayout layout;
 
         public MyViewHolder(View view) {
             super(view);

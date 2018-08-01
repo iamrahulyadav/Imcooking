@@ -23,6 +23,7 @@ import com.imcooking.adapters.AdapterFoodieMyOrderDetailList;
 import com.imcooking.adapters.ChefILoveAdatper;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.utils.AppBaseActivity;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
@@ -326,14 +327,30 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                 "}";
         Log.d("TAG", "updateStatus: "+s);
         try {
-            JSONObject jsonObject = new JSONObject(s);
+            final JSONObject jsonObject = new JSONObject(s);
 
             new GetData(getApplicationContext(), ChefOrderDetailsActivity.this).sendMyData(jsonObject,
                     GetData.CHEF_ACCEPT_REQUEST, ChefOrderDetailsActivity.this, new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-                            dialog.dismiss();
-                            Log.d(ChefOrderDetailsActivity.class.getName(), "Rakhi : "+result);
+
+                            try {
+                                JSONObject jsonObject1= new JSONObject(result);
+                                if(jsonObject1.getBoolean("status")){
+                                    if(jsonObject1.getString("msg").equals("chef status changed Successfully")){
+                                        dialog.dismiss();
+                                        finish();
+                                        Log.d(ChefOrderDetailsActivity.class.getName(), "Rakhi : "+result);
+
+                                    } else{
+                                        BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                    }
+                                } else{
+                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
         } catch (JSONException e) {

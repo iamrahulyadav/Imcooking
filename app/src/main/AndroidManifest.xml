@@ -70,9 +70,15 @@
             android:name=".activity.Sub.Foodie.Help"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.Sub.Foodie.Help1" />
+
+
+
         <activity
             android:name=".activity.Sub.Foodie.EditProfile"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
+
+
         <activity android:name=".activity.Sub.Foodie.ChefProfile" />
 
         <meta-data
@@ -91,9 +97,15 @@
         <activity
             android:name=".activity.Sub.Chef.ChefEditDish"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+
+
         <activity
             android:name=".activity.Sub.Chef.ChefEditProfile"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+
+
         <activity android:name=".activity.Sub.Chef.ChangePassword" />
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />

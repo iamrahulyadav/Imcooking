@@ -175,6 +175,7 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
                 bundle.putString("cuisine", chef_dish_list.get(position).getDish_cuisine());
                 bundle.putString("likeno", chef_dish_list.get(position).getLike_no());
+
                 if (chef_dish_list.get(position).getDish_video()!=null && chef_dish_list.get(position).getDish_video().length()>0)
                     bundle.putString("video",GetData.IMG_BASE_URL+chef_dish_list.get(position).getDish_video()+"");
                 bundle.putStringArrayList("image", arrayList);

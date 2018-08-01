@@ -1,6 +1,7 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -41,6 +42,7 @@ import com.imcooking.adapters.CartAddListAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -75,6 +77,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView recyclerView;
     private String type="", delivery_type="1" ;// 1 = delivery 2 = pickup
 
+    private ApiResponse.UserDataBean userDataBean;
+    private TinyDB tinyDB;
+    private String login_data, user_phone;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_cart);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -96,6 +102,19 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         } catch(IOException e) {
             System.out.println(e);
         }*/
+
+
+
+        userDataBean = new ApiResponse.UserDataBean();
+        tinyDB = new TinyDB(getApplicationContext());
+        login_data = tinyDB.getString("login_data");
+        Log.d("LoginData", login_data);
+        userDataBean = new Gson().fromJson(login_data, ApiResponse.UserDataBean.class);
+        user_phone = userDataBean.getUser_phone();
+
+
+
+
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -139,6 +158,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         //       set listener
         setListener();
 
+        createMyDialog();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -310,8 +330,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (id){
             case R.id.cart_tv_place_order:
-                linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
-                linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
+                if(user_phone == null){
+                    dialog_alert.show();
+                } else {
+                    linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
+                    linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
+                }
                 break;
             case R.id.cart_tv_addnewitem:
                 startActivity(new Intent(CartActivity.this, OtherDishDishActivity.class)
@@ -389,6 +413,37 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
         }
+    }
+
+    private Dialog dialog_alert;
+    private TextView tv_dialog, tv_ok_dialog, tv_cross_dialog;
+
+    private void createMyDialog(){
+
+        dialog_alert = new Dialog(CartActivity.this);
+        dialog_alert.setContentView(R.layout.dialog_add_dish);
+        dialog_alert.setCancelable(false);
+        dialog_alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_alert.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        tv_dialog = dialog_alert.findViewById(R.id.dialog_add_dish_text);
+        tv_ok_dialog = dialog_alert.findViewById(R.id.dialog_add_dish_btn);
+        tv_cross_dialog = dialog_alert.findViewById(R.id.dialog_add_dish_cross);
+
+        tv_dialog.setText(getResources().getString(R.string.dialog_add_dish_text_4));
+
+        tv_ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog_alert.dismiss();
+            }
+        });
+        tv_cross_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog_alert.dismiss();
+            }
+        });
     }
 
     private void addressDialog(final List<AddressListData.AddressBean> addressBeanList) {

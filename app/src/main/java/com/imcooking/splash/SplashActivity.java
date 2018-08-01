@@ -69,6 +69,10 @@ public class SplashActivity extends AppCompatActivity {
         imgSplash.startAnimation(animation);
         imgLogo.startAnimation(animationLogo);
 
+//        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+//        overridePendingTransition(R.anim.enter, R.anim.exit);
+//        finish();
+
     }
 
     public boolean checkGPSStatus()
@@ -111,7 +115,6 @@ public class SplashActivity extends AppCompatActivity {
         // Showing Alert Message
         alertDialog.show();
     }
-
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 

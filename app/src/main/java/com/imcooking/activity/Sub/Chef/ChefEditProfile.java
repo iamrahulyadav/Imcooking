@@ -60,9 +60,9 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ChefEditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
         AdapterCuisineList.click_adapter_cuisine_list, View.OnClickListener {
+
     public static CuisineData cuisineData = new CuisineData();
     //    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
@@ -92,7 +92,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         init();
         getProfileData();
     }
-
 
 //    private TextImputLayout
     private void init(){

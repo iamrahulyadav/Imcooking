@@ -2,6 +2,7 @@ package com.imcooking.fragment.foodie;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.FoodieMyRequest;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.ChefILove;
 import com.imcooking.adapters.AdapterFoodieMyRequest;
 import com.imcooking.adapters.DishReqChatAdatper;
 import com.imcooking.utils.BaseClass;
@@ -89,7 +91,9 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         txtShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getFragmentManager());
+                startActivity(new Intent(getContext(), ChefILove.class).putExtra("extra", "extra"));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getFragmentManager());
             }
         });
     }

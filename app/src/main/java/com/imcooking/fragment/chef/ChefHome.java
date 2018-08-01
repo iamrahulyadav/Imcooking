@@ -1,8 +1,8 @@
 package com.imcooking.fragment.chef;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +19,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -68,6 +69,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+//import static com.imcooking.activity.home.MainActivity.isProfile;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -108,6 +111,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     private TextView btn_call;
     public static String foodie_id, user_id;
+    private String user_name;
 
     public static CuisineData cuisineData = new CuisineData();
 
@@ -125,8 +129,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
+        user_name = userDataBean.getUser_name();
 
-//        chef_id = userDataBean.getUser_id() + "";
 
         init();
 /*
@@ -142,11 +146,12 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
         foodie_id = getArguments().getString("foodie_id");
         chef_id = getArguments().getString("chef_id");
+
     }
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private ImageView iv_settings, heart;
+    private ImageView iv_settings, heart, iv_settings_1;
 
     private void init() {
         btn_call = getView().findViewById(R.id.chef_home_call_btn);
@@ -169,6 +174,9 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
+        iv_settings_1 = getView().findViewById(R.id.chef_home_settings_1);
+        iv_settings_1.setOnClickListener(this);
+
         if (user_type.equals("2")) {
             btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
@@ -182,6 +190,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         } else {
         }
 
+        createMyDialog();
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -230,9 +239,15 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                         txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                         txtAddress.setText(chefProfileData1.getChef_data().getAddress()+" "+
                                                 chefProfileData1.getChef_data().getChef_city());
+                                        MainActivity.tv_name.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                     }
-                                    if (chefProfileData1.getChef_data().getChef_phone()!=null)
+
+
+                                    if (chefProfileData1.getChef_data().getChef_phone()!=null){
+                                        MainActivity.tv_phone.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                         tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                    }
+
                                     if (chefProfileData1.getChef_data().getRating() != null) {
                                         ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
                                     }
@@ -267,12 +282,19 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     tabLayout.setupWithViewPager(viewPager);
                                     setupViewPager(viewPager);
 
+                                    if(MainActivity.isProfile) {
+                                        TabLayout.Tab tab = tabLayout.getTabAt(1);
+                                        tab.select();
+                                    } else {
+
+                                        TabLayout.Tab tab = tabLayout.getTabAt(0);
+                                        tab.select();
+                                    }
                                 } else {
                                     BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                                 }
                             }
                         }
-
                     });
                 }
 /*
@@ -386,7 +408,6 @@ for(int i=0;i<jsonArray.length();i++){
         }
     }
 
-
     private void getFollowUnfollow(){
         try {
             String s = "{\n" +
@@ -447,42 +468,35 @@ for(int i=0;i<jsonArray.length();i++){
         }
     }
 
+    Dialog dialog;
+    private void createMyDialog(){
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.popup_chef_home);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setLayout(400, 350);
+
+        TextView tv_edit_profile = dialog.findViewById(R.id.chef_home_popup_edit_profile);
+        TextView tv_change_password = dialog.findViewById(R.id.chef_home_popup_change_password);
+        tv_deactivate_1 = dialog.findViewById(R.id.chef_home_popup_deacivate);
+        TextView tv_logout = dialog.findViewById(R.id.chef_home_popup_logout);
+
+        tv_edit_profile.setOnClickListener(this);
+        tv_change_password.setOnClickListener(this);
+        tv_deactivate_1.setOnClickListener(this);
+        tv_logout.setOnClickListener(this);
+
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
-//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            w.setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            w.setStatusBarColor(Color.TRANSPARENT);
-        }
-
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }*/
-/*
-        //make full transparent statusBar
-        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
-            setWindowFlag(getActivity(), WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true);
-        }
-        if (Build.VERSION.SDK_INT >= 19) {
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-        if (Build.VERSION.SDK_INT >= 21) {
-            setWindowFlag(getActivity(), WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
-            getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
-*/
-
-
         if (getActivity().getClass().getName().equals(MainActivity.class.getName())) {
-            ((MainActivity) getActivity()).setBottomColor();
-            ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
-            ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+//            ((MainActivity) getActivity()).setBottomColor();
+//            ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
+//            ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
         } else {
 
         }
@@ -490,7 +504,6 @@ for(int i=0;i<jsonArray.length();i++){
         getchefProfile();
         getCuisines();
 
-//        getchefProfile();
     }
 
     @Override
@@ -501,10 +514,7 @@ for(int i=0;i<jsonArray.length();i++){
             popupwindow_obj.dismiss();
             popupwindow_obj = null;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
-//            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+
     }
 
     @Override
@@ -519,26 +529,74 @@ for(int i=0;i<jsonArray.length();i++){
     }
 
     private PopupWindow popupwindow_obj;
+
     @Override
     public void onClick(View view) {
 
         int id = view.getId();
         if (id == R.id.chef_home_settings) {
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+
+            if(width == 720 && height == 1184){
+                dialog.show();
+            } else {
+                popupwindow_obj = showMyPopup();
+                popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
+            }
+        } else if (id == R.id.chef_home_settings_1) {
             popupwindow_obj = showMyPopup();
-            popupwindow_obj.showAsDropDown(iv_settings, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
+            popupwindow_obj.showAsDropDown(iv_settings_1, 10, 20); // where u want show on view click event popupwindow.showAsDropDown(view, x, y);
         } else if (id == R.id.chef_home_popup_edit_profile) {
+            if(dialog != null){
+                dialog.dismiss();
+            }
             startActivity(new Intent(getContext(), ChefEditProfile.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (id == R.id.chef_home_popup_change_password) {
+            if(dialog != null){
+                dialog.dismiss();
+            }
             startActivity(new Intent(getContext(), ChangePassword.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (id == R.id.chef_home_popup_deacivate) {
+            if(dialog != null){
+                dialog.dismiss();
+            }
             startActivity(new Intent(getContext(), ChefActivateDeactivate.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         } else if (id == R.id.chef_home_popup_logout) {
-            new TinyDB(getContext()).remove("login_data");
-            startActivity(new Intent(getContext(), LoginActivity.class));
-            getActivity().finish();
+            if(dialog != null){
+                dialog.dismiss();
+            }
+            String s = "{\"device_id\":\"cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q\", \"user_name\":"
+                    + user_name + "}";
+            Log.d("MyRequest", s);
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.LOGOUT,
+                        getActivity(), new GetData.MyCallback() {
+                            @Override
+                            public void onSuccess(String result) {
+                                ApiResponse apiResponse = new Gson().fromJson(result, ApiResponse.class);
+                                if(apiResponse.isStatus()){
+                                    if (apiResponse.getMsg().equals("device_id deleted Successfully ")){
+                                        new TinyDB(getContext()).remove("login_data");
+                                        startActivity(new Intent(getContext(), LoginActivity.class));
+                                        getActivity().finish();
+                                    } else{
+                                        BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                    }
+                                }
+                            }
+                        });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         } else if (id == R.id.chef_home_follow_button){
             getFollowUnfollow();
         }
@@ -554,7 +612,7 @@ for(int i=0;i<jsonArray.length();i++){
         }
     }
 
-    private TextView tv_deactivate;
+    private TextView tv_deactivate, tv_deactivate_1;
     public PopupWindow showMyPopup() {
         final PopupWindow popupWindow = new PopupWindow(getActivity());
 
@@ -566,6 +624,8 @@ for(int i=0;i<jsonArray.length();i++){
         TextView tv_change_password = view.findViewById(R.id.chef_home_popup_change_password);
         tv_deactivate = view.findViewById(R.id.chef_home_popup_deacivate);
         TextView tv_logout = view.findViewById(R.id.chef_home_popup_logout);
+
+//        tv_deactivate.setText(chefProfileData1.getChef_data().);
 
         tv_edit_profile.setOnClickListener(this);
         tv_change_password.setOnClickListener(this);
@@ -579,7 +639,7 @@ for(int i=0;i<jsonArray.length();i++){
         int height = size.y;
 
         popupWindow.setFocusable(true);
-        popupWindow.setWidth(width - 700);
+        popupWindow.setWidth(width - 600);
         popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setContentView(view);
