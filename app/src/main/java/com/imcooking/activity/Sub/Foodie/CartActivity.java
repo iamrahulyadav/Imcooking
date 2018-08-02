@@ -87,23 +87,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }*/
-     /*   String imageUrl= "https://www.gettyimages.ca/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg";
-        try {
-            URL url = new URL(imageUrl);
-            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            Log.d(TAG, "imgbit"+image);
-        } catch(IOException e) {
-            System.out.println(e);
-        }*/
-
-
 
         userDataBean = new ApiResponse.UserDataBean();
         tinyDB = new TinyDB(getApplicationContext());
@@ -111,9 +94,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("LoginData", login_data);
         userDataBean = new Gson().fromJson(login_data, ApiResponse.UserDataBean.class);
         user_phone = userDataBean.getUser_phone();
-
-
-
 
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
@@ -176,6 +156,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+
         setdetails();
     }
 
@@ -258,7 +239,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         addToCart.setFoodie_id(foodie_id);
         Log.d(TAG, "MyRequest: "+new Gson().toJson(addToCart));
         new GetData(getApplicationContext(), CartActivity.this)
-                .getResponse(new Gson().toJson(addToCart), "cart",
+                .getResponse(new Gson().toJson(addToCart), GetData.CART,
                         new GetData.MyCallback() {
                             @Override
                             public void onSuccess(String result) {
@@ -277,7 +258,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             if (apiResponse.getAdd_cart().getFollow()>1){
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Followers");
                                             }
-
                                             else {
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
@@ -608,42 +588,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         getAddress();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
 }

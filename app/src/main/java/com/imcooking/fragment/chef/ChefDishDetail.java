@@ -42,6 +42,7 @@ import com.imcooking.adapters.DishDetailPagerAdapter;
 import com.imcooking.adapters.Pager1;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -61,15 +62,17 @@ import java.util.TimerTask;
 public class ChefDishDetail extends Fragment implements View.OnClickListener, DishDetailPagerAdapter.DishDetailPlayClick {
 
     private  String VIDEO_SAMPLE =
-            "", isVideo;
+            "", isVideo, user_type;
 
     private VideoView mVideoView;
     private ProgressBar mBufferingTextView;
     // Current playback position (in milliseconds).
     private int mCurrentPosition = 0;
-
+    private TinyDB tinyDB;
+    private ApiResponse.UserDataBean userDataBean;
     // Tag for the instance state bundle.
     private static final String PLAYBACK_TIME = "play_time";
+    private ImageView iv_share;
 
     public ChefDishDetail() {
         // Required empty public constructor
@@ -105,10 +108,18 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
     private List<String> arrayList = new ArrayList<>();
 
-    private ImageView iv_home_delivery_icon, iv_pickup_icon;
+    private ImageView iv_home_delivery_icon, iv_pickup_icon, iv_heart;
 
     private LinearLayout layout;
+
     private void init(){
+        tinyDB = new TinyDB(getActivity());
+        String loginData = tinyDB.getString("login_data");
+        userDataBean = new ApiResponse.UserDataBean();
+        userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
+        user_type = userDataBean.getUser_type();
+
+        iv_share = getView().findViewById(R.id.fragment_chef_dish_details_share);
         home_top_pager = getView().findViewById(R.id.fragment_chef_auto_scroll_page);
         tv_dish_name = getView().findViewById(R.id.chef_dish_detalis_dish_name);
         tv_dish_likes = getView().findViewById(R.id.chef_dish_detalis_dish_likes);
@@ -119,8 +130,11 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         tv_dish_price = getView().findViewById(R.id.chef_dish_details_dish_price);
 //        tv_dish_description = getView().findViewById(R.id.chef_dish_details_description);
         tv_edit_dish = getView().findViewById(R.id.chef_home_details_edit_dish);
-        tv_edit_dish.setOnClickListener(this);
+        iv_heart = getView().findViewById(R.id.chef_dish_detalis_heart);
 
+        tv_edit_dish.setOnClickListener(this);
+        iv_heart.setOnClickListener(this);
+        iv_share.setOnClickListener(this);
 
         mVideoView = getView().findViewById(R.id.fragment_chef_dish_details_videoview);
         mBufferingTextView = getView().findViewById(R.id.buffering_textview);
@@ -141,138 +155,6 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
         str_id = getArguments().getString("id");
         getDetails(str_id);
-/*
-
-        str_name = getArguments().getString("name");
-        str_available = getArguments().getString("available");
-        str_time = getArguments().getString("time");
-        str_time_1 = getArguments().getString("time1");
-        str_time_2 = getArguments().getString("time2");
-        str_count = getArguments().getString("count");
-        str_homedelivery = getArguments().getString("home_delivery");
-        str_pickup = getArguments().getString("pickup");
-        str_price = getArguments().getString("price");
-        str_description = getArguments().getString("description");
-        str_special_note = getArguments().getString("special_note");
-        str_cuisine = getArguments().getString("cuisine");
-
-        arrayList = getArguments().getStringArrayList("image");
-
-        str_like = getArguments().getString("likeno");
-
-        VIDEO_SAMPLE = getArguments().getString("video");
-        Log.d("TAG", "getMyData: "+VIDEO_SAMPLE);
-
-        if (VIDEO_SAMPLE!=null)
-            isVideo = "yes";
-        else isVideo = "no";
-
-        base64Array = new ArrayList<>();
-        Log.d("TAG", "getMyData: "+arrayList.size());
-
-        if (arrayList.size()>0){
-            for (int i=0;i<arrayList.size();i++){
-                String urls[] = new String[arrayList.size()];
-                String imageUrl = GetData.IMG_BASE_URL+arrayList.get(i);
-                urls[i] = imageUrl;
-                // Execute the task
-                new GetImage().execute(GetData.IMG_BASE_URL+arrayList.get(i));
-
-            }
-
-        }
-        str_qyt = getArguments().getString("qyt");
-        tv_dish_name.setText(str_name);
-        if(str_available.equalsIgnoreCase("Yes")){
-            tv_dish_text_available.setText("Available");
-        } else{
-            tv_dish_text_available.setText("Not Available");
-        }
-
-        tv_dish_time.setText(str_time);
-        if(!str_qyt.equals("null")){
-            tv_dish_count.setText(str_qyt);
-        } else{
-            tv_dish_count.setText("0");
-        }
-
-
-//        tv_dish_home_delivery.setText(str_homedelivery);
-        if(str_homedelivery.equals("Yes")){
-            if(str_pickup.equals("Yes")){
-                tv_dish_home_delivery.setText("Home Delivery / Pick-up");
-                iv_home_delivery_icon.setVisibility(View.VISIBLE);
-                iv_pickup_icon.setVisibility(View.VISIBLE);
-            } else if (str_pickup.equals("No") ){
-                iv_home_delivery_icon.setVisibility(View.VISIBLE);
-                iv_pickup_icon.setVisibility(View.GONE);
-                tv_dish_home_delivery.setText("Home Delivery");
-            } else {}
-        } else if(str_homedelivery.equals("No")){
-            iv_home_delivery_icon.setVisibility(View.GONE);
-            iv_pickup_icon.setVisibility(View.VISIBLE);
-            tv_dish_home_delivery.setText("Pick-up");
-        }
-
-        tv_dish_price.setText("£" + str_price);
-        if (str_description!=null){
-//            tv_dish_description.setText(str_description);
-        }
-
-        setAdapter();
-//After setting the adapter use the timer
-
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == arrayList.size()-1) {
-                    currentPage = 0;
-                }
-                home_top_pager.setCurrentItem(currentPage++, true);
-            }
-        };
-
-        if (str_like!=null){
-            tv_dish_likes.setText(str_like);
-        } else tv_dish_likes.setText("0");
-
-        timer = new Timer(); // This will create a new Thread
-        timer .schedule(new TimerTask() { // task to be scheduled
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, DELAY_MS, PERIOD_MS);
-
-
-        final ViewPager viewPager = getView().findViewById(R.id.chef_dish_details_view_pager);
-        TabLayout tabLayout = getView().findViewById(R.id.chef_dish_details_tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Recipe"));
-        tabLayout.addTab(tabLayout.newTab().setText("Special Note"));
-
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(str_description);
-        arrayList.add(str_special_note);
-        Pager1 adapter = new Pager1(getContext(), arrayList);
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-*/
     }
 
     ArrayList<String>nameList = new ArrayList<>();
@@ -487,13 +369,30 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                     .putExtra("video",VIDEO_SAMPLE)
                     .putExtra("time1", str_time_1)
                     .putExtra("time2", str_time_2)
-
-
             );
+
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        } else{}
+        } else if (id == R.id.chef_dish_detalis_heart){
+           if (user_type.equals("1")){
+               dish_likers(str_id);
+           }
+        } else if (id == R.id.fragment_chef_dish_details_share){
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+//            sendIntent.putExtra(Intent.EXTRA_TEXT, "Shared");
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, "Share Using"));
+        }
     }
 
+    private void dish_likers(String dish_id){
+        Bundle bundle = new Bundle();
+        bundle.putString("dish_id", dish_id);
+        DishLikersFragment dishLikersFragment = new DishLikersFragment();
+        dishLikersFragment.setArguments(bundle);
+        BaseClass.callFragment(dishLikersFragment,DishLikersFragment.class.getName(), getFragmentManager());
+    }
 
     @Override
     public void onResume() {

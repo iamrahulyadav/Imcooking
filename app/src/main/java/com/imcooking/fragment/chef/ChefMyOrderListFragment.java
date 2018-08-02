@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -45,6 +46,8 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     RecyclerView recyclerView, rv_prevoius;
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView ;
+    private RelativeLayout currentLayout;
+
    public ChefMyOrderListFragment() {
         // Required empty public constructor
     }
@@ -67,6 +70,8 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
         recyclerView = view.findViewById(R.id.fragment_chef_order_list_recycler);
         no_record_Layout = view.findViewById(R.id.fragment_my_order_chef_no_record_image);
         nestedScrollView = view.findViewById(R.id.chef_order_list_scroll);
+        currentLayout = view.findViewById(R.id.fragment_chef_order_txt_current);
+
         CustomLayoutManager manager1 = new CustomLayoutManager(getContext()){
             @Override
             public boolean canScrollVertically() {
@@ -101,7 +106,6 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     @Override
     public void onResume() {
         super.onResume();
-
         getorderList();
 
     }
@@ -109,7 +113,6 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     private List<ChefMyorderList.MyOrderListBean> currentOrderListBeans;
@@ -187,9 +190,13 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     }
 
     private void setMyAdapter(List<ChefMyorderList.MyOrderListBean> list){
-        AdatperChefMyOrderList adatperChefMyOrderList = new AdatperChefMyOrderList(getContext(),
-                 list, this,"current");
-        recyclerView.setAdapter(adatperChefMyOrderList);
+        if (list.size()>0){
+            AdatperChefMyOrderList adatperChefMyOrderList = new AdatperChefMyOrderList(getContext(),
+                    list, this,"current");
+            recyclerView.setAdapter(adatperChefMyOrderList);
+            currentLayout.setVisibility(View.VISIBLE);
+        } else currentLayout.setVisibility(View.GONE);
+
 
         AdatperChefMyOrderList adatperChefMyOrderList1 = new AdatperChefMyOrderList(getContext(),
                 prevoiusOrderListBeans, this, "previous");

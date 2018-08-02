@@ -233,6 +233,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 dialog.dismiss();
             }
         });
+
         if (address_id!=null){
             if (title.equalsIgnoreCase("Home"))
                 radioHome.setChecked(true);

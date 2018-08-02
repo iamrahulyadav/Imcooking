@@ -230,7 +230,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         try {
             JSONObject job = new JSONObject(s);
 
-            new GetData(getContext(), getActivity()).sendMyData(job, "dishlike", getActivity(), new GetData.MyCallback() {
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.DISH_LIKER, getActivity(), new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
 

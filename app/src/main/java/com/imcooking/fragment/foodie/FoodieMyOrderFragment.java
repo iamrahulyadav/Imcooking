@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -45,6 +46,8 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView;
     private TextView txtShop, txtDayTime;
+    private RelativeLayout currentLayout;
+
     public FoodieMyOrderFragment() {
         // Required empty public constructor
     }
@@ -67,6 +70,8 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     private RecyclerView rv_1, rv_2;
 
     private void init(){
+
+        currentLayout = getView().findViewById(R.id.fragment_chef_order_txt_current);
         nestedScrollView = getView().findViewById(R.id.foodie_order_list);
         rv_1 = getView().findViewById(R.id.recycler_foodie_my_orders_current);
         no_record_Layout = getView().findViewById(R.id.fragment_my_order_foodie_no_record_image);
@@ -128,17 +133,11 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                     String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 
                     FoodieMyorderList foodieMyorder = new FoodieMyorderList();
-                    if (visibilityArray!=null){
-                        visibilityArray.clear();
-                    }
-
                     foodieMyorder = new Gson().fromJson(result, FoodieMyorderList.class);
 
                     if(foodieMyorder.isStatus()){
                         if(!foodieMyorder.getFoodie_order_list().isEmpty()){
-                            for (int i=0;i<foodieMyorder.getFoodie_order_list().size();i++){
-                                visibilityArray.add(false);
-                            }
+
                             nestedScrollView.setVisibility(View.VISIBLE);
                             no_record_Layout.setVisibility(View.GONE);
                             currentOrderListBeans = new ArrayList<>();
@@ -196,12 +195,16 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
 
     private void setMyAdapter(List<FoodieMyorderList.FoodieOrderListBean> currentOrderListBeans,
                               List<FoodieMyorderList.FoodieOrderListBean> arrayList){
-       adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),
-                getFragmentManager(), currentOrderListBeans, this, "current");
-        rv_1.setAdapter(adapterFoodieMyOrder);
+        if (currentOrderListBeans.size()>0){
+            adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),
+                    getFragmentManager(), currentOrderListBeans, this, "current");
+            rv_1.setAdapter(adapterFoodieMyOrder);
+            currentLayout.setVisibility(View.VISIBLE);
+        } else currentLayout.setVisibility(View.GONE);
+
         adapterFoodieMyOrder1 = new AdapterFoodieMyOrderList(getContext(),
                 getFragmentManager(), arrayList, this,  "previous");
-        rv_1.setAdapter(adapterFoodieMyOrder);
+
         rv_2.setAdapter(adapterFoodieMyOrder1);
     }
 
@@ -214,12 +217,9 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
 
     }
 
-    private ArrayList<Boolean>visibilityArray = new ArrayList<>();
 
     @Override
     public void getDetails(int position, String TAG) {
-       /* if (visibilityArray.get(position)) visibilityArray.set(position,false);
-        else visibilityArray.set(position, true);*/
        if (TAG.equals("current")){
            startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class)
                    .putExtra("order_id",currentOrderListBeans.get(position).getOrder_order_id()));

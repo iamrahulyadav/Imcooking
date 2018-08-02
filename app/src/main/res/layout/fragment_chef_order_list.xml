@@ -31,6 +31,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/fragment_chef_order_txt_current"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:orientation="horizontal"

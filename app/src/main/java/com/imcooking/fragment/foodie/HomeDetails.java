@@ -106,24 +106,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
             mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
         }
 
-
-
-/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity'selectedValue onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme1);
-
-        // clone the inflater using the ContextThemeWrapper
-        LayoutInflater localInflater = inflater.from(contextThemeWrapper);//cloneInContext(contextThemeWrapper);
-//        getActivity().setTheme(R.style.AppTheme1);
-//        inflater.infl
         return inflater.inflate(R.layout.fragment_home_details, container, false);
     }
 
