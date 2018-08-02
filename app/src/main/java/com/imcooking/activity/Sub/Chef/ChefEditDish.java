@@ -502,8 +502,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void editdish(String title) throws MalformedURLException {
 
-        for(int i=0; i<base.size(); i++){
-            Log.d("FinalImage", base.get(i));
+        Log.d("Base64Size", base.size() + "");
+        ArrayList<String> base1 = new ArrayList<>();
+        for(int i=0; i<base.size(); i++) {
+            if (!base.get(i).equals("MyBase64String")) {
+                base1.add(base.get(i));
+            }
         }
 
         qyt = edt_qyt.getText().toString().trim();
@@ -523,7 +527,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(base);
+        requestData.setDish_image(base1);
         requestData.setDish_qyt(qyt);
 
         if (selectedPath!=null){
