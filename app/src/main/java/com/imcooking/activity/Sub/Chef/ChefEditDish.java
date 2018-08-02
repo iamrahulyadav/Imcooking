@@ -423,21 +423,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void adddish(String title){
 
-        for(int i=0; i<base.size(); i++){
-            Log.d("FinalImage", base.get(i));
-            if(base.get(i).equals("MyBase64String")){
-                base.remove(i);
+        Log.d("Base64Size", base.size() + "");
+        ArrayList<String> base1 = new ArrayList<>();
+        for(int i=0; i<base.size(); i++) {
+            if (!base.get(i).equals("MyBase64String")) {
+                base1.add(base.get(i));
             }
         }
 
-        for(int i=0; i<base.size(); i++) {
-            Log.d("FinalImage1", base.get(i));
-        }
-
-
-
-
-            ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
         ModelChefAddDish requestData = new ModelChefAddDish();
         requestData.setUser_id(chef_id);
         requestData.setDish_name(name);
@@ -453,11 +446,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(base);
+        requestData.setDish_image(base1);
         requestData.setDish_qyt(qyt);
 
 
-        Log.d("Base64Size", base.size() + "");
+        Log.d("Base64Size", base1.size() + "");
 
 
         try {
