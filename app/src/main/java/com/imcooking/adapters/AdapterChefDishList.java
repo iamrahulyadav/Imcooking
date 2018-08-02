@@ -117,6 +117,7 @@ public class AdapterChefDishList extends PagerAdapter{
         String url = "";
         if(chef_dish_list.get(position).getDish_image().size() != 0) {
             url = GetData.IMG_BASE_URL + chef_dish_list.get(position).getDish_image().get(0);
+            Log.d("ChefDishImage", url);
             Picasso.with(context).load(url).into(iv_dish_image);
         }
 //        Log.d("ChefCurrentDishes", url);

@@ -87,7 +87,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-
         userDataBean = new ApiResponse.UserDataBean();
         tinyDB = new TinyDB(getApplicationContext());
         login_data = tinyDB.getString("login_data");
@@ -313,8 +312,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 if(user_phone == null){
                     dialog_alert.show();
                 } else {
-                    linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
-                    linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
+
+                    checkDishAvailableTime();
                 }
                 break;
             case R.id.cart_tv_addnewitem:
@@ -393,6 +392,16 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
         }
+    }
+
+    private void checkDishAvailableTime(){
+
+        for(int i=0; i<dishDetails.size(); i++){
+
+        }
+
+        linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
+        linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
     }
 
     private Dialog dialog_alert;

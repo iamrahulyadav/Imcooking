@@ -175,7 +175,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
     private void getUserProfile(String str_id){
-        String request = "{\"user_id\":" + str_id + "\"}";
+        String request = "{\"user_id\":" + str_id + "}";
+        Log.d("MyRequest", request);
         try {
             JSONObject jsonObject = new JSONObject(request);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.GETPROFILE_PIC, getActivity(), new GetData.MyCallback() {

@@ -55,7 +55,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
 public class HomeFragment extends Fragment implements
         View.OnClickListener, HomeDishPagerAdapter.click_dish_pager_like,
         HomeBottomPagerAdapter.click_dish_pager_like_2, CuisionAdatper.Interface_CuisineAdapter {
@@ -335,17 +334,17 @@ public class HomeFragment extends Fragment implements
                                 }
                                 bottomViewPager.setVisibility(View.VISIBLE);
                                 layout2.setVisibility(View.GONE);
-                                iv_arrow_choice.setVisibility(View.GONE);
+                                iv_arrow_choice.setVisibility(View.VISIBLE);//GONE
                             } else {
                                 bottomViewPager.setVisibility(View.GONE);
                                 layout2.setVisibility(View.VISIBLE);
-                                iv_arrow_choice.setVisibility(View.VISIBLE);
+                                iv_arrow_choice.setVisibility(View.GONE);//VISIBLE
                             }
 
                             layout.setVisibility(View.VISIBLE);
                             viewPager.setVisibility(View.VISIBLE);
                             layout_no_record_found.setVisibility(View.GONE);
-                            iv_arrow_latest.setVisibility(View.GONE);
+                            iv_arrow_latest.setVisibility(View.VISIBLE);// GONE
 
                             isFilterApplied = false;
                             setMyData(/*arr_like_status_1, arr_like_status_2*/);
@@ -357,7 +356,7 @@ public class HomeFragment extends Fragment implements
                                 if (jsonObject.getString("msg").equals("Not record found")){
                              //       BaseClass.showToast(getContext(), "No record found");
                                     layout_no_record_found.setVisibility(View.VISIBLE);
-                                    iv_arrow_latest.setVisibility(View.VISIBLE);
+                                    iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
                                     layout.setVisibility(View.VISIBLE);
                                     viewPager.setVisibility(View.GONE);
 
@@ -369,12 +368,12 @@ public class HomeFragment extends Fragment implements
                                             arr_like_status_2.add(homeData.getFavourite_data().get(i).getDishlike());
                                         }
                                         layout2.setVisibility(View.GONE);
-                                        iv_arrow_choice.setVisibility(View.GONE);
+                                        iv_arrow_choice.setVisibility(View.VISIBLE);//GONE
                                         bottomViewPager.setVisibility(View.VISIBLE);
                                         isFilterApplied = false;
                                     } else{
                                         layout2.setVisibility(View.VISIBLE);
-                                        iv_arrow_choice.setVisibility(View.VISIBLE);
+                                        iv_arrow_choice.setVisibility(View.GONE);//VISIBLE
                                         bottomViewPager.setVisibility(View.GONE);
                                     }
 
@@ -447,7 +446,7 @@ public class HomeFragment extends Fragment implements
             favouriteDataBeans.addAll(homeData.getFavourite_data());
         } else if (homeData.getFavourite_data().size() == 0) {
             layout2.setVisibility(View.VISIBLE);
-            iv_arrow_choice.setVisibility(View.VISIBLE);
+            iv_arrow_choice.setVisibility(View.GONE);//VISIBLE
             bottomViewPager.setVisibility(View.GONE);
         }
 
@@ -464,7 +463,7 @@ public class HomeFragment extends Fragment implements
         } else {
             viewPager.setVisibility(View.GONE);
             layout_no_record_found.setVisibility(View.VISIBLE);
-            iv_arrow_latest.setVisibility(View.VISIBLE);
+            iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
         }
         adapter = new HomeDishPagerAdapter(getActivity(),getContext(), getFragmentManager()
                 , chefDishBeans_filter_all, this, arr_like_status_1_filter_all);
@@ -615,11 +614,11 @@ public class HomeFragment extends Fragment implements
             if(cDB != null && cDB.size()>0){
                 viewPager.setVisibility(View.VISIBLE);
                 layout_no_record_found.setVisibility(View.GONE);
-                iv_arrow_latest.setVisibility(View.GONE);
+                iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
             } else{
                 viewPager.setVisibility(View.GONE);
                 layout_no_record_found.setVisibility(View.VISIBLE);
-                iv_arrow_latest.setVisibility(View.VISIBLE);
+                iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
             }
 
             Log.d("FilteredData", arr_like_status_1_filter_all.size() + "\n" + chefDishBeans_filter_all.size());
@@ -776,11 +775,11 @@ public class HomeFragment extends Fragment implements
 
             if(chefDishBeans_filter_all!=null && chefDishBeans_filter_all.size()>0) {
                 layout_no_record_found.setVisibility(View.GONE);
-                iv_arrow_latest.setVisibility(View.GONE);
+                iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
                 viewPager.setVisibility(View.VISIBLE);
             } else{
                 layout_no_record_found.setVisibility(View.VISIBLE);
-                iv_arrow_latest.setVisibility(View.VISIBLE);
+                iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
                 viewPager.setVisibility(View.GONE);
             }
 
@@ -814,13 +813,13 @@ public class HomeFragment extends Fragment implements
 //        cuisionChefList = getByName(chefDishBeans, cuision);
         if (cuisionChefList.size()>0){
             layout_no_record_found.setVisibility(View.GONE);
-            iv_arrow_latest.setVisibility(View.GONE);
+            iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
             viewPager.setVisibility(View.VISIBLE);
 //            setMyViewPager(cuisionChefList);
 
         } else {
             layout_no_record_found.setVisibility(View.VISIBLE);
-            iv_arrow_latest.setVisibility(View.VISIBLE);
+            iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
             viewPager.setVisibility(View.GONE);
         }
 

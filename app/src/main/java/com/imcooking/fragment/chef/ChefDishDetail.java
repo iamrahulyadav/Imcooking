@@ -113,6 +113,9 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     private LinearLayout layout;
 
     private void init(){
+        viewPager = getView().findViewById(R.id.chef_dish_details_view_pager);
+        tabLayout = getView().findViewById(R.id.chef_dish_details_tab_layout);
+
         tinyDB = new TinyDB(getActivity());
         String loginData = tinyDB.getString("login_data");
         userDataBean = new ApiResponse.UserDataBean();
@@ -147,7 +150,6 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         iv_home_delivery_icon = getView().findViewById(R.id.chef_dish_detalis_icon_home_delivery);
         iv_pickup_icon = getView().findViewById(R.id.chef_dish_detalis_icon_pickup);
 
-
         layout = getView().findViewById(R.id.home_details_layout);
     }
 
@@ -162,6 +164,9 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     ApiResponse apiResponse = new ApiResponse();
     private Gson gson = new Gson();
     DishDetails dishDetails = new DishDetails();
+
+    private ViewPager viewPager;// = getView().findViewById(R.id.chef_dish_details_view_pager);
+    private TabLayout tabLayout;// = getView().findViewById(R.id.chef_dish_details_tab_layout);
 
     private void getDetails(String id){
         layout.setVisibility(View.GONE);
@@ -290,16 +295,20 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                                         }, DELAY_MS, PERIOD_MS);
 
 
-                                        final ViewPager viewPager = getView().findViewById(R.id.chef_dish_details_view_pager);
-                                        TabLayout tabLayout = getView().findViewById(R.id.chef_dish_details_tab_layout);
+                                        int c = tabLayout.getTabCount();
+                                        if(c!=0){
+                                            tabLayout.removeAllTabs();
+                                        }
                                         tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Recipe"));
                                         tabLayout.addTab(tabLayout.newTab().setText("Special Note"));
 
                                         ArrayList<String> arrayList = new ArrayList<>();
                                         arrayList.add(str_description);
                                         arrayList.add(str_special_note);
+
                                         Pager1 adapter = new Pager1(getContext(), arrayList);
                                         viewPager.setAdapter(adapter);
+
                                         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
                                         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                                             @Override

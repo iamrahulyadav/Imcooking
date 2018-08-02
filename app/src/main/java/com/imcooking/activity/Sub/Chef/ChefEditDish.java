@@ -380,24 +380,33 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             if(!price.isEmpty()){
                 if(!description.isEmpty()){
                     if(!special_note.isEmpty()){
-                       /* if(!bitmapString.equals("a")) {*/
-                            if(title.equals("dish")){
+                        if(!qyt.isEmpty()) {
+                            if(sw_2.equals("No") && sw_3.equals("No")) {
+                                BaseClass.showToast(getApplicationContext(), "Please select either" +
+                                        "Home delivery or Pick-up only.");
+                            } else{
+                                /* if(!bitmapString.equals("a")) {*/
+                                if (title.equals("dish")) {
 
-                                if(!bitmapString.equals("a")) {
-                                    adddish(title);
-                                } else{
-                                    BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
+                                    if (!bitmapString.equals("a")) {
+                                        adddish(title);
+                                    } else {
+                                        BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
+                                    }
+                                } else if (title.equals("editdish")) {
+                                    try {
+                                        editdish(title);
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            } else if(title.equals("editdish")){
-                                try {
-                                    editdish(title);
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                }
-                            }
                        /* } else{
                             BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
                         }*/
+                            }
+                        } else{
+                            BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
+                        }
                     } else{
                         BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
                     }
@@ -414,8 +423,21 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void adddish(String title){
 
-        ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
+        for(int i=0; i<base.size(); i++){
+            Log.d("FinalImage", base.get(i));
+            if(base.get(i).equals("MyBase64String")){
+                base.remove(i);
+            }
+        }
 
+        for(int i=0; i<base.size(); i++) {
+            Log.d("FinalImage1", base.get(i));
+        }
+
+
+
+
+            ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
         ModelChefAddDish requestData = new ModelChefAddDish();
         requestData.setUser_id(chef_id);
         requestData.setDish_name(name);
@@ -436,6 +458,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
 
         Log.d("Base64Size", base.size() + "");
+
+
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
@@ -481,10 +505,13 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     private void editdish(String title) throws MalformedURLException {
+
+        for(int i=0; i<base.size(); i++){
+            Log.d("FinalImage", base.get(i));
+        }
 
         qyt = edt_qyt.getText().toString().trim();
         ModelChefEditDish requestData = new ModelChefEditDish();
