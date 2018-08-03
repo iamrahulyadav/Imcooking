@@ -385,24 +385,23 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 BaseClass.showToast(getApplicationContext(), "Please select either" +
                                         "Home delivery or Pick-up only.");
                             } else{
-                                /* if(!bitmapString.equals("a")) {*/
-                                if (title.equals("dish")) {
-
-                                    if (!bitmapString.equals("a")) {
-                                        adddish(title);
-                                    } else {
-                                        BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
+                                 if(selectedPath!=null) {
+                                    if (title.equals("dish")) {
+                                        if (!bitmapString.equals("a")) {
+                                            adddish(title);
+                                        } else {
+                                            BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
+                                        }
+                                    } else if (title.equals("editdish")) {
+                                        try {
+                                            editdish(title);
+                                        } catch (MalformedURLException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                } else if (title.equals("editdish")) {
-                                    try {
-                                        editdish(title);
-                                    } catch (MalformedURLException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                       /* } else{
-                            BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
-                        }*/
+                        } else{
+                            BaseClass.showToast(getApplicationContext() , "Please Select a video");
+                        }
                             }
                         } else{
                             BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
@@ -469,7 +468,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("Add dish Successfully")){
                                                 dish_id = job.getString("last_insertid");
-                                                BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
 
                                                 if (selectedPath!=null){
                                                     if (duration<=20000)
@@ -549,10 +547,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
-//                                                MainActivity.isProfile = true;
-//                                                BaseClass.callFragment(new ChefHome(),
-//                                                        new ChefHome().getClass().getName(),
-//                                                         getSupportFragmentManager());
+
                                                 finish();
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
@@ -947,6 +942,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 if (statusCode == 200) {
                     // Server response
                     responseString = EntityUtils.toString(r_entity);
+
                 } else {
                     responseString = "Error occurred! Http Status Code: "
                             + statusCode;
@@ -965,6 +961,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         @Override
         protected void onPostExecute(String result) {
             Log.e("TAG", "Response from server: " + result);
+            BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
+
             finish();
 
             // showing the server response in an alert dialog
