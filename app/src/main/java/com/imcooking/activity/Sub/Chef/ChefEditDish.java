@@ -1,6 +1,7 @@
 package com.imcooking.activity.Sub.Chef;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -388,6 +389,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                  if(selectedPath!=null) {
                                     if (title.equals("dish")) {
                                         if (!bitmapString.equals("a")) {
+
                                             adddish(title);
                                         } else {
                                             BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
@@ -546,9 +548,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                     if(job.getBoolean("status")){
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
-                                                BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
+                                               /* BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
 
-                                                finish();
+                                                finish();*/
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
                                             }
@@ -879,12 +881,16 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     }
 
+    private ProgressDialog progressDialog ;
+
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         @Override
         protected void onPreExecute() {
-            // setting progress bar to zero
-          //  progressBar.setProgress(0);
             super.onPreExecute();
+            progressDialog = new ProgressDialog(ChefEditDish.this);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage("Uploading video ...");
+            progressDialog.show();
         }
 
         @Override
@@ -914,7 +920,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             try {
                 AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
                         new AndroidMultiPartEntity.ProgressListener() {
-
                             @Override
                             public void transferred(long num) {
                                 publishProgress((int) ((num / (float) totalSize) * 100));
@@ -941,11 +946,19 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
                     // Server response
+                    progressDialog.dismiss();
                     responseString = EntityUtils.toString(r_entity);
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
+                              finish();
+                        }
+                    });
                 } else {
                     responseString = "Error occurred! Http Status Code: "
                             + statusCode;
+                    progressDialog.dismiss();
                 }
 
             } catch (ClientProtocolException e) {
@@ -961,9 +974,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         @Override
         protected void onPostExecute(String result) {
             Log.e("TAG", "Response from server: " + result);
-            BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
 
-            finish();
 
             // showing the server response in an alert dialog
             //  showAlert(result);

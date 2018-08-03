@@ -460,8 +460,6 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         releasePlayer();
     }
 
-
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
