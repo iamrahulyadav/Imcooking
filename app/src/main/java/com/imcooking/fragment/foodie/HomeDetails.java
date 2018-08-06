@@ -127,8 +127,35 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     private LinearLayout chef_profile, layout;
     ViewPager pager, home_top_pager;
 
-
     private String TAG  = HomeDetails.class.getName();
+
+
+    private ProgressBar progressBar;
+    private VideoView videoView;
+
+    private void createVideoDialog(){
+
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_video);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressBar = dialog.findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        videoView = dialog.findViewById(R.id.dialog_video);
+        videoView.setVideoURI(Uri.parse("http://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4"));
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+
+                progressBar.setVisibility(View.GONE);
+                videoView.start();
+            }
+        });
+
+        dialog.show();
+    }
 
     private void init(){
         home_top_pager = getView().findViewById(R.id.fragment_home_auto_scroll_page);
@@ -208,7 +235,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 2000; // time in milliseconds between successive task executions.
-
 
     private void getDetails(String id){
         layout.setVisibility(View.GONE);
@@ -300,7 +326,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
                                     setAdapter();
                                     /*After setting the adapter use the timer */
-                                    final Handler handler = new Handler();
+                                    /*final Handler handler = new Handler();
                                     final Runnable Update = new Runnable() {
                                         public void run() {
                                             if (currentPage == imageList.size()-1) {
@@ -318,7 +344,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                             handler.post(Update);
                                         }
                                     }, DELAY_MS, PERIOD_MS);
-
+*/
                                     adapter=new Pager1(getContext(), nameList);
                                     pager.setAdapter(adapter);
                                     pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -356,8 +382,21 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         });
     }
 
+    private ArrayList<String> arr_ = new ArrayList<>();
+
     private void setAdapter(){
-        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), imageList, this, isVideo);
+        int size =0;
+        if(isVideo.equals("yes")){
+            size = imageList.size() + 1;
+            arr_.add("image");
+        } else {
+            size = imageList.size();
+        }
+        for(int i=0; i<imageList.size(); i++){
+            arr_.add("image");
+        }
+        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), imageList, this,
+                isVideo, size, getActivity(), VIDEO_SAMPLE, arr_);
         home_top_pager.setAdapter(dishDetailPagerAdapter);
 
     }
@@ -544,41 +583,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        // Load the media each time onStart() is called.
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        // In Android versions less than N (7.0, API 24), onPause() is the
-        // end of the visual lifecycle of the app.  Pausing the video here
-        // prevents the sound from continuing to play even after the app
-        // disappears.
-        //
-        // This is not a problem for more recent versions of Android because
-        // onStop() is now the end of the visual lifecycle, and that is where
-        // most of the app teardown should take place.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            mVideoView.pause();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // Media playback takes a lot of resources, so everything should be
-        // stopped and released at this time.
-        releasePlayer();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState)  {
         super.onSaveInstanceState(outState);
 
         // Save the current playback position (in milliseconds) to the
@@ -630,10 +635,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                 });
     }
 
-    private void releasePlayer() {
-        mVideoView.stopPlayback();
-    }
-
     private Uri getMedia(String mediaName) {
         if (URLUtil.isValidUrl(mediaName)) {
             // Media name is an external URL.
@@ -647,11 +648,44 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
     @Override
     public void playVideo(int pos, String tag) {
+        createVideoDialog();
+    }
 
-            initializePlayer();
-            mVideoView.setVisibility(View.VISIBLE);
-            mBufferingTextView.setVisibility(View.VISIBLE);
-            home_top_pager.setVisibility(View.GONE);
+    @Override
+    public void onStop() {
+        super.onStop();
 
+        // Media playback takes a lot of resources, so everything should be
+        // stopped and released at this time.
+        releasePlayer();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Load the media each time onStart() is called.
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // In Android versions less than N (7.0, API 24), onPause() is the
+        // end of the visual lifecycle of the app.  Pausing the video here
+        // prevents the sound from continuing to play even after the app
+        // disappears.
+        //
+        // This is not a problem for more recent versions of Android because
+        // onStop() is now the end of the visual lifecycle, and that is where
+        // most of the app teardown should take place.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            videoView.pause();
+        }
+    }
+
+    private void releasePlayer() {
+        videoView.stopPlayback();
     }
 }

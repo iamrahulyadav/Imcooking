@@ -13,6 +13,22 @@
         android:scaleType="fitXY"
         xmlns:android="http://schemas.android.com/apk/res/android" />
 
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/shape_home_image"
+        android:id="@+id/item_dish_details_pager_video_view"/>
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/buffering_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_centerInParent="true"/>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

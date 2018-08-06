@@ -169,6 +169,23 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         latitudeq = chefProfileData1.getChef_data().getUser_latitude();
         longitudeq = chefProfileData1.getChef_data().getUser_longitude();
 
+        String miles = chefProfileData1.getChef_data().getDefault_miles();
+
+        int selected_position = 0;
+        if(miles != null) {
+            if (miles.contains("10")) {
+                selected_position = 0;
+            } else if (miles.contains("20")) {
+                selected_position = 1;
+            } else if (miles.contains("30")) {
+                selected_position = 2;
+            } else if (miles.contains("50")) {
+                selected_position = 3;
+            } else {
+            }
+        }
+        sp_miles.setSelection(selected_position);
+
         cuisineList = chefProfileData1.getChef_data().getCuisine_name();
         cuisiness_list.clear();
         String str_name11 = ""/*, str_id = ""*/;
@@ -505,7 +522,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         return cursor.getString(idx);
     }
     private final int  REQUEST_CAMERA=0, SELECT_FILE = 1;
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

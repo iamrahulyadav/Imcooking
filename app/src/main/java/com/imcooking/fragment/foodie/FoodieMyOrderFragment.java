@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     }
 
     private RecyclerView rv_1, rv_2;
+    private String current_time;
 
     private void init(){
 
@@ -79,6 +81,10 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         txtDayTime = getView().findViewById(R.id.fragment_my_order_current_time);
         Date currentTime = Calendar.getInstance().getTime();
         txtDayTime.setText(new SimpleDateFormat("EEEE . HH:mm aa").format(currentTime));
+
+        Log.d("CurrentTime", new SimpleDateFormat("HH:mm aa").format(currentTime));
+
+//        current_time = new SimpleDateFormat("HH:mm aa").format(currentTime);
 
         CustomLayoutManager manager = new CustomLayoutManager(getContext()){
             @Override

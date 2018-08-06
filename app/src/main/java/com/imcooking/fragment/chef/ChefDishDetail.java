@@ -351,7 +351,20 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     }
 
     private void setAdapter() {
-        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList,this, isVideo);
+        int size =0;
+        ArrayList<String> arr_ = new ArrayList<>();
+        if(isVideo.equals("yes")){
+            size = arrayList.size() + 1;
+            arr_.add("video");
+        } else {
+            size = arrayList.size();
+        }
+        for(int i=0; i<arrayList.size(); i++){
+            arr_.add("image");
+        }
+
+        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList,this,
+                isVideo, size, getActivity(), VIDEO_SAMPLE, arr_);
         home_top_pager.setAdapter(dishDetailPagerAdapter);
     }
 
