@@ -457,39 +457,42 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        if (data.hasExtra("data")){
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
+            File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");
 
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileOutputStream fo;
+            try {
+                destination.createNewFile();
+                fo = new FileOutputStream(destination);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bitmap = thumbnail;
+
+            Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            File finalFile = new File(getRealPathFromURI(tempUri));
+
+            System.out.println(finalFile + "");
+
+            String filePath = finalFile + "";
+            Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
+
+            bitmapString = BaseClass.BitMapToString(bitmap);
+            imgProfile.setImageBitmap(bitmap) ;
+            uploadProfile(bitmapString);
+
         }
-        bitmap = thumbnail;
-
-        Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-
-        // CALL THIS METHOD TO GET THE ACTUAL PATH
-        File finalFile = new File(getRealPathFromURI(tempUri));
-
-        System.out.println(finalFile + "");
-
-        String filePath = finalFile + "";
-        Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
-
-        bitmapString = BaseClass.BitMapToString(bitmap);
-        imgProfile.setImageBitmap(bitmap) ;
-        uploadProfile(bitmapString);
 
     }
 
@@ -597,7 +600,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (data != null&&data.hasExtra("data")) {
+            if (data != null) {
                 if (requestCode == SELECT_FILE) {
                     onSelectFromGalleryResult(data);
                 }

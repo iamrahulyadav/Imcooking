@@ -38,7 +38,6 @@ public class ChefActivateDeactivate extends AppCompatActivity implements Compoun
     private String str_;
 //    private TextView tv;
 
-
     private String chef_id;
 
     private boolean do_call = true;
@@ -52,15 +51,15 @@ public class ChefActivateDeactivate extends AppCompatActivity implements Compoun
         chefProfileData1 = ChefHome.chefProfileData1;
         chef_id = chefProfileData1.getChef_data().getChef_id() + "";
 
-
-        do_call = false;
         if(chefProfileData1.getChef_data().getActivate_status().equals("1")){
+            do_call = false;
             sw.setText("Activate");
             sw.setChecked(true);
             str_ = "1";
         } else {
-            sw.setChecked(false);
+            do_call = true;
             sw.setText("Deactivate");
+            sw.setChecked(false);
             str_ = "0";
         }
     }
@@ -68,23 +67,16 @@ public class ChefActivateDeactivate extends AppCompatActivity implements Compoun
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-        if(b){
-//            sw.setText("Activate");
+        if (b) {
             str_ = "1";
-//            BaseClass.showToast(getApplicationContext(), "Activated");
-        } else{
-//            sw.setText("Deactivate");
+        } else {
             str_ = "0";
-//            BaseClass.showToast(getApplicationContext(), "Deactivated");
         }
-
-        if(do_call){
+        if (do_call) {
             activate_deactivate(str_);
-            //            BaseClass.showToast(getApplicationContext(), "API");
         } else{
             do_call = true;
         }
-//        activate_deactivate(str_);
     }
 
     private void activate_deactivate(final String str){
@@ -108,16 +100,23 @@ public class ChefActivateDeactivate extends AppCompatActivity implements Compoun
                                     if(msg.equals("chef status update successfully")){
                                         if (str.equals("0")){
                                             sw.setText("Deactivate");
-//                                            sw.setShowText(true);
+
                                             BaseClass.showToast(getApplicationContext(), "Profile Deactivated Successfully.");
                                             str_ = "0";
                                         } else{
                                             sw.setText("Activate");
-//                                            sw.setShowText(false);
+
                                             BaseClass.showToast(getApplicationContext(), "Profile Activated Successfully");
                                             str_ = "1";
                                         }
-//                                        do_call = true;
+
+                                    } else if (msg.equals("Already updated")){
+                                        if(str.equals("1")){
+                                            BaseClass.showToast(getApplicationContext(), "Profile Activated");
+                                        } else{
+
+                                            BaseClass.showToast(getApplicationContext(), "Profile Deactivated");
+                                        }
                                     } else {
                                         BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
                                     }
@@ -127,7 +126,6 @@ public class ChefActivateDeactivate extends AppCompatActivity implements Compoun
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     });
 

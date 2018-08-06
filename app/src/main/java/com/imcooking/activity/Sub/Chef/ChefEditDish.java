@@ -258,8 +258,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
             if (getIntent().hasExtra("video")){
                 video_sample = getIntent().getExtras().getString("video");
-                if (video_sample!=null)
-                txt_video.setText(video_sample.replace(GetData.IMG_BASE_URL,""));
+                if (video_sample!=null){
+                    txt_video.setText(video_sample.replace(GetData.IMG_BASE_URL,""));
+                } else txt_video.setText("Video");
             }
 
 //            arrayList = getIntent().getExtras().getStringArrayList("image");
@@ -318,8 +319,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     sp_cuisine.setSelection(i);
                 }
             }
-
-
             title = "editdish";
             tv_title.setText("Edit Dish");
 
@@ -381,7 +380,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 BaseClass.showToast(getApplicationContext(), "Please select either" +
                                         "Home delivery or Pick-up only.");
                             } else{
-                                 if(selectedPath!=null) {
+                                /* if(selectedPath!=null) {*/
                                     if (title.equals("dish")) {
                                         if (!bitmapString.equals("a")) {
                                             adddish(title);
@@ -395,9 +394,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                             e.printStackTrace();
                                         }
                                     }
-                        } else{
-                            BaseClass.showToast(getApplicationContext() , "Please Select a video");
-                        }
                             }
                         } else{
                             BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
@@ -505,6 +501,10 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
         }
 
+        if(price.contains("£")){
+            price = price.replace("£", "");
+        }
+
         qyt = edt_qyt.getText().toString().trim();
         ModelChefEditDish requestData = new ModelChefEditDish();
         requestData.setDish_id(dish_id);
@@ -515,8 +515,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDescription(description);
         requestData.setSpecial_note(special_note);
         requestData.setDish_price(price);
-        requestData.setDish_from(str_time_1/*"12:10 AM"*/);
-        requestData.setDish_to(str_time_2/*"4:10 AM"*/);
+        requestData.setDish_from(str_time_1);
+        requestData.setDish_to(str_time_2);
         requestData.setAvailable(sw_1);
         requestData.setHomedeliver(sw_2);
         requestData.setPickup(sw_3);
@@ -686,7 +686,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data != null&&data.hasExtra("data")) {
+        if (data != null) {
             if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
             }
@@ -919,38 +919,41 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        if (data.hasExtra("data")){
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
+            File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");
 
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileOutputStream fo;
+            try {
+                destination.createNewFile();
+                fo = new FileOutputStream(destination);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bitmap = thumbnail;
+
+            Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            File finalFile = new File(getRealPathFromURI(tempUri));
+
+            String filePath = finalFile + "";
+
+            arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
+            adapterEditDishPhotos.notifyDataSetChanged();
+
+            bitmapString = BaseClass.BitMapToString(bitmap);
+            base.set(pos, bitmapString);
+
         }
-        bitmap = thumbnail;
-
-        Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-
-        // CALL THIS METHOD TO GET THE ACTUAL PATH
-        File finalFile = new File(getRealPathFromURI(tempUri));
-
-        String filePath = finalFile + "";
-
-        arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
-        adapterEditDishPhotos.notifyDataSetChanged();
-
-        bitmapString = BaseClass.BitMapToString(bitmap);
-        base.set(pos, bitmapString);
 
     }
 

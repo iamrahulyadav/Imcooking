@@ -190,7 +190,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         } else {
         }
 
-        createMyDialog();
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -235,6 +235,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                        */
 
                                     //    else txtAddress.setText("Your Address");
+                                     createMyDialog();
                                     if (chefProfileData1.getChef_data().getChef_full_name()!=null){
                                         txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
                                         txtAddress.setText(chefProfileData1.getChef_data().getAddress()+" "+
@@ -481,6 +482,14 @@ for(int i=0;i<jsonArray.length();i++){
         TextView tv_change_password = dialog.findViewById(R.id.chef_home_popup_change_password);
         tv_deactivate_1 = dialog.findViewById(R.id.chef_home_popup_deacivate);
         TextView tv_logout = dialog.findViewById(R.id.chef_home_popup_logout);
+
+        if(chefProfileData1.getChef_data().getActivate_status().equals("1")){
+            tv_deactivate_1.setText("Deactivate");
+        } else if (chefProfileData1.getChef_data().getActivate_status().equals("0")){
+            tv_deactivate_1.setText("Activate");
+        } else{
+            tv_deactivate_1.setText("DeActivate");
+        }
 
         tv_edit_profile.setOnClickListener(this);
         tv_change_password.setOnClickListener(this);

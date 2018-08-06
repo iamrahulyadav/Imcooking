@@ -407,7 +407,7 @@ public class EditProfile extends AppBaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null&&data.hasExtra("data")) {
+        if (data != null) {
             if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
             }

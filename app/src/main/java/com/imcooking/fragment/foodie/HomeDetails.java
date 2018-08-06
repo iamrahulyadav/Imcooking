@@ -648,7 +648,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
     @Override
     public void playVideo(int pos, String tag) {
-        createVideoDialog();
+        //createVideoDialog();
     }
 
     @Override

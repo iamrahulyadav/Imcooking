@@ -217,10 +217,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                                                 isVideo = "yes";
                                             else isVideo = "no";
 
-
                                         str_cuisine = dishDetails.getDish_details().getDish_cuisine();
-
-
                                             str_count = dishDetails.getDish_details().getDish_quantity() + "";
                                             str_qyt = dishDetails.getDish_details().getDish_quantity() + "";
 
@@ -547,10 +544,10 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
     @Override
     public void playVideo(int pos, String tag) {
-        home_top_pager.setVisibility(View.GONE);
+       /* home_top_pager.setVisibility(View.GONE);
         initializePlayer();
         mVideoView.setVisibility(View.VISIBLE);
-        mBufferingTextView.setVisibility(View.VISIBLE);
+        mBufferingTextView.setVisibility(View.VISIBLE);*/
     }
 
     public static ArrayList<String>base64Array;
