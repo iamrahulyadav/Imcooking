@@ -133,8 +133,6 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
                             ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
 
-                            Log.d("ShowResponse", apiResponse.isStatus() + "");
-                            Log.d("ShowResponse", apiResponse.getMsg());
                             if (apiResponse.isStatus()) {
                                 if (apiResponse.getMsg().equals("Successfully login")) {
 

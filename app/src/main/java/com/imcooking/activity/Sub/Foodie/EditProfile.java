@@ -249,9 +249,6 @@ public class EditProfile extends AppBaseActivity {
 
                 // CALL THIS METHOD TO GET THE ACTUAL PATH
                 File finalFile = new File(getRealPathFromURI(tempUri));
-
-                System.out.println(finalFile + "");
-
                 String filePath = finalFile + "";
                 Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
 
@@ -268,39 +265,42 @@ public class EditProfile extends AppBaseActivity {
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        if (data.hasExtra("data")){
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
+            File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");
 
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileOutputStream fo;
+            try {
+                destination.createNewFile();
+                fo = new FileOutputStream(destination);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bitmap = thumbnail;
+
+            Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            File finalFile = new File(getRealPathFromURI(tempUri));
+
+            System.out.println(finalFile + "");
+
+            String filePath = finalFile + "";
+            Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
+
+            bitmapString = BaseClass.BitMapToString(bitmap);
+            imgProfile.setImageBitmap(bitmap) ;
+            uploadProfile(bitmapString);
+
         }
-        bitmap = thumbnail;
-
-        Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-
-        // CALL THIS METHOD TO GET THE ACTUAL PATH
-        File finalFile = new File(getRealPathFromURI(tempUri));
-
-        System.out.println(finalFile + "");
-
-        String filePath = finalFile + "";
-        Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
-
-        bitmapString = BaseClass.BitMapToString(bitmap);
-        imgProfile.setImageBitmap(bitmap) ;
-        uploadProfile(bitmapString);
 
     }
 
@@ -407,17 +407,13 @@ public class EditProfile extends AppBaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (data != null) {
+        if (data != null&&data.hasExtra("data")) {
             if (requestCode == SELECT_FILE){
-                if (data!=null)
-                    onSelectFromGalleryResult(data);
+                onSelectFromGalleryResult(data);
             }
-
             else if (requestCode == REQUEST_CAMERA)
             {
-                if (data!=null)
-                    onCaptureImageResult(data);
+                onCaptureImageResult(data);
             }
         }
     }
@@ -444,7 +440,8 @@ public class EditProfile extends AppBaseActivity {
         String request = "{\"user_id\":" + str_id + "\"}";
         try {
             JSONObject jsonObject = new JSONObject(request);
-            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.GETPROFILE_PIC, EditProfile.this, new GetData.MyCallback() {
+            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.GETPROFILE_PIC,
+                    EditProfile.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d("TAG", "Rakhi: "+result);

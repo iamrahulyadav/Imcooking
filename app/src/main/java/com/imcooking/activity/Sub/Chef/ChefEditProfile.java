@@ -280,21 +280,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
     }
 
-   /* @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-        int id = compoundButton.getId();
-       *//* if(id == R.id.chef_edit_profile_notification){
-            if(b) str_notification = "1";
-            else  str_notification = "0";
-
-        } else *//*
-       if(id == R.id.chef_edit_profile_available){
-            if(b) str_available = "1";
-            else  str_available = "0";
-        } else {}
-    }*/
-
     public void select_cuisines(View view){
 
         Intent i = new Intent(ChefEditProfile.this, SelectCuisines.class);
@@ -610,40 +595,39 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     private String str_cuisine_ids="";
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == SELECT_FILE) {
-                if (data != null) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+            if (data != null&&data.hasExtra("data")) {
+                if (requestCode == SELECT_FILE) {
                     onSelectFromGalleryResult(data);
                 }
-            }
-            else if (requestCode == REQUEST_CAMERA) {
-                    if (data != null) {
-                        onCaptureImageResult(data);
-                    }
+                else if (requestCode == REQUEST_CAMERA) {
+                    onCaptureImageResult(data);
                 }
-            else if(requestCode == 143){
-                String strname = data.getExtras().getString("cuisineName");
-                str_cuisine_ids = data.getExtras().getString("cuisineId");
-                tv_select_cuisine.setText(strname);
+                else if(requestCode == 143){
+                    String strname = data.getExtras().getString("cuisineName");
+                    str_cuisine_ids = data.getExtras().getString("cuisineId");
+                    tv_select_cuisine.setText(strname);
 
-            } else if (requestCode== 112){
+                } else if (requestCode== 112){
 
-                latitudeq = data.getDoubleExtra("latitude",0)+"";
-                longitudeq = data.getDoubleExtra("longitude",0)+"";
-                str_city = data.getStringExtra("city");
-                str_zipcode = data.getStringExtra("postalcode");
-                str_address = data.getStringExtra("name");
-                edt_address.setText(str_address);
-                edt_city.setText(str_city);
-                edt_zipcoede.setText(str_zipcode);
+                    latitudeq = data.getDoubleExtra("latitude",0)+"";
+                    longitudeq = data.getDoubleExtra("longitude",0)+"";
+                    str_city = data.getStringExtra("city");
+                    str_zipcode = data.getStringExtra("postalcode");
+                    str_address = data.getStringExtra("name");
+                    edt_address.setText(str_address);
+                    edt_city.setText(str_city);
+                    edt_zipcoede.setText(str_zipcode);
 
-                Log.d("TAG", "Rakhi: "+latitudeq+"\n"+longitudeq+"\n");
-            }
-            else{
+                    Log.d("TAG", "Rakhi: "+latitudeq+"\n"+longitudeq+"\n");
+                }
+                else{
 
                 }
-        }
+            }
+
+
     }
 
 

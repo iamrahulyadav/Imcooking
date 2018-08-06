@@ -197,10 +197,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         btn_browse_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                     ActivityCompat.requestPermissions(ChefEditDish.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             REQUEST_TAKE_GALLERY_VIDEO);
                 } else {
                     Log.e("DB", "PERMISSION GRANTED");
@@ -213,20 +215,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
         });
 
-/*
-        ArrayList<String> spinnerData =new ArrayList<>();
-        spinnerData.add("10 miles ");
-        spinnerData.add("20 miles ");
-        spinnerData.add("30 miles ");
-        spinnerData.add("50 miles ");
-
-        sp = findViewById(R.id.edit_dish_spinner);
-        sp.setOnItemSelectedListener(this);
-        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(this,
-                R.layout.spinner_row, spinnerData);
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
-        sp.setAdapter(arrayAdapter);
-*/
 
         photorv1 = findViewById(R.id.chef_edit_dish_photos_recycler);
 //        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
@@ -325,8 +313,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             } else {
 
             }
-
-
             for (int i=0; i<list.size(); i++){
                 if(list.get(i).getCuisine_name().equals(cuisine)){
                     sp_cuisine.setSelection(i);
@@ -558,7 +544,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
-
                                                 finish();
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
@@ -699,33 +684,29 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     int duration;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null&&data.hasExtra("data")) {
             if (requestCode == SELECT_FILE){
-                if (data!=null)
-                    onSelectFromGalleryResult(data);
+                onSelectFromGalleryResult(data);
             }
             else if (requestCode == REQUEST_CAMERA)
             {
-                if (data!=null){
-                    onCaptureImageResult(data);
-                }
+                onCaptureImageResult(data);
             }
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
-                        if (data!=null){
-                            Uri selectedImageUri = data.getData();
-                            selectedPath = getPath(selectedImageUri);
-                            if (selectedPath!=null) {
-                                MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
-                                duration = mp.getDuration();
-                                Log.d("TAG", "video:path " + duration);
-                                if (duration > 20000) {
-                                    BaseClass.showToast(this, "Your Video is too large. You can upload video of max 20 seconds.");
-                                } else {
-                                    txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
-                                }
-                            }
-                        }
+                Uri selectedImageUri = data.getData();
+                selectedPath = getPath(selectedImageUri);
+                if (selectedPath!=null) {
+                    MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
+                    duration = mp.getDuration();
+                    Log.d("TAG", "video:path " + duration);
+                    if (duration > 20000) {
+                        BaseClass.showToast(this, "Your Video is too large. You can upload video of max 20 seconds.");
+                    } else {
+                        txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
+                    }
+                }
             }
         }
     }
