@@ -37,6 +37,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -267,6 +270,53 @@ public class BaseClass {
         String type = userDataBean.getUser_type();
 
         return type;
+    }
+
+    public static int compareToCurrentTime(String time){
+
+        // 1 = CanOrder     0 = CanNotOrder     2 = SomethingWentWrong
+        Date currentTime = Calendar.getInstance().getTime();
+        String current_time = new SimpleDateFormat("hh:mm aa").format(currentTime);
+        String current_hour = new SimpleDateFormat("hh").format(currentTime);
+        String current_minute = new SimpleDateFormat("mm").format(currentTime);
+        String current_am_pm = new SimpleDateFormat("aa").format(currentTime);
+        Log.d("CurrentTime", current_time);
+
+        String dish_am_pm = time.substring(6);
+        String dish_hour = time.substring(0, 2);
+        String dish_minute = time.substring(3, 5);
+
+        if(current_am_pm.equals("AM") && dish_am_pm.equals("AM")){
+            if(Integer.parseInt(current_hour) == Integer.parseInt(dish_hour)){
+                if(Integer.parseInt(current_minute) <= Integer.parseInt(dish_minute)){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
+                return 1;
+            } else {
+                return 0;
+            }
+        } else if(current_am_pm.equals("PM") && dish_am_pm.equals("PM")){
+            if(Integer.parseInt(current_hour) == Integer.parseInt(dish_hour)){
+                if(Integer.parseInt(current_minute) <= Integer.parseInt(dish_minute)){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
+                return 1;
+            } else {
+                return 0;
+            }
+        } else if (current_am_pm.equals("AM") && dish_am_pm.equals("PM")){
+            return 1;
+        } else if(current_am_pm.equals("PM") && dish_am_pm.equals("AM")){
+            return 0;
+        } else{
+            return 2;
+        }
     }
 
 }

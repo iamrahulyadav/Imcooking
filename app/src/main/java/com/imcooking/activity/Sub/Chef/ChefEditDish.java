@@ -1,6 +1,7 @@
 package com.imcooking.activity.Sub.Chef;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -470,10 +471,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                                 dish_id = job.getString("last_insertid");
 
                                                 if (selectedPath!=null){
-                                                    if (duration<=20000)
-                                                        new UploadFileToServer().execute();
+                                                    if (duration<=20000) {
+//                                                        new UploadFileToServer(selectedPath).execute();
+                                                    }
                                                 } else {
-                                                    finish();
+                                                    // finish();
                                                 }
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
@@ -529,8 +531,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDish_qyt(qyt);
 
         if (selectedPath!=null){
-            if (duration<=20000)
-                new UploadFileToServer().execute();
+//            if (duration<=20000)
+//                new UploadFileToServer().execute();
         }
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
@@ -709,7 +711,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                 duration = mp.getDuration();
                                 Log.d("TAG", "video:path " + duration);
                                 if (duration > 20000) {
-                                    BaseClass.showToast(this, "Your Video is too large ");
+                                    BaseClass.showToast(this, "Your Video is too large. You can upload video of max 20 seconds.");
                                 } else {
                                     txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
                                 }
@@ -719,7 +721,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         }
     }
 
-    private long totalSize;
     private String selectedPath;
 
     @Override
@@ -876,99 +877,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-            // setting progress bar to zero
-          //  progressBar.setProgress(0);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            // Making progress bar visible
-        //    progressBar.setVisibility(View.VISIBLE);
-
-            // updating progress bar value
-        //    progressBar.setProgress(progress[0]);
-
-            // updating percentage value
-//            textView.setText(String.valueOf(progress[0]) + "%");
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            return uploadFile();
-        }
-
-        @SuppressWarnings("deprecation")
-        private String uploadFile() {
-            String responseString = null;
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(GetData.BASE_URL+GetData.UPLOAD_VIDEO);
-
-            try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
-
-                            @Override
-                            public void transferred(long num) {
-                                publishProgress((int) ((num / (float) totalSize) * 100));
-                            }
-                        });
-
-                File sourceFile = new File(selectedPath);
-
-                // Adding file data to http body
-                entity.addPart("myFile", new FileBody(sourceFile));
-
-                // Extra parameters if you want to pass to server
-                entity.addPart("dish_id",
-                        new StringBody(dish_id));
-                entity.addPart("chef_id", new StringBody(chef_id));
-
-                totalSize = entity.getContentLength();
-                httppost.setEntity(entity);
-
-                // Making server call
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity r_entity = response.getEntity();
-
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
-                    // Server response
-                    responseString = EntityUtils.toString(r_entity);
-
-                } else {
-                    responseString = "Error occurred! Http Status Code: "
-                            + statusCode;
-                }
-
-            } catch (ClientProtocolException e) {
-                responseString = e.toString();
-            } catch (IOException e) {
-                responseString = e.toString();
-            }
-
-            return responseString;
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Log.e("TAG", "Response from server: " + result);
-            BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
-
-            finish();
-
-            // showing the server response in an alert dialog
-            //  showAlert(result);
-            super.onPostExecute(result);
-        }
 
     }
 
@@ -1134,5 +1042,143 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     }
 
+    private long totalSize = 0;
+    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+        String filePath = null;
+        String sessionId, contentData;
 
+
+        public UploadFileToServer(String filePath) {
+            this.filePath = filePath;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+
+
+            // setting progress bar to zero
+//            progressBar.setProgress(0);
+            BaseClass.showToast(getApplicationContext(), "0%");
+
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            // Making progress bar visible
+//            progressBar.setVisibility(View.VISIBLE);
+
+            // updating progress bar value
+//            progressBar.setProgress(progress[0]);
+
+
+            BaseClass.showToast(getApplicationContext(), progress[0] + "%");
+
+
+            // updating percentage value
+//            txtPercentage.setText(String.valueOf(progress[0]) + "%");
+
+
+            //code to show progress in notification bar
+//            FileUploadNotification fileUploadNotification = new FileUploadNotification(UploadActivity.this);
+//            fileUploadNotification.updateNotification(String.valueOf(progress[0]), "Image 123.jpg", "Camera Upload");
+
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return uploadFile();
+        }
+
+        @SuppressWarnings("deprecation")
+        private String uploadFile() {
+            String responseString = null;
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://webdevelopmentreviews.net/imcooking/api/upload_video");
+
+            try {
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                        new AndroidMultiPartEntity.ProgressListener() {
+
+                            @Override
+                            public void transferred(long num) {
+                                publishProgress((int) ((num / (float) totalSize) * 100));
+                            }
+                        });
+
+
+                // Un-comment below 2 lines to compress image
+                // ImageCompressionUtils class will compress image size from 2mb to 300 kb
+                // for more small images just change the below line in ImageCompressionUtils
+                //             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                // change compression from 100 to 0 as per your requirements
+                // comment below 2 lines to remove  image compression
+
+//                ImageCompressionUtils imageCompressionUtils = new ImageCompressionUtils(UploadActivity.this);
+//                imageCompressionUtils.compressImage(filePath);
+
+                File sourceFile = new File(filePath);
+                // Adding file data to http body
+                entity.addPart("myFile", new FileBody(sourceFile));
+                entity.addPart("chef_id", new StringBody(chef_id));
+                entity.addPart("dish_id", new StringBody(dish_id));
+
+                // Extra parameters if you want to pass to server
+                //entity.addPart("website", new StringBody("https://androidluckyguys.wordpress.com"));
+                //entity.addPart("email", new StringBody("luckyrana321@gmail.com"));
+
+
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode;
+                }
+
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+
+            return responseString;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+//            Log.e(TAG, "Response from server: " + result);
+
+            // showing the server response in an alert dialog
+            showAlert(result);
+
+            super.onPostExecute(result);
+        }
+    }
+
+    private void showAlert(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle("Response from Servers")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // do nothing
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

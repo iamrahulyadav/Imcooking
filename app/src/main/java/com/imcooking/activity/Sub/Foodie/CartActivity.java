@@ -312,7 +312,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 if(user_phone == null){
                     dialog_alert.show();
                 } else {
-
                     checkDishAvailableTime();
                 }
                 break;
@@ -397,11 +396,19 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void checkDishAvailableTime(){
 
         for(int i=0; i<dishDetails.size(); i++){
+            String time_from = dishDetails.get(i).getDish_from();
+            String time_to = dishDetails.get(i).getDish_to();
 
+            int time_status = BaseClass.compareToCurrentTime(time_to);
+            if(time_status == 1){
+                linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
+                linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
+            } else if (time_status == 0){
+                BaseClass.showToast(getApplicationContext(), "The dish " +
+                dishDetails.get(i).getDish_name().toUpperCase() +
+                " is not available after " + time_to + ". Please remove this dish from your cart to place your order now.");
+            }
         }
-
-        linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
-        linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
     }
 
     private Dialog dialog_alert;

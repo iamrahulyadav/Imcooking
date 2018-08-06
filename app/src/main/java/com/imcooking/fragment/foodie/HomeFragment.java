@@ -832,5 +832,4 @@ public class HomeFragment extends Fragment implements
         }
         adapter.notifyDataSetChanged();
     }
-
 }

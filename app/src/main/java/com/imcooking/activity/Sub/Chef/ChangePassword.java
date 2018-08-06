@@ -103,7 +103,7 @@ TinyDB tinyDB;
                                    BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                }
                            } else {
-                               BaseClass.showToast(getApplicationContext(), "Old Password does not match!");
+                                   BaseClass.showToast(getApplicationContext(), apiResponse.getMsg());
                            }
                        }
                    });

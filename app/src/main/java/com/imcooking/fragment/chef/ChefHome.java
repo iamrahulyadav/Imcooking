@@ -240,7 +240,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                         txtAddress.setText(chefProfileData1.getChef_data().getAddress()+" "+
                                                 chefProfileData1.getChef_data().getChef_city());
                                         MainActivity.tv_name.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
-                                    }
+                                  }
 
 
                                     if (chefProfileData1.getChef_data().getChef_phone()!=null){
@@ -626,6 +626,14 @@ for(int i=0;i<jsonArray.length();i++){
         TextView tv_logout = view.findViewById(R.id.chef_home_popup_logout);
 
 //        tv_deactivate.setText(chefProfileData1.getChef_data().);
+
+        if(chefProfileData1.getChef_data().getActivate_status().equals("1")){
+            tv_deactivate.setText("Deactivate");
+        } else if (chefProfileData1.getChef_data().getActivate_status().equals("0")){
+            tv_deactivate.setText("Activate");
+        } else{
+            tv_deactivate.setText("DeActivate");
+        }
 
         tv_edit_profile.setOnClickListener(this);
         tv_change_password.setOnClickListener(this);

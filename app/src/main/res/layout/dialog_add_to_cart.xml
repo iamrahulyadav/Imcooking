@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="verify_user"
                 android:id="@+id/imgdialog_text"
-                android:text="Food has been added in your order list"
+                android:text="Food has been added in your cart list"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"
               android:gravity="center"
