@@ -165,7 +165,7 @@ public class EditProfile extends AppBaseActivity {
                 try {
                     jsonData = new JSONObject(s);
 
-                        new GetData(getApplicationContext()).sendMyData(jsonData, "foodieprofileedit",
+                        new GetData(getApplicationContext()).sendMyData(jsonData, GetData.FOODIE_PROFILE_EDIT,
                             EditProfile.this, new GetData.MyCallback() {
                                 @Override
                                 public void onSuccess(String result) {
@@ -404,8 +404,9 @@ public class EditProfile extends AppBaseActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (data != null) {
-            super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == SELECT_FILE){
                 if (data!=null)
                     onSelectFromGalleryResult(data);
@@ -416,7 +417,6 @@ public class EditProfile extends AppBaseActivity {
                 if (data!=null)
                     onCaptureImageResult(data);
             }
-
         }
     }
 

@@ -325,6 +325,15 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             } else {
 
             }
+
+
+            for (int i=0; i<list.size(); i++){
+                if(list.get(i).getCuisine_name().equals(cuisine)){
+                    sp_cuisine.setSelection(i);
+                }
+            }
+
+
             title = "editdish";
             tv_title.setText("Edit Dish");
 

@@ -657,6 +657,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
         // Media playback takes a lot of resources, so everything should be
         // stopped and released at this time.
+        if (videoView!=null)
         releasePlayer();
     }
 
@@ -681,6 +682,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         // onStop() is now the end of the visual lifecycle, and that is where
         // most of the app teardown should take place.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            if (videoView!=null)
             videoView.pause();
         }
     }

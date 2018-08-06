@@ -121,8 +121,8 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
 
     private void getChefList(String keyword)
             throws JSONException {
-
-        String s = "{\"keyword\":" + keyword + "}" ;
+        String miles= "10";
+        String s = "{\"keyword\":" + keyword + ",\"miles\":"+miles+"}" ;
         JSONObject jsonObject = new JSONObject(s);
 
         Log.d("getchef", jsonObject.toString());

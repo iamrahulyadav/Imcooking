@@ -25,6 +25,7 @@ import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.fragment.chef.ChefDishDetail;
+import com.imcooking.fragment.chef.ChefDishDetail1;
 import com.imcooking.fragment.foodie.HomeDetails;
 import com.imcooking.fragment.foodie.SearchFragment;
 import com.imcooking.utils.BaseClass;
@@ -159,7 +160,7 @@ public class AdapterChefDishList extends PagerAdapter{
 
 //                String type = BaseClass.getUserType(context);
 //                if(type.equals("1")){
-                ChefDishDetail fragment = new ChefDishDetail();
+                ChefDishDetail1 fragment = new ChefDishDetail1();
                 Bundle bundle = new Bundle();
                 bundle.putString("id", chef_dish_list.get(position).getDish_id() + "");
                 bundle.putString("name", chef_dish_list.get(position).getDish_name());

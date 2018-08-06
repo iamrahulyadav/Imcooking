@@ -2,7 +2,6 @@ package com.imcooking.fragment.chef;
 
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,21 +31,18 @@ import android.widget.VideoView;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
-import com.imcooking.Model.api.response.ChefProfileData;
 import com.imcooking.Model.api.response.DishDetails;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
-import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.adapters.DishDetailPagerAdapter;
+import com.imcooking.adapters.DishDetailPagerAdapter1;
 import com.imcooking.adapters.Pager1;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -59,7 +54,7 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChefDishDetail extends Fragment implements View.OnClickListener, DishDetailPagerAdapter.DishDetailPlayClick {
+public class ChefDishDetail1 extends Fragment implements View.OnClickListener, DishDetailPagerAdapter1.DishDetailPlayClick {
 
     private  String VIDEO_SAMPLE =
             "", isVideo, user_type;
@@ -74,7 +69,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     private static final String PLAYBACK_TIME = "play_time";
     private ImageView iv_share;
 
-    public ChefDishDetail() {
+    public ChefDishDetail1() {
         // Required empty public constructor
     }
 
@@ -96,7 +91,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
     private TextView tv_dish_name, tv_dish_likes, tv_dish_text_available, tv_dish_time, tv_dish_count, tv_dish_home_delivery,
     tv_dish_price, /*tv_dish_description,*/ tv_edit_dish ;
-    private DishDetailPagerAdapter dishDetailPagerAdapter;
+    private DishDetailPagerAdapter1 dishDetailPagerAdapter;
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
@@ -216,10 +211,6 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                                             if (VIDEO_SAMPLE != null)
                                                 isVideo = "yes";
                                             else isVideo = "no";
-
-
-                                        str_cuisine = dishDetails.getDish_details().getDish_cuisine();
-
 
                                             str_count = dishDetails.getDish_details().getDish_quantity() + "";
                                             str_qyt = dishDetails.getDish_details().getDish_quantity() + "";
@@ -355,20 +346,7 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
     }
 
     private void setAdapter() {
-        int size =0;
-        ArrayList<String> arr_ = new ArrayList<>();
-        if(isVideo.equals("yes")){
-            size = arrayList.size() + 1;
-            arr_.add("video");
-        } else {
-            size = arrayList.size();
-        }
-        for(int i=0; i<arrayList.size(); i++){
-            arr_.add("image");
-        }
-
-        dishDetailPagerAdapter = new DishDetailPagerAdapter(getContext(), arrayList,this,
-                isVideo, size, getActivity(), VIDEO_SAMPLE, arr_);
+        dishDetailPagerAdapter = new DishDetailPagerAdapter1(getContext(), arrayList,this, isVideo);
         home_top_pager.setAdapter(dishDetailPagerAdapter);
     }
 
@@ -432,24 +410,6 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
         getMyData();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
-//            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Load the media each time onStart() is called.
-
-    }
 
     @Override
     public void onPause() {
