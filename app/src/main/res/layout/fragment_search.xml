@@ -20,9 +20,7 @@
             android:id="@+id/etSearch_home"
             android:gravity="center_vertical"
             android:padding="15dp"
-
-
-            android:textColor="@color/colorBlack"
+                       android:textColor="@color/colorBlack"
             android:drawableRight="@drawable/places_ic_search"
             android:drawablePadding="15dp"
             android:layout_width="match_parent"

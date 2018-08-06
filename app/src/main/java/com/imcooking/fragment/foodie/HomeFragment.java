@@ -192,7 +192,6 @@ public class HomeFragment extends Fragment implements
         milesSpinner();
     }
 
-
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
                 R.layout.spinner_row, spinnerData);
@@ -396,6 +395,11 @@ public class HomeFragment extends Fragment implements
                                     }
 */
 //                                    setBottomViewPager(list);
+                                } else if(jsonObject.getString("msg").equals("Latitude is required")){
+                                    BaseClass.showToast(getContext(), "Location is not updated.");
+                                } else{
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
