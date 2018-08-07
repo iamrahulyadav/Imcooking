@@ -506,6 +506,17 @@ for(int i=0;i<jsonArray.length();i++){
 //            ((MainActivity) getActivity()).setBottomColor();
 //            ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
 //            ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+            ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
+            ((MainActivity) getActivity()).iv_home.setImageResource(R.drawable.ic_home_1);
+
+            ((MainActivity) getActivity()).tv_profile.setTextColor(getResources().getColor(R.color.text_color_10));
+            ((MainActivity) getActivity()).iv_profile.setImageResource(R.drawable.ic_user_name);
+
+            ((MainActivity) getActivity()).tv_my_order.setTextColor(getResources().getColor(R.color.text_color_10));
+            ((MainActivity) getActivity()).iv_my_order.setImageResource(R.drawable.ic_salad);
+
+            ((MainActivity) getActivity()).tv_notification.setTextColor(getResources().getColor(R.color.text_color_10));
+            ((MainActivity) getActivity()).iv_notification.setImageResource(R.drawable.ic_ring);
         } else {
 
         }

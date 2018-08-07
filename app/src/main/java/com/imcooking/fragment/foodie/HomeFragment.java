@@ -396,7 +396,7 @@ public class HomeFragment extends Fragment implements
 */
 //                                    setBottomViewPager(list);
                                 } else if(jsonObject.getString("msg").equals("Latitude is required")){
-                                    BaseClass.showToast(getContext(), "Location is not updated.");
+                                    BaseClass.showToast(getContext(), "Location not found.");
                                 } else{
                                     BaseClass.showToast(getContext(), "Something Went Wrong.");
 
@@ -571,6 +571,7 @@ public class HomeFragment extends Fragment implements
         Log.d("FilteredData", str_max_price);
         Log.d("FilteredData", str_check_home);
         Log.d("FilteredData", str_check_pickup);
+
         if(str_rating.equals("0.0") && str_min_price.equals("0") && str_max_price.equals("0") &&
                 str_check_home.equals("0") && str_check_pickup.equals("0")){
 
@@ -763,6 +764,7 @@ public class HomeFragment extends Fragment implements
 
     @Override
     public void method_CuisineAdapter(int position) {
+
         if(position == 0){
             for(int i=0; i<arr_cuisines.size(); i++){
                 arr_cuisines_status.set(i, "0");
@@ -775,6 +777,7 @@ public class HomeFragment extends Fragment implements
 
             arr_like_status_1_filter_all.addAll(arr_like_status_1);
             chefDishBeans_filter_all.addAll(chefDishBeans);
+            BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + "");
             adapter.notifyDataSetChanged();
 
             if(chefDishBeans_filter_all!=null && chefDishBeans_filter_all.size()>0) {
@@ -787,22 +790,115 @@ public class HomeFragment extends Fragment implements
                 viewPager.setVisibility(View.GONE);
             }
 
-        } else{
-            for(int i=0; i<arr_cuisines.size(); i++){
-                if(i == position){
-                    arr_cuisines_status.set(i, "1");
-                } else{
-                    arr_cuisines_status.set(i, "0");
+        } else {
+            arr_cuisines_status.set(0, "0");
+            if (arr_cuisines_status.get(position).equals("0")) {
+                arr_cuisines_status.set(position, "1");
+            } else {
+                arr_cuisines_status.set(position, "0");
+            }
+
+            ArrayList<String> my_array = new ArrayList<>();
+            boolean all_zero = true;
+            for(int i=0; i<arr_cuisines.size(); i++) {
+                if(arr_cuisines_status.get(i).equals("1")){
+                    my_array.add(arr_cuisines.get(i));
+                    all_zero = false;
                 }
             }
+            Log.d("ArraySize", my_array.size() + "");
+            if(all_zero) {
+                arr_cuisines_status.set(0, "1");
+                arr_like_status_1_filter_all.clear();
+                chefDishBeans_filter_all.clear();
+
+                arr_like_status_1_filter_all.addAll(arr_like_status_1);
+                chefDishBeans_filter_all.addAll(chefDishBeans);
+                adapter.notifyDataSetChanged();
+
+                if(chefDishBeans_filter_all!=null && chefDishBeans_filter_all.size()>0) {
+                    layout_no_record_found.setVisibility(View.GONE);
+                    iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
+                    viewPager.setVisibility(View.VISIBLE);
+                } else{
+                    layout_no_record_found.setVisibility(View.VISIBLE);
+                    iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
+                    viewPager.setVisibility(View.GONE);
+                }
+                BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + "");
+            }
+
             cuisionAdatper.notifyDataSetChanged();
-            filterCuisine(position, arr_cuisines.get(position));
+
+
+            if(!all_zero) {
+//            filterCuisine1(position, arr_cuisines.get(position));
+            filterCuisine(my_array);
+            }
         }
+
+
+
+
+
+
     }
 
     private List<HomeData.ChefDishBean>cuisionChefList;
 
-    private void filterCuisine(int position, String cuision){
+    private void filterCuisine(ArrayList<String> my_array){
+        cuisionChefList = new ArrayList<>();
+
+        for(int i=0; i< homeData.getChef_dish().size(); i++){
+            for(int j=0; j<my_array.size(); j++){
+                String cuisne = my_array.get(j);
+                if(homeData.getChef_dish().get(i).getDish_cuisine().get(0).getCuisine_name().equals(cuisne)){
+                    cuisionChefList.add(homeData.getChef_dish().get(i));
+                }
+
+            }
+        }
+
+
+/*
+        for (HomeData.ChefDishBean  bean: homeData.getChef_dish()){
+//            bean.getDish_cuisine().get(0).getCuisine_name()
+            if (bean.getDish_cuisine()!=null && bean.getDish_cuisine().size()>0){
+                String cuisionVa = bean.getDish_cuisine().get(0).getCuisine_name();
+                if (cuision.equalsIgnoreCase(cuisionVa)){
+                    cuisionChefList.add(bean*/
+/*homeData.getChef_dish().get(position)*//*
+);
+                }
+            }
+        }
+*/
+
+//        cuisionChefList = getByName(chefDishBeans, cuision);
+        if (cuisionChefList.size()>0){
+            layout_no_record_found.setVisibility(View.GONE);
+            iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
+            viewPager.setVisibility(View.VISIBLE);
+//            setMyViewPager(cuisionChefList);
+
+        } else {
+            layout_no_record_found.setVisibility(View.VISIBLE);
+            iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
+            viewPager.setVisibility(View.GONE);
+        }
+
+        chefDishBeans_filter_all.clear();
+        chefDishBeans_filter_all.addAll(cuisionChefList);
+
+        arr_like_status_1_filter_all.clear();
+        for(int i=0; i<cuisionChefList.size(); i++){
+            arr_like_status_1_filter_all.add(cuisionChefList.get(i).getDishlike());
+        }
+
+        BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + "");
+        adapter.notifyDataSetChanged();
+    }
+    private void filterCuisine1(int position, String cuision){
         cuisionChefList = new ArrayList<>();
         for (HomeData.ChefDishBean  bean: homeData.getChef_dish()){
 //            bean.getDish_cuisine().get(0).getCuisine_name()

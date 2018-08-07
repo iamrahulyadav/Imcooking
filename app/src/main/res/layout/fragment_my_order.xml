@@ -152,7 +152,7 @@
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shop Now "
+                android:text="Order Now "
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/button_bg"
                 android:layout_gravity="center"

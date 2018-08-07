@@ -67,7 +67,7 @@
                 android:textSize="13sp"
                 android:layout_marginBottom="10dp"/>
             <com.imcooking.customtext.CustomTextView
-                android:layout_width="100dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/filter_seekbar_text"
                 android:textColor="#FFF"

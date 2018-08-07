@@ -65,7 +65,7 @@ public class AdapterSelectCuisine extends RecyclerView.Adapter<AdapterSelectCuis
 
         holder.tv.setText(arrayList.get(position));
         if(arrayList_status.get(position).equals("0")){
-            holder.iv.setImageResource(R.drawable.ic_tick_text_4);
+            holder.iv.setImageResource(R.drawable.ic_tick_white);
             holder.tv.setTextColor(context.getResources().getColor(R.color.text_color_4));
         } else{
             holder.iv.setImageResource(R.drawable.ic_tick_theme);

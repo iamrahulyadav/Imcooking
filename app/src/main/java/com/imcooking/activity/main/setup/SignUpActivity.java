@@ -118,20 +118,22 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                                             public void run() {
 
                                                 ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
-                                                tv.setText(apiResponse.getMsg());
+//                                                tv.setText(apiResponse.getMsg());
                                                 if (apiResponse.isStatus()) {
                                                     if (apiResponse.getMsg().equals("Foodie successfully registered and sent verification code your email!")) {
                                                         edt_uname.setText("");
                                                         edt_email.setText("");
                                                         edt_pass.setText("");
                                                         edt_conf_pass.setText("");
+                                                        tv.setText("You have been successfully registered as Foodie with IM Cooking.\n An email with verification code has been sent to your registered email id. Please verify after login.");
 //                                                        dialog.show();
                                                     } else if (apiResponse.getMsg().equals("Chef successfully registered and sent verification code your email!")){
                                                         edt_uname.setText("");
                                                         edt_email.setText("");
                                                         edt_pass.setText("");
                                                         edt_conf_pass.setText("");
-                                                    }
+                                                        tv.setText("You have been successfully registered as Chef with IM Cooking.\n An email with verification code has been sent to your registered email id. Please verify after login.");
+                                                      }
                                                     else {
                                                         BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                                     }
@@ -161,15 +163,8 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
     }
 
     public void register_okay(View view){
-        if(tv.getText().toString().equals("Foodie successfully registered and sent verification code your email!")){
             dialog.dismiss();
             finish();
-        } else if (tv.getText().toString().equals("Chef successfully registered and sent verification code your email!")){
-            dialog.dismiss();
-            finish();
-        } else {
-            dialog.dismiss();
-        }
     }
 
     @Override

@@ -48,6 +48,8 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
         thumb.setIntrinsicWidth( 200 );
         seekBar.setThumb( thumb );
 
+        seekBar.setMax(490);
+
         seekBar.setOnSeekBarChangeListener(this);
         checkBox_home.setOnCheckedChangeListener(this);
         checkBox_pickup.setOnCheckedChangeListener(this);
@@ -87,11 +89,11 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
             tv_seekbar_text.setText("0");
         } else {
             if (i >= 20) {
-                tv_seekbar_text.setText("$" + (i - 10) + " To " + "$" + (i + 10));
+                tv_seekbar_text.setText("£" + (i - 10) + " To " + "£" + (i + 10));
                 str_min_price = (i - 10) + "";
                 str_max_price = (i + 10) + "";
             } else {
-                tv_seekbar_text.setText("$" + "0" + " To " + "$" + "20");
+                tv_seekbar_text.setText("£" + "0" + " To " + "£" + "20");
                 str_min_price = "0";
                 str_max_price = "20";
             }

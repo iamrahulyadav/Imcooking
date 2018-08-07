@@ -127,7 +127,7 @@ public class SplashActivity extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
+                // Show an explanation to the user asynchronously -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
                 new AlertDialog.Builder(this)
@@ -180,6 +180,7 @@ public class SplashActivity extends AppCompatActivity {
                 longitude = location.getLongitude();
                 latitude = location.getLatitude();
             }
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

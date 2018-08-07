@@ -349,48 +349,58 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                  * transaction_id : 45645645456
                  * bookdate : 1
                  */
-                String address;
-                if (txt_address.getText().toString().equals("Select an Address")){
-                    BaseClass.showToast(getApplicationContext(), "Please select an address");
-                } else {
-                    List<PlaceOrder.DishorderBean>dishorderBeanList = new ArrayList<>();
-                    if (txt_address.getText().toString().isEmpty()) address = txt_pick_add.getText().toString().trim();
-                    else address = txt_address.getText().toString().trim();
 
-                    for (int i = 0; i<dishDetails.size();i++){
-                        PlaceOrder.DishorderBean dishorderBean = new PlaceOrder.DishorderBean();
-                        dishorderBean.setDish_id(dishDetails.get(i).getDish_id()+"");
-                        dishorderBean.setPrice(dishDetails.get(i).getDish_price());
-                        dishorderBean.setQuantity(dishDetails.get(i).getDish_quantity_selected());
-                        dishorderBeanList.add(dishorderBean);
+                if(delivery_type.equals("1")) {
+                    if (txt_address.getText().toString().equals("Select an Address")) {
+                        BaseClass.showToast(getApplicationContext(), "Please select an address");
+                    } else {
+                        click_payment();
                     }
-
-                    PlaceOrder placeOrder = new PlaceOrder();
-                    Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String date = format.format(currentTime);
-                    Log.d(TAG, "Rakhi "+date);
-                    placeOrder.setChef_id(chef_id);
-                    placeOrder.setFoodie_id(foodie_id+"");
-                    placeOrder.setDishorder(dishorderBeanList);
-                    placeOrder.setDelivery_type(delivery_type);
-                    placeOrder.setTax("");
-                    placeOrder.setTotal_price(txtTotalprice.getText().toString().trim().replace("£",""));
-                    placeOrder.setAddress(address);
-                    placeOrder.setFrom_time(txt_time_picker.getText().toString().trim());
-                    placeOrder.setTo_time(txt_to_time_value.getText().toString().trim());
-                    placeOrder.setBookdate(date);
-                    placeOrder.setPayment_type("");
-                    placeOrder.setTransaction_id("COD");
-                    startActivity(new Intent(CartActivity.this, Payment1Activity.class)
-                            .putExtra("order_details", new Gson().toJson(placeOrder))
-                            .putExtra("chef_name", txtChef_Name.getText().toString().trim()));
+                } else {
+                    click_payment();
                 }
                 break;
             case R.id.activity_cart_shop_now:
                 finish();
                 break;
         }
+    }
+
+    private void click_payment(){
+        String address;
+        List<PlaceOrder.DishorderBean>dishorderBeanList = new ArrayList<>();
+        if (txt_address.getText().toString().isEmpty()) address = txt_pick_add.getText().toString().trim();
+        else address = txt_address.getText().toString().trim();
+
+        for (int i = 0; i<dishDetails.size();i++){
+            PlaceOrder.DishorderBean dishorderBean = new PlaceOrder.DishorderBean();
+            dishorderBean.setDish_id(dishDetails.get(i).getDish_id()+"");
+            dishorderBean.setPrice(dishDetails.get(i).getDish_price());
+            dishorderBean.setQuantity(dishDetails.get(i).getDish_quantity_selected());
+            dishorderBeanList.add(dishorderBean);
+        }
+
+        PlaceOrder placeOrder = new PlaceOrder();
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = format.format(currentTime);
+        Log.d(TAG, "Rakhi "+date);
+        placeOrder.setChef_id(chef_id);
+        placeOrder.setFoodie_id(foodie_id+"");
+        placeOrder.setDishorder(dishorderBeanList);
+        placeOrder.setDelivery_type(delivery_type);
+        placeOrder.setTax("");
+        placeOrder.setTotal_price(txtTotalprice.getText().toString().trim().replace("£",""));
+        placeOrder.setAddress(address);
+        placeOrder.setFrom_time(txt_time_picker.getText().toString().trim());
+        placeOrder.setTo_time(txt_to_time_value.getText().toString().trim());
+        placeOrder.setBookdate(date);
+        placeOrder.setPayment_type("");
+        placeOrder.setTransaction_id("COD");
+        startActivity(new Intent(CartActivity.this, Payment1Activity.class)
+                .putExtra("order_details", new Gson().toJson(placeOrder))
+                .putExtra("chef_name", txtChef_Name.getText().toString().trim()));
+
     }
 
     private void checkDishAvailableTime(){
@@ -404,9 +414,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
                 linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
             } else if (time_status == 0){
-                BaseClass.showToast(getApplicationContext(), "The dish " +
-                dishDetails.get(i).getDish_name().toUpperCase() +
-                " is not available after " + time_to + ". Please remove this dish from your cart to place your order now.");
+                Toast.makeText(CartActivity.this, "The dish " +
+                        dishDetails.get(i).getDish_name().toUpperCase() +
+                        " is not available after " + time_to + ". Please remove this dish from your cart to place your order now.", Toast.LENGTH_LONG).show();
+//                BaseClass.showToast(getApplicationContext(), "");
             }
         }
     }

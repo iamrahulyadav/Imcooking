@@ -73,6 +73,6 @@
     <string name="dialog_add_dish_text_1">To Add a Dish to your profile you must need to Update your Profile first.</string>
     <string name="dialog_add_dish_text_2">To Add a Dish to your profile you must need to Add Cuisines to your Profile first.</string>
     <string name="dialog_add_dish_text_3">To Request a Dish, you must need to Update your Profile first.</string>
-    <string name="dialog_add_dish_text_4">Please update your Profile to Place Your order.</string>
+    <string name="dialog_add_dish_text_4">Please update your Name and phone number to proceed.</string>
 
 </resources>

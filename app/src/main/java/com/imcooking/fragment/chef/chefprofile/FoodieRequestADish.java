@@ -316,7 +316,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                                                     }
 
                                                     edt_dish_title.setText("");
-                                                    tv_qty.setText("0");
+                                                    tv_qty.setText("1");
                                                     tv_date.setText("");
                                                     tv_time.setText("");
                                                     edt_dish_note.setText("");

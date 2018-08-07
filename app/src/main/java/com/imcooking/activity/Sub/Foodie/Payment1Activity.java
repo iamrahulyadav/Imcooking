@@ -51,6 +51,7 @@ public class Payment1Activity extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BaseClass.setLightStatusBar(getWindow().getDecorView(),Payment1Activity.this);
         }

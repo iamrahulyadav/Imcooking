@@ -61,7 +61,6 @@ TinyDB tinyDB;
 
     }
 
-
     private void changepassword() throws JSONException {
         String oldpass = etOldpass.getText().toString().trim();
         String newpass = etNewpass.getText().toString().trim();

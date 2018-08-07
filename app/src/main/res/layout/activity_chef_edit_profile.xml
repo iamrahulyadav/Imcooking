@@ -451,7 +451,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_profile_select_cuisine"
-                android:text="Select Cuisine"
+                android:text=""
                 android:textColor="@color/colorBlack"
                 android:paddingLeft="10dp"
                 android:layout_marginTop="10dp" />
@@ -473,7 +473,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_About"
                     android:hint="Description"
-                    android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
                     android:imeOptions="actionNext"
                     android:background="@android:color/transparent"

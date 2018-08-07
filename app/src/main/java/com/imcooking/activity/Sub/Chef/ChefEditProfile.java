@@ -201,7 +201,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         }
         tv_select_cuisine.setText(str_name11);
         if(cuisineList.size() == 0){
-            tv_select_cuisine.setText("Select Cuisines");
+            tv_select_cuisine.setText("");
         }
 
 

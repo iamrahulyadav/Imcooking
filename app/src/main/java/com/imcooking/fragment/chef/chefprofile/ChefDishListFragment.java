@@ -74,6 +74,8 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
     private LinearLayout layout_current_dish_no_record, layout_old_dish_no_record;
 
+    private TextView tv_current_counting, tv_old_counting;
+
     private void init(){
 
         createMyDialog();
@@ -136,6 +138,21 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
         viewPager_1.setAdapter(adapterChefDishListCurrent);
         viewPager_2.setAdapter(adapterChefDishListOld);
+
+
+        tv_current_counting = getView().findViewById(R.id.fragment_chef_dish_list_counting_current);
+        tv_old_counting = getView().findViewById(R.id.fragment_chef_dish_list_counting_old);
+
+        if(chef_dish_list_current != null && chef_dish_list_current.size() != 0) {
+            tv_current_counting.setText("(" + chef_dish_list_current.size() + ")");
+        } else {
+            tv_current_counting.setText("(0)");
+        }
+        if(chef_dish_list_old != null && chef_dish_list_old.size() != 0) {
+            tv_old_counting.setText("(" + chef_dish_list_old.size() + ")");
+        } else {
+            tv_old_counting.setText("(0)");
+        }
     }
 
     private void getMyData(){
@@ -181,7 +198,6 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         });
 
     }
-
 
     @Override
     public void onClick(View view) {

@@ -2,6 +2,7 @@ package com.imcooking.activity.Sub.Chef;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.media.MediaPlayer;
@@ -26,6 +29,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -150,7 +154,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private SeekBar seekBar_available_time;
     private TextView tv_seekbar_text, tv_time_1, tv_time_2;
-    private String str_time_1 = "00:00 AM", str_time_2 = "02:00 AM";
+    private String str_time_1 = "00:00 AM", str_time_2 = "04:00 AM";
 
     private void init(){
 
@@ -233,6 +237,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 //        arr_photos.add("Photo");
 
         setMyAdapter(arr_photos);
+        createMyDialog();
     }
 
     private void getMyIntentData() {
@@ -460,14 +465,15 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("Add dish Successfully")){
                                                 dish_id = job.getString("last_insertid");
+                                                dialog.show();
 
-                                                if (selectedPath!=null){
+                                                /*if (selectedPath!=null){
                                                     if (duration<=20000) {
 //                                                        new UploadFileToServer(selectedPath).execute();
                                                     }
                                                 } else {
                                                     // finish();
-                                                }
+                                                }*/
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                             }
@@ -566,6 +572,40 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private Dialog dialog;
+    private void createMyDialog(){
+
+        dialog = new Dialog(ChefEditDish.this);
+        dialog.setContentView(R.layout.dialog_add_dish);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        TextView tv_dialog = dialog.findViewById(R.id.dialog_add_dish_text);
+        TextView tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
+        TextView tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
+
+        tv_dialog.setText("Thank you!! \n The dish has been added to your list.");
+        tv_dialog.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        tv_cross_dialog.setVisibility(View.GONE);
+
+        tv_ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        tv_cross_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public void add_more_photos(View view){
@@ -726,74 +766,74 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         String text = "";
         if(progress == 0){
-            text = "From:00:00AM \t To:02:00AM";
-            str_time_1 = "00:00 AM"; str_time_2 = "02:00 AM";
+            text = "From:00:00AM \t To:04:00AM";
+            str_time_1 = "00:00 AM"; str_time_2 = "04:00 AM";
         } else if(progress == 1){
-            text = "From:00:00AM \t To:02:00AM";
-            str_time_1 = "00:00 AM"; str_time_2 = "02:00 AM";
+            text = "From:00:00AM \t To:04:00AM";
+            str_time_1 = "00:00 AM"; str_time_2 = "04:00 AM";
         } else if(progress == 2){
-            text = "From:01:00AM \t To:03:00AM";
-            str_time_1 = "01:00 AM"; str_time_2 = "03:00 AM";
+            text = "From:01:00AM \t To:05:00AM";
+            str_time_1 = "01:00 AM"; str_time_2 = "05:00 AM";
         } else if(progress == 3){
-            text = "From:02:00AM \t To:04:00AM";
-            str_time_1 = "02:00 AM"; str_time_2 = "04:00 AM";
+            text = "From:02:00AM \t To:06:00AM";
+            str_time_1 = "02:00 AM"; str_time_2 = "06:00 AM";
         } else if(progress == 4){
-            text = "From:03:00AM \t To:05:00AM";
-            str_time_1 = "03:00 AM"; str_time_2 = "05:00 AM";
+            text = "From:03:00AM \t To:07:00AM";
+            str_time_1 = "03:00 AM"; str_time_2 = "07:00 AM";
         } else if(progress == 5){
-            text = "From:04:00AM \t To:06:00AM";
-            str_time_1 = "04:00 AM"; str_time_2 = "06:00 AM";
+            text = "From:04:00AM \t To:08:00AM";
+            str_time_1 = "04:00 AM"; str_time_2 = "08:00 AM";
         } else if(progress == 6){
-            text = "From:05:00AM \t To:07:00AM";
-            str_time_1 = "05:00 AM"; str_time_2 = "07:00 AM";
+            text = "From:05:00AM \t To:09:00AM";
+            str_time_1 = "05:00 AM"; str_time_2 = "09:00 AM";
         } else if(progress == 7){
-            text = "From:06:00AM \t To:08:00AM";
-            str_time_1 = "06:00 AM"; str_time_2 = "08:00 AM";
+            text = "From:06:00AM \t To:10:00AM";
+            str_time_1 = "06:00 AM"; str_time_2 = "10:00 AM";
         } else if(progress == 8){
-            text = "From:07:00AM \t To:09:00AM";
-            str_time_1 = "07:00 AM"; str_time_2 = "09:00 AM";
+            text = "From:07:00AM \t To:11:00AM";
+            str_time_1 = "07:00 AM"; str_time_2 = "11:00 AM";
         } else if(progress == 9){
-            text = "From:08:00AM \t To:10:00AM";
-            str_time_1 = "08:00 AM"; str_time_2 = "10:00 AM";
+            text = "From:08:00AM \t To:12:00PM";
+            str_time_1 = "08:00 AM"; str_time_2 = "12:00 PM";
         } else if(progress == 10){
-            text = "From:09:00AM \t To:11:00AM";
-            str_time_1 = "09:00 AM"; str_time_2 = "11:00 AM";
+            text = "From:09:00AM \t To:01:00PM";
+            str_time_1 = "09:00 AM"; str_time_2 = "01:00 PM";
         } else if(progress == 11){
-            text = "From:10:00AM \t To:12:00PM";
-            str_time_1 = "10:00 AM"; str_time_2 = "12:00 PM";
+            text = "From:10:00AM \t To:02:00PM";
+            str_time_1 = "10:00 AM"; str_time_2 = "02:00 PM";
         } else if(progress == 12){
-            text = "From:11:00AM \t To:01:00PM";
-            str_time_1 = "11:00 AM"; str_time_2 = "01:00 PM";
+            text = "From:11:00AM \t To:03:00PM";
+            str_time_1 = "11:00 AM"; str_time_2 = "03:00 PM";
         } else if(progress == 13){
-            text = "From:12:00PM \t To:02:00PM";
-            str_time_1 = "12:00 PM"; str_time_2 = "02:00 PM";
+            text = "From:12:00PM \t To:04:00PM";
+            str_time_1 = "12:00 PM"; str_time_2 = "04:00 PM";
         } else if(progress == 14){
-            text = "From:01:00PM \t To:03:00PM";
-            str_time_1 = "01:00 PM"; str_time_2 = "03:00 PM";
+            text = "From:01:00PM \t To:05:00PM";
+            str_time_1 = "01:00 PM"; str_time_2 = "05:00 PM";
         } else if(progress == 15){
-            text = "From:02:00PM \t To:04:00PM";
-            str_time_1 = "02:00 PM"; str_time_2 = "04:00 PM";
+            text = "From:02:00PM \t To:06:00PM";
+            str_time_1 = "02:00 PM"; str_time_2 = "06:00 PM";
         } else if(progress == 16){
-            text = "From:03:00PM \t To:05:00PM";
-            str_time_1 = "03:00 PM"; str_time_2 = "05:00 PM";
+            text = "From:03:00PM \t To:07:00PM";
+            str_time_1 = "03:00 PM"; str_time_2 = "07:00 PM";
         } else if(progress == 17){
-            text = "From:04:00PM \t To:06:00PM";
-            str_time_1 = "04:00 PM"; str_time_2 = "06:00 PM";
+            text = "From:04:00PM \t To:08:00PM";
+            str_time_1 = "04:00 PM"; str_time_2 = "08:00 PM";
         } else if(progress == 18){
-            text = "From:05:00PM \t To:07:00PM";
-            str_time_1 = "05:00 PM"; str_time_2 = "07:00 PM";
+            text = "From:05:00PM \t To:09:00PM";
+            str_time_1 = "05:00 PM"; str_time_2 = "09:00 PM";
         } else if(progress == 19){
-            text = "From:06:00PM \t To:08:00PM";
-            str_time_1 = "06:00 PM"; str_time_2 = "08:00 PM";
+            text = "From:06:00PM \t To:10:00PM";
+            str_time_1 = "06:00 PM"; str_time_2 = "10:00 PM";
         }else if(progress == 20){
-            text = "From:07:00PM \t To:09:00PM";
-            str_time_1 = "07:00 PM"; str_time_2 = "09:00 PM";
+            text = "From:07:00PM \t To:11:00PM";
+            str_time_1 = "07:00 PM"; str_time_2 = "11:00 PM";
         } else if(progress == 21){
-            text = "From:08:00PM \t To:10:00PM";
-            str_time_1 = "08:00 PM"; str_time_2 = "10:00 PM";
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
         } else if(progress == 22){
-            text = "From:09:00PM \t To:11:00PM";
-            str_time_1 = "09:00 PM"; str_time_2 = "11:00 PM";
+            text = "From:09:00PM \t To:00:00AM";
+            str_time_1 = "09:00 PM"; str_time_2 = "00:00 AM";
         } else if(progress == 23){
             text = "From:10:00PM \t To:00:00AM";
             str_time_1 = "10:00 PM"; str_time_2 = "00:00 AM";
@@ -809,49 +849,49 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     }
 
     private void setMySeekbarProgress(String progress_time){
-        if(progress_time.equals("From:00:00 AM \t To:02:00 AM")){
+        if(progress_time.equals("From:00:00 AM \t To:04:00 AM")){
             seekBar_available_time.setProgress(1);
-        } else if(progress_time.equals("From:01:00 AM \t To:03:00 AM")){
+        } else if(progress_time.equals("From:01:00 AM \t To:05:00 AM")){
             seekBar_available_time.setProgress(2);
-        } else if(progress_time.equals("From:02:00 AM \t To:04:00 AM")){
+        } else if(progress_time.equals("From:02:00 AM \t To:06:00 AM")){
             seekBar_available_time.setProgress(3);
-        } else if(progress_time.equals("From:03:00 AM \t To:05:00 AM")){
+        } else if(progress_time.equals("From:03:00 AM \t To:07:00 AM")){
             seekBar_available_time.setProgress(4);
-        } else if(progress_time.equals("From:04:00 AM \t To:06:00 AM")){
+        } else if(progress_time.equals("From:04:00 AM \t To:08:00 AM")){
             seekBar_available_time.setProgress(5);
-        } else if(progress_time.equals("From:05:00 AM \t To:07:00 AM")){
+        } else if(progress_time.equals("From:05:00 AM \t To:09:00 AM")){
             seekBar_available_time.setProgress(6);
-        } else if(progress_time.equals("From:06:00 AM \t To:08:00 AM")){
+        } else if(progress_time.equals("From:06:00 AM \t To:10:00 AM")){
             seekBar_available_time.setProgress(7);
-        } else if(progress_time.equals("From:07:00 AM \t To:09:00 AM")){
+        } else if(progress_time.equals("From:07:00 AM \t To:11:00 AM")){
             seekBar_available_time.setProgress(8);
-        } else if(progress_time.equals("From:08:00 AM \t To:10:00 AM")){
+        } else if(progress_time.equals("From:08:00 AM \t To:12:00 PM")){
             seekBar_available_time.setProgress(9);
-        } else if(progress_time.equals("From:09:00 AM \t To:11:00 AM")){
+        } else if(progress_time.equals("From:09:00 AM \t To:01:00 PM")){
             seekBar_available_time.setProgress(10);
-        } else if(progress_time.equals("From:10:00 AM \t To:12:00 PM")){
+        } else if(progress_time.equals("From:10:00 AM \t To:02:00 PM")){
             seekBar_available_time.setProgress(11);
-        } else if(progress_time.equals("From:11:00 AM \t To:01:00 PM")){
+        } else if(progress_time.equals("From:11:00 AM \t To:03:00 PM")){
             seekBar_available_time.setProgress(12);
-        } else if(progress_time.equals("From:12:00 PM \t To:02:00 PM")){
+        } else if(progress_time.equals("From:12:00 PM \t To:04:00 PM")){
             seekBar_available_time.setProgress(13);
-        } else if(progress_time.equals("From:01:00 PM \t To:03:00 PM")){
+        } else if(progress_time.equals("From:01:00 PM \t To:05:00 PM")){
             seekBar_available_time.setProgress(14);
-        } else if(progress_time.equals("From:02:00 PM \t To:04:00 PM")){
+        } else if(progress_time.equals("From:02:00 PM \t To:06:00 PM")){
             seekBar_available_time.setProgress(15);
-        } else if(progress_time.equals("From:03:00 PM \t To:05:00 PM")){
+        } else if(progress_time.equals("From:03:00 PM \t To:07:00 PM")){
             seekBar_available_time.setProgress(16);
-        } else if(progress_time.equals("From:04:00 PM \t To:06:00 PM")){
+        } else if(progress_time.equals("From:04:00 PM \t To:08:00 PM")){
             seekBar_available_time.setProgress(17);
-        } else if(progress_time.equals("From:05:00 PM \t To:07:00 PM")){
+        } else if(progress_time.equals("From:05:00 PM \t To:09:00 PM")){
             seekBar_available_time.setProgress(18);
-        } else if(progress_time.equals("From:06:00 PM \t To:08:00 PM")){
+        } else if(progress_time.equals("From:06:00 PM \t To:10:00 PM")){
             seekBar_available_time.setProgress(19);
-        } else if(progress_time.equals("From:07:00 PM \t To:09:00 PM")){
+        } else if(progress_time.equals("From:07:00 PM \t To:11:00 PM")){
             seekBar_available_time.setProgress(20);
-        } else if(progress_time.equals("From:08:00 PM \t To:10:00 PM")){
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
             seekBar_available_time.setProgress(21);
-        } else if(progress_time.equals("From:09:00 PM \t To:11:00 PM")){
+        } else if(progress_time.equals("From:09:00 PM \t To:00:00 AM")){
             seekBar_available_time.setProgress(22);
         } else if(progress_time.equals("From:10:00 PM \t To:00:00 AM")){
             seekBar_available_time.setProgress(23);

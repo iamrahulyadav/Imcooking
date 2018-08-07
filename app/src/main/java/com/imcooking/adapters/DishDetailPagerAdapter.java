@@ -66,7 +66,7 @@ public class DishDetailPagerAdapter extends PagerAdapter{
 
     @Override
     public int getCount() {
-        return size;
+        return chefDishBeans.size();
     }
 
     @Override
@@ -84,36 +84,13 @@ public class DishDetailPagerAdapter extends PagerAdapter{
 
         View view = mLayoutInflater.inflate(R.layout.item_dish_details_pager, container, false);
 
-//        final VideoView videoView;
-
-
-//        bar = view.findViewById(R.id.buffering_textview);
-//        videoView = view.findViewById(R.id.item_dish_details_pager_video_view);
         iv_dish_image = view.findViewById(R.id.home_image);
         imgPlay = view.findViewById(R.id.item_video_play);
 
-
-        if (video.equalsIgnoreCase("no")){
-            imgPlay.setVisibility(View.GONE);
-//            videoView.setVisibility(View.GONE);
-            iv_dish_image.setVisibility(View.VISIBLE);
-        } else {
-            if(position == 0){
-                imgPlay.setVisibility(View.VISIBLE);
-//                videoView.setVisibility(View.GONE);
-                iv_dish_image.setVisibility(View.VISIBLE);
+         imgPlay.setVisibility(View.VISIBLE);
+//              iv_dish_image.setVisibility(View.VISIBLE);
                 Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                         .get(position)).into(iv_dish_image);
-            } else {
-                imgPlay.setVisibility(View.GONE);
-//                videoView.setVisibility(View.GONE);
-//                bar.setVisibility(View.GONE);
-                iv_dish_image.setVisibility(View.VISIBLE);
-                Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
-                        .get(position-1)).into(iv_dish_image);
-
-            }
-        }
 
        /* if(arr_.get(position).equals("video")){
             initializePlayer();
@@ -122,9 +99,9 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         imgPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imgPlay.setVisibility(View.GONE);
+//                imgPlay.setVisibility(View.GONE);
 //                videoView.setVisibility(View.VISIBLE);
-                iv_dish_image.setVisibility(View.GONE);
+//                iv_dish_image.setVisibility(View.GONE);
 
 
 //                initializePlayer();

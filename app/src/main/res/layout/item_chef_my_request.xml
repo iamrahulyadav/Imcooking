@@ -159,6 +159,7 @@
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="View"
+                android:visibility="gone"
                 android:id="@+id/item_chef_my_request_view"
                 android:textSize="9sp"
                 android:textColor="@color/text_color_13"

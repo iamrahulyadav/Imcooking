@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefEditProfile;
 import com.imcooking.activity.Sub.Foodie.FavoriteCusine;
 import com.imcooking.activity.Sub.Foodie.Help;
 import com.imcooking.activity.Sub.Foodie.ManageAddress;
@@ -142,6 +143,7 @@ public class MainActivity extends AppBaseActivity
         getUserData();
         if (user_type.equals("1")) {
             if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+
                 String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 if (tag1.equals(ChefHome.class.getName())) {
 
@@ -245,7 +247,7 @@ public class MainActivity extends AppBaseActivity
                         isProfile = false;
                     } else {
 */
-                isProfile = false;
+//                isProfile = false;
                         ChefHome fragment = new ChefHome();
 
                         Bundle args = new Bundle();
@@ -284,7 +286,7 @@ public class MainActivity extends AppBaseActivity
                     String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                     if (tag1.equals(ChefHome.class.getName())) {
 */
-                        isProfile = true;
+//                        isProfile = true;
 //                        isProfile = false;
 
 /*
@@ -300,7 +302,7 @@ public class MainActivity extends AppBaseActivity
 
 //                    } else {
 
-                        ChefHome fragment = new ChefHome();
+               /*         ChefHome fragment = new ChefHome();
 
                         Bundle args = new Bundle();
                         args.putString("chef_id", user_id);
@@ -310,7 +312,11 @@ public class MainActivity extends AppBaseActivity
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frame, fragment)
                                 .addToBackStack(ChefHome.class.getName())
-                                .commit();
+                                .commit();*/
+
+                startActivity(new Intent(getApplicationContext(), ChefEditProfile.class));
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
 //                    }
                 /*}*//* else{
                     ChefHome fragment = new ChefHome();

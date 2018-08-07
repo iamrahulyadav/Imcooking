@@ -183,7 +183,7 @@
                     android:background="@drawable/seekbar_text"
                     android:padding="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="From:00:00AM 	 To:02:00AM" />
+                    android:text="From:00:00AM 	 To:04:00AM" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -222,7 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/edit_dish_time_2"
-                        android:text="02:00 AM"
+                        android:text="04:00 AM"
                         android:textSize="14sp"
                         android:textColor="@color/theme_color"
                         android:textStyle="bold"
