@@ -57,7 +57,7 @@ public class SplashActivity extends AppCompatActivity {
         tinyDB = new TinyDB(getApplicationContext());
       /*  if (checkGPSStatus()){
             checkLocationPermission();
-        }*/
+        } */
 
 //        find id
         imgSplash = findViewById(R.id.splashbg);
