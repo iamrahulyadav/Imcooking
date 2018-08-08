@@ -74,6 +74,7 @@
                     android:id="@+id/foodie_request_a_dish_name"
                     android:textColor="@color/text_color_4"
                     android:hint="Enter Dish Name"
+                    android:imeOptions="actionDone"
                     android:textSize="12sp"
                     android:textColorHint="@color/text_color_7"/>
 
@@ -264,6 +265,7 @@
                 android:id="@+id/foodie_request_a_dish_note"
                 android:text=""
                 android:hint="Dish Descripton"
+                android:imeOptions="actionDone"
                 android:textColorHint="@color/text_color_7"
                 android:textSize="12sp"
                 android:textColor="@color/text_color_4"

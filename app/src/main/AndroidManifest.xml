@@ -22,6 +22,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait" >
@@ -70,16 +81,12 @@
             android:name=".activity.Sub.Foodie.Help"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.Sub.Foodie.Help1" />
-
-
-
         <activity
             android:name=".activity.Sub.Foodie.EditProfile"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
-
-
-        <activity android:name=".activity.Sub.Foodie.ChefProfile" />
+        <activity android:name=".activity.Sub.Foodie.ChefProfile"
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -97,9 +104,6 @@
         <activity
             android:name=".activity.Sub.Chef.ChefEditDish"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
-
-
         <activity
             android:name=".activity.Sub.Chef.ChefEditProfile"
             android:windowSoftInputMode="stateHidden|adjustPan" />

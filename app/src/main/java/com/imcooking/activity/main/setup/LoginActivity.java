@@ -119,6 +119,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             data.setPassword(pass);
             data.setDevice_id("cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q");
 
+            Log.d("MyRequest", new Gson().toJson(data));
+
             new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data),
                     GetData.LOGIN, new GetData.MyCallback() {
                 @Override

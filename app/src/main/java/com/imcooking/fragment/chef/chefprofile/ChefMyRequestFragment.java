@@ -97,6 +97,8 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         String s = "{\"chef_id\":" + user_id + "}";
         sender_id = user_id;
 
+        Log.d("MyRequest", s);
+
         try {
             JSONObject job = new JSONObject(s);
             new GetData(getContext(), getActivity()).sendMyData(job, GetData.DISH_REQUEST_LIST, getActivity(),

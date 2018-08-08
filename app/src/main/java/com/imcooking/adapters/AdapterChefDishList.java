@@ -22,6 +22,7 @@ import com.imcooking.activity.home.MainActivity;
 import com.imcooking.fragment.chef.ChefDishDetail;
 import com.imcooking.fragment.foodie.HomeDetails;
 import com.imcooking.fragment.foodie.SearchFragment;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -122,7 +123,8 @@ public class AdapterChefDishList extends PagerAdapter{
          dish_count.setText(chef_dish_list.get(position).getDish_quantity()+"");
         else dish_count.setText("0");
         dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
-        dish_likes.setText(chef_dish_list.get(position).getLike_no());
+        BaseClass.showToast(context, chef_dish_list.get(position).getLike_no() + "");
+        dish_likes.setText(chef_dish_list.get(position).getLike_no() + "");
 
         if (chef_dish_list.get(position).getDish_homedelivery().equals("Yes")) {
             if (chef_dish_list.get(position).getDish_pickup().equals("Yes")) {

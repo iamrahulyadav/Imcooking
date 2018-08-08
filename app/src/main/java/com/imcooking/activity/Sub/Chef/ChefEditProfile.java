@@ -414,10 +414,13 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                 ActivityCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED&&
+                ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(ChefEditProfile.this,
                     new String[]{Manifest.permission.CAMERA,
-                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_CAMERA);
         } else {
             result = true;
@@ -471,11 +474,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                 fo = new FileOutputStream(destination);
                 fo.write(bytes.toByteArray());
                 fo.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
             bitmap = thumbnail;
 
             Uri tempUri = getImageUri(getApplicationContext(), bitmap);
@@ -491,7 +490,12 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             bitmapString = BaseClass.BitMapToString(bitmap);
             imgProfile.setImageBitmap(bitmap) ;
             uploadProfile(bitmapString);
-
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -556,7 +560,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                             && ActivityCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                         ActivityCompat.requestPermissions(ChefEditProfile.this,
-                                new String[]{Manifest.permission.CAMERA},
+                                new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 REQUEST_CAMERA);
                     } else {
                         Log.e("DB", "PERMISSION GRANTED");

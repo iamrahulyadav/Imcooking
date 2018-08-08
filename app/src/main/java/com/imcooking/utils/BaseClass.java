@@ -296,7 +296,12 @@ public class BaseClass {
             } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
                 return 1;
             } else {
-                return 0;
+                if(current_hour.equals("12")){
+                    return 1;
+                } else {
+                    return 0;
+                }
+                // return 0;
             }
         } else if(current_am_pm.equals("PM") && dish_am_pm.equals("PM")){
             if(Integer.parseInt(current_hour) == Integer.parseInt(dish_hour)){
@@ -308,7 +313,12 @@ public class BaseClass {
             } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
                 return 1;
             } else {
-                return 0;
+                if(current_hour.equals("12")){
+                    return 1;
+                } else {
+                    return 0;
+                }
+//                return 0;
             }
         } else if (current_am_pm.equals("AM") && dish_am_pm.equals("PM")){
             return 1;
@@ -316,7 +326,6 @@ public class BaseClass {
             return 0;
         } else{
             return 2;
-        }
-    }
+        } }
 
 }

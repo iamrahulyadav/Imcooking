@@ -191,6 +191,11 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         }
 
 
+        viewPager = getView().findViewById(R.id.chef_home_viewpager);
+        tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
+        tabLayout.setupWithViewPager(viewPager);
+        setupViewPager(viewPager);
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -278,12 +283,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     } else {
                                         txtFollowers.setText(" 0 Follower");
                                     }
-                                    viewPager = getView().findViewById(R.id.chef_home_viewpager);
-                                    tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
-                                    tabLayout.setupWithViewPager(viewPager);
-                                    setupViewPager(viewPager);
 
-                                    if(MainActivity.isProfile) {
+     /*                               if(MainActivity.isProfile) {
                                         TabLayout.Tab tab = tabLayout.getTabAt(1);
                                         tab.select();
                                     } else {
@@ -291,7 +292,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                         TabLayout.Tab tab = tabLayout.getTabAt(0);
                                         tab.select();
                                     }
-                                } else {
+     */                           } else {
                                     BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                                 }
                             }
@@ -496,6 +497,21 @@ for(int i=0;i<jsonArray.length();i++){
         tv_deactivate_1.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 105){
+            if(resultCode == 105){
+
+                TabLayout.Tab tab = tabLayout.getTabAt(1);
+                tab.select();
+
+                Toast.makeText(getContext(), "hii", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

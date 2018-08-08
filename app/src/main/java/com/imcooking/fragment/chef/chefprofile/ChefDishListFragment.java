@@ -213,7 +213,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
                 tv_dialog.setText(getResources().getString(R.string.dialog_add_dish_text_2));
                 dialog.show();
             } else {
-                startActivity(new Intent(getContext(), ChefEditDish.class));
+                startActivityForResult(new Intent(getContext(), ChefEditDish.class), 105);
                 getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         }else {
@@ -221,7 +221,8 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         }
     }
 
-//    private Dialog dialog;
+
+    //    private Dialog dialog;
 //    private TextView tv_ok_dialog, tv_cross_dialog;
 
     @Override

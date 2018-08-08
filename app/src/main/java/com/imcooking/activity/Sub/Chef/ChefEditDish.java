@@ -596,6 +596,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                Intent i = new Intent();
+                setResult(105, i);
                 finish();
             }
         });
@@ -640,9 +642,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 if (items[item].equals("Take Photo")) {
                     userChoosenTask ="Take Photo";
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                         ActivityCompat.requestPermissions(ChefEditDish.this,
-                                new String[]{Manifest.permission.CAMERA},
+                                new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 REQUEST_CAMERA);
                     } else {
                         Log.e("DB", "PERMISSION GRANTED");
@@ -832,14 +836,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             text = "From:08:00PM \t To:00:00AM";
             str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
         } else if(progress == 22){
-            text = "From:09:00PM \t To:00:00AM";
-            str_time_1 = "09:00 PM"; str_time_2 = "00:00 AM";
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
         } else if(progress == 23){
-            text = "From:10:00PM \t To:00:00AM";
-            str_time_1 = "10:00 PM"; str_time_2 = "00:00 AM";
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
         } else if(progress == 24){
-            text = "From:10:00PM \t To:00:00AM";
-            str_time_1 = "10:00 PM"; str_time_2 = "00:00 AM";
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
         } else {}
 
         tv_time_1.setText(str_time_1);
@@ -891,11 +895,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             seekBar_available_time.setProgress(20);
         } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
             seekBar_available_time.setProgress(21);
-        } else if(progress_time.equals("From:09:00 PM \t To:00:00 AM")){
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
             seekBar_available_time.setProgress(22);
-        } else if(progress_time.equals("From:10:00 PM \t To:00:00 AM")){
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
             seekBar_available_time.setProgress(23);
-        } else if(progress_time.equals("From:11:00 PM \t To:00:00 AM")){
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
             seekBar_available_time.setProgress(24);
         } else {}
     }
@@ -973,11 +977,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 fo = new FileOutputStream(destination);
                 fo.write(bytes.toByteArray());
                 fo.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
             bitmap = thumbnail;
 
             Uri tempUri = getImageUri(getApplicationContext(), bitmap);
@@ -992,7 +992,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
             bitmapString = BaseClass.BitMapToString(bitmap);
             base.set(pos, bitmapString);
-
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -1062,10 +1066,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(ChefEditDish.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED  ) {
+                ActivityCompat.requestPermissions(ChefEditDish.this,
                     new String[]{Manifest.permission.CAMERA,
-                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_CAMERA);
         } else {
             Log.e("DB", "PERMISSION GRANTED");

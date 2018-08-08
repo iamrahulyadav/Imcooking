@@ -132,8 +132,10 @@ public class HomeFragment extends Fragment implements
     private ArrayList<String> arr_like_status_1_filter_all = new ArrayList<>();
     private ArrayList<String> arr_like_status_1_filter_cuisine = new ArrayList<>();
     private ArrayList<String> arr_like_status_2 = new ArrayList<>();
-
+    private TextView tv_count_latest,tv_count_choice;
     private void init(){
+        tv_count_latest = getView().findViewById(R.id.fragment_home_dish_count_latest);
+        tv_count_choice  = getView().findViewById(R.id.fragment_home_dish_count_choice);
 
         iv_arrow_latest = getView().findViewById(R.id.fragment_home_latest_arrow);
         iv_arrow_choice = getView().findViewById(R.id.fragment_home_choice_arrow);
@@ -469,6 +471,10 @@ public class HomeFragment extends Fragment implements
             layout_no_record_found.setVisibility(View.VISIBLE);
             iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
         }
+
+        if(mylist != null) {
+            tv_count_latest.setText("(" + mylist.size() + ")");
+        }
         adapter = new HomeDishPagerAdapter(getActivity(),getContext(), getFragmentManager()
                 , chefDishBeans_filter_all, this, arr_like_status_1_filter_all);
         viewPager.setAdapter(adapter);
@@ -476,6 +482,10 @@ public class HomeFragment extends Fragment implements
 
     private void setBottomViewPager(List<HomeData.FavouriteDataBean> mylist) {
         Log.d("Debug", favouriteDataBeans.size() + "");
+
+        if(mylist != null) {
+            tv_count_choice.setText("(" + mylist.size() + ")");
+        }
         homeBottomPagerAdapter = new HomeBottomPagerAdapter(getContext(), getFragmentManager()
                 , mylist,this, arr_like_status_2);
         bottomViewPager.setAdapter(homeBottomPagerAdapter);
@@ -836,12 +846,6 @@ public class HomeFragment extends Fragment implements
             filterCuisine(my_array);
             }
         }
-
-
-
-
-
-
     }
 
     private List<HomeData.ChefDishBean>cuisionChefList;
@@ -849,13 +853,14 @@ public class HomeFragment extends Fragment implements
     private void filterCuisine(ArrayList<String> my_array){
         cuisionChefList = new ArrayList<>();
 
-        for(int i=0; i< homeData.getChef_dish().size(); i++){
-            for(int j=0; j<my_array.size(); j++){
-                String cuisne = my_array.get(j);
-                if(homeData.getChef_dish().get(i).getDish_cuisine().get(0).getCuisine_name().equals(cuisne)){
-                    cuisionChefList.add(homeData.getChef_dish().get(i));
+        if(homeData.getChef_dish()!=null && homeData.getChef_dish().size() != 0) {
+            for (int i = 0; i < homeData.getChef_dish().size(); i++) {
+                for (int j = 0; j < my_array.size(); j++) {
+                    String cuisne = my_array.get(j);
+                    if (homeData.getChef_dish().get(i).getDish_cuisine().get(0).getCuisine_name().equals(cuisne)) {
+                        cuisionChefList.add(homeData.getChef_dish().get(i));
+                    }
                 }
-
             }
         }
 

@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_dish_qyt"
                 android:hint="Quantity"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:inputType="number"
                 android:singleLine="true"
                 android:textColorHint="@color/text_color_7"

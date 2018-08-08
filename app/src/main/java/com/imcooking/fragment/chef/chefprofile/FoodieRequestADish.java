@@ -30,6 +30,7 @@ import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -310,6 +311,14 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                                                     if (apiResponse.getMsg().equals("Add Request dish Successfully")) {
                                                         BaseClass.showToast(getContext(),
                                                                 "Dish Request successfully sent");
+                                                        /*BaseClass.callFragment(new FoodieMyRequestFragment(),
+                                                                new FoodieMyRequestFragment().getClass().getName(),
+                                                                getParentFragment().getFragmentManager());*/
+
+                                                        getParentFragment().getFragmentManager().beginTransaction()
+                                                                .replace(R.id.frame_chef_profile, new FoodieMyRequestFragment())
+                                                        .addToBackStack(new FoodieMyRequestFragment().getClass().getName())
+                                                        .commit();
                                                     } else {
                                                         BaseClass.showToast(getContext(),
                                                                 "Dish not added");

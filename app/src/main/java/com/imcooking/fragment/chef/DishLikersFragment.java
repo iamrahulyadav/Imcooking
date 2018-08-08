@@ -41,9 +41,7 @@ public class DishLikersFragment extends Fragment {
 
     public DishLikersFragment() {
         // Required empty public constructor
-        if (getArguments()!=null){
-            dish_id = getArguments().getString("dish_id");
-        }
+
     }
 
     @Override
@@ -64,6 +62,11 @@ public class DishLikersFragment extends Fragment {
     }
 
     private void init() {
+
+        if (getArguments()!=null){
+            dish_id = getArguments().getString("dish_id");
+        }
+
 
         tinyDB=new TinyDB(getContext());
 

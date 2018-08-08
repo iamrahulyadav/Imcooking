@@ -225,7 +225,7 @@ public class EditProfile extends AppBaseActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(EditProfile.this,
                     new String[]{Manifest.permission.CAMERA,
-                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                            Manifest.permission.READ_EXTERNAL_STORAGE,  Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_CAMERA);
         } else {
             Log.e("DB", "PERMISSION GRANTED");
@@ -365,7 +365,7 @@ public class EditProfile extends AppBaseActivity {
                             && ActivityCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                         ActivityCompat.requestPermissions(EditProfile.this,
-                                new String[]{Manifest.permission.CAMERA},
+                                new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 REQUEST_CAMERA);
                     } else {
                         Log.e("DB", "PERMISSION GRANTED");

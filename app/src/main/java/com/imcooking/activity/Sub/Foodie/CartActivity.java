@@ -410,6 +410,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             String time_to = dishDetails.get(i).getDish_to();
 
             int time_status = BaseClass.compareToCurrentTime(time_to);
+            Log.d("CurrentTime", time_status + "");
             if(time_status == 1){
                 linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
                 linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
