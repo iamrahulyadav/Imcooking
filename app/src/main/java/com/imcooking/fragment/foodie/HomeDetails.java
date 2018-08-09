@@ -216,8 +216,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         });
 
         tinyDB = new TinyDB(getContext());
-        String cart_count = tinyDB.getString("cart_count");
-        tv_count.setText(cart_count);
 
     }
 
@@ -232,6 +230,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
         getDetails(id);
     }
 

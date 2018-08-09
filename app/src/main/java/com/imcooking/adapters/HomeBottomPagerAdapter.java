@@ -84,6 +84,8 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
 //        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
 
+        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles() + " miles");
+
         if(arr_like.get(position).equals("1")){
             imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
         } else{

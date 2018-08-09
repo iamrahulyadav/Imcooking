@@ -188,8 +188,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
 
-        String cart_count = tinyDB.getString("cart_count");
-        tv_count.setText(cart_count);
 
 
     }
@@ -533,7 +531,11 @@ for(int i=0;i<jsonArray.length();i++){
 
             ((MainActivity) getActivity()).tv_notification.setTextColor(getResources().getColor(R.color.text_color_10));
             ((MainActivity) getActivity()).iv_notification.setImageResource(R.drawable.ic_ring);
+
+
         } else {
+            String cart_count = tinyDB.getString("cart_count");
+            tv_count.setText(cart_count);
 
         }
 

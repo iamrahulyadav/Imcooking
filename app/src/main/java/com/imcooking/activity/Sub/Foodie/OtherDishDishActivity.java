@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -70,7 +69,7 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
     private void init(){
 
         iv_cart = findViewById(R.id.activity_other_dish_cart_icon);
-        tv_count = findViewById(R.id.activity_other_dish_cart_icon);
+        tv_count = findViewById(R.id.activity_other_dish_cart_count);
 
 
         layout_main = findViewById(R.id.other_dish_activity_layout);
@@ -102,8 +101,6 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
         userDataBean = new Gson().fromJson(s, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id();
 
-        String cart_count = tinyDB.getString("cart_count");
-        tv_count.setText(cart_count);
 
 
         iv_cart.setOnClickListener(new View.OnClickListener() {
@@ -187,6 +184,9 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
 
         layout_main.setVisibility(View.VISIBLE);
         frame_main.setVisibility(View.GONE);
