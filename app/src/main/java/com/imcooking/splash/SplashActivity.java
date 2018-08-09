@@ -126,8 +126,10 @@ public class SplashActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
-                        finishAffinity();
 
+
+                        Log.d("MyPermissions" , response.getPermissionName());
+                        finishAffinity();
                         if (response.isPermanentlyDenied()) {
                             // open device settings when the permission is
                             // denied permanently
