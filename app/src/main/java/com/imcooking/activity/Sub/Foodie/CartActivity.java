@@ -58,7 +58,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
 public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
 
     TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,
@@ -265,7 +264,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             else {
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
-                                            HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size()+"");
+
+                                            HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size() + "");
+                                            tinyDB.putString("cart_count", apiResponse.getAdd_cart().getAdd_dish().size() + "");
+
                                             txt_pick_add.setText(apiResponse.getAdd_cart().getChef_address());
                                             if (apiResponse.getAdd_cart().getChef_image()!=null){
                                                 Picasso.with(getApplicationContext()).load(GetData.IMG_BASE_URL +
@@ -579,6 +581,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(CartAdatper.class.getName(), "Rakhi: "+result);
                     dishDetails.remove(pos);
                     cartAdatper.notifyDataSetChanged();
+
+                    int i = Integer.parseInt(tinyDB.getString("cart_count"));
+                    tinyDB.putString("cart_count", (i - 1) + "");
+
                     BaseClass.showToast(getApplicationContext(), "Item successfully removed from your cart.");
                     update_total_price();
                     if (dishDetails.size()==0){

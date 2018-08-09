@@ -82,8 +82,11 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
 
     private RecyclerView rv;
     private ImageView iv_cart;
+    private TextView tv_count;
 
     private void init(){
+        tv_count = getView().findViewById(R.id.foodie_my_request_cart_count);
+
         iv_cart = getView().findViewById(R.id.fragment_my_request_img_cart);
         txtShop = getView().findViewById(R.id.fragment_my_request_shop_now);
         no_recordLayout = getView().findViewById(R.id.fragment_my_request_foodie_no_record_image);
@@ -111,6 +114,10 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
                 //BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getFragmentManager());
             }
         });
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
     }
 
     private List<FoodieMyRequest.FoodieRequestDishChefDetailsBean>requestDishChefDetailsBeans ;

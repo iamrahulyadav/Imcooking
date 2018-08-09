@@ -50,7 +50,7 @@
                 android:textColor="@color/text_color_7"
                 android:drawableLeft="@drawable/ic_magnifying_glass"
                 android:drawablePadding="10dp"/>
-//
+
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +62,7 @@
             android:layout_marginRight="16dp"
             android:gravity="center">
 
-<FrameLayout
+            <FrameLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
@@ -94,6 +94,7 @@
 
 
 </FrameLayout>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -140,7 +141,6 @@
                         android:layout_height="wrap_content"
                         android:text="LOCATION"
                         android:textSize="12sp"
-                        android:visibility="gone"
                         android:id="@+id/locationText"
                         android:layout_gravity="center"
                         android:textColor="@color/text_color_7"/>

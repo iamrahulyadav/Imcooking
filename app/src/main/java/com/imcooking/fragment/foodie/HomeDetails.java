@@ -158,7 +158,11 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         dialog.show();
     }
 
+    private TextView tv_count;
+
     private void init(){
+
+        tv_count = getView().findViewById(R.id.foodie_dish_details_cart_count);
 
         iv_cart = getView().findViewById(R.id.foodie_home_details_img_cart);
         home_top_pager = getView().findViewById(R.id.fragment_home_auto_scroll_page);
@@ -210,6 +214,11 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
             }
         });
+
+        tinyDB = new TinyDB(getContext());
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
     }
 
     @Override

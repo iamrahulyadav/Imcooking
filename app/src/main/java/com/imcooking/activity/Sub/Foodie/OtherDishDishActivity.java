@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.OtherDish;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
@@ -28,6 +29,7 @@ import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -62,8 +64,15 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
 
     private LinearLayout layout_main;
     private FrameLayout frame_main;
+    private ImageView iv_cart;
+    private TextView tv_count;
 
     private void init(){
+
+        iv_cart = findViewById(R.id.activity_other_dish_cart_icon);
+        tv_count = findViewById(R.id.activity_other_dish_cart_icon);
+
+
         layout_main = findViewById(R.id.other_dish_activity_layout);
         frame_main = findViewById(R.id.other_dish_activity_layout_frame);
         layout = findViewById(R.id.chef_dish);
@@ -85,9 +94,33 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
         };
         recyclerView.setLayoutManager(manager);
         getChefOtherList(chef_id);
+
+
+        tinyDB = new TinyDB(getApplicationContext());
+        userDataBean = new ApiResponse.UserDataBean();
+        String s = tinyDB.getString("login_data");
+        userDataBean = new Gson().fromJson(s, ApiResponse.UserDataBean.class);
+        foodie_id = userDataBean.getUser_id();
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
+
+        iv_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getApplicationContext(), CartActivity.class).putExtra("foodie_id",
+                        userDataBean.getUser_id()));
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            }
+        });
     }
 
-    String chef_id;
+    String chef_id; int foodie_id;
+    private TinyDB tinyDB;
+    private ApiResponse.UserDataBean userDataBean;
 
     private void getChefOtherList(String chef_id){
         layout.setVisibility(View.GONE);

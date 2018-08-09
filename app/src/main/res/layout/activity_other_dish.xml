@@ -76,6 +76,40 @@
                             android:textSize="10sp"/>
 
                     </LinearLayout>
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:padding="8dp"
+                        android:focusable="true"
+                        android:layout_alignParentRight="true">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_food"
+                            android:layout_gravity="center"
+                            android:id="@+id/activity_other_dish_cart_icon"
+                            />
+                        <TextView
+                            android:id="@+id/activity_orther_dish_cart_count"
+                            android:layout_toRightOf="@id/fragment_home_img_cart"
+                            android:background="@drawable/badge_bg"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="right|end|top"
+                            android:layout_marginEnd="-8dp"
+                            android:layout_marginRight="-3dp"
+                            android:layout_marginTop="-5dp"
+                            android:gravity="center"
+                            android:padding="3dp"
+                            android:textColor="@android:color/white"
+                            android:text="0"
+                            android:textSize="8sp"/>
+
+
+
+                    </FrameLayout>
+
 
                 </RelativeLayout>
                 <LinearLayout

@@ -74,6 +74,8 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     private String current_time;
 
     private ImageView iv_cart;
+    private TextView tv_count;
+
     private void init(){
 
         tinyDB = new TinyDB(getContext());
@@ -82,6 +84,11 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
         final String user_id = apiResponse.getUser_id()+"";
+
+        tv_count = getView().findViewById(R.id.fragment_my_order_cart_count);
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
 
         iv_cart = getView().findViewById(R.id.fragment_my_order_img_cart);
         iv_cart.setOnClickListener(new View.OnClickListener() {

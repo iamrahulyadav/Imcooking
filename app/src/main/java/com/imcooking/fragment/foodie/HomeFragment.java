@@ -325,6 +325,8 @@ public class HomeFragment extends Fragment implements
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject!=null&&jsonObject.has("add_acrt_count")){
                                 cart_icon.setText(jsonObject.getString("add_acrt_count"));
+
+                                tinyDB.putString("cart_count", jsonObject.getString("add_acrt_count"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -422,10 +424,15 @@ public class HomeFragment extends Fragment implements
     private void setMyData(/*ArrayList<String> like_1, ArrayList<String> like_2*/){
 
         // Set Cuisine All as blue
-        for(int i=0; i<arr_cuisines.size(); i++){
-            arr_cuisines_status.set(i, "0");
+        if(arr_cuisines != null && arr_cuisines.size() != 0) {
+            for (int i = 0; i < arr_cuisines.size(); i++) {
+                arr_cuisines_status.set(i, "0");
+            }
         }
-        arr_cuisines_status.set(0, "1");
+
+        if(arr_cuisines_status != null && arr_cuisines_status.size() != 0) {
+            arr_cuisines_status.set(0, "1");
+        }
         cuisionAdatper.notifyDataSetChanged();
 
 

@@ -141,7 +141,11 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private TabLayout tabLayout;
     private ImageView iv_settings, cart_image, iv_settings_1;
 
+    private TextView tv_count;
     private void init() {
+
+        tv_count  =  getView().findViewById(R.id.chef_home_cart_count);
+
         btn_call = getView().findViewById(R.id.chef_home_call_btn);
         layout = getView().findViewById(R.id.layout_chef_home);
 //        layout = getView().findViewById(R.id.app_bar);
@@ -183,6 +187,10 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
 
     }
 
