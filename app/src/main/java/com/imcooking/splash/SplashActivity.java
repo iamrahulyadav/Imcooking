@@ -59,12 +59,12 @@ public class SplashActivity extends AppCompatActivity {
     private String mLastUpdateTime;
 
     // location updates interval - 10sec
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
     // fastest updates interval - 5 sec
     // location updates will be received if another app is requesting the locations
     // than your app can handle
-    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
 
@@ -154,8 +154,6 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-
-
                         if (tinyDB.contains("login_data")) {
                             tinyDB.putDouble("lat",latitude);
                             tinyDB.putDouble("lang",longitude);
@@ -172,20 +170,6 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }, 3000);
             }
-
-
-           else {
-                if (tinyDB.contains("login_data")) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
-                    finish();//2
-                } else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
-                    finish();
-                }
-            }
-
         }
 
     }
@@ -301,6 +285,7 @@ public class SplashActivity extends AppCompatActivity {
                     case Activity.RESULT_CANCELED:
                         Log.e(TAG, "User chose not to make required location settings changes.");
                         mRequestingLocationUpdates = false;
+                        startLocationButtonClick();
                         break;
                 }
                 break;
