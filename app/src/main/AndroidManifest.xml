@@ -9,9 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +21,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -30,20 +28,19 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
             android:name=".splash.SplashActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".utils.AppBaseActivity"/>
-
+        <activity android:name=".utils.AppBaseActivity" />
         <activity android:name=".activity.home.HomeSearchActivity1" />
         <activity
             android:name=".activity.main.setup.LoginActivity"
@@ -84,8 +81,8 @@
         <activity
             android:name=".activity.Sub.Foodie.EditProfile"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-
-        <activity android:name=".activity.Sub.Foodie.ChefProfile"
+        <activity
+            android:name=".activity.Sub.Foodie.ChefProfile"
             android:windowSoftInputMode="adjustResize" />
 
         <meta-data
@@ -107,9 +104,6 @@
         <activity
             android:name=".activity.Sub.Chef.ChefEditProfile"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
-
-
         <activity android:name=".activity.Sub.Chef.ChangePassword" />
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />
@@ -117,8 +111,11 @@
         <activity android:name=".activity.Sub.ChefOrderDeatilsActivity" />
         <activity android:name=".activity.Sub.Chef.ChefOrderDetailsActivity" />
         <activity android:name=".activity.Sub.Chef.SelectCuisines" />
-        <activity android:name=".activity.Sub.Chef.Test1"></activity>
-        <activity android:name=".activity.Sub.Foodie.FilterActivity"></activity>
+        <activity android:name=".activity.Sub.Chef.Test1" />
+        <activity android:name=".activity.Sub.Foodie.FilterActivity" />
+        <activity android:name=".activity.home.Main2Activity">
+
+        </activity>
     </application>
 
 </manifest>

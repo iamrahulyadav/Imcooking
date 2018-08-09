@@ -45,7 +45,6 @@ public class SplashActivity extends AppCompatActivity {
     boolean network_enabled;
     Location location;
 
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +54,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         tinyDB = new TinyDB(getApplicationContext());
-      /*  if (checkGPSStatus()){
+        if (checkGPSStatus()){
             checkLocationPermission();
-        } */
+        }
 
 //        find id
         imgSplash = findViewById(R.id.splashbg);
@@ -76,7 +75,8 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    public boolean checkGPSStatus() {
+    public boolean checkGPSStatus()
+    {
         LocationManager locationManager =(LocationManager) getSystemService(Context.LOCATION_SERVICE);
         boolean isGPSProviderEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -86,7 +86,6 @@ public class SplashActivity extends AppCompatActivity {
         }
         return true;
     }
-
     private void showSettingsAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
@@ -142,8 +141,7 @@ public class SplashActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(SplashActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
                                         MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
@@ -152,8 +150,7 @@ public class SplashActivity extends AppCompatActivity {
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
             return false;
@@ -165,43 +162,40 @@ public class SplashActivity extends AppCompatActivity {
     private void callGps(){
         locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        if (checkGPSStatus()){
-            if (network_enabled) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (network_enabled) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-                if(location!=null){
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
-                }
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (tinyDB.contains("login_data")) {
-                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                            overridePendingTransition(R.anim.enter, R.anim.exit);
-                            finish();//2
-                        } else {
-                            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                            overridePendingTransition(R.anim.enter, R.anim.exit);
-                            finish();
-                        }
-                    }
-                }, 3000);
+            if(location!=null){
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
             }
 
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (tinyDB.contains("login_data")) {
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                        finish();//2
+                    } else {
+                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                        finish();
+                    }
+                }
+            }, 3000);
         }
     }
 
@@ -237,10 +231,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (checkGPSStatus()){
-            checkLocationPermission();
-        }
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED&& ContextCompat.checkSelfPermission(getApplicationContext(),

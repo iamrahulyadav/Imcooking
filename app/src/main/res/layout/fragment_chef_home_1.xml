@@ -61,11 +61,11 @@
                                     android:visibility="visible" />
 
                                 <ImageView
-                                    android:id="@+id/chef_home_heart_icon"
+                                    android:id="@+id/chef_home_cart_icon"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
-                                    android:src="@drawable/ic_heart"
+                                    android:src="@drawable/ic_food"
                                     android:visibility="visible" />
                                 <ImageView
                                     android:id="@+id/chef_home_settings_1"

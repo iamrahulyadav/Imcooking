@@ -43,7 +43,6 @@ public class ChefProfile extends AppBaseActivity {
         args.putString("foodie_id", foodie_id);
 
         fragment.setArguments(args);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_chef_profile, fragment).commit();
 
     }

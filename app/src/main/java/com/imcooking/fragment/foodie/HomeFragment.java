@@ -1,13 +1,17 @@
 package com.imcooking.fragment.foodie;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -25,7 +29,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.Home;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -62,38 +69,39 @@ public class HomeFragment extends Fragment implements
     public static TextView cart_icon;
     Button getLocationBtn;
     private HomeData homeData = new HomeData();
-    private ArrayList<String>spinnerData =new ArrayList<>();
+    private ArrayList<String> spinnerData = new ArrayList<>();
     private TinyDB tinyDB;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private Gson gson = new Gson();
-    private LinearLayout layout_no_record_found,cusine_list;
+    private LinearLayout layout_no_record_found, cusine_list;
     private String TAG = HomeFragment.class.getName();
-    List<HomeData.ChefDishBean>chefDishBeans = new ArrayList<>();
-    List<HomeData.ChefDishBean>chefDishBeans_filter_all = new ArrayList<>();
-    List<HomeData.ChefDishBean>chefDishBeans_filter_cuisine = new ArrayList<>();
+    List<HomeData.ChefDishBean> chefDishBeans = new ArrayList<>();
+    List<HomeData.ChefDishBean> chefDishBeans_filter_all = new ArrayList<>();
+    List<HomeData.ChefDishBean> chefDishBeans_filter_cuisine = new ArrayList<>();
 
-    List<HomeData.ChefDishBean>favorite_1 = new ArrayList<>();
-    List<HomeData.FavouriteDataBean>favouriteDataBeans = new ArrayList<>();
+    List<HomeData.ChefDishBean> favorite_1 = new ArrayList<>();
+    List<HomeData.FavouriteDataBean> favouriteDataBeans = new ArrayList<>();
     CustomViewPager viewPager;
     HomeBottomPagerAdapter homeBottomPagerAdapter;
-    private TextView tv_cusine,  txtCityName, txtSerach;
+    private TextView tv_cusine, txtCityName, txtSerach;
     private RecyclerView cuisinRecycler;
     private LinearLayout layout, layout2;
     ViewPager bottomViewPager;
-    ImageView imgCart,imgFilter;
+    ImageView imgCart, imgFilter;
     CuisionAdatper cuisionAdatper;
     private Spinner sp;
 
-    String latitudeq= SplashActivity.latitude+"";
-    String longitudeq=SplashActivity.longitude+"" ;
+    String latitudeq = SplashActivity.latitude + "";
+    String longitudeq = SplashActivity.longitude + "";
     String min_miles = "0";
     String max_miles = "10";
     public static String foodie_id = "4";
-    String country = "101", selectedValue,selectedmiles;
+    String country = "101", selectedValue, selectedmiles;
     private CuisineData cuisineData = new CuisineData();
-    private List<CuisineData.CuisineDataBean>cuisionList=new ArrayList<>();
-    private List<CuisineData.CuisineDataBean>cuisionList_filter_all=new ArrayList<>();
+    private List<CuisineData.CuisineDataBean> cuisionList = new ArrayList<>();
+    private List<CuisineData.CuisineDataBean> cuisionList_filter_all = new ArrayList<>();
     private boolean isFilterApplied;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     private ImageView iv_arrow_latest, iv_arrow_choice;
 
@@ -110,7 +118,7 @@ public class HomeFragment extends Fragment implements
 
 //        Toast.makeText(getContext(), "Home", Toast.LENGTH_SHORT).show();
 
-        getLocationBtn = (Button)getView().findViewById(R.id.getLocationBtn);
+        getLocationBtn = (Button) getView().findViewById(R.id.getLocationBtn);
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -121,7 +129,7 @@ public class HomeFragment extends Fragment implements
         toolbar_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).drawerLayout1.openDrawer(GravityCompat.START);
+                ((MainActivity) getActivity()).drawerLayout1.openDrawer(GravityCompat.START);
             }
         });
 
@@ -132,10 +140,11 @@ public class HomeFragment extends Fragment implements
     private ArrayList<String> arr_like_status_1_filter_all = new ArrayList<>();
     private ArrayList<String> arr_like_status_1_filter_cuisine = new ArrayList<>();
     private ArrayList<String> arr_like_status_2 = new ArrayList<>();
-    private TextView tv_count_latest,tv_count_choice;
-    private void init(){
+    private TextView tv_count_latest, tv_count_choice;
+
+    private void init() {
         tv_count_latest = getView().findViewById(R.id.fragment_home_dish_count_latest);
-        tv_count_choice  = getView().findViewById(R.id.fragment_home_dish_count_choice);
+        tv_count_choice = getView().findViewById(R.id.fragment_home_dish_count_choice);
 
         iv_arrow_latest = getView().findViewById(R.id.fragment_home_latest_arrow);
         iv_arrow_choice = getView().findViewById(R.id.fragment_home_choice_arrow);
@@ -151,7 +160,7 @@ public class HomeFragment extends Fragment implements
         bottomViewPager = getView().findViewById(R.id.fragment_home_bottom);
         imgFilter = getView().findViewById(R.id.fragment_home_img_filter);
         tv_cusine.setOnClickListener(this);
-        viewPager =  getView().findViewById(R.id.home_viewPager);
+        viewPager = getView().findViewById(R.id.home_viewPager);
         txtSerach = getView().findViewById(R.id.fragment_home_search_img);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
         imgCart = getView().findViewById(R.id.fragment_home_img_cart);
@@ -160,24 +169,14 @@ public class HomeFragment extends Fragment implements
         imgFilter.setOnClickListener(this);
         txtSerach.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
-        cuisinRecycler = getView(). findViewById(R.id.fragment_home_cuisine_recycler);
+        cuisinRecycler = getView().findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         cuisinRecycler.setLayoutManager(horizontalLayoutManagaer);
-        if (spinnerData!=null){
+        if (spinnerData != null) {
             spinnerData.clear();
         }
 
-
-        latitudeq= SplashActivity.latitude+"";
-        longitudeq=SplashActivity.longitude+"" ;
-        StringBuffer stringBuffer = new StringBuffer();
-        try {
-            stringBuffer = getAddress(new LatLng(SplashActivity.latitude, SplashActivity.longitude));
-            txtCityName.setText(stringBuffer.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         spinnerData.add("10 miles ");
         spinnerData.add("20 miles ");
         spinnerData.add("30 miles ");
@@ -185,15 +184,22 @@ public class HomeFragment extends Fragment implements
         tinyDB = new TinyDB(getContext());
         String s = tinyDB.getString("login_data");
         userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
-        foodie_id = userDataBean.getUser_id()+"";
+        foodie_id = userDataBean.getUser_id() + "";
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
         //    cuisinRecycler.setAdapter(cuisionAdatper);
 
-
         getCuisone();
         milesSpinner();
-    }
+        StringBuffer stringBuffer = new StringBuffer();
+        try {
+            stringBuffer = getAddress(new LatLng(SplashActivity.latitude,
+                    SplashActivity.longitude));
+            txtCityName.setText(stringBuffer.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
                 R.layout.spinner_row, spinnerData);

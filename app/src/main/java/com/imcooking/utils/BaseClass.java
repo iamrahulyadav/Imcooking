@@ -323,7 +323,11 @@ public class BaseClass {
         } else if (current_am_pm.equals("AM") && dish_am_pm.equals("PM")){
             return 1;
         } else if(current_am_pm.equals("PM") && dish_am_pm.equals("AM")){
-            return 0;
+            if(dish_hour.equals("00")){
+                return 1;
+            } else {
+                return 0;
+            }
         } else{
             return 2;
         } }

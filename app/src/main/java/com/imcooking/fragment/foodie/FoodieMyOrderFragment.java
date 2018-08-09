@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.FoodieMyorderList;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefOrderDetailsActivity;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterFoodieMyOrderList;
 import com.imcooking.utils.BaseClass;
@@ -71,8 +73,26 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     private RecyclerView rv_1, rv_2;
     private String current_time;
 
+    private ImageView iv_cart;
     private void init(){
 
+        tinyDB = new TinyDB(getContext());
+
+        String login = tinyDB.getString("login_data");
+        ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
+        apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
+        final String user_id = apiResponse.getUser_id()+"";
+
+        iv_cart = getView().findViewById(R.id.fragment_my_order_img_cart);
+        iv_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                        user_id));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
         currentLayout = getView().findViewById(R.id.fragment_chef_order_txt_current);
         nestedScrollView = getView().findViewById(R.id.foodie_order_list);
         rv_1 = getView().findViewById(R.id.recycler_foodie_my_orders_current);
@@ -103,7 +123,6 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
             }
         };
         rv_2.setLayoutManager(manager1);
-        tinyDB=new TinyDB(getContext());
 
         txtShop.setOnClickListener(new View.OnClickListener() {
             @Override

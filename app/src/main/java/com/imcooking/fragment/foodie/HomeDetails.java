@@ -82,7 +82,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     Gson gson = new Gson();
     TinyDB tinyDB;
-    private ImageView imgLike;
+    private ImageView imgLike, iv_cart;
 
     public HomeDetails() {
         // Required empty public constructor
@@ -105,6 +105,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         if (savedInstanceState != null) {
             mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
         }
+
 
     }
 
@@ -158,6 +159,8 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     }
 
     private void init(){
+
+        iv_cart = getView().findViewById(R.id.foodie_home_details_img_cart);
         home_top_pager = getView().findViewById(R.id.fragment_home_auto_scroll_page);
         iv_share = getView().findViewById(R.id.home_details_share);
         imgChef = getView().findViewById(R.id.home_details_user_icon);
@@ -197,6 +200,16 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         layout = getView().findViewById(R.id.home_details_layout);
         txtOtherDish.setOnClickListener(this);
         txtAddToCart.setOnClickListener(this);
+
+        iv_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                        foodie_id));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            }
+        });
     }
 
     @Override
@@ -307,6 +320,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                         imgDeliviery.setVisibility(View.VISIBLE);
                                         imgPickUp.setVisibility(View.GONE);
                                         txtDeliverytype.setText("Home Delivery");
+                                    }
+
+                                    if(dishDetails.getDish_details().getDish_quantity().equals("0")){
+                                        txtAddToCart.setText("Food Not Available");
+                                    } else{
+                                        txtAddToCart.setText("Add To Cart");
                                     }
 
                                     VIDEO_SAMPLE = GetData.IMG_BASE_URL+dishDetails.getDish_details().getDish_video()+"";
@@ -427,13 +446,15 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
         else if (id == R.id.tv_add_to_cart){
 
-            AddToCart addToCart=new AddToCart();
-            addToCart.setChef_id(Integer.parseInt(chef_id));
-            addToCart.setFoodie_id(foodie_id);
-            addToCart.setDish_id(dishId);
-            addToCart.setAddcart_yes("");
-            addToCart.setAddcart_id("");
-            addCart(addToCart);
+            if(!txtAddToCart.getText().toString().trim().equals("Food Not Available")) {
+                AddToCart addToCart = new AddToCart();
+                addToCart.setChef_id(Integer.parseInt(chef_id));
+                addToCart.setFoodie_id(foodie_id);
+                addToCart.setDish_id(dishId);
+                addToCart.setAddcart_yes("");
+                addToCart.setAddcart_id("");
+                addCart(addToCart);
+            }
         }
 
         else if (id == R.id.home_details_heart){
@@ -497,11 +518,15 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                             if (apiResponse.getMsg().equalsIgnoreCase("Add cart Successfully")){
                                                 createMyDialog();
                                             }
-                                        } else if (apiResponse.getMsg().equalsIgnoreCase("This chef already added")){
+                                        } else
+                                            if((apiResponse.getMsg().equalsIgnoreCase("This chef already added"))){
                                             createChefDialog();
-                                        }else {
-                                            Toast.makeText(getContext(), apiResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                                        }
+                                            }else if(apiResponse.getMsg().equals("This dish already added")) {
+                                                createDialogAlreadyAdded();
+    //                                            Toast.makeText(getContext(), apiResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                                            } else{
+                                            BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                            }
                                     }
                                 });
                             }
@@ -563,6 +588,36 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         });
 
         dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
+    }
+
+    private void createDialogAlreadyAdded(){
+        final Dialog dialog= new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_already_added);
+        TextView tv1 = dialog.findViewById(R.id.dialog_already_added_go_to_cart);
+        TextView tv2 = dialog.findViewById(R.id.dialog_already_added_cancel);
+
+        tv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+                startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                        userDataBean.getUser_id()));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
+
+        tv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();

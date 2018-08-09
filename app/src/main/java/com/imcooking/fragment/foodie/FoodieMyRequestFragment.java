@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.FoodieMyRequest;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.ChefILove;
 import com.imcooking.adapters.AdapterFoodieMyRequest;
 import com.imcooking.adapters.DishReqChatAdatper;
@@ -68,6 +70,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         tinyDB=new TinyDB(getContext());
+
         String login = tinyDB.getString("login_data");
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
@@ -78,8 +81,10 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
     }
 
     private RecyclerView rv;
+    private ImageView iv_cart;
 
     private void init(){
+        iv_cart = getView().findViewById(R.id.fragment_my_request_img_cart);
         txtShop = getView().findViewById(R.id.fragment_my_request_shop_now);
         no_recordLayout = getView().findViewById(R.id.fragment_my_request_foodie_no_record_image);
         rv = getView().findViewById(R.id.recycler_foodie_my_requests);
@@ -87,6 +92,16 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
         myorderRequest();
+
+        iv_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                        sender_id));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            }
+        });
 
         txtShop.setOnClickListener(new View.OnClickListener() {
             @Override

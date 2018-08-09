@@ -93,14 +93,17 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("LoginData", login_data);
         userDataBean = new Gson().fromJson(login_data, ApiResponse.UserDataBean.class);
         user_phone = userDataBean.getUser_phone();
+        foodie_id = userDataBean.getUser_id();
 
         Bundle extras = getIntent().getExtras();
         recyclerView = findViewById(R.id.recycler_cart_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+/*
         if (extras != null) {
             foodie_id = extras.getInt("foodie_id");
         }
+*/
 
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
         txtPayment = findViewById(R.id.activity_cart_tv_payment);
@@ -236,7 +239,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         dishDetails = new ArrayList<>();
         addToCart=new AddToCart();
         addToCart.setFoodie_id(foodie_id);
+
         Log.d(TAG, "MyRequest: "+new Gson().toJson(addToCart));
+
         new GetData(getApplicationContext(), CartActivity.this)
                 .getResponse(new Gson().toJson(addToCart), GetData.CART,
                         new GetData.MyCallback() {
@@ -405,6 +410,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     private void checkDishAvailableTime(){
 
+        boolean st = true;
         for(int i=0; i<dishDetails.size(); i++){
             String time_from = dishDetails.get(i).getDish_from();
             String time_to = dishDetails.get(i).getDish_to();
@@ -412,14 +418,19 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             int time_status = BaseClass.compareToCurrentTime(time_to);
             Log.d("CurrentTime", time_status + "");
             if(time_status == 1){
-                linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
-                linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
-            } else if (time_status == 0){
+//                st = true;
+                } else if (time_status == 0){
+                st = false;
                 Toast.makeText(CartActivity.this, "The dish " +
                         dishDetails.get(i).getDish_name().toUpperCase() +
                         " is not available after " + time_to + ". Please remove this dish from your cart to place your order now.", Toast.LENGTH_LONG).show();
 //                BaseClass.showToast(getApplicationContext(), "");
             }
+
+        }
+        if(st){
+            linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
+            linearLayoutpayment.setVisibility(RelativeLayout.VISIBLE);
         }
     }
 
@@ -617,6 +628,5 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         getAddress();
     }
-
 
 }

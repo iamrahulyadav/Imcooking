@@ -1,18 +1,13 @@
 package com.imcooking.fragment.chef;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -26,12 +21,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +39,7 @@ import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChangePassword;
 import com.imcooking.activity.Sub.Chef.ChefActivateDeactivate;
 import com.imcooking.activity.Sub.Chef.ChefEditProfile;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
@@ -62,12 +56,6 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 
 //import static com.imcooking.activity.home.MainActivity.isProfile;
 
@@ -151,7 +139,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private ImageView iv_settings, heart, iv_settings_1;
+    private ImageView iv_settings, cart_image, iv_settings_1;
 
     private void init() {
         btn_call = getView().findViewById(R.id.chef_home_call_btn);
@@ -165,8 +153,8 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         imgBack = getView().findViewById(R.id.imgBack);
         ratingBar = getView().findViewById(R.id.fragment_chef_home_rating);
 
-        heart = getView().findViewById(R.id.chef_home_heart_icon);
-        heart.setOnClickListener(this);
+        cart_image = getView().findViewById(R.id.chef_home_cart_icon);
+        cart_image.setOnClickListener(this);
         btn_follow = getView().findViewById(R.id.chef_home_follow_button);
         btn_follow.setOnClickListener(this);
         btn_call.setOnClickListener(this);
@@ -181,12 +169,12 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
             btn_follow.setVisibility(View.VISIBLE);
             iv_settings.setVisibility(View.GONE);
             btn_call.setVisibility(View.VISIBLE);
-            heart.setVisibility(View.GONE);
+            cart_image.setVisibility(View.VISIBLE);
         } else if (user_type.equals("1")) {
             btn_call.setVisibility(View.GONE);
             btn_follow.setVisibility(View.GONE);
             iv_settings.setVisibility(View.VISIBLE);
-            heart.setVisibility(View.VISIBLE);
+            cart_image.setVisibility(View.GONE);
         } else {
         }
 
@@ -241,16 +229,20 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
                                     //    else txtAddress.setText("Your Address");
                                      createMyDialog();
-                                    if (chefProfileData1.getChef_data().getChef_full_name()!=null){
+                                    if (chefProfileData1.getChef_data().getChef_full_name()!=null) {
                                         txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
-                                        txtAddress.setText(chefProfileData1.getChef_data().getAddress()+" "+
+                                        txtAddress.setText(chefProfileData1.getChef_data().getAddress() + " " +
                                                 chefProfileData1.getChef_data().getChef_city());
-                                        MainActivity.tv_name.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
-                                  }
+                                        if (user_type.equals("1")) {
+                                            MainActivity.tv_name.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
+                                        }
+                                    }
 
 
                                     if (chefProfileData1.getChef_data().getChef_phone()!=null){
-                                        MainActivity.tv_phone.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                        if(user_type.equals("1")) {
+                                            MainActivity.tv_phone.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                        }
                                         tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                     }
 
@@ -636,8 +628,12 @@ for(int i=0;i<jsonArray.length();i++){
         } else if (id == R.id.chef_home_follow_button){
             getFollowUnfollow();
         }
-        else if (id == R.id.chef_home_heart_icon){
-            BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+        else if (id == R.id.chef_home_cart_icon){
+//            BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+            startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                    userDataBean.getUser_id()));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
         }
         else if (id == R.id.chef_home_call_btn){
             phoneNo = tv_phoneno.getText().toString().trim();
