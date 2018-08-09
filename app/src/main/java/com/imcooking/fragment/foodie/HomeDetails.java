@@ -186,7 +186,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
         tabLayout= (TabLayout)getView(). findViewById(R.id.cardet_Tab);
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients of Recipe"));
-        tabLayout.addTab(tabLayout.newTab().setText("Know Chef"));
+        tabLayout.addTab(tabLayout.newTab().setText("Special Note "));
         pager = getView().findViewById(R.id.cardet_viewpager);
 
 

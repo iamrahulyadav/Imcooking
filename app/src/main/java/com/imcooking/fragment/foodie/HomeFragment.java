@@ -2,6 +2,7 @@ package com.imcooking.fragment.foodie;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -781,6 +782,7 @@ public class HomeFragment extends Fragment implements
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void method_CuisineAdapter(int position) {
 
@@ -796,9 +798,9 @@ public class HomeFragment extends Fragment implements
 
             arr_like_status_1_filter_all.addAll(arr_like_status_1);
             chefDishBeans_filter_all.addAll(chefDishBeans);
-            BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + "");
+            BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + " Food available from selected cuisines");
             adapter.notifyDataSetChanged();
-
+            tv_count_latest.setText("(" + chefDishBeans_filter_all.size() + ")");
             if(chefDishBeans_filter_all!=null && chefDishBeans_filter_all.size()>0) {
                 layout_no_record_found.setVisibility(View.GONE);
                 iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
@@ -844,7 +846,9 @@ public class HomeFragment extends Fragment implements
                     iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
                     viewPager.setVisibility(View.GONE);
                 }
-                BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + "");
+            /*    BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + " Food available from selected cuisines");
+                tv_count_latest.setText(chefDishBeans_filter_all.size()  +"");*/
+
             }
 
             cuisionAdatper.notifyDataSetChanged();
@@ -852,13 +856,16 @@ public class HomeFragment extends Fragment implements
 
             if(!all_zero) {
 //            filterCuisine1(position, arr_cuisines.get(position));
-            filterCuisine(my_array);
+                /*tv_count_latest.setText("(" + my_array.size() + ")");*/
+
+                filterCuisine(my_array);
             }
         }
     }
 
     private List<HomeData.ChefDishBean>cuisionChefList;
 
+    @SuppressLint("SetTextI18n")
     private void filterCuisine(ArrayList<String> my_array){
         cuisionChefList = new ArrayList<>();
 
@@ -873,22 +880,9 @@ public class HomeFragment extends Fragment implements
             }
         }
 
+        tv_count_latest.setText("(" + cuisionChefList.size() + ")");
+        BaseClass.showToast(getContext(), cuisionChefList.size() + " Food available from selected cuisines");
 
-/*
-        for (HomeData.ChefDishBean  bean: homeData.getChef_dish()){
-//            bean.getDish_cuisine().get(0).getCuisine_name()
-            if (bean.getDish_cuisine()!=null && bean.getDish_cuisine().size()>0){
-                String cuisionVa = bean.getDish_cuisine().get(0).getCuisine_name();
-                if (cuision.equalsIgnoreCase(cuisionVa)){
-                    cuisionChefList.add(bean*/
-/*homeData.getChef_dish().get(position)*//*
-);
-                }
-            }
-        }
-*/
-
-//        cuisionChefList = getByName(chefDishBeans, cuision);
         if (cuisionChefList.size()>0){
             layout_no_record_found.setVisibility(View.GONE);
             iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
@@ -909,7 +903,6 @@ public class HomeFragment extends Fragment implements
             arr_like_status_1_filter_all.add(cuisionChefList.get(i).getDishlike());
         }
 
-        BaseClass.showToast(getContext(), chefDishBeans_filter_all.size() + "");
         adapter.notifyDataSetChanged();
     }
     private void filterCuisine1(int position, String cuision){

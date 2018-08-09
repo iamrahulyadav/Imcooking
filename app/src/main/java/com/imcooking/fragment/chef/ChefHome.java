@@ -507,7 +507,6 @@ for(int i=0;i<jsonArray.length();i++){
                 TabLayout.Tab tab = tabLayout.getTabAt(1);
                 tab.select();
 
-                Toast.makeText(getContext(), "hii", Toast.LENGTH_SHORT).show();
             }
         }
     }

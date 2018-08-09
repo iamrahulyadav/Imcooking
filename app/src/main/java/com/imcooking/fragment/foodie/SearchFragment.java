@@ -80,7 +80,7 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 keyword  = charSequence.toString().trim() ;
-                if (keyword.length()>2){
+                if (keyword.length()>=2){
                     try {
                         getChefList(keyword);
                     } catch (JSONException e) {
@@ -122,6 +122,7 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
     private void getChefList(String keyword)
             throws JSONException {
         String miles= "10";
+        keyword = keyword.replaceAll(" ", "");
         String s = "{\"keyword\":" + keyword + ",\"miles\":"+miles+"}" ;
         JSONObject jsonObject = new JSONObject(s);
 
@@ -154,9 +155,9 @@ public class SearchFragment extends Fragment implements AdapterChefSearch.Search
 
                                     Log.d("getchef_for", "\n" + new Gson().toJson(arr_name));
                                 }
-//                                setMyAdapter();
+                                setMyAdapter();
                             }
-                            setMyAdapter();
+//                            setMyAdapter();
                         }
                         else {
                             BaseClass.showToast(getContext(), "Something Went Wrong");
