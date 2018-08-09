@@ -83,13 +83,15 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     private LatLng mCenterLatLong;
     private MapView mMapView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
-    private TextView txtPlaceName, txtLocatName, txtConfirm;
+    private TextView txtPlaceName,  txtConfirm;
     private EditText edtHouse, edtLandmark;
     TinyDB  tinyDB ;
+  //  private AutoCompleteTextView txtLocatName;
     String title,foodie_id,address;
     private Gson gson = new Gson();
     private String name="", address_id;
     private boolean isEdit;
+    AutoCompleteTextView autocompleteView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,14 +121,16 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         mMapView = (MapView) findViewById(R.id.mapView);
         edtHouse = findViewById(R.id.add_address_edtHouse);
         edtLandmark = findViewById(R.id.add_address_edtLandMark);
-        txtLocatName = findViewById(R.id.activity_add_aaddres_txtLocaname);
+      //  txtLocatName = findViewById(R.id.activity_add_aaddres_txtLocaname);
+        autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
+
         txtPlaceName = findViewById(R.id.activity_add_aaddres_txtLoc);
         txtConfirm = findViewById(R.id.add_address_btnConfirm);
         if (getIntent().hasExtra("address_id")){
             address_id = getIntent().getStringExtra("address_id");
             name = getIntent().getStringExtra("name");
             txtPlaceName.setText(name);
-            txtLocatName.setText(name);
+            autocompleteView.setText(name);
             isEdit = getIntent().getBooleanExtra("edit",false);
             title = getIntent().getStringExtra("title");
         }
@@ -166,7 +170,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         } else {
             Toast.makeText(mContext, "Location not supported in this device", Toast.LENGTH_SHORT).show();
         }
-        AutoCompleteTextView autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
         autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
         autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -191,6 +194,10 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     RadioButton radioHome, radioOffice,radioOther;
     TextView txtCanel, txtSave, txtCancleIcon;
     private RadioGroup radioGroup;
+
+
+
+
 
     private void createMyDialog(){
 
@@ -248,7 +255,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                     if(radioGroup.getCheckedRadioButtonId() == R.id.dialog_address_radioOther){
                         title = edtMsg.getText().toString().trim();
                     }
-                    address = txtLocatName.getText().toString().trim();
+                    address = autocompleteView.getText().toString().trim();
                     if (!edtHouse.getText().toString().trim().isEmpty()){
                         address = address + " , "+ edtHouse.getText().toString().trim();
                     }
@@ -622,12 +629,12 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                         stringBuffer=getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
                         if (isEdit){
                             txtPlaceName.setText(name);
-                            txtLocatName.setText(name);
+                            autocompleteView.setText(name);
                             getLatLong(name);
                             isEdit = false;
                         } else {
                             txtPlaceName.setText(stringBuffer);
-                            txtLocatName.setText(stringBuffer);
+                            autocompleteView.setText(stringBuffer);
                         }
 
                     } catch (IOException e) {

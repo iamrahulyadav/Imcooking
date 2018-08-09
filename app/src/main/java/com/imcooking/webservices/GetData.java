@@ -82,6 +82,7 @@ public class GetData {
     public static String DISH_LIKER = "dishlike";
     public static String CART = "cart";
     public static String FOODIE_PROFILE_EDIT = "foodieprofileedit";
+    public static String CHECK_FOODIE_DISTANCE = "check_chef_foodie_distance";
 
 
     public GetData(final Context context, Activity activity) {

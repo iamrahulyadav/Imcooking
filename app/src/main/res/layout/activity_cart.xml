@@ -300,9 +300,9 @@
                             android:textColorHint="@color/colorBlack"
                             android:textColor="@color/colorBlack"
                             android:text="Select an Address"
-                            android:textSize="10sp"
+                            android:textSize="@dimen/smallsize"
                             android:gravity="left"
-                            android:paddingLeft="5dp"
+                            android:padding="5dp"
                             android:layout_marginRight="5dp"
                             android:drawableRight="@drawable/ic_drop_down_arrow"
                             android:id="@+id/activity_cart_txtAddress"
@@ -334,20 +334,20 @@
                             android:text="Please select Your address for delivery"
                             android:textColor="@color/colorBlack"
                             android:textSize="10sp" />
-                        <com.imcooking.customtext.CustomTextView
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:text="Payment"
-                            android:id="@+id/activity_cart_tv_payment"
-                            android:layout_gravity="right"
-                            android:gravity="center"
-                            android:layout_margin="5dp"
-                            android:background="@drawable/button_bg4"
-                            android:textSize="12sp"
-                            android:textColor="@color/colorBlue"/>
                     </LinearLayout>
 
                 </LinearLayout>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Payment"
+                    android:id="@+id/activity_cart_tv_payment"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/button_bg4"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorBlue"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

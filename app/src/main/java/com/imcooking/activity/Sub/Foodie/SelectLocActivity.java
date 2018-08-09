@@ -90,7 +90,6 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             BaseClass.setLightStatusBar(getWindow().getDecorView(),SelectLocActivity.this);
         }
 
-
         mContext = this;
         tinyDB = new TinyDB(mContext);
         String  login_data = tinyDB.getString("login_data");
@@ -99,7 +98,6 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
             ActivityCompat.requestPermissions(SelectLocActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     1);
@@ -117,8 +115,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         mMapView.onResume();
         View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-// position on right bottom
-//        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         mMapView.getMapAsync(this);
         if (checkPlayServices()) {
