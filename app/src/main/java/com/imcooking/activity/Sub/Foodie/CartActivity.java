@@ -37,9 +37,11 @@ import com.imcooking.Model.api.response.AddCart;
 import com.imcooking.Model.api.response.AddressListData;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.CartAdatper;
 import com.imcooking.adapters.CartAddListAdatper;
 import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.splash.SplashActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
@@ -368,7 +370,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.activity_cart_shop_now:
-                finish();
+                startActivity(new Intent(CartActivity.this, MainActivity.class));
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+//                finish();
                 break;
         }
     }

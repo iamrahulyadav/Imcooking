@@ -87,8 +87,6 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
 
         tv_count = getView().findViewById(R.id.fragment_my_order_cart_count);
 
-        String cart_count = tinyDB.getString("cart_count");
-        tv_count.setText(cart_count);
 
         iv_cart = getView().findViewById(R.id.fragment_my_order_img_cart);
         iv_cart.setOnClickListener(new View.OnClickListener() {
@@ -246,6 +244,9 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_my_order.setImageResource(R.drawable.ic_salad_1);
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
 
     }
 

@@ -221,7 +221,6 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         }
     }
 
-
     //    private Dialog dialog;
 //    private TextView tv_ok_dialog, tv_cross_dialog;
 

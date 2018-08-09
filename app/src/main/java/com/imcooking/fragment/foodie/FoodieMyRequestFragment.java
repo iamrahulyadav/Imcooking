@@ -115,6 +115,13 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
             }
         });
 
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         String cart_count = tinyDB.getString("cart_count");
         tv_count.setText(cart_count);
 

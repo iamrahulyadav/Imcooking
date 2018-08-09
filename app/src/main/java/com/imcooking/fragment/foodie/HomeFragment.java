@@ -91,8 +91,8 @@ public class HomeFragment extends Fragment implements
     CuisionAdatper cuisionAdatper;
     private Spinner sp;
 
-    String latitudeq = SplashActivity.latitude + "";
-    String longitudeq = SplashActivity.longitude + "";
+    double latitudeq;
+    double longitudeq ;
     String min_miles = "0";
     String max_miles = "10";
     public static String foodie_id = "4";
@@ -143,6 +143,12 @@ public class HomeFragment extends Fragment implements
     private TextView tv_count_latest, tv_count_choice;
 
     private void init() {
+        tinyDB = new TinyDB(getContext());
+
+        if (tinyDB.contains("lat")) {
+            latitudeq = tinyDB.getDouble("lat", 0);
+            longitudeq = tinyDB.getDouble("lang", 0);
+        }
         tv_count_latest = getView().findViewById(R.id.fragment_home_dish_count_latest);
         tv_count_choice = getView().findViewById(R.id.fragment_home_dish_count_choice);
 
@@ -181,7 +187,6 @@ public class HomeFragment extends Fragment implements
         spinnerData.add("20 miles ");
         spinnerData.add("30 miles ");
         spinnerData.add("50 miles ");
-        tinyDB = new TinyDB(getContext());
         String s = tinyDB.getString("login_data");
         userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
         foodie_id = userDataBean.getUser_id() + "";
@@ -192,8 +197,8 @@ public class HomeFragment extends Fragment implements
         milesSpinner();
         StringBuffer stringBuffer = new StringBuffer();
         try {
-            stringBuffer = getAddress(new LatLng(SplashActivity.latitude,
-                    SplashActivity.longitude));
+            stringBuffer = getAddress(new LatLng(latitudeq,
+                    longitudeq));
             txtCityName.setText(stringBuffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -298,11 +303,11 @@ public class HomeFragment extends Fragment implements
 
     List<HomeData.FavouriteDataBean> list = new ArrayList<>();
 
-    private void getHomeData(String latitudeq, String longitudeq){
+    private void getHomeData(double latitudeq, double longitudeq){
         list = new ArrayList<>();
         Home data = new Home();
-        data.setLatitude(latitudeq);
-        data.setLongitude(longitudeq);
+        data.setLatitude(latitudeq+"");
+        data.setLongitude(longitudeq+"");
         data.setMin_miles(min_miles);
         data.setMax_miles(max_miles);
         data.setCountry("");
@@ -432,8 +437,8 @@ public class HomeFragment extends Fragment implements
 
         if(arr_cuisines_status != null && arr_cuisines_status.size() != 0) {
             arr_cuisines_status.set(0, "1");
+            cuisionAdatper.notifyDataSetChanged();
         }
-        cuisionAdatper.notifyDataSetChanged();
 
 
 //        if(!isFilterApplied) {
@@ -577,8 +582,8 @@ public class HomeFragment extends Fragment implements
                 //                filter_data(data.getFloatExtra("ratingvalue", 0),
 //                        data.getIntExtra("progressChangedValue", 0));
             } else if (requestCode==113){
-                latitudeq = data.getDoubleExtra("latitude",0)+"";
-                longitudeq = data.getDoubleExtra("longitude",0)+"";
+                latitudeq = data.getDoubleExtra("latitude",0);
+                longitudeq = data.getDoubleExtra("longitude",0);
                 txtCityName.setText(data.getStringExtra("name"));
                 Log.d(TAG, "onActivityResult: "+latitudeq+"\n"+longitudeq+"\n");
                 getHomeData(latitudeq, longitudeq);
@@ -897,6 +902,8 @@ public class HomeFragment extends Fragment implements
             layout_no_record_found.setVisibility(View.GONE);
             iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
             viewPager.setVisibility(View.VISIBLE);
+
+            tv_count_latest.setText("(" + cuisionChefList.size() + ")");
 //            setMyViewPager(cuisionChefList);
 
         } else {
