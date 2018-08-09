@@ -74,7 +74,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".activity.Sub.Foodie.ChefProfile"
-            android:windowSoftInputMode="adjustResize|adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -95,7 +95,8 @@
         <activity
             android:name=".activity.Sub.Chef.ChefEditProfile"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".activity.Sub.Chef.ChangePassword" />
+        <activity android:name=".activity.Sub.Chef.ChangePassword"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity android:name=".activity.Sub.Chef.ChefActivateDeactivate" />
         <activity android:name=".activity.Sub.Foodie.CuisineList" />
         <activity android:name=".activity.Sub.Foodie.Payment1Activity" />

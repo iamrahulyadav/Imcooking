@@ -1,9 +1,11 @@
 package com.imcooking.fragment.chef.chefprofile;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -129,28 +132,6 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
         };
     }
 
-    private void getCuisines(){
-        /*try {
-            String s = "";
-            JSONObject jsonObject = new JSONObject("{}");
-
-
-//            layout.setVisibility(View.GONE);
-            new GetData(getContext(), getActivity()).sendMyData(jsonObject, "cuisine",
-                    getActivity(), new GetData.MyCallback() {
-                        @Override
-                        public void onSuccess(String result) {
-//                            layout.setVisibility(View.VISIBLE);
-                            cuisineData = new Gson().fromJson(result, CuisineData.class);
-//                            cuisineList.addAll(cuisineData.getCuisine_data());
-
-                            setMyCuisines(cuisineData);
-                        }
-                    });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-    }
 
     private void setMyCuisines(CuisineData cuisines){
 
@@ -392,4 +373,10 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
             }
         });
     }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 }

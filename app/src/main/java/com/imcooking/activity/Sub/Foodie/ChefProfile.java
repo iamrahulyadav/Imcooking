@@ -36,7 +36,7 @@ public class ChefProfile extends AppBaseActivity {
         chefId = getIntent().getExtras().getString("chef_id");
         foodie_id = getIntent().getExtras().getString("foodie_id");
 
-       ChefHome fragment = new ChefHome();
+        ChefHome fragment = new ChefHome();
 
         Bundle args = new Bundle();
         args.putString("chef_id", chefId);
