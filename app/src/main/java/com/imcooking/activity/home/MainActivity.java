@@ -84,6 +84,7 @@ public class MainActivity extends AppBaseActivity
     TextView txtChefUserName, txtMobile;
     private TinyDB tinyDB;
     public static TextView tv_name, tv_phone;
+    public static double longitude, latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

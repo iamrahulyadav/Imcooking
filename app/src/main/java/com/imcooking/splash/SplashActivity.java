@@ -41,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
     private Scene scene0;
     LocationManager locManager;
     TinyDB tinyDB;
-    public static double longitude, latitude;
+    public double longitude, latitude;
     boolean network_enabled;
     Location location;
 
@@ -238,7 +238,5 @@ public class SplashActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED) {
             callGps();
         }
-
-
     }
 }

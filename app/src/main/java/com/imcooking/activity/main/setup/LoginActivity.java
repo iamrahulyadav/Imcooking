@@ -34,8 +34,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     private Dialog dialog;
     private EditText edt_passcode;
     private String user_id;
-    TinyDB tinyDB ;
-
+    private TinyDB tinyDB ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+
         tinyDB = new TinyDB(getApplicationContext());
 
 //        find id

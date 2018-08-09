@@ -422,11 +422,11 @@ public class EditProfile extends AppBaseActivity {
         String request = "{\"user_id\":" + str_id + ",\"image\":\"" + base64 + "\"}";
         try {
             JSONObject jsonObject = new JSONObject(request);
-            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.PROFILE_IMAGE, EditProfile.this, new GetData.MyCallback() {
+            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.PROFILE_IMAGE,
+                    EditProfile.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d("TAG", "Rakhi: "+result);
-
                 }
             });
         } catch (JSONException e) {

@@ -34,11 +34,6 @@
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".utils.AppBaseActivity" />
         <activity android:name=".activity.home.HomeSearchActivity1" />
@@ -113,7 +108,13 @@
         <activity android:name=".activity.Sub.Chef.SelectCuisines" />
         <activity android:name=".activity.Sub.Chef.Test1" />
         <activity android:name=".activity.Sub.Foodie.FilterActivity" />
-        <activity android:name=".activity.home.Main2Activity">
+        <activity android:name=".activity.home.Main2Activity"></activity>
+        <activity android:name=".splash.Splash1Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
     </application>
