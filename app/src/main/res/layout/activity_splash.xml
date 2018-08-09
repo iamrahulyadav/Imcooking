@@ -7,13 +7,6 @@
     android:background="#EEEEF0"
     android:orientation="vertical"
     tools:context="com.imcooking.splash.SplashActivity">
-    <com.imcooking.customtext.CustomTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt1"
-        android:visibility="gone"
-        android:textColor="@color/colorBlack"
-        android:padding="10dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

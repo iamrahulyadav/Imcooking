@@ -31,10 +31,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name=".splash.SplashActivity"
-            android:screenOrientation="portrait">
-        </activity>
         <activity android:name=".utils.AppBaseActivity" />
         <activity android:name=".activity.home.HomeSearchActivity1" />
         <activity
@@ -109,7 +105,7 @@
         <activity android:name=".activity.Sub.Chef.Test1" />
         <activity android:name=".activity.Sub.Foodie.FilterActivity" />
         <activity android:name=".activity.home.Main2Activity"></activity>
-        <activity android:name=".splash.Splash1Activity">
+        <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
