@@ -85,8 +85,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         init();
         startLocationButtonClick();
+
         // restore the values from saved instance state
         restoreValuesFromBundle(savedInstanceState);
     }
@@ -110,6 +112,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
+
     public void startLocationButtonClick() {
         // Requesting ACCESS_FINE_LOCATION using Dexter library
         Dexter.withActivity(this)
@@ -123,10 +126,13 @@ public class SplashActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
+                        finishAffinity();
+
                         if (response.isPermanentlyDenied()) {
                             // open device settings when the permission is
                             // denied permanently
-                            openSettings();
+                          //  openSettings();
+//                            Toast.makeText(SplashActivity.this, "denied", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -171,9 +177,7 @@ public class SplashActivity extends AppCompatActivity {
                 }, 3000);
             }
         }
-
     }
-
 
 
     @SuppressLint("RestrictedApi")
@@ -281,6 +285,7 @@ public class SplashActivity extends AppCompatActivity {
                     case Activity.RESULT_OK:
                         Log.e(TAG, "User agreed to make required location settings changes.");
                         // Nothing to do. startLocationupdates() gets called in onResume again.
+                        startLocationUpdates();
                         break;
                     case Activity.RESULT_CANCELED:
                         Log.e(TAG, "User chose not to make required location settings changes.");
@@ -310,10 +315,11 @@ public class SplashActivity extends AppCompatActivity {
         // Resuming location updates depending on button state and
         // allowed permissions
         if (mRequestingLocationUpdates && checkPermissions()) {
-            startLocationUpdates();
+//            startLocationUpdates();
         }
-
         updateLocationUI();
+
+
     }
 
     private boolean checkPermissions() {
