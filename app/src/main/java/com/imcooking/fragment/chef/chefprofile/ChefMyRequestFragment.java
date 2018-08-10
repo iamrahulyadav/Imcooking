@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -315,12 +316,22 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     }
 
     private void createChatDialog(){
-        Dialog dialog_chat = new Dialog(getContext());
+        final Dialog dialog_chat = new Dialog(getContext());
         dialog_chat.setContentView(R.layout.dialog_chef_chat);
         dialog_chat.setCancelable(true);
         dialog_chat.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog_chat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_chat.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        ImageView iv_send = dialog_chat.findViewById(R.id.dialog_chef_chat_send_icon);
+        iv_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseClass.showToast(getContext(), "Reply Sent");
+                dialog_chat.dismiss();
+            }
+        });
+
         dialog_chat.show();
     }
 

@@ -3,10 +3,10 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="7"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp"
             android:gravity="center_vertical">
@@ -77,20 +77,14 @@
             android:background="@color/view_6"/>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="3"
+            android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp">
 
-            <com.imcooking.customtext.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dish Request"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:layout_gravity="center_horizontal"/>
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -157,7 +151,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorWhite" >
+        android:background="@color/colorWhite"
+        android:layout_marginTop="5dp">
 
         <LinearLayout
             android:layout_width="0dp"

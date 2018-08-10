@@ -174,17 +174,26 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         rv.setAdapter(adatper);
     }
 
-    private void createOfferDialog(){
-        Dialog dialog_offer = new Dialog(getContext());
-        dialog_offer.setContentView(R.layout.dialog_offer_price);
-        dialog_offer.setCancelable(true);
-        dialog_offer.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        dialog_offer.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog_offer.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog_offer.show();
+    private void createChatDialog(){
+        final Dialog dialog_chat = new Dialog(getContext());
+        dialog_chat.setContentView(R.layout.dialog_chef_chat);
+        dialog_chat.setCancelable(true);
+        dialog_chat.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog_chat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_chat.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
+        ImageView iv_send = dialog_chat.findViewById(R.id.dialog_chef_chat_send_icon);
+        iv_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseClass.showToast(getContext(), "Reply Sent");
+                dialog_chat.dismiss();
+            }
+        });
+        dialog_chat.show();
     }
 
+/*
     @Override
     public void viewResponse(int position) {
         if(requestDishChefDetailsBeans.get(position).getConversation_details().size()>0) {
@@ -195,6 +204,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
             BaseClass.showToast(getContext(), "You haven't recieve any reply from the chef yet.");
         }
     }
+*/
 
     private DishReqChatAdatper dishReqChatAdatper;
 
@@ -362,4 +372,22 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         }
     }
 
+    @Override
+    public void method_AdapterFoodieMyRequest(int position, String tag) {
+
+        if(tag.equals("reply")){
+            BaseClass.showToast(getContext(), "Reply");
+            createChatDialog();
+        } else if(tag.equals("accept")){
+            BaseClass.showToast(getContext(), "Accepted");
+        } else if(tag.equals("decline")){
+            BaseClass.showToast(getContext(), "Declined");
+        } else if(tag.equals("cancel")){
+            BaseClass.showToast(getContext(), "Cancel");
+        } else {
+
+        }
+
+
+    }
 }
