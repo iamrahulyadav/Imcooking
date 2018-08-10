@@ -33,14 +33,14 @@
             android:layout_height="wrap_content"
             android:text="Default Search Miles"
             android:textColor="@color/text_color_10"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"/>
         <com.imcooking.customtext.CustomEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/foodie_settings_miles"
-            android:text="5"
+            android:text="10"
             android:inputType="number"
             android:textColor="@color/theme_color"
             android:textSize="14sp"

@@ -429,8 +429,9 @@ public class HomeFragment extends Fragment implements
 
         if(arr_cuisines_status != null && arr_cuisines_status.size() != 0) {
             arr_cuisines_status.set(0, "1");
+            cuisionAdatper.notifyDataSetChanged();
+
         }
-        cuisionAdatper.notifyDataSetChanged();
 
 
 //        if(!isFilterApplied) {
@@ -550,7 +551,7 @@ public class HomeFragment extends Fragment implements
             startActivityForResult(i, 113);
 
         } else if (v.getId()==R.id.fragment_home_search_img){
-            BaseClass.callFragment1(new SearchFragment(), new SearchFragment().getClass().getName()
+            BaseClass.callFragment1(new SearchFragment(), SearchFragment.class.getName()
                     , getFragmentManager());
         } else {}
     }
@@ -905,6 +906,7 @@ public class HomeFragment extends Fragment implements
 
         adapter.notifyDataSetChanged();
     }
+
     private void filterCuisine1(int position, String cuision){
         cuisionChefList = new ArrayList<>();
         for (HomeData.ChefDishBean  bean: homeData.getChef_dish()){
@@ -939,4 +941,5 @@ public class HomeFragment extends Fragment implements
         }
         adapter.notifyDataSetChanged();
     }
+
 }

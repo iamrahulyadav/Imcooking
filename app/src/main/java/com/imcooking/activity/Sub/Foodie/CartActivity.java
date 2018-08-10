@@ -277,8 +277,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             else {
                                                 txtfollowers.setText(apiResponse.getAdd_cart().getFollow()+" Follower");
                                             }
-
-                                            HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size() + "");
+                                            if (apiResponse.getAdd_cart().getAdd_dish()!=null &&
+                                                    apiResponse.getAdd_cart().getAdd_dish().size()>0)
+                                             HomeFragment.cart_icon.setText(apiResponse.getAdd_cart().getAdd_dish().size() + "");
                                             tinyDB.putString("cart_count", apiResponse.getAdd_cart().getAdd_dish().size() + "");
 
                                             txt_pick_add.setText(apiResponse.getAdd_cart().getChef_address());
@@ -631,9 +632,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         setAddList(recyclerView, addressBeanList);
     }
 
-    private CartAddListAdatper addListAdatper;
     private void setAddList(RecyclerView savedAddress,  List<AddressListData.AddressBean> addressBeanList){
-        addListAdatper = new CartAddListAdatper(getApplicationContext(), addressBeanList);
+        CartAddListAdatper addListAdatper = new CartAddListAdatper(getApplicationContext(), addressBeanList);
         savedAddress.setAdapter(addListAdatper);
         addListAdatper.AddInterfaceMethod(this);
     }
@@ -646,7 +646,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 +addressBeanList.get(position).getAddress_address());
 
         getLatLong(addressBeanList.get(position).getAddress_address());
-        Log.d(TAG, "AddressInterfaceMethod: "+latLng);
+
     }
 
     @Override

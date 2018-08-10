@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -92,7 +93,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private TextView tv_phoneno;
     private RatingBar ratingBar;
     private LinearLayout layout;
-
+    private FrameLayout cartFrameLayout;
     private String loginData, user_type; public static String chef_id;
     private TinyDB tinyDB;
     private ApiResponse.UserDataBean userDataBean;
@@ -143,7 +144,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
     private TextView tv_count;
     private void init() {
-
+        cartFrameLayout = getView().findViewById(R.id.fragment_chef_cart_icon_layout);
         tv_count  =  getView().findViewById(R.id.chef_home_cart_count);
 
         btn_call = getView().findViewById(R.id.chef_home_call_btn);
@@ -162,7 +163,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         btn_follow = getView().findViewById(R.id.chef_home_follow_button);
         btn_follow.setOnClickListener(this);
         btn_call.setOnClickListener(this);
-
+        txtFollowers.setOnClickListener(this);
         tv_phoneno = getView().findViewById(R.id.chef_home_phoneno);
         iv_settings = getView().findViewById(R.id.chef_home_settings);
         iv_settings.setOnClickListener(this);
@@ -248,6 +249,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                     if (chefProfileData1.getChef_data().getChef_phone()!=null){
                                         if(user_type.equals("1")) {
                                             MainActivity.tv_phone.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                            cartFrameLayout.setVisibility(View.GONE);
                                         }
                                         tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                     }
@@ -282,111 +284,13 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                         txtFollowers.setText(" 0 Follower");
                                     }
 
-     /*                               if(MainActivity.isProfile) {
-                                        TabLayout.Tab tab = tabLayout.getTabAt(1);
-                                        tab.select();
-                                    } else {
-
-                                        TabLayout.Tab tab = tabLayout.getTabAt(0);
-                                        tab.select();
-                                    }
-     */                           } else {
+                                   } else {
                                     BaseClass.showToast(getContext(), getResources().getString(R.string.error));
                                 }
                             }
                         }
                     });
                 }
-/*
-                if (result != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                JSONObject jsonObject1 = jsonObject.getJSONObject("chef_data");
-                                String s1 = jsonObject1.getString("cuisine_id");
-                                String s2 = jsonObject1.getString("cuisine_name");
-                                String s3 = jsonObject1.getString("bestcuisine_id");
-                                String s4 = jsonObject1.getString("bestcuisine_name");
-
-                                if (s1.equals("")) {
-                                    jsonObject1.put("cuisine_id", "0");
-                                }
-                                if (s2.equals("")) {
-                                    jsonObject1.put("cuisine_name", "abc");
-                                }
-                                if (s3.equals("")) {
-                                    jsonObject1.put("bestcuisine_id", "0");
-                                }
-                                if (s4.equals("")) {
-                                    jsonObject1.put("bestcuisine_name", "abc");
-                                }
-
-                                JSONArray jsonArray=jsonObject.getJSONArray("chef_dish");
-for(int i=0;i<jsonArray.length();i++){
-
-    if(jsonArray.getJSONObject(i).getString("").equals("null")){
-
-    }
-     if(jsonArray.getJSONObject(i).isNull("dish_image")){
-
-     }
-}
-
-                                //  Toast.makeText(getActivity(),jsonObject1.getString("cuisine_id")+".."+jsonObject1.getString("cuisine_name"),Toast.LENGTH_SHORT).show();
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-
-                            }
-                            try {
-                                Gson gson = new GsonBuilder().serializeNulls().create();
-                                chefProfileData = gson.fromJson(result, ChefProfileData.class);
-
-
-                            } catch (JsonSyntaxException e) {
-                                Log.d("MyException", e.toString());
-                            } catch (NumberFormatException e) {
-                                Log.d("MyException", e.toString());
-                            }
-
-                            Log.d("MyCheck", new Gson().toJson(chefProfileData));
-
-                            if (chefProfileData != null) {
-                                if (chefProfileData.isStatus()) {
-                                    layout.setVisibility(View.VISIBLE);
-                                    txtAddress.setText(chefProfileData.getChef_data().getAddress());
-                                    txtName.setText(chefProfileData.getChef_data().getChef_name());
-                                    tv_phoneno.setText(chefProfileData.getChef_data().getChef_phone() + "");
-                                    Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData
-                                            .getChef_data().getChef_image())
-//                                .placeholder( R.drawable.progress_animation )
-                                            .into(imgChef);
-                                    if (chefProfileData.getChef_data().getFollow() == 1) {
-                                        txtFollowers.setText(chefProfileData.getChef_data().getFollow() + " Follower");
-                                    } else if (chefProfileData.getChef_data().getFollow() > 1) {
-                                        txtFollowers.setText(chefProfileData.getChef_data().getFollow() + " Followers");
-                                    } else {
-                                    }
-                                    viewPager = getView().findViewById(R.id.chef_home_viewpager);
-                                    setupViewPager(viewPager);
-
-                                    tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
-                                    tabLayout.setupWithViewPager(viewPager);
-                                } else {
-                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
-                                }
-                            } else {
-                                BaseClass.showToast(getContext(), "Something Went Wrong");
-                            }
-
-                        }
-                    });
-                }
-*/
             }
         });
     }
@@ -531,11 +435,11 @@ for(int i=0;i<jsonArray.length();i++){
             ((MainActivity) getActivity()).tv_notification.setTextColor(getResources().getColor(R.color.text_color_10));
             ((MainActivity) getActivity()).iv_notification.setImageResource(R.drawable.ic_ring);
 
-
-        } else {
+        }
+        else {
             String cart_count = tinyDB.getString("cart_count");
             tv_count.setText(cart_count);
-
+          //  cartFrameLayout.setVisibility(View.GONE);
         }
 
         getchefProfile();
@@ -650,6 +554,8 @@ for(int i=0;i<jsonArray.length();i++){
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNo, null));
                 startActivity(intent);
             }
+        } else if (id == R.id.activity_chef_txtFollower){
+            BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
         }
     }
 

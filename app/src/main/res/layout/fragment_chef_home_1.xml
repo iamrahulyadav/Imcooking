@@ -60,6 +60,7 @@
                                     android:src="@drawable/ic_settings_white"
                                     android:visibility="visible" />
                                 <FrameLayout
+                                    android:id="@+id/fragment_chef_cart_icon_layout"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:clipToPadding="false"
@@ -88,9 +89,6 @@
                                         android:textColor="@android:color/white"
                                         android:text="0"
                                         android:textSize="8sp"/>
-
-
-
                                 </FrameLayout>
 
                                 <ImageView
