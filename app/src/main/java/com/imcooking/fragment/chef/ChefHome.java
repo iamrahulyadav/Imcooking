@@ -693,6 +693,7 @@ for(int i=0;i<jsonArray.length();i++){
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setContentView(view);
         return popupWindow;
+
     }
 
     @Override

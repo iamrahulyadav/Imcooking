@@ -145,6 +145,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         } else {
             Toast.makeText(mContext, "Location not supported in this device", Toast.LENGTH_SHORT).show();
         }
+
        autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
         autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
         autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
