@@ -103,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dish Request"
+                android:visibility="gone"
                 android:textSize="9sp"
                 android:textColor="@color/theme_color"
                 android:layout_gravity="center_horizontal"/>
@@ -137,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp">
+
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -154,26 +156,9 @@
                     android:padding="3dp"/>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
 
                 <com.imcooking.customtext.CustomTextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp"
-                    android:text="Note"
-                    android:visibility="gone"
-                    android:textSize="9sp"
-                    android:textColor="@color/colorWhite"
-                    android:gravity="center"
-                    android:id="@+id/item_chef_my_request_reply"
-                    android:background="@drawable/shape_background_theme"/>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:text="View"
                     android:id="@+id/item_foodie_my_requests_view_response"
@@ -183,7 +168,18 @@
                     android:background="@drawable/shape_background_view_6"
                     android:layout_marginLeft="5dp"/>
 
-            </LinearLayout>
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Cancel"
+                android:id="@+id/item_foodie_my_requests_cancel"
+                android:textSize="9sp"
+                android:textColor="@color/text_color_13"
+                android:gravity="center"
+                android:background="@drawable/shape_background_view_6"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp" />
 
         </LinearLayout>
 

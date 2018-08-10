@@ -42,11 +42,12 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public TextView txt_reply, txtTime, txtAddress,txtTotalAmnt,txtEmail,
-                txtCategory,txt_view,txtPhone, txtfoodiename,txtdishname,txtqty;
+                txtCategory,/*txt_view,*/txtPhone, txtfoodiename,txtdishname,txtqty, tv_offer;
         public ImageView img;
 
         public MyViewHolder(View view) {
             super(view);
+
             txtEmail=view.findViewById(R.id.item_chef_my_request_email);
             txtCategory =view.findViewById(R.id.item_chef_my_request_food_category);
             txtTime =view.findViewById(R.id.item_chef_my_request_time);
@@ -58,21 +59,33 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             img=view.findViewById(R.id.item_chef_my_request_profile_img);
             txtPhone = view.findViewById(R.id.item_chef_my_request_phone);
             txt_reply = view.findViewById(R.id.item_chef_my_request_reply);
-            txt_view = view.findViewById(R.id.item_chef_my_request_view);
+            tv_offer = view.findViewById(R.id.item_chef_my_request_offer);
+//            tv_message = view.findViewById(R.id.item_chef_my_request_message);
+//            txt_view = view.findViewById(R.id.item_chef_my_request_view);
 
             txt_reply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    chefMyrequestInterface.setresponse(getAdapterPosition(), "reply");
+                    chefMyrequestInterface.setresponse(getAdapterPosition(), "chat");
                 }
             });
 
+            tv_offer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    chefMyrequestInterface.setresponse(getAdapterPosition(), "offer");
+                }
+            });
+
+
+/*
             txt_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     chefMyrequestInterface.setresponse(getAdapterPosition(), "view");
                 }
             });
+*/
             }
     }
 

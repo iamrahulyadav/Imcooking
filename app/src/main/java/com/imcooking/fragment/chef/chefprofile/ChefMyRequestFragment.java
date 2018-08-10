@@ -47,7 +47,6 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     private List<ChefDishRequestData.ChefDishDetailsBean>chefDishDetailsBeans;
     private String sender_id, receiver_id, request_id, msg="",status, offer_price="";
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -297,9 +296,32 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
             request_id = chefDishDetailsBeans.get(pos).getRequest_id();
             showDialog(pos,receiver_id,request_id);
-        } else if (TAG.equals("view")){
-            receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
-        }
+        } else if (TAG.equals("offer")){
+            createOfferDialog();
+        } else if(TAG.equals("chat")){
+            createChatDialog();
+        } else {}
+    }
+
+    private void createOfferDialog(){
+        Dialog dialog_offer = new Dialog(getContext());
+        dialog_offer.setContentView(R.layout.dialog_offer_price);
+        dialog_offer.setCancelable(true);
+        dialog_offer.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog_offer.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_offer.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog_offer.show();
+
+    }
+
+    private void createChatDialog(){
+        Dialog dialog_chat = new Dialog(getContext());
+        dialog_chat.setContentView(R.layout.dialog_chef_chat);
+        dialog_chat.setCancelable(true);
+        dialog_chat.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog_chat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_chat.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog_chat.show();
     }
 
     private void sendreply(String receiver_id,String request_id){

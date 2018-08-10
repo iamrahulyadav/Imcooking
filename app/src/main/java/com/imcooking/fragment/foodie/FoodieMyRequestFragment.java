@@ -174,6 +174,17 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         rv.setAdapter(adatper);
     }
 
+    private void createOfferDialog(){
+        Dialog dialog_offer = new Dialog(getContext());
+        dialog_offer.setContentView(R.layout.dialog_offer_price);
+        dialog_offer.setCancelable(true);
+        dialog_offer.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog_offer.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_offer.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog_offer.show();
+
+    }
+
     @Override
     public void viewResponse(int position) {
         if(requestDishChefDetailsBeans.get(position).getConversation_details().size()>0) {
@@ -185,7 +196,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         }
     }
 
-    private   DishReqChatAdatper dishReqChatAdatper;
+    private DishReqChatAdatper dishReqChatAdatper;
 
     private void showDialog(final int position){
         TextView txtMsg, txtDesc, txt_accept,txtOfferPrice, txt_decline, txt_reply;
