@@ -141,14 +141,6 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <com.imcooking.customtext.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dish Request"
-                android:visibility="gone"
-                android:textSize="9sp"
-                android:textColor="@color/theme_color"
-                android:layout_gravity="center_horizontal"/>
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

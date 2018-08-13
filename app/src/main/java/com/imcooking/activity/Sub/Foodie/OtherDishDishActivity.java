@@ -22,8 +22,11 @@ import com.imcooking.Model.api.response.OtherDish;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.OtherDishAdatper;
+import com.imcooking.fragment.foodie.FoodieMyOrderFragment;
+import com.imcooking.fragment.foodie.FoodieMyRequestFragment;
 import com.imcooking.fragment.foodie.HomeDetails;
 import com.imcooking.fragment.foodie.HomeFragment;
+import com.imcooking.fragment.foodie.SearchFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
@@ -207,7 +210,10 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
     public void OtherDishInterfaceMethod(View view, int position, String TAG) {
         if (TAG.equalsIgnoreCase("name_detail")){
             if(MainActivity.my_tag.equals(new HomeFragment().getClass().getName()) ||
-                    MainActivity.my_tag.equals(new HomeDetails().getClass().getName())) {
+                    MainActivity.my_tag.equals(new HomeDetails().getClass().getName()) ||
+                    MainActivity.my_tag.equals(new FoodieMyRequestFragment().getClass().getName()) ||
+                    MainActivity.my_tag.equals(new FoodieMyOrderFragment().getClass().getName()) ||
+                    MainActivity.my_tag.equals(new SearchFragment().getClass().getName())) {
 
                 HomeDetails fragment = new HomeDetails();
                 Bundle bundle = new Bundle();

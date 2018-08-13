@@ -169,9 +169,11 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         }
     }
 
+    private AdapterFoodieMyRequest adatperFoodieMyRequest;
+
     private void setMyAdapter(List<FoodieMyRequest.FoodieRequestDishChefDetailsBean> list ){
-        AdapterFoodieMyRequest adatper = new AdapterFoodieMyRequest(getContext(),list, this);
-        rv.setAdapter(adatper);
+        adatperFoodieMyRequest = new AdapterFoodieMyRequest(getContext(),list, this);
+        rv.setAdapter(adatperFoodieMyRequest);
     }
 
     private void createChatDialog(){
@@ -381,13 +383,48 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         } else if(tag.equals("accept")){
             BaseClass.showToast(getContext(), "Accepted");
         } else if(tag.equals("decline")){
-            BaseClass.showToast(getContext(), "Declined");
+            cancel_request(position);
         } else if(tag.equals("cancel")){
-            BaseClass.showToast(getContext(), "Cancel");
+            cancel_request(position);
         } else {
 
         }
+    }
 
+    private void cancel_request(final int position){
 
+        String s = "{\"request_id\":\"" + requestDishChefDetailsBeans.get(position).getRequest_id() + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.FOODIE_DECLINE, getActivity(),
+                    new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            ApiResponse apiResponse = new ApiResponse();
+                            apiResponse = new Gson().fromJson(result, ApiResponse.class);
+
+                            if(apiResponse.isStatus()){
+                                if(apiResponse.getMsg().equals("Delete successfully")){
+                                    BaseClass.showToast(getContext(), "Request has been removed successfully");
+                                    requestDishChefDetailsBeans.remove(position);
+                                    adatperFoodieMyRequest.notifyDataSetChanged();
+
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                }
+                            } else {
+                                if(apiResponse.getMsg().equals("not fount this request")){
+                                    BaseClass.showToast(getContext(), "Request Not Found.");
+                                } else{
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                }
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

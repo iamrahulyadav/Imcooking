@@ -18,6 +18,7 @@
     <com.imcooking.customtext.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/dialog_offer_price_edt"
         android:hint="Price in (£)"
         android:imeOptions="actionDone"
         android:inputType="number"
@@ -30,7 +31,8 @@
     <com.imcooking.customtext.CustomTextView
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="SEND"
+        android:id="@+id/dialog_offer_price_btn"
+        android:text="SEND OFFER"
         android:textColor="@color/colorWhite"
         android:textSize="14sp"
         android:background="@drawable/shape_background_theme_2"

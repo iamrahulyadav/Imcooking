@@ -62,7 +62,16 @@ public class FoodieMyRequest {
         private String request_dishname;
         private String request_note;
         private String request_quantity;
+        private String offered_price;
         private List<ConversationDetailsBean> conversation_details;
+
+        public String getOffered_price() {
+            return offered_price;
+        }
+
+        public void setOffered_price(String offered_price) {
+            this.offered_price = offered_price;
+        }
 
         public String getRequest_quantity() {
             return request_quantity;

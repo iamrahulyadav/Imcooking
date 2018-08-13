@@ -85,6 +85,9 @@ public class GetData {
     public static String CHECK_FOODIE_DISTANCE = "check_chef_foodie_distance";
     public static String SETTINGS = "setting_notification";
     public static String PAYMENT_DETAILS_LIST = "payment_deatils_list";
+    public static String CHEF_DECLINE = "checf_decline";
+    public static String CHEF_OFFER_PRICE = "checf_offer_price";
+    public static String FOODIE_DECLINE = "foodie_decline";
 
 
     public GetData(final Context context, Activity activity) {
@@ -148,6 +151,8 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
 
     public String sendMyData(JSONObject jsonObject, String url, final Activity activity, final MyCallback callback){
         if(BaseClass.isNetworkConnected(context)) {
+
+            Log.d("MyRequest", jsonObject.toString());
 
             final ProgressDialog progressDialog = new ProgressDialog(activity);
             progressDialog.setCanceledOnTouchOutside(false);

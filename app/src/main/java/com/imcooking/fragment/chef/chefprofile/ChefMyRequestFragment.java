@@ -131,14 +131,14 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                     });
 
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private AdatperChefMyRequestList chefMyRequestsAdatper;
     private void setDishAdapter(List<ChefDishRequestData.ChefDishDetailsBean> list) {
-        AdatperChefMyRequestList chefMyRequestsAdatper = new AdatperChefMyRequestList(getContext(),list, this);
+        chefMyRequestsAdatper = new AdatperChefMyRequestList(getContext(),list, this);
         requestRecyclerView.setAdapter(chefMyRequestsAdatper);
 
     }
@@ -298,21 +298,121 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             request_id = chefDishDetailsBeans.get(pos).getRequest_id();
             showDialog(pos,receiver_id,request_id);
         } else if (TAG.equals("offer")){
-            createOfferDialog();
+            createOfferDialog(pos);
         } else if(TAG.equals("chat")){
             createChatDialog();
+        } else if (TAG.equals("decline")){
+            decline_request(chefDishDetailsBeans.get(pos).getRequest_id() + "", pos);
+//            BaseClass.showToast(getContext(), "Declined");
         } else {}
     }
 
-    private void createOfferDialog(){
-        Dialog dialog_offer = new Dialog(getContext());
+    private void decline_request(String req_id, final int pos){
+
+        String s = "{\"request_id\":\"" + req_id + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            new GetData(getContext(), getActivity()).sendMyData(
+                    jsonObject, GetData.CHEF_DECLINE, getActivity(), new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            ApiResponse apiResponse = new ApiResponse();
+                            apiResponse = new Gson().fromJson(result, ApiResponse.class);
+
+                            if(apiResponse.isStatus()){
+                                if(apiResponse.getMsg().equals("decline successfully")){
+                                    BaseClass.showToast(getContext(), "Request has been declined successfully and removed from your list.");
+                                    chefDishDetailsBeans.remove(pos);
+                                    chefMyRequestsAdatper.notifyDataSetChanged();
+
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong");
+                                }
+                            } else{
+                                if(apiResponse.getMsg().equals("decline record found")){
+                                    BaseClass.showToast(getContext(), "Request Not Found.");
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong");
+                                }
+                            }
+                        }
+                    }
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private EditText dialog_offer_price_edt;
+    private Dialog dialog_offer;
+
+    private void createOfferDialog(final int pos){
+        dialog_offer = new Dialog(getContext());
         dialog_offer.setContentView(R.layout.dialog_offer_price);
         dialog_offer.setCancelable(true);
         dialog_offer.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog_offer.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_offer.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        TextView tv_send_offer = dialog_offer.findViewById(R.id.dialog_offer_price_btn);
+        dialog_offer_price_edt = dialog_offer.findViewById(R.id.dialog_offer_price_edt);
+
+        tv_send_offer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                send_offer(pos);
+
+            }
+        });
         dialog_offer.show();
 
+    }
+
+    private void send_offer(final int pos){
+        if (!dialog_offer_price_edt.getText().toString().isEmpty()) {
+            final String edt = dialog_offer_price_edt.getText().toString().trim();
+            if(!edt.contains("£")){
+                String s = "{\"request_id\":\"" + chefDishDetailsBeans.get(pos).getRequest_id() + "\"," +
+                        "\"offer_price\":\"" + edt + "\",\"key\":\"1\"}";
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+
+                    new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.CHEF_OFFER_PRICE,
+                            getActivity(),
+                            new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            ApiResponse apiResponse = new ApiResponse();
+                            apiResponse = new Gson().fromJson(result, ApiResponse.class);
+
+                            if(apiResponse.isStatus()){
+                                if(apiResponse.getMsg().equals("offer price update successfully")){
+
+                                    BaseClass.showToast(getContext(), "Offer has been sent successfully.");
+
+                                    chefDishDetailsBeans.get(pos).setRequest_price(edt);
+                                    chefDishDetailsBeans.get(pos).setChef_response("1");
+                                    chefMyRequestsAdatper.notifyDataSetChanged();
+                                } else{
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                }
+                            } else{
+                                BaseClass.showToast(getContext(), "Something Went Wrong.");
+                            }
+                        }
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else{
+                BaseClass.showToast(getContext(), "Prize should be a number.");
+            }
+        } else{
+            BaseClass.showToast(getContext(), "Please Enter a Offer Price");
+        }
     }
 
     private void createChatDialog(){
@@ -363,7 +463,5 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             e.printStackTrace();
         }
     }
-
-
 }
 

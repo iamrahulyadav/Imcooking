@@ -45,6 +45,7 @@ public class ChefDishRequestData {
          * conversation_details : [{"conversation_sender_id":103,"conversation_request_id":2,"conversation_reciver_id":104,"conversation_message":"asdhsjf hiii","conversation_offer_price":"220.00","conversation_staus":"1","conversation_date":"06/21/2018 07:28:47 am"}]
          */
 
+        private String request_id;
         private int foodie_id;
         private String foodie_name;
         private String foodie_email;
@@ -54,7 +55,25 @@ public class ChefDishRequestData {
         private String request_date;
         private String request_quantity;
         private String request_cusine_name;
-        private String request_id;
+        private String chef_response;
+        private String request_price;
+
+        public String getRequest_price() {
+            return request_price;
+        }
+
+        public void setRequest_price(String request_price) {
+            this.request_price = request_price;
+        }
+
+        public String getChef_response() {
+            return chef_response;
+        }
+
+        public void setChef_response(String chef_response) {
+            this.chef_response = chef_response;
+        }
+
         private List<ConversationDetailsBean> conversation_details;
 
         public String getRequest_id() {

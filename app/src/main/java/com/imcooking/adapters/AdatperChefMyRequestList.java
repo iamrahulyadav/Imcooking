@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.imcooking.Model.api.response.ChefDishRequestData;
-import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
-import com.imcooking.webservices.GetData;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +40,10 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public TextView txt_reply, txtTime, txtAddress,txtTotalAmnt,txtEmail,
-                txtCategory,/*txt_view,*/txtPhone, txtfoodiename,txtdishname,txtqty, tv_offer;
+                txtCategory,/*txt_view,*/txtPhone, txtfoodiename,txtdishname,txtqty, tv_offer, tv_decline;
         public ImageView img;
+        public LinearLayout layout_decline_offer, layout_offered_price;
+        public TextView tv_offered_price;
 
         public MyViewHolder(View view) {
             super(view);
@@ -60,6 +60,11 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             txtPhone = view.findViewById(R.id.item_chef_my_request_phone);
             txt_reply = view.findViewById(R.id.item_chef_my_request_reply);
             tv_offer = view.findViewById(R.id.item_chef_my_request_offer);
+            tv_decline = view.findViewById(R.id.item_chef_my_request_decline);
+            layout_decline_offer = view.findViewById(R.id.item_chef_my_request_layout_decline_offer);
+            layout_offered_price = view.findViewById(R.id.item_chef_my_request_layout_offer_price);
+            tv_offered_price = view.findViewById(R.id.item_chef_my_request_offered_price);
+
 //            tv_message = view.findViewById(R.id.item_chef_my_request_message);
 //            txt_view = view.findViewById(R.id.item_chef_my_request_view);
 
@@ -74,6 +79,13 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
                 @Override
                 public void onClick(View view) {
                     chefMyrequestInterface.setresponse(getAdapterPosition(), "offer");
+                }
+            });
+
+            tv_decline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    chefMyrequestInterface.setresponse(getAdapterPosition(), "decline");
                 }
             });
 
@@ -101,6 +113,25 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
+        if(list.get(position).getChef_response()!=null) {
+            if (list.get(position).getChef_response().equals("1")) {
+//                holder.tv_decline.setVisibility(View.GONE);
+//                holder.tv_offer.setVisibility(View.GONE);
+                holder.layout_decline_offer.setVisibility(View.GONE);
+                holder.layout_offered_price.setVisibility(View.VISIBLE);
+                holder.tv_offered_price.setText("Price Offered:- £" + list.get(position).getRequest_price());
+
+            } else if (list.get(position).getChef_response().equals("0")) {
+//                holder.tv_decline.setVisibility(View.VISIBLE);
+//                holder.tv_offer.setVisibility(View.VISIBLE);
+                holder.layout_decline_offer.setVisibility(View.VISIBLE);
+                holder.layout_offered_price.setVisibility(View.GONE);
+            } else {
+            }
+        }
+
+
 
         holder.txtTime.setText(list.get(position).getRequest_date());
         holder.txtAddress.setText(list.get(position).getFoodie_address()+"");

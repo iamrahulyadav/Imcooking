@@ -116,22 +116,40 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
         if(list.get(position).getChef_response()!=null) {
             if (list.get(position).getChef_response().equals("0")){
                 holder.txt_status.setText("New Request");
+                holder.txt_status.setTextColor(context.getResources().getColor(R.color.theme_color));
                 holder.layout_cancel.setVisibility(View.VISIBLE);
+                holder.tv_cancel.setText("Cancel Request");
                 holder.layout_accept_decline.setVisibility(View.GONE);
                 holder.tv_reply.setVisibility(View.GONE);
                 holder.tv_offered_price.setVisibility(View.GONE);
             } else if (list.get(position).getChef_response().equals("1")){
                 holder.txt_status.setText("Accepted");
+                holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
                 holder.layout_cancel.setVisibility(View.GONE);
                 holder.layout_accept_decline.setVisibility(View.VISIBLE);
+                holder.tv_accept.setText("Accept Offer");
+                holder.tv_declie.setText("Decline Offer");
                 holder.tv_reply.setVisibility(View.VISIBLE);
                 holder.tv_offered_price.setVisibility(View.VISIBLE);
+                if(list.get(position).getOffered_price()!=null){
+                    holder.tv_offered_price.setText("Price Offered:- £" + list.get(position).getOffered_price());
+                }
             } else if(list.get(position).getChef_response().equals("2")) {
                 holder.txt_status.setText("Declined");
+                holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorRed));
                 holder.layout_cancel.setVisibility(View.VISIBLE);
+                holder.tv_cancel.setText("Delete Request");
                 holder.layout_accept_decline.setVisibility(View.GONE);
                 holder.tv_reply.setVisibility(View.GONE);
                 holder.tv_offered_price.setVisibility(View.GONE);
+            }
+        }
+
+        if(list.get(position).getConversation_details()!=null){
+            if(list.get(position).getConversation_details().size()>0){
+                holder.tv_reply.setVisibility(View.VISIBLE);
+            } else{
+                holder.tv_reply.setVisibility(View.GONE);
             }
         }
 
