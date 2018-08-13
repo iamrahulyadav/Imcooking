@@ -78,6 +78,24 @@ public class ApiResponse {
         private Object full_name;
         private String user_email;
         private String user_phone;
+        private String user_notification;
+        private String user_milesdistance;
+
+        public String getUser_notification() {
+            return user_notification;
+        }
+
+        public void setUser_notification(String user_notification) {
+            this.user_notification = user_notification;
+        }
+
+        public String getUser_milesdistance() {
+            return user_milesdistance;
+        }
+
+        public void setUser_milesdistance(String user_milesdistance) {
+            this.user_milesdistance = user_milesdistance;
+        }
 
         public int getUser_id() {
             return user_id;

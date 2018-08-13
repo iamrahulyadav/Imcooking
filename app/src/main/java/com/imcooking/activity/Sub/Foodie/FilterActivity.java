@@ -1,6 +1,8 @@
 package com.imcooking.activity.Sub.Foodie;
 
 import android.content.Intent;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRatingBar;
@@ -40,15 +42,23 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
         checkBox_pickup = findViewById(R.id.filter_check_pickup);
         seekBar = findViewById(R.id.filter_seekbar);
 
+        ShapeDrawable thumb = new ShapeDrawable( new RectShape() );
+        thumb.getPaint().setColor(getResources().getColor(R.color.theme_color));
+        thumb.setIntrinsicHeight( 80 );
+        thumb.setIntrinsicWidth( 200 );
+        seekBar.setThumb( thumb );
+
+        seekBar.setMax(490);
+
         seekBar.setOnSeekBarChangeListener(this);
         checkBox_home.setOnCheckedChangeListener(this);
         checkBox_pickup.setOnCheckedChangeListener(this);
     }
 
     public void filter_apply(View view){
-        if(str_check_home.equals("0") && str_check_pickup.equals("0")){
+        /*if(str_check_home.equals("0") && str_check_pickup.equals("0")){
             BaseClass.showToast(getApplicationContext(), "Please Select either \"Home Delivery\" or \"Pick-up\" or both.");
-        } else {
+        } else {*/
             str_ratings = ratingBar.getRating() + "";
 
             Intent intent = new Intent();
@@ -59,7 +69,7 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
             intent.putExtra("check_pickup", str_check_pickup);
             setResult(0143, intent);
             finish();
-        }
+//        }
     }
 
     public void filter_reset(View view){
@@ -79,11 +89,11 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
             tv_seekbar_text.setText("0");
         } else {
             if (i >= 20) {
-                tv_seekbar_text.setText("$" + (i - 10) + " To " + "$" + (i + 10));
+                tv_seekbar_text.setText("£" + (i - 10) + " To " + "£" + (i + 10));
                 str_min_price = (i - 10) + "";
                 str_max_price = (i + 10) + "";
             } else {
-                tv_seekbar_text.setText("$" + "0" + " To " + "$" + "20");
+                tv_seekbar_text.setText("£" + "0" + " To " + "£" + "20");
                 str_min_price = "0";
                 str_max_price = "20";
             }

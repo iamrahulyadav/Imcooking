@@ -7,10 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -18,6 +21,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.FoodieMyorderList;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefOrderDetailsActivity;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterFoodieMyOrderList;
 import com.imcooking.utils.BaseClass;
@@ -45,6 +49,8 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView;
     private TextView txtShop, txtDayTime;
+    private RelativeLayout currentLayout;
+
     public FoodieMyOrderFragment() {
         // Required empty public constructor
     }
@@ -65,8 +71,34 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
     }
 
     private RecyclerView rv_1, rv_2;
+    private String current_time;
+
+    private ImageView iv_cart;
+    private TextView tv_count;
 
     private void init(){
+
+        tinyDB = new TinyDB(getContext());
+
+        String login = tinyDB.getString("login_data");
+        ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
+        apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
+        final String user_id = apiResponse.getUser_id()+"";
+
+        tv_count = getView().findViewById(R.id.fragment_my_order_cart_count);
+
+
+        iv_cart = getView().findViewById(R.id.fragment_my_order_img_cart);
+        iv_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                        user_id));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
+        currentLayout = getView().findViewById(R.id.fragment_chef_order_txt_current);
         nestedScrollView = getView().findViewById(R.id.foodie_order_list);
         rv_1 = getView().findViewById(R.id.recycler_foodie_my_orders_current);
         no_record_Layout = getView().findViewById(R.id.fragment_my_order_foodie_no_record_image);
@@ -74,6 +106,10 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         txtDayTime = getView().findViewById(R.id.fragment_my_order_current_time);
         Date currentTime = Calendar.getInstance().getTime();
         txtDayTime.setText(new SimpleDateFormat("EEEE . HH:mm aa").format(currentTime));
+
+        Log.d("CurrentTime", new SimpleDateFormat("HH:mm aa").format(currentTime));
+
+//        current_time = new SimpleDateFormat("HH:mm aa").format(currentTime);
 
         CustomLayoutManager manager = new CustomLayoutManager(getContext()){
             @Override
@@ -92,7 +128,6 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
             }
         };
         rv_2.setLayoutManager(manager1);
-        tinyDB=new TinyDB(getContext());
 
         txtShop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,17 +163,11 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                     String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 
                     FoodieMyorderList foodieMyorder = new FoodieMyorderList();
-                    if (visibilityArray!=null){
-                        visibilityArray.clear();
-                    }
-
                     foodieMyorder = new Gson().fromJson(result, FoodieMyorderList.class);
 
                     if(foodieMyorder.isStatus()){
                         if(!foodieMyorder.getFoodie_order_list().isEmpty()){
-                            for (int i=0;i<foodieMyorder.getFoodie_order_list().size();i++){
-                                visibilityArray.add(false);
-                            }
+
                             nestedScrollView.setVisibility(View.VISIBLE);
                             no_record_Layout.setVisibility(View.GONE);
                             currentOrderListBeans = new ArrayList<>();
@@ -191,15 +220,21 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
             e.printStackTrace();
         }
     }
-    AdapterFoodieMyOrderList adapterFoodieMyOrder, adapterFoodieMyOrder1;
+
+    private AdapterFoodieMyOrderList adapterFoodieMyOrder, adapterFoodieMyOrder1;
+
     private void setMyAdapter(List<FoodieMyorderList.FoodieOrderListBean> currentOrderListBeans,
                               List<FoodieMyorderList.FoodieOrderListBean> arrayList){
-       adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),
-                getFragmentManager(), currentOrderListBeans, this, "current");
-        rv_1.setAdapter(adapterFoodieMyOrder);
+        if (currentOrderListBeans.size()>0){
+            adapterFoodieMyOrder = new AdapterFoodieMyOrderList(getContext(),
+                    getFragmentManager(), currentOrderListBeans, this, "current");
+            rv_1.setAdapter(adapterFoodieMyOrder);
+            currentLayout.setVisibility(View.VISIBLE);
+        } else currentLayout.setVisibility(View.GONE);
+
         adapterFoodieMyOrder1 = new AdapterFoodieMyOrderList(getContext(),
                 getFragmentManager(), arrayList, this,  "previous");
-        rv_1.setAdapter(adapterFoodieMyOrder);
+
         rv_2.setAdapter(adapterFoodieMyOrder1);
     }
 
@@ -210,14 +245,14 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
         ((MainActivity) getActivity()).tv_my_order.setTextColor(getResources().getColor(R.color.theme_color));
         ((MainActivity) getActivity()).iv_my_order.setImageResource(R.drawable.ic_salad_1);
 
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
     }
 
-    private ArrayList<Boolean>visibilityArray = new ArrayList<>();
 
     @Override
     public void getDetails(int position, String TAG) {
-       /* if (visibilityArray.get(position)) visibilityArray.set(position,false);
-        else visibilityArray.set(position, true);*/
        if (TAG.equals("current")){
            startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class)
                    .putExtra("order_id",currentOrderListBeans.get(position).getOrder_order_id()));

@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -66,6 +67,7 @@ public class EditProfile extends AppBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_edit_profile);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -138,20 +140,13 @@ public class EditProfile extends AppBaseActivity {
     protected void onResume() {
         super.onResume();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-         }
+
     }
     JSONObject jsonObject;
 
@@ -171,7 +166,7 @@ public class EditProfile extends AppBaseActivity {
                 try {
                     jsonData = new JSONObject(s);
 
-                        new GetData(getApplicationContext()).sendMyData(jsonData, "foodieprofileedit",
+                        new GetData(getApplicationContext()).sendMyData(jsonData, GetData.FOODIE_PROFILE_EDIT,
                             EditProfile.this, new GetData.MyCallback() {
                                 @Override
                                 public void onSuccess(String result) {
@@ -221,6 +216,7 @@ public class EditProfile extends AppBaseActivity {
     }
 
     public void change_dp(View view){
+
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(),
@@ -229,7 +225,7 @@ public class EditProfile extends AppBaseActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(EditProfile.this,
                     new String[]{Manifest.permission.CAMERA,
-                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                            Manifest.permission.READ_EXTERNAL_STORAGE,  Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_CAMERA);
         } else {
             Log.e("DB", "PERMISSION GRANTED");
@@ -253,9 +249,6 @@ public class EditProfile extends AppBaseActivity {
 
                 // CALL THIS METHOD TO GET THE ACTUAL PATH
                 File finalFile = new File(getRealPathFromURI(tempUri));
-
-                System.out.println(finalFile + "");
-
                 String filePath = finalFile + "";
                 Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
 
@@ -272,39 +265,42 @@ public class EditProfile extends AppBaseActivity {
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        if (data.hasExtra("data")){
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
+            File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");
 
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileOutputStream fo;
+            try {
+                destination.createNewFile();
+                fo = new FileOutputStream(destination);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bitmap = thumbnail;
+
+            Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            File finalFile = new File(getRealPathFromURI(tempUri));
+
+            System.out.println(finalFile + "");
+
+            String filePath = finalFile + "";
+            Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
+
+            bitmapString = BaseClass.BitMapToString(bitmap);
+            imgProfile.setImageBitmap(bitmap) ;
+            uploadProfile(bitmapString);
+
         }
-        bitmap = thumbnail;
-
-        Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-
-        // CALL THIS METHOD TO GET THE ACTUAL PATH
-        File finalFile = new File(getRealPathFromURI(tempUri));
-
-        System.out.println(finalFile + "");
-
-        String filePath = finalFile + "";
-        Log.d("MyImagePath", filePath.substring(filePath.lastIndexOf("/") + 1));
-
-        bitmapString = BaseClass.BitMapToString(bitmap);
-        imgProfile.setImageBitmap(bitmap) ;
-        uploadProfile(bitmapString);
 
     }
 
@@ -369,7 +365,7 @@ public class EditProfile extends AppBaseActivity {
                             && ActivityCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                         ActivityCompat.requestPermissions(EditProfile.this,
-                                new String[]{Manifest.permission.CAMERA},
+                                new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 REQUEST_CAMERA);
                     } else {
                         Log.e("DB", "PERMISSION GRANTED");
@@ -410,13 +406,15 @@ public class EditProfile extends AppBaseActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == SELECT_FILE)
+            if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
+            }
             else if (requestCode == REQUEST_CAMERA)
+            {
                 onCaptureImageResult(data);
-
+            }
         }
     }
 
@@ -424,11 +422,11 @@ public class EditProfile extends AppBaseActivity {
         String request = "{\"user_id\":" + str_id + ",\"image\":\"" + base64 + "\"}";
         try {
             JSONObject jsonObject = new JSONObject(request);
-            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.PROFILE_IMAGE, EditProfile.this, new GetData.MyCallback() {
+            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.PROFILE_IMAGE,
+                    EditProfile.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d("TAG", "Rakhi: "+result);
-
                 }
             });
         } catch (JSONException e) {
@@ -442,7 +440,8 @@ public class EditProfile extends AppBaseActivity {
         String request = "{\"user_id\":" + str_id + "\"}";
         try {
             JSONObject jsonObject = new JSONObject(request);
-            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.GETPROFILE_PIC, EditProfile.this, new GetData.MyCallback() {
+            new GetData(getApplicationContext(), EditProfile.this).sendMyData(jsonObject, GetData.GETPROFILE_PIC,
+                    EditProfile.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     Log.d("TAG", "Rakhi: "+result);

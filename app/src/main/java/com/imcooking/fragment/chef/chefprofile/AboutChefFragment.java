@@ -12,9 +12,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.imcooking.Model.api.response.ChefProfileData1;
+import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterChefAboutCuisineList;
 import com.imcooking.fragment.chef.ChefHome;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class AboutChefFragment extends Fragment {
 
@@ -56,9 +62,18 @@ public class AboutChefFragment extends Fragment {
 //            String s3 = data.getCuisine_name();
             if (data.getAbout()!=null)
                 tv_description.setText(data.getAbout()+"");
+            List<ChefProfileData1.ChefDataBean.CuisineNameBean>cuisineData = new ArrayList<>();
+            cuisineData = data.getCuisine_name();
+            Collections.sort(cuisineData, new Comparator<ChefProfileData1.ChefDataBean.CuisineNameBean>() {
+                @Override
+                public int compare(ChefProfileData1.ChefDataBean.CuisineNameBean cuisineNameBean, ChefProfileData1.ChefDataBean.CuisineNameBean t1) {
+                    return cuisineNameBean.getCuisine_name().compareTo(t1.getCuisine_name());
+                }
+            });
+
 //            tv_cuisine.setText(data.getBestcuisine_name());
 
-            AdapterChefAboutCuisineList adapter = new AdapterChefAboutCuisineList(getContext(), data.getCuisine_name());
+            AdapterChefAboutCuisineList adapter = new AdapterChefAboutCuisineList(getContext(), cuisineData);
             rv.setAdapter(adapter);
 
             //  tv_sub_cuisine.setText(data.getCuisine_name());

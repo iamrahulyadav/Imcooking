@@ -30,8 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="5dp">
+                android:layout_marginLeft="15dp">
 
                 <com.imcooking.customtext.CustomTextViewBold
                     android:layout_width="wrap_content"
@@ -69,22 +68,64 @@
                     android:textSize="9sp"
                     android:gravity="center"
                     android:layout_marginTop="10dp"/>
-                <RatingBar
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:rating="5"
+                        android:id="@+id/item_foodie_my_request_rating"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"/>
+
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/item_foodie_my_request_reply"
+                        android:text="Reply"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="10dp"
+                        android:background="@drawable/shape_background_theme"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:rating="5"
-                    android:id="@+id/item_foodie_my_request_rating"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    />
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Accepted"
-                    android:layout_gravity="end"
-                    android:id="@+id/item_foodie_my_request_txtStatus"
-                    android:textColor="@color/shape_background_1"
-                    android:textSize="12dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:orientation="horizontal">
+
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price Offered:- $25"
+                        android:id="@+id/item_foodie_my_request_offered_price"
+                        android:textColor="@color/theme_color"
+                        android:textSize="11dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"/>
+
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Accepted"
+                        android:id="@+id/item_foodie_my_request_txtStatus"
+                        android:textColor="@color/shape_background_1"
+                        android:textSize="12dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginBottom="5dp"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -104,6 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dish Request"
+                android:visibility="gone"
                 android:textSize="9sp"
                 android:textColor="@color/theme_color"
                 android:layout_gravity="center_horizontal"/>
@@ -138,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp">
+
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -155,36 +198,62 @@
                     android:padding="3dp"/>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_height="70dp"
+                android:id="@+id/item_foodie_my_request_layout_cancel"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:visibility="gone">
 
                 <com.imcooking.customtext.CustomTextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Note"
-                    android:visibility="gone"
-                    android:textSize="9sp"
-                    android:textColor="@color/colorWhite"
-                    android:gravity="center"
-                    android:id="@+id/item_chef_my_request_reply"
-                    android:background="@drawable/shape_background_theme"/>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp"
-                    android:text="View"
-                    android:id="@+id/item_foodie_my_requests_view_response"
+                    android:text="Cancel"
+                    android:id="@+id/item_foodie_my_requests_cancel"
                     android:textSize="9sp"
                     android:textColor="@color/text_color_13"
                     android:gravity="center"
-                    android:background="@drawable/shape_background_view_6"
-                    android:layout_marginLeft="5dp"/>
+                    android:background="@drawable/shape_background_view_6" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:id="@+id/item_foodie_my_request_layout_accept_decline"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:visibility="visible"
+                android:orientation="vertical">
+
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Accept"
+                    android:id="@+id/item_foodie_my_requests_accept"
+                    android:textSize="9sp"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:background="@drawable/shape_background_green_25" />
+
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Decline"
+                    android:id="@+id/item_foodie_my_requests_decline"
+                    android:textSize="9sp"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:background="@drawable/shape_background_red_25"
+                    android:layout_marginTop="5dp"/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

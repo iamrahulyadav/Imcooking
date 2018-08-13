@@ -400,6 +400,15 @@ public class HomeData {
         private String distance;
         private List<DishCuisineNameBean> dish_cuisine_name;
         private List<String> dish_image;
+        private String dish_deliverymiles;
+
+        public String getDish_deliverymiles() {
+            return dish_deliverymiles;
+        }
+
+        public void setDish_deliverymiles(String dish_deliverymiles) {
+            this.dish_deliverymiles = dish_deliverymiles;
+        }
 
         public String getChef_id() {
             return chef_id;

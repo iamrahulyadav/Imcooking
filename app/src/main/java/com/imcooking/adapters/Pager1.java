@@ -41,6 +41,8 @@ public class Pager1 extends PagerAdapter{
 
         TextView txtName = view.findViewById(R.id.txtName);
         txtName.setText(name.get(position));
+
+
         container.addView(view);
         return view;
     }

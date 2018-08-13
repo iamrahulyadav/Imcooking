@@ -1,6 +1,8 @@
 package com.imcooking.activity.Sub.Chef;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +10,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,6 +29,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +49,7 @@ import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
+import com.imcooking.activity.home.MainActivity;
 import com.imcooking.adapters.AdapterEditDishPhotos;
 import com.imcooking.fragment.chef.ChefDishDetail;
 import com.imcooking.fragment.chef.ChefHome;
@@ -87,17 +95,17 @@ import java.util.List;
 import static java.util.Calendar.HOUR_OF_DAY;
 
 public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCheckedChangeListener,
-        AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo {
+        AdapterView.OnItemSelectedListener, AdapterEditDishPhotos.browse_photo, SeekBar.OnSeekBarChangeListener {
 
     private String chef_id="", dish_id="", name, cuisine, price, description, special_note,qyt, available, homedelivery,
-            pickup,video_sample;
+            pickup,video_sample, time_1, time_2;
     private EditText edt_name, edt_price, edt_description, edt_special_note, edt_qyt;
     private SwitchCompat switch_1, switch_2, switch_3;
-    private String sw_1 = "Yes", sw_2 = "Yes", sw_3 = "Yes";
+    private String sw_1 = "No", sw_2 = "No", sw_3 = "No";
     private String dish_miles = "10";
-    private Spinner sp;
-    private SeekBar seekBar;
-    private final int  REQUEST_CAMERA=0, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
+//    private Spinner sp;
+//    private SeekBar seekBar;
+    private final int  REQUEST_CAMERA=3, SELECT_FILE = 1,REQUEST_TAKE_GALLERY_VIDEO=2;
     Bitmap bitmap;
     boolean result;
     private String userChoosenTask;
@@ -144,7 +152,27 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private ArrayList<String> arrayList = new ArrayList<>();
 
+    private SeekBar seekBar_available_time;
+    private TextView tv_seekbar_text, tv_time_1, tv_time_2;
+    private String str_time_1 = "00:00 AM", str_time_2 = "04:00 AM";
+
     private void init(){
+
+        seekBar_available_time = findViewById(R.id.edit_dish_seekbar);
+        tv_seekbar_text = findViewById(R.id.edit_dish_seekbar_text);
+        tv_time_1 = findViewById(R.id.edit_dish_time_1);
+        tv_time_2 = findViewById(R.id.edit_dish_time_2);
+
+        seekBar_available_time.setProgress(0);
+        seekBar_available_time.setMax(24);
+
+        ShapeDrawable thumb = new ShapeDrawable( new RectShape() );
+        thumb.getPaint().setColor(getResources().getColor(R.color.theme_color));
+        thumb.setIntrinsicHeight( 80 );
+        thumb.setIntrinsicWidth( 200 );
+        seekBar_available_time.setThumb( thumb );
+
+        seekBar_available_time.setOnSeekBarChangeListener(this);
 
     //    layout_photos = findViewById(R.id.edit_dish_photos);
         btn_browse_video = findViewById(R.id.chef_edit_dish_photos_ttx_select_video);
@@ -164,8 +192,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         switch_1 = findViewById(R.id.edit_dish_switch_current_available);
         switch_2 = findViewById(R.id.edit_dish_switch_home_delivery);
-        switch_3 = findViewById(R.id.edit_dish_switch_current_available);
-        seekBar = findViewById(R.id.activity_chef_edit_dish_time);
+        switch_3 = findViewById(R.id.edit_dish_switch_pickup);
+//        seekBar = findViewById(R.id.activity_chef_edit_dish_time);
 
         switch_1.setOnCheckedChangeListener(this);
         switch_2.setOnCheckedChangeListener(this);
@@ -173,10 +201,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         btn_browse_video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                     ActivityCompat.requestPermissions(ChefEditDish.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             REQUEST_TAKE_GALLERY_VIDEO);
                 } else {
                     Log.e("DB", "PERMISSION GRANTED");
@@ -189,18 +219,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
         });
 
-        ArrayList<String> spinnerData =new ArrayList<>();
-        spinnerData.add("10 miles ");
-        spinnerData.add("20 miles ");
-        spinnerData.add("30 miles ");
-        spinnerData.add("50 miles ");
-
-        sp = findViewById(R.id.edit_dish_spinner);
-        sp.setOnItemSelectedListener(this);
-        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(this,
-                R.layout.spinner_row, spinnerData);
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
-        sp.setAdapter(arrayAdapter);
 
         photorv1 = findViewById(R.id.chef_edit_dish_photos_recycler);
 //        CustomLayoutManager manager = new CustomLayoutManager(getApplicationContext()){
@@ -219,6 +237,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 //        arr_photos.add("Photo");
 
         setMyAdapter(arr_photos);
+        createMyDialog();
     }
 
     private void getMyIntentData() {
@@ -235,13 +254,24 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             available = getIntent().getExtras().getString("available");
             homedelivery = getIntent().getExtras().getString("home_delivery");
             pickup = getIntent().getExtras().getString("pickup");
+            time_1 = getIntent().getExtras().getString("time1");
+            time_2 = getIntent().getExtras().getString("time2");
+            tv_time_1.setText(time_1);
+            tv_time_2.setText(time_2);
+            tv_seekbar_text.setText("From:" + time_1 + "\t To:" + time_2);
+            setMySeekbarProgress("From:" + time_1 + " \t To:" + time_2);
+
             if (getIntent().hasExtra("video")){
                 video_sample = getIntent().getExtras().getString("video");
-                if (video_sample!=null)
-                txt_video.setText(video_sample.replace(GetData.IMG_BASE_URL,""));
+                if (video_sample!=null){
+                    txt_video.setText(video_sample.replace(GetData.IMG_BASE_URL,""));
+                } else txt_video.setText("Video");
             }
 
-            arrayList = getIntent().getExtras().getStringArrayList("image");
+//            arrayList = getIntent().getExtras().getStringArrayList("image");
+            String s = getIntent().getExtras().getString("image");
+            arrayList = new Gson().fromJson(s,ArrayList.class);
+
             base = ChefDishDetail.base64Array;
 
             if (!qyt.equals("null")){
@@ -268,6 +298,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             edt_description.setText(description);
             edt_special_note.setText(special_note);
 
+            Log.d("ChefEditDishData", "Available = " + available + "\n HomeDelivery = "
+                    + homedelivery + "\n Pickup = " + pickup);
             if(available.equals("Yes")||available.equals("yes")){
                 switch_1.setChecked(true);
             } else if(available.equals("No")||available.equals("no")){
@@ -286,6 +318,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 switch_3.setChecked(false);
             } else {
 
+            }
+            for (int i=0; i<list.size(); i++){
+                if(list.get(i).getCuisine_name().equals(cuisine)){
+                    sp_cuisine.setSelection(i);
+                }
             }
             title = "editdish";
             tv_title.setText("Edit Dish");
@@ -343,24 +380,29 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             if(!price.isEmpty()){
                 if(!description.isEmpty()){
                     if(!special_note.isEmpty()){
-                       /* if(!bitmapString.equals("a")) {*/
-                            if(title.equals("dish")){
-
-                                if(!bitmapString.equals("a")) {
-                                } else{
-                                    BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
-                                }
-                                adddish(title);
-                            } else if(title.equals("editdish")){
-                                try {
-                                    editdish(title);
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                }
+                        if(!qyt.isEmpty()) {
+                            if(sw_2.equals("No") && sw_3.equals("No")) {
+                                BaseClass.showToast(getApplicationContext(), "Please select either" +
+                                        "Home delivery or Pick-up only.");
+                            } else{
+                                /* if(selectedPath!=null) {*/
+                                    if (title.equals("dish")) {
+                                        if (!bitmapString.equals("a")) {
+                                            adddish(title);
+                                        } else {
+                                            BaseClass.showToast(getApplicationContext(), "Please Select a Photo");
+                                        }
+                                    } else if (title.equals("editdish")) {
+                                        try {
+                                            editdish(title);
+                                        } catch (MalformedURLException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                             }
-                       /* } else{
-                            BaseClass.showToast(getApplicationContext() , "Please Select a Photo");
-                        }*/
+                        } else{
+                            BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
+                        }
                     } else{
                         BaseClass.showToast(getApplicationContext(), "All Fields Are Required");
                     }
@@ -377,7 +419,13 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private void adddish(String title){
 
-        ArrayList<String> arrayList = new ArrayList<>( Arrays.asList(bitmapString));
+        Log.d("Base64Size", base.size() + "");
+        ArrayList<String> base1 = new ArrayList<>();
+        for(int i=0; i<base.size(); i++) {
+            if (!base.get(i).equals("MyBase64String")) {
+                base1.add(base.get(i));
+            }
+        }
 
         ModelChefAddDish requestData = new ModelChefAddDish();
         requestData.setUser_id(chef_id);
@@ -387,18 +435,20 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDescription(description);
         requestData.setSpecial_note(special_note);
         requestData.setDish_price(price);
-        requestData.setDish_from("12:10 AM");
-        requestData.setDish_to("4:10 AM");
+        requestData.setDish_from(str_time_1/*"12:10 AM"*/);
+        requestData.setDish_to(str_time_2/*"4:10 AM"*/);
         requestData.setAvailable(sw_1);
         requestData.setHomedeliver(sw_2);
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(base);
+        requestData.setDish_image(base1);
         requestData.setDish_qyt(qyt);
 
 
-        Log.d("Base64Size", base.size() + "");
+        Log.d("Base64Size", base1.size() + "");
+
+
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
@@ -415,14 +465,15 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("Add dish Successfully")){
                                                 dish_id = job.getString("last_insertid");
-                                                BaseClass.showToast(getApplicationContext(), "Dish Added Successfully" );
+                                                dialog.show();
 
-                                                if (selectedPath!=null){
-                                                    if (duration<=20000)
-                                                        new UploadFileToServer().execute();
+                                                /*if (selectedPath!=null){
+                                                    if (duration<=20000) {
+//                                                        new UploadFileToServer(selectedPath).execute();
+                                                    }
                                                 } else {
-                                                    finish();
-                                                }
+                                                    // finish();
+                                                }*/
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                             }
@@ -444,10 +495,21 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     private void editdish(String title) throws MalformedURLException {
+
+        Log.d("Base64Size", base.size() + "");
+        ArrayList<String> base1 = new ArrayList<>();
+        for(int i=0; i<base.size(); i++) {
+            if (!base.get(i).equals("MyBase64String")) {
+                base1.add(base.get(i));
+            }
+        }
+
+        if(price.contains("£")){
+            price = price.replace("£", "");
+        }
 
         qyt = edt_qyt.getText().toString().trim();
         ModelChefEditDish requestData = new ModelChefEditDish();
@@ -459,19 +521,19 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDescription(description);
         requestData.setSpecial_note(special_note);
         requestData.setDish_price(price);
-        requestData.setDish_from("12:10 AM");
-        requestData.setDish_to("4:10 AM");
+        requestData.setDish_from(str_time_1);
+        requestData.setDish_to(str_time_2);
         requestData.setAvailable(sw_1);
         requestData.setHomedeliver(sw_2);
         requestData.setPickup(sw_3);
         requestData.setDeliverymiles(dish_miles);
         requestData.setDish_video("abc");
-        requestData.setDish_image(base);
+        requestData.setDish_image(base1);
         requestData.setDish_qyt(qyt);
-        Log.d("MyArraySize", base.size() + "");
+
         if (selectedPath!=null){
-            if (duration<=20000)
-                new UploadFileToServer().execute();
+//            if (duration<=20000)
+//                new UploadFileToServer().execute();
         }
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
@@ -481,15 +543,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     ChefEditDish.this, new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-
                             try {
                                 JSONObject job = new JSONObject(result);
                                 if(job.has("status")){
                                     if(job.getBoolean("status")){
                                         if(job.has("message")){
                                             if(job.getString("message").equals("update dish Successfully")){
-                                                finish();
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
+                                                finish();
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
                                             }
@@ -513,8 +574,44 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         }
     }
 
-    public void add_more_photos(View view){
+    private Dialog dialog;
+    private void createMyDialog(){
 
+        dialog = new Dialog(ChefEditDish.this);
+        dialog.setContentView(R.layout.dialog_add_dish);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        TextView tv_dialog = dialog.findViewById(R.id.dialog_add_dish_text);
+        TextView tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
+        TextView tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
+
+        tv_dialog.setText("Thank you!! \n The dish has been added to your list.");
+        tv_dialog.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        tv_cross_dialog.setVisibility(View.GONE);
+
+        tv_ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent i = new Intent();
+                setResult(105, i);
+                finish();
+            }
+        });
+        tv_cross_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    public void add_more_photos(View view){
+//1
         arr_photos.add("Photo");
         base.add("MyBase64String");
         if(arr_photos.size() == 3){
@@ -545,9 +642,11 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                 if (items[item].equals("Take Photo")) {
                     userChoosenTask ="Take Photo";
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ) {
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
                         ActivityCompat.requestPermissions(ChefEditDish.this,
-                                new String[]{Manifest.permission.CAMERA},
+                                new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 REQUEST_CAMERA);
                     } else {
                         Log.e("DB", "PERMISSION GRANTED");
@@ -629,12 +728,16 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     int duration;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (data != null) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == SELECT_FILE)
+            if (requestCode == SELECT_FILE){
                 onSelectFromGalleryResult(data);
+            }
             else if (requestCode == REQUEST_CAMERA)
+            {
                 onCaptureImageResult(data);
+            }
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                 Uri selectedImageUri = data.getData();
                 selectedPath = getPath(selectedImageUri);
@@ -643,7 +746,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     duration = mp.getDuration();
                     Log.d("TAG", "video:path " + duration);
                     if (duration > 20000) {
-                        BaseClass.showToast(this, "Your Video is too large ");
+                        BaseClass.showToast(this, "Your Video is too large. You can upload video of max 20 seconds.");
                     } else {
                         txt_video.setText(selectedPath.substring(selectedPath.lastIndexOf("/") + 1));
                     }
@@ -652,101 +755,164 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         }
     }
 
-    long totalSize;
-    String selectedPath;
+    private String selectedPath;
 
-    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-            // setting progress bar to zero
-          //  progressBar.setProgress(0);
-            super.onPreExecute();
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+        if(seekBar.getId() == R.id.edit_dish_seekbar){
+            String text = getMySeekbarText(i);
+            tv_seekbar_text.setText(text);
         }
+    }
 
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            // Making progress bar visible
-        //    progressBar.setVisibility(View.VISIBLE);
+    private String getMySeekbarText(int progress){
 
-            // updating progress bar value
-        //    progressBar.setProgress(progress[0]);
+        String text = "";
+        if(progress == 0){
+            text = "From:00:00AM \t To:04:00AM";
+            str_time_1 = "00:00 AM"; str_time_2 = "04:00 AM";
+        } else if(progress == 1){
+            text = "From:00:00AM \t To:04:00AM";
+            str_time_1 = "00:00 AM"; str_time_2 = "04:00 AM";
+        } else if(progress == 2){
+            text = "From:01:00AM \t To:05:00AM";
+            str_time_1 = "01:00 AM"; str_time_2 = "05:00 AM";
+        } else if(progress == 3){
+            text = "From:02:00AM \t To:06:00AM";
+            str_time_1 = "02:00 AM"; str_time_2 = "06:00 AM";
+        } else if(progress == 4){
+            text = "From:03:00AM \t To:07:00AM";
+            str_time_1 = "03:00 AM"; str_time_2 = "07:00 AM";
+        } else if(progress == 5){
+            text = "From:04:00AM \t To:08:00AM";
+            str_time_1 = "04:00 AM"; str_time_2 = "08:00 AM";
+        } else if(progress == 6){
+            text = "From:05:00AM \t To:09:00AM";
+            str_time_1 = "05:00 AM"; str_time_2 = "09:00 AM";
+        } else if(progress == 7){
+            text = "From:06:00AM \t To:10:00AM";
+            str_time_1 = "06:00 AM"; str_time_2 = "10:00 AM";
+        } else if(progress == 8){
+            text = "From:07:00AM \t To:11:00AM";
+            str_time_1 = "07:00 AM"; str_time_2 = "11:00 AM";
+        } else if(progress == 9){
+            text = "From:08:00AM \t To:12:00PM";
+            str_time_1 = "08:00 AM"; str_time_2 = "12:00 PM";
+        } else if(progress == 10){
+            text = "From:09:00AM \t To:01:00PM";
+            str_time_1 = "09:00 AM"; str_time_2 = "01:00 PM";
+        } else if(progress == 11){
+            text = "From:10:00AM \t To:02:00PM";
+            str_time_1 = "10:00 AM"; str_time_2 = "02:00 PM";
+        } else if(progress == 12){
+            text = "From:11:00AM \t To:03:00PM";
+            str_time_1 = "11:00 AM"; str_time_2 = "03:00 PM";
+        } else if(progress == 13){
+            text = "From:12:00PM \t To:04:00PM";
+            str_time_1 = "12:00 PM"; str_time_2 = "04:00 PM";
+        } else if(progress == 14){
+            text = "From:01:00PM \t To:05:00PM";
+            str_time_1 = "01:00 PM"; str_time_2 = "05:00 PM";
+        } else if(progress == 15){
+            text = "From:02:00PM \t To:06:00PM";
+            str_time_1 = "02:00 PM"; str_time_2 = "06:00 PM";
+        } else if(progress == 16){
+            text = "From:03:00PM \t To:07:00PM";
+            str_time_1 = "03:00 PM"; str_time_2 = "07:00 PM";
+        } else if(progress == 17){
+            text = "From:04:00PM \t To:08:00PM";
+            str_time_1 = "04:00 PM"; str_time_2 = "08:00 PM";
+        } else if(progress == 18){
+            text = "From:05:00PM \t To:09:00PM";
+            str_time_1 = "05:00 PM"; str_time_2 = "09:00 PM";
+        } else if(progress == 19){
+            text = "From:06:00PM \t To:10:00PM";
+            str_time_1 = "06:00 PM"; str_time_2 = "10:00 PM";
+        }else if(progress == 20){
+            text = "From:07:00PM \t To:11:00PM";
+            str_time_1 = "07:00 PM"; str_time_2 = "11:00 PM";
+        } else if(progress == 21){
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
+        } else if(progress == 22){
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
+        } else if(progress == 23){
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
+        } else if(progress == 24){
+            text = "From:08:00PM \t To:00:00AM";
+            str_time_1 = "08:00 PM"; str_time_2 = "00:00 AM";
+        } else {}
 
-            // updating percentage value
-//            textView.setText(String.valueOf(progress[0]) + "%");
-        }
+        tv_time_1.setText(str_time_1);
+        tv_time_2.setText(str_time_2);
 
-        @Override
-        protected String doInBackground(Void... params) {
-            return uploadFile();
-        }
+        return text;
+    }
 
-        @SuppressWarnings("deprecation")
-        private String uploadFile() {
-            String responseString = null;
+    private void setMySeekbarProgress(String progress_time){
+        if(progress_time.equals("From:00:00 AM \t To:04:00 AM")){
+            seekBar_available_time.setProgress(1);
+        } else if(progress_time.equals("From:01:00 AM \t To:05:00 AM")){
+            seekBar_available_time.setProgress(2);
+        } else if(progress_time.equals("From:02:00 AM \t To:06:00 AM")){
+            seekBar_available_time.setProgress(3);
+        } else if(progress_time.equals("From:03:00 AM \t To:07:00 AM")){
+            seekBar_available_time.setProgress(4);
+        } else if(progress_time.equals("From:04:00 AM \t To:08:00 AM")){
+            seekBar_available_time.setProgress(5);
+        } else if(progress_time.equals("From:05:00 AM \t To:09:00 AM")){
+            seekBar_available_time.setProgress(6);
+        } else if(progress_time.equals("From:06:00 AM \t To:10:00 AM")){
+            seekBar_available_time.setProgress(7);
+        } else if(progress_time.equals("From:07:00 AM \t To:11:00 AM")){
+            seekBar_available_time.setProgress(8);
+        } else if(progress_time.equals("From:08:00 AM \t To:12:00 PM")){
+            seekBar_available_time.setProgress(9);
+        } else if(progress_time.equals("From:09:00 AM \t To:01:00 PM")){
+            seekBar_available_time.setProgress(10);
+        } else if(progress_time.equals("From:10:00 AM \t To:02:00 PM")){
+            seekBar_available_time.setProgress(11);
+        } else if(progress_time.equals("From:11:00 AM \t To:03:00 PM")){
+            seekBar_available_time.setProgress(12);
+        } else if(progress_time.equals("From:12:00 PM \t To:04:00 PM")){
+            seekBar_available_time.setProgress(13);
+        } else if(progress_time.equals("From:01:00 PM \t To:05:00 PM")){
+            seekBar_available_time.setProgress(14);
+        } else if(progress_time.equals("From:02:00 PM \t To:06:00 PM")){
+            seekBar_available_time.setProgress(15);
+        } else if(progress_time.equals("From:03:00 PM \t To:07:00 PM")){
+            seekBar_available_time.setProgress(16);
+        } else if(progress_time.equals("From:04:00 PM \t To:08:00 PM")){
+            seekBar_available_time.setProgress(17);
+        } else if(progress_time.equals("From:05:00 PM \t To:09:00 PM")){
+            seekBar_available_time.setProgress(18);
+        } else if(progress_time.equals("From:06:00 PM \t To:10:00 PM")){
+            seekBar_available_time.setProgress(19);
+        } else if(progress_time.equals("From:07:00 PM \t To:11:00 PM")){
+            seekBar_available_time.setProgress(20);
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
+            seekBar_available_time.setProgress(21);
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
+            seekBar_available_time.setProgress(22);
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
+            seekBar_available_time.setProgress(23);
+        } else if(progress_time.equals("From:08:00 PM \t To:00:00 AM")){
+            seekBar_available_time.setProgress(24);
+        } else {}
+    }
 
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(GetData.BASE_URL+"upload_video");
-
-            try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
-
-                            @Override
-                            public void transferred(long num) {
-                                publishProgress((int) ((num / (float) totalSize) * 100));
-                            }
-                        });
-
-                File sourceFile = new File(selectedPath);
-
-                // Adding file data to http body
-                entity.addPart("myFile", new FileBody(sourceFile));
-
-                // Extra parameters if you want to pass to server
-                entity.addPart("dish_id",
-                        new StringBody(dish_id));
-                entity.addPart("chef_id", new StringBody(chef_id));
-
-                totalSize = entity.getContentLength();
-                httppost.setEntity(entity);
-
-                // Making server call
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity r_entity = response.getEntity();
-
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
-                    // Server response
-                    responseString = EntityUtils.toString(r_entity);
-                } else {
-                    responseString = "Error occurred! Http Status Code: "
-                            + statusCode;
-                }
-
-            } catch (ClientProtocolException e) {
-                responseString = e.toString();
-            } catch (IOException e) {
-                responseString = e.toString();
-            }
-
-            return responseString;
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            finish();
-
-            Log.e("TAG", "Response from server: " + result);
-            finish();
-
-            // showing the server response in an alert dialog
-            //  showAlert(result);
-            super.onPostExecute(result);
-        }
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
 
     }
 
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 
     public String getPath(Uri uri) {
         String path = null;
@@ -797,38 +963,41 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     }
 
     private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        if (data.hasExtra("data")){
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
+            File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");
 
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileOutputStream fo;
+            try {
+                destination.createNewFile();
+                fo = new FileOutputStream(destination);
+                fo.write(bytes.toByteArray());
+                fo.close();
+
+            bitmap = thumbnail;
+
+            Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            File finalFile = new File(getRealPathFromURI(tempUri));
+
+            String filePath = finalFile + "";
+
+            arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
+            adapterEditDishPhotos.notifyDataSetChanged();
+
+            bitmapString = BaseClass.BitMapToString(bitmap);
+            base.set(pos, bitmapString);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        bitmap = thumbnail;
-
-        Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-
-        // CALL THIS METHOD TO GET THE ACTUAL PATH
-        File finalFile = new File(getRealPathFromURI(tempUri));
-
-        String filePath = finalFile + "";
-
-        arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
-        adapterEditDishPhotos.notifyDataSetChanged();
-
-        bitmapString = BaseClass.BitMapToString(bitmap);
-        base.set(pos, bitmapString);
 
     }
 
@@ -877,11 +1046,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-        if (adapterView.getId() == R.id.edit_dish_spinner) {
-            dish_miles = adapterView.getItemAtPosition(i).toString().replace("miles","");
-            Log.d("MySpinner", dish_miles);
-        } else if(adapterView.getId() == R.id.chef_edit_dish_spinner_cuisine){
+        if(adapterView.getId() == R.id.chef_edit_dish_spinner_cuisine){
             selected_cuisine = adapterView.getItemAtPosition(i).toString();
             selected_cuisine_id = list.get(i).getCuisine_id() + "";
             Log.d("MySpinner", selected_cuisine_id);
@@ -901,10 +1066,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(ChefEditDish.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED  ) {
+                ActivityCompat.requestPermissions(ChefEditDish.this,
                     new String[]{Manifest.permission.CAMERA,
-                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_CAMERA);
         } else {
             Log.e("DB", "PERMISSION GRANTED");
@@ -914,78 +1081,143 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     }
 
-    public class GetImage extends AsyncTask<String, Void, Bitmap> {
+    private long totalSize = 0;
+    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+        String filePath = null;
+        String sessionId, contentData;
+
+
+        public UploadFileToServer(String filePath) {
+            this.filePath = filePath;
+
+        }
+
         @Override
         protected void onPreExecute() {
+
+
+
+            // setting progress bar to zero
+//            progressBar.setProgress(0);
+            BaseClass.showToast(getApplicationContext(), "0%");
+
+
             super.onPreExecute();
         }
 
         @Override
-        protected Bitmap doInBackground(String... urls) {
-            Bitmap map = null;
-            for (String url : urls) {
-                map = downloadImage(url);
-            }
-            return map;
+        protected void onProgressUpdate(Integer... progress) {
+            // Making progress bar visible
+//            progressBar.setVisibility(View.VISIBLE);
+
+            // updating progress bar value
+//            progressBar.setProgress(progress[0]);
+
+
+            BaseClass.showToast(getApplicationContext(), progress[0] + "%");
+
+
+            // updating percentage value
+//            txtPercentage.setText(String.valueOf(progress[0]) + "%");
+
+
+            //code to show progress in notification bar
+//            FileUploadNotification fileUploadNotification = new FileUploadNotification(UploadActivity.this);
+//            fileUploadNotification.updateNotification(String.valueOf(progress[0]), "Image 123.jpg", "Camera Upload");
+
         }
 
-        // Sets the Bitmap returned by doInBackground
         @Override
-        protected void onPostExecute(Bitmap result) {
-            String s = BaseClass.BitMapToString(result);
-            arr_edit_photos_base64.add(s);
-            imgBase64List.add(s);
-            if(imgBase64List.size() == arr_photos.size()){
-                try {
-                    Log.d("TAG", "edit_dish_submit:aa " + imgBase64List.size() + arr_photos.size());
-                    editdish(title);
-                    if (selectedPath!=null){
-                        if (duration<=20000)
-                        new UploadFileToServer().execute();
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            }
+        protected String doInBackground(Void... params) {
+            return uploadFile();
         }
 
-        // Creates Bitmap from InputStream and returns it
-        private Bitmap downloadImage(String url) {
-            Bitmap bitmap = null;
-            InputStream stream = null;
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inSampleSize = 1;
+        @SuppressWarnings("deprecation")
+        private String uploadFile() {
+            String responseString = null;
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://webdevelopmentreviews.net/imcooking/api/upload_video");
+
             try {
-                stream = getHttpConnection(url);
-                bitmap = BitmapFactory.
-                        decodeStream(stream, null, bmOptions);
-                stream.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                        new AndroidMultiPartEntity.ProgressListener() {
+
+                            @Override
+                            public void transferred(long num) {
+                                publishProgress((int) ((num / (float) totalSize) * 100));
+                            }
+                        });
+
+
+                // Un-comment below 2 lines to compress image
+                // ImageCompressionUtils class will compress image size from 2mb to 300 kb
+                // for more small images just change the below line in ImageCompressionUtils
+                //             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                // change compression from 100 to 0 as per your requirements
+                // comment below 2 lines to remove  image compression
+
+//                ImageCompressionUtils imageCompressionUtils = new ImageCompressionUtils(UploadActivity.this);
+//                imageCompressionUtils.compressImage(filePath);
+
+                File sourceFile = new File(filePath);
+                // Adding file data to http body
+                entity.addPart("myFile", new FileBody(sourceFile));
+                entity.addPart("chef_id", new StringBody(chef_id));
+                entity.addPart("dish_id", new StringBody(dish_id));
+
+                // Extra parameters if you want to pass to server
+                //entity.addPart("website", new StringBody("https://androidluckyguys.wordpress.com"));
+                //entity.addPart("email", new StringBody("luckyrana321@gmail.com"));
+
+
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode;
+                }
+
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
             }
-            return bitmap;
+
+            return responseString;
+
         }
 
-        // Makes HttpURLConnection and returns InputStream
-        private InputStream getHttpConnection(String urlString)
-                throws IOException {
-            InputStream stream = null;
-            URL url = new URL(urlString);
-            URLConnection connection = url.openConnection();
+        @Override
+        protected void onPostExecute(String result) {
+//            Log.e(TAG, "Response from server: " + result);
 
-            try {
-                HttpURLConnection httpConnection = (HttpURLConnection) connection;
-                httpConnection.setRequestMethod("GET");
-                httpConnection.connect();
+            // showing the server response in an alert dialog
+            showAlert(result);
 
-                if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    stream = httpConnection.getInputStream();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return stream;
+            super.onPostExecute(result);
         }
     }
 
+    private void showAlert(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle("Response from Servers")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // do nothing
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

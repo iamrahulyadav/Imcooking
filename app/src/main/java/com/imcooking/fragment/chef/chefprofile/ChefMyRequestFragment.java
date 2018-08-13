@@ -1,6 +1,8 @@
 package com.imcooking.fragment.chef.chefprofile;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,7 +48,6 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     private List<ChefDishRequestData.ChefDishDetailsBean>chefDishDetailsBeans;
     private String sender_id, receiver_id, request_id, msg="",status, offer_price="";
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +66,9 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     }
 
     private void init() {
+
+        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         no_recordLayout = getView().findViewById(R.id.fragment_my_request_chef_no_record_image);
         requestRecyclerView = getView().findViewById(R.id.fragment_chef_request_list_recycler);
         layoutToolbar = getView().findViewById(R.id.chefrequest_txtname);
@@ -91,6 +96,8 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         String user_id=apiResponse.getUser_id()+"";
         String s = "{\"chef_id\":" + user_id + "}";
         sender_id = user_id;
+
+        Log.d("MyRequest", s);
 
         try {
             JSONObject job = new JSONObject(s);
@@ -148,7 +155,7 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         dialog.setContentView(R.layout.dialog_view_response);
         dialog.setCancelable(true);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
 
@@ -290,9 +297,42 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
             request_id = chefDishDetailsBeans.get(pos).getRequest_id();
             showDialog(pos,receiver_id,request_id);
-        } else if (TAG.equals("view")){
-            receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
-        }
+        } else if (TAG.equals("offer")){
+            createOfferDialog();
+        } else if(TAG.equals("chat")){
+            createChatDialog();
+        } else {}
+    }
+
+    private void createOfferDialog(){
+        Dialog dialog_offer = new Dialog(getContext());
+        dialog_offer.setContentView(R.layout.dialog_offer_price);
+        dialog_offer.setCancelable(true);
+        dialog_offer.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog_offer.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_offer.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog_offer.show();
+
+    }
+
+    private void createChatDialog(){
+        final Dialog dialog_chat = new Dialog(getContext());
+        dialog_chat.setContentView(R.layout.dialog_chef_chat);
+        dialog_chat.setCancelable(true);
+        dialog_chat.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog_chat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_chat.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        ImageView iv_send = dialog_chat.findViewById(R.id.dialog_chef_chat_send_icon);
+        iv_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseClass.showToast(getContext(), "Reply Sent");
+                dialog_chat.dismiss();
+            }
+        });
+
+        dialog_chat.show();
     }
 
     private void sendreply(String receiver_id,String request_id){

@@ -1,6 +1,8 @@
 package com.imcooking.activity.main.setup;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,8 +38,8 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+     /*   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_sign_up);
 
 //        find id
@@ -72,7 +74,7 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
         dialog = new Dialog(SignUpActivity.this);
         dialog.setContentView(R.layout.dialog_signup);
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         tv = dialog.findViewById(R.id.dialog_signup_text);
@@ -105,7 +107,7 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                         data.setConfirmpassword(conf_pass);
 
                         new GetData(getApplicationContext(), SignUpActivity.this)
-                                .getResponse(new Gson().toJson(data), "signup",
+                                .getResponse(new Gson().toJson(data), GetData.SIGNUP,
                                 new GetData.MyCallback() {
                                     @Override
                                     public void onSuccess(String result) {
@@ -116,24 +118,33 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
                                             public void run() {
 
                                                 ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
-                                                tv.setText(apiResponse.getMsg());
+//                                                tv.setText(apiResponse.getMsg());
                                                 if (apiResponse.isStatus()) {
                                                     if (apiResponse.getMsg().equals("Foodie successfully registered and sent verification code your email!")) {
                                                         edt_uname.setText("");
                                                         edt_email.setText("");
                                                         edt_pass.setText("");
                                                         edt_conf_pass.setText("");
+                                                        tv.setText("You have been successfully registered as Foodie with IM Cooking.\n An email with verification code has been sent to your registered email id. Please verify after login.");
 //                                                        dialog.show();
                                                     } else if (apiResponse.getMsg().equals("Chef successfully registered and sent verification code your email!")){
                                                         edt_uname.setText("");
                                                         edt_email.setText("");
                                                         edt_pass.setText("");
                                                         edt_conf_pass.setText("");
-                                                    }
+                                                        tv.setText("You have been successfully registered as Chef with IM Cooking.\n An email with verification code has been sent to your registered email id. Please verify after login.");
+                                                      }
                                                     else {
                                                         BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                                     }
                                                 } else {
+                                                    if (apiResponse.getMsg().equals("User name already exist")){
+                                                        tv.setText("Username already exists");
+                                                       // BaseClass.showToast(getApplicationContext(), "Username already exists.");
+                                                    } else if (apiResponse.getMsg().equals("Email already exist")){
+                                                        tv.setText("Email already exists");
+                                                    }
+
 //                                                    dialog.show();
                                                 }
                                                 dialog.show();
@@ -159,15 +170,8 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
     }
 
     public void register_okay(View view){
-        if(tv.getText().toString().equals("Foodie successfully registered and sent verification code your email!")){
             dialog.dismiss();
             finish();
-        } else if (tv.getText().toString().equals("Chef successfully registered and sent verification code your email!")){
-            dialog.dismiss();
-            finish();
-        } else {
-            dialog.dismiss();
-        }
     }
 
     @Override
@@ -180,114 +184,3 @@ public class SignUpActivity extends AppBaseActivity implements RadioGroup.OnChec
 }
 
 
-/*
-    public static final MediaType JSON
-            = MediaType.parse("application/json");
-
-    public void makeBooking(String cateRequest){
-        // Utility.showloadingPopup(this);
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-        okhttp3.RequestBody requestBody = okhttp3.RequestBody.create(JSON,cateRequest);
-
-        final okhttp3.Request request = new okhttp3.Request.Builder()
-                .url("http://webdevelopmentreviews.net/imcooking/api/signup")
-                .post(requestBody)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .build();
-        okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder()
-                .connectTimeout(10000, TimeUnit.SECONDS)
-                .writeTimeout(10000, TimeUnit.SECONDS)
-                .readTimeout(30000, TimeUnit.SECONDS)
-                .build();
-
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, final IOException e) {
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDialog.dismiss();
-                        String msg = e.getMessage();
-
-                        Toast.makeText(SignUpActivity.this, "No Net", Toast.LENGTH_SHORT).show();
-//                        Utility.message(getApplicationContext(), getResources().getString(R.string.no_internet_connection));
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                progressDialog.dismiss();
-
-                if (response!=null&&response.body().toString().length()>0){
-                    if (request.body()!=null){
-                        String msg = response.body().string();
-                        Log.d("TAG", "onResponse: booking"+ msg);
-
-                    }
-                }
-            }
-        });
-    }
-
-
-    public void register2(View view){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,ApiClient.BASE_URL + "signup", new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-
-                Log.d("TAG", "onResponse: " + s);
-            }
-        },
-
-                new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-
-                    }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String>stringHashMap = new HashMap<>();
-
-                stringHashMap.put("user_type", "1");
-                stringHashMap.put("user_name", "vaibhav123");
-                stringHashMap.put("email", "vaibhav@gmail.com");
-                stringHashMap.put("password", "123");
-                stringHashMap.put("confirmpassword", "123");
-
-                return stringHashMap;
-
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
-    }
-
-    public void register1(View view){
-        ApiInterface retroFitApis = ApiClient.getClient();//.create(ApiInterface.class);
-
-        Call<ApiResponse> responseCall = retroFitApis.signup("1", "vaibhav",
-                "vaibhav@gmail.com", "123", "123") ;
-        final Gson gson = new Gson();
-        responseCall.enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                 Log.d("SignUp1", "onResponse: point "+gson.toJson(response.body()));
-                }
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-            }
-        });
-
-    }
-*/

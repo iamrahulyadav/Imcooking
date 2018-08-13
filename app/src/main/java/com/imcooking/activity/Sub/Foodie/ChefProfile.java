@@ -33,17 +33,16 @@ public class ChefProfile extends AppBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_profile);
 
-        chefId = getIntent().getStringExtra("chef_id");
-        foodie_id = getIntent().getStringExtra("foodie_id");
+        chefId = getIntent().getExtras().getString("chef_id");
+        foodie_id = getIntent().getExtras().getString("foodie_id");
 
-       ChefHome fragment = new ChefHome();
+        ChefHome fragment = new ChefHome();
 
         Bundle args = new Bundle();
         args.putString("chef_id", chefId);
         args.putString("foodie_id", foodie_id);
 
         fragment.setArguments(args);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_chef_profile, fragment).commit();
 
     }

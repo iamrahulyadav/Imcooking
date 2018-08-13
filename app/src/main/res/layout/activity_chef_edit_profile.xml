@@ -13,7 +13,6 @@
         android:id="@+id/chef_dish"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        android:fitsSystemWindows="true"
         tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
 
         <LinearLayout
@@ -170,13 +169,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_address"
                     android:hint="Address"
+                    android:editable="false"
                     android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
                     android:imeOptions="actionNext"
                     android:background="@android:color/transparent"
                     android:textColor="@color/colorBlack"
                     android:paddingLeft="10dp"
-                    android:paddingTop="10dp" />
+                    android:paddingTop="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
             <View
@@ -223,6 +223,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_city"
                     android:hint="CITY"
+                    android:editable="false"
                     android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
                     android:imeOptions="actionDone"
@@ -277,14 +278,12 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_zipcode"
                     android:hint="ZIP CODE"
-                    android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
-                    android:inputType="number"
-                    android:imeOptions="actionDone"
                     android:background="@android:color/transparent"
                     android:textColor="@color/colorBlack"
                     android:paddingLeft="10dp"
-                    android:paddingTop="10dp"/>
+                    android:paddingTop="10dp"
+                    android:editable="false"/>
 
             </android.support.design.widget.TextInputLayout>
             <View
@@ -294,7 +293,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
@@ -317,12 +316,63 @@
                     <Spinner
                         style="@style/SpinnerTheme1"
                         android:spinnerMode="dropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="20dp"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Default miles"
+                    android:textSize="@dimen/extra_smallsize"
+                    android:textColor="@color/colorBlack"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/shape_border_theme">
+
+                    <Spinner
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        style="@style/SpinnerTheme1"
+                        android:spinnerMode="dropdown"
                         android:id="@+id/chef_edit_profile_spinner_miles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingRight="20dp"/>
 
                 </LinearLayout>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_color_15"
+                    android:background="@drawable/shape_border_theme"
+                    android:drawableRight="@drawable/ic_down_arrow_1"
+                    android:drawablePadding="25dp"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:visibility="gone"/>
+
 
             </RelativeLayout>
 
@@ -354,6 +404,7 @@
                             android:layout_marginBottom="10dp"/>
             -->
 
+<!--
             <android.support.v7.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -366,6 +417,7 @@
                 android:paddingLeft="10dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorBlack"/>
+-->
 
 <!--
             <View
@@ -386,13 +438,6 @@
                 android:paddingRight="20dp"/>
 -->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height=".5dp"
-                android:background="@color/view_2"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
-
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -406,7 +451,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/chef_edit_profile_select_cuisine"
-                android:text="Select Cuisine"
+                android:text=""
                 android:textColor="@color/colorBlack"
                 android:paddingLeft="10dp"
                 android:layout_marginTop="10dp" />
@@ -428,7 +473,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_About"
                     android:hint="Description"
-                    android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
                     android:imeOptions="actionNext"
                     android:background="@android:color/transparent"

@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -17,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
-import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.activity.Sub.Foodie.ChefProfile;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.fragment.chef.ChefDishDetail;
@@ -31,12 +26,6 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,6 +106,7 @@ public class AdapterChefDishList extends PagerAdapter{
         String url = "";
         if(chef_dish_list.get(position).getDish_image().size() != 0) {
             url = GetData.IMG_BASE_URL + chef_dish_list.get(position).getDish_image().get(0);
+            Log.d("ChefDishImage", url);
             Picasso.with(context).load(url).into(iv_dish_image);
         }
 //        Log.d("ChefCurrentDishes", url);
@@ -133,7 +123,8 @@ public class AdapterChefDishList extends PagerAdapter{
          dish_count.setText(chef_dish_list.get(position).getDish_quantity()+"");
         else dish_count.setText("0");
         dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
-        dish_likes.setText(chef_dish_list.get(position).getLike_no());
+        BaseClass.showToast(context, chef_dish_list.get(position).getLike_no() + "");
+        dish_likes.setText(chef_dish_list.get(position).getLike_no() + "");
 
         if (chef_dish_list.get(position).getDish_homedelivery().equals("Yes")) {
             if (chef_dish_list.get(position).getDish_pickup().equals("Yes")) {
@@ -150,6 +141,7 @@ public class AdapterChefDishList extends PagerAdapter{
             iv_home_delivery_image.setVisibility(View.VISIBLE);
             dish_home_delivery.setText("Pick-up");
         }
+        String tim =  chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to();
 
         dish_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +156,8 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("qyt", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("available", chef_dish_list.get(position).getDish_available());
                 bundle.putString("time", chef_dish_list.get(position).getDish_from() + " - " + chef_dish_list.get(position).getDish_to());
+                bundle.putString("time1", chef_dish_list.get(position).getDish_from());
+                bundle.putString("time2", chef_dish_list.get(position).getDish_to());
                 bundle.putString("count", chef_dish_list.get(position).getDish_quantity()+"");
                 bundle.putString("home_delivery", chef_dish_list.get(position).getDish_homedelivery());
                 bundle.putString("pickup", chef_dish_list.get(position).getDish_pickup());
@@ -172,6 +166,7 @@ public class AdapterChefDishList extends PagerAdapter{
                 bundle.putString("special_note", chef_dish_list.get(position).getDish_special_note());
                 bundle.putString("cuisine", chef_dish_list.get(position).getDish_cuisine());
                 bundle.putString("likeno", chef_dish_list.get(position).getLike_no());
+
                 if (chef_dish_list.get(position).getDish_video()!=null && chef_dish_list.get(position).getDish_video().length()>0)
                     bundle.putString("video",GetData.IMG_BASE_URL+chef_dish_list.get(position).getDish_video()+"");
                 bundle.putStringArrayList("image", arrayList);

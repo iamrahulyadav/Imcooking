@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -36,20 +37,33 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
     }
 
     public interface FoodieMyRequestInterface{
-        void viewResponse(int position);
+        void method_AdapterFoodieMyRequest(int position, String tag);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView tv_view_response,txtCategory,txtqty,txt_name,txt_address,txt_email,txt_time, txt_status,txt_dish_name, txt_phn;
+        public TextView /*tv_view_response*/txtCategory,txtqty,txt_name,txt_address,txt_email,txt_time, txt_status,txt_dish_name, txt_phn;
         public RatingBar ratingBar;
         public ImageView img_profile;
+        public LinearLayout layout_accept_decline, layout_cancel;
+        public TextView tv_reply, tv_accept, tv_declie, tv_offered_price, tv_cancel;
+
         public MyViewHolder(View view) {
             super(view);
 
+            layout_cancel = view.findViewById(R.id.item_foodie_my_request_layout_cancel);
+            layout_accept_decline = view.findViewById(R.id.item_foodie_my_request_layout_accept_decline);
+
+            tv_cancel = view.findViewById(R.id.item_foodie_my_requests_cancel);
+            tv_reply = view.findViewById(R.id.item_foodie_my_request_reply);
+            tv_accept = view.findViewById(R.id.item_foodie_my_requests_accept);
+            tv_declie = view.findViewById(R.id.item_foodie_my_requests_decline);
+            tv_offered_price = view.findViewById(R.id.item_foodie_my_request_offered_price);
+
+
             txtCategory =view.findViewById(R.id.item_chef_my_request_food_category);
             txtqty=view.findViewById(R.id.item_chef_my_request_qty);
-            tv_view_response = view.findViewById(R.id.item_foodie_my_requests_view_response);
+//            tv_view_response = view.findViewById(R.id.item_foodie_my_requests_view_response);
             txt_name = view.findViewById(R.id.item_foodie_my_request_name);
             txt_address = view.findViewById(R.id.item_foodie_my_request_address);
             txt_email = view.findViewById(R.id.item_foodie_my_request_email);
@@ -59,10 +73,29 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
             txt_phn = view.findViewById(R.id.item_foodie_my_request_mob_number);
             txt_status = view.findViewById(R.id.item_foodie_my_request_txtStatus);
             txt_dish_name = view.findViewById(R.id.item_foodie_my_request_dish_name);
-            tv_view_response.setOnClickListener(new View.OnClickListener() {
+
+            tv_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    foodieMyRequestInterface.viewResponse(getAdapterPosition());
+                    foodieMyRequestInterface.method_AdapterFoodieMyRequest(getAdapterPosition(), "cancel");
+                }
+            });
+            tv_accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    foodieMyRequestInterface.method_AdapterFoodieMyRequest(getAdapterPosition(), "accept");
+                }
+            });
+            tv_declie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    foodieMyRequestInterface.method_AdapterFoodieMyRequest(getAdapterPosition(), "decline");
+                }
+            });
+            tv_reply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    foodieMyRequestInterface.method_AdapterFoodieMyRequest(getAdapterPosition(), "reply");
                 }
             });
         }
@@ -80,15 +113,41 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
        // FoodieMyRequest foodie=new FoodieMyRequest();
 
-      holder.txt_name.setText(list.get(position).getChef_name());
+        if(list.get(position).getChef_response()!=null) {
+            if (list.get(position).getChef_response().equals("0")){
+                holder.txt_status.setText("New Request");
+                holder.layout_cancel.setVisibility(View.VISIBLE);
+                holder.layout_accept_decline.setVisibility(View.GONE);
+                holder.tv_reply.setVisibility(View.GONE);
+                holder.tv_offered_price.setVisibility(View.GONE);
+            } else if (list.get(position).getChef_response().equals("1")){
+                holder.txt_status.setText("Accepted");
+                holder.layout_cancel.setVisibility(View.GONE);
+                holder.layout_accept_decline.setVisibility(View.VISIBLE);
+                holder.tv_reply.setVisibility(View.VISIBLE);
+                holder.tv_offered_price.setVisibility(View.VISIBLE);
+            } else if(list.get(position).getChef_response().equals("2")) {
+                holder.txt_status.setText("Declined");
+                holder.layout_cancel.setVisibility(View.VISIBLE);
+                holder.layout_accept_decline.setVisibility(View.GONE);
+                holder.tv_reply.setVisibility(View.GONE);
+                holder.tv_offered_price.setVisibility(View.GONE);
+            }
+        }
+
+
+
+
+
+
+
+        holder.txt_name.setText(list.get(position).getChef_name());
         holder.txt_address.setText(list.get(position).getChef_address());
         holder.txt_email.setText(list.get(position).getChef_email());
         holder.txt_phn.setText(list.get(position).getChef_phone()+"");
         holder.txt_time.setText(list.get(position).getChef_request_datetime());
         holder.txt_dish_name.setText(list.get(position).getRequest_dishname());
-        if (list.get(position).getChef_accepted()!=null&& list.get(position).getChef_accepted().equals("yes"))
-            holder.txt_status.setText("Accepted");
-        else holder.txt_status.setText("No");
+
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 list.get(position).getChef_image()).into(holder.img_profile);
         if (list.get(position).getChef_rating()+""!=null)

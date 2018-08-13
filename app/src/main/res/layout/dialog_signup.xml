@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:onClick="register_okay"
-                android:text="OKAY"
+                android:text="LOGIN"
                 android:textColor="@color/colorWhite"
                 android:textSize="14sp"
                 android:background="@drawable/shape_background_theme"

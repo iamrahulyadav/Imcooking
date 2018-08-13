@@ -22,7 +22,7 @@
         <com.imcooking.customtext.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save this address"
+            android:text="@string/dialog_save_address_save_this_address"
             android:textColor="@color/colorBlack"
             android:gravity="center_horizontal"
             android:textStyle="bold"
@@ -40,7 +40,6 @@
             android:id="@+id/dialog_address_radiogroup"
             android:layout_margin="15dp">
             <RadioButton
-                android:onClick="dialog_radioClick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -50,7 +49,6 @@
                 android:backgroundTint="@color/colorBlack"
                 android:buttonTint="@color/colorBlue"/>
             <RadioButton
-                android:onClick="dialog_radioClick"
                 android:id="@+id/dialog_address_radioOffice"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -60,7 +58,6 @@
                 android:backgroundTint="@color/colorBlack"
                 android:buttonTint="@color/colorBlue"/>
             <RadioButton
-                android:onClick="dialog_radioClick"
                 android:id="@+id/dialog_address_radioOther"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -81,7 +78,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:padding="10dp"
+            android:hint="Enter your address title"
             android:singleLine="true"
+            android:textSize="@dimen/extra_smallsize"
+            android:textColorHint="@color/colorDarkGrey"
+            android:cursorVisible="true"
+            android:backgroundTint="@color/colorBlue"
             android:visibility="gone"
             android:textColor="@color/colorBlack"
             android:imeOptions="actionDone"

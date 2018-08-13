@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -26,6 +28,7 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +46,8 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     RecyclerView recyclerView, rv_prevoius;
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView ;
+    private RelativeLayout currentLayout;
+
    public ChefMyOrderListFragment() {
         // Required empty public constructor
     }
@@ -56,14 +61,17 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
         return view;
     }
 
+    private TextView tv_current_time;
     private void init(View view) {
 
         tinyDB=new TinyDB(getContext());
-        getorderList();
+
         rv_prevoius = view.findViewById(R.id.recycler_chef_my_orders_past);
         recyclerView = view.findViewById(R.id.fragment_chef_order_list_recycler);
         no_record_Layout = view.findViewById(R.id.fragment_my_order_chef_no_record_image);
         nestedScrollView = view.findViewById(R.id.chef_order_list_scroll);
+        currentLayout = view.findViewById(R.id.fragment_chef_order_txt_current);
+
         CustomLayoutManager manager1 = new CustomLayoutManager(getContext()){
             @Override
             public boolean canScrollVertically() {
@@ -78,16 +86,38 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
             }
         };
         rv_prevoius.setLayoutManager(manager2);
+
+        tv_current_time = view.findViewById(R.id.fragment_my_order_current_time);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        Date d = new Date();
+        String dayOfTheWeek = sdf.format(d);
+
+        Date d1 = new Date();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm a");
+        String currentDateTimeString = sdf1.format(d1);
+
+//        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        tv_current_time.setText(dayOfTheWeek + "  " + currentDateTimeString);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getorderList();
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     private List<ChefMyorderList.MyOrderListBean> currentOrderListBeans;
     private List<ChefMyorderList.MyOrderListBean> prevoiusOrderListBeans;
+
     public void getorderList(){
         currentOrderListBeans = new ArrayList<>();
         String login = tinyDB.getString("login_data");
@@ -160,15 +190,18 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     }
 
     private void setMyAdapter(List<ChefMyorderList.MyOrderListBean> list){
-        AdatperChefMyOrderList adatperChefMyOrderList = new AdatperChefMyOrderList(getContext(),
-                 list, this,"current");
-        recyclerView.setAdapter(adatperChefMyOrderList);
+        if (list.size()>0){
+            AdatperChefMyOrderList adatperChefMyOrderList = new AdatperChefMyOrderList(getContext(),
+                    list, this,"current");
+            recyclerView.setAdapter(adatperChefMyOrderList);
+            currentLayout.setVisibility(View.VISIBLE);
+        } else currentLayout.setVisibility(View.GONE);
+
 
         AdatperChefMyOrderList adatperChefMyOrderList1 = new AdatperChefMyOrderList(getContext(),
                 prevoiusOrderListBeans, this, "previous");
         rv_prevoius.setAdapter(adatperChefMyOrderList1);
     }
-
 
     @Override
     public void chefOrderdetails(int pos, String TAG) {
@@ -180,6 +213,4 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
             startActivity(new Intent(getActivity(), ChefOrderDetailsActivity.class).putExtra("order_id", orderid));
         }
     }
-
-
 }

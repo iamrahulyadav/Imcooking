@@ -57,11 +57,12 @@ public class FoodieMyRequest {
         private String chef_description;
         private String chef_request_datetime;
         private int chef_rating;
-        private String chef_accepted;
+        private String chef_response;
         private String request_cusine_name;
         private String request_dishname;
         private String request_note;
         private String request_quantity;
+        private List<ConversationDetailsBean> conversation_details;
 
         public String getRequest_quantity() {
             return request_quantity;
@@ -94,8 +95,6 @@ public class FoodieMyRequest {
         public void setRequest_note(String request_note) {
             this.request_note = request_note;
         }
-
-        private List<ConversationDetailsBean> conversation_details;
 
         public int getRequest_id() {
             return request_id;
@@ -177,12 +176,12 @@ public class FoodieMyRequest {
             this.chef_rating = chef_rating;
         }
 
-        public String getChef_accepted() {
-            return chef_accepted;
+        public String getChef_response() {
+            return chef_response;
         }
 
-        public void setChef_accepted(String chef_accepted) {
-            this.chef_accepted = chef_accepted;
+        public void setChef_response(String chef_response) {
+            this.chef_response = chef_response;
         }
 
         public List<ConversationDetailsBean> getConversation_details() {

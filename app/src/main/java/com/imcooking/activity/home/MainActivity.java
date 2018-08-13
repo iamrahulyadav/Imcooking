@@ -12,8 +12,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChefEditProfile;
 import com.imcooking.activity.Sub.Foodie.FavoriteCusine;
 import com.imcooking.activity.Sub.Foodie.Help;
 import com.imcooking.activity.Sub.Foodie.ManageAddress;
@@ -59,7 +62,11 @@ import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
+import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -76,11 +83,13 @@ public class MainActivity extends AppBaseActivity
     public NavigationView navigationView;
     TextView txtChefUserName, txtMobile;
     private TinyDB tinyDB;
-    private TextView tv_name, tv_phone;
+    public static TextView tv_name, tv_phone;
+    public static double longitude, latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
 
         drawerLayout1 = findViewById(R.id.drawer_layout);
@@ -90,8 +99,11 @@ public class MainActivity extends AppBaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
+//            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
         }
+
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
 
         frame_view = (LinearLayout) findViewById(R.id.frame_view);
 
@@ -132,6 +144,7 @@ public class MainActivity extends AppBaseActivity
         getUserData();
         if (user_type.equals("1")) {
             if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+
                 String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 if (tag1.equals(ChefHome.class.getName())) {
 
@@ -163,6 +176,7 @@ public class MainActivity extends AppBaseActivity
         } else if (getIntent().hasExtra("pay")) {
             BaseClass.callFragment(new FoodieMyOrderFragment(), FoodieMyOrderFragment.class.getName(), getSupportFragmentManager());
         } else { // 2
+//            setTheme(R.style.AppTheme1);
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
     }
@@ -173,6 +187,7 @@ public class MainActivity extends AppBaseActivity
     private String loginData;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private String user_type, user_id;
+//    public static boolean isProfile;
 
     private void init() {
 
@@ -189,7 +204,7 @@ public class MainActivity extends AppBaseActivity
         tv_notification = findViewById(R.id.bottom_notification_text);
     }
 
-    private String user_name, user_phone;
+    private String user_name, user_phone, user_user_name;
 
     private void getUserData() {
 
@@ -197,6 +212,7 @@ public class MainActivity extends AppBaseActivity
         userDataBean = new Gson().fromJson(loginData, ApiResponse.UserDataBean.class);
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
+        user_user_name = userDataBean.getUser_name();
         if (userDataBean.getFull_name()!=null)
             user_name = userDataBean.getFull_name() + "";
         else user_name="Your Name";
@@ -210,6 +226,8 @@ public class MainActivity extends AppBaseActivity
         tv_phone.setText(user_phone);
     }
 
+    public static boolean isProfile = false;
+
     public void bottom_click(View view) {
 
         int id = view.getId();
@@ -221,12 +239,16 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new HomeFragment(), new HomeFragment().getClass().getName(), getSupportFragmentManager());
             } else{
-                if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+                /*if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
                     String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-                    if (tag1.equals(ChefHome.class.getName())) {
+                */  /*  if (tag1.equals(ChefHome.class.getName())) {
+//                        TabLayout.Tab tab = ChefHome.tabLayout.getTabAt(1);
+//                        tab.select();
 
+                        isProfile = false;
                     } else {
-
+*/
+//                isProfile = false;
                         ChefHome fragment = new ChefHome();
 
                         Bundle args = new Bundle();
@@ -238,9 +260,9 @@ public class MainActivity extends AppBaseActivity
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frame, fragment)
                                 .addToBackStack(ChefHome.class.getName()).commit();
-                    }
-                } else{
-             /*       ChefHome fragment = new ChefHome();
+//                    }
+                /*}*//* else{
+             *//*       ChefHome fragment = new ChefHome();
 
                     Bundle args = new Bundle();
                     args.putString("chef_id", user_id);
@@ -249,8 +271,8 @@ public class MainActivity extends AppBaseActivity
                     fragment.setArguments(args);
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
-*/
-                }
+*//*
+                }*/
             }
         } else if (id == R.id.bottom_profile_layout){
             tv_profile.setTextColor(getResources().getColor(R.color.theme_color));
@@ -258,27 +280,46 @@ public class MainActivity extends AppBaseActivity
 
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
-            } else{
+            }
+            else{ // chef
+/*
                 if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
                     String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                     if (tag1.equals(ChefHome.class.getName())) {
+*/
+//                        isProfile = true;
+//                        isProfile = false;
 
-                    } else {
+/*
+                        new Handler().postDelayed(
+                                new Runnable(){
+                                    @Override
+                                    public void run() {
+                                        ChefHome.tabLayout.getTabAt(1).select();
+                                    }
+                                }, 100);
+*/
 
-                        ChefHome fragment = new ChefHome();
+
+//                    } else {
+
+               /*         ChefHome fragment = new ChefHome();
 
                         Bundle args = new Bundle();
                         args.putString("chef_id", user_id);
                         args.putString("foodie_id", "4");
-
                         fragment.setArguments(args);
 
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frame, fragment)
                                 .addToBackStack(ChefHome.class.getName())
-                                .commit();
-                    }
-                }/* else{
+                                .commit();*/
+
+                startActivity(new Intent(getApplicationContext(), ChefEditProfile.class));
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+//                    }
+                /*}*//* else{
                     ChefHome fragment = new ChefHome();
 
                     Bundle args = new Bundle();
@@ -388,9 +429,31 @@ public class MainActivity extends AppBaseActivity
         int id = item.getItemId();
         switch (id){
             case R.id.navigation_logout:
-                new TinyDB(getApplicationContext()).remove("login_data");
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+                String s = "{\"device_id\":\"cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q\", \"user_name\":"
+                        + user_user_name + "}";
+                Log.d("MyRequest", s);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    new GetData(getApplicationContext(), MainActivity.this).sendMyData(jsonObject, GetData.LOGOUT,
+                            MainActivity.this, new GetData.MyCallback() {
+                                @Override
+                                public void onSuccess(String result) {
+                                    ApiResponse apiResponse = new Gson().fromJson(result, ApiResponse.class);
+                                    if(apiResponse.isStatus()){
+                                        if (apiResponse.getMsg().equals("device_id deleted Successfully ")){
+                                            new TinyDB(getApplicationContext()).remove("login_data");
+                                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                            finish();
+
+                                        } else{
+                                            BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
+                                        }
+                                    }
+                                }
+                            });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.navigation_myrequest:
                 if(user_type.equals("2")) {

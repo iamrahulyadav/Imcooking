@@ -9,7 +9,7 @@
     tools:context="com.imcooking.activity.Sub.Foodie.ManageAddress">
 
 
-    <TextView
+    <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="Setting"
@@ -28,20 +28,23 @@
         android:layout_height="70dp"
         android:padding="15dp">
 
-        <TextView
+        <com.imcooking.customtext.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Km"
+            android:text="Default Search Miles"
             android:textColor="@color/text_color_10"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"/>
-        <TextView
+        <com.imcooking.customtext.CustomEditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5"
+            android:id="@+id/foodie_settings_miles"
+            android:text="10"
+            android:inputType="number"
             android:textColor="@color/theme_color"
             android:textSize="14sp"
+            android:maxLength="3"
             android:background="@drawable/shape_theme_border"
             android:paddingRight="30dp"
             android:paddingLeft="30dp"
@@ -64,6 +67,7 @@
         <android.support.v7.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/foodie_settings_notification"
             android:background="@color/colorWhite"
             android:textAlignment="viewStart"
             app:track="@drawable/switch_track"
@@ -84,5 +88,16 @@
         android:layout_width="match_parent"
         android:layout_height=".5dp"
         android:background="@color/view_4"/>
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="Update"
+        android:textColor="@color/colorWhite"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:background="@drawable/shape_background_theme"
+        android:layout_margin="30dp"
+        android:onClick="foodie_settings_update"/>
 
 </LinearLayout>

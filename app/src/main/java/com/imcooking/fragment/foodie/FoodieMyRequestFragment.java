@@ -2,6 +2,9 @@ package com.imcooking.fragment.foodie;
 
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +25,8 @@ import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.FoodieMyRequest;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.CartActivity;
+import com.imcooking.activity.Sub.Foodie.ChefILove;
 import com.imcooking.adapters.AdapterFoodieMyRequest;
 import com.imcooking.adapters.DishReqChatAdatper;
 import com.imcooking.utils.BaseClass;
@@ -64,6 +70,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         tinyDB=new TinyDB(getContext());
+
         String login = tinyDB.getString("login_data");
         ApiResponse.UserDataBean apiResponse = new ApiResponse.UserDataBean();
         apiResponse = new Gson().fromJson(login,ApiResponse.UserDataBean.class);
@@ -74,8 +81,13 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
     }
 
     private RecyclerView rv;
+    private ImageView iv_cart;
+    private TextView tv_count;
 
     private void init(){
+        tv_count = getView().findViewById(R.id.foodie_my_request_cart_count);
+
+        iv_cart = getView().findViewById(R.id.fragment_my_request_img_cart);
         txtShop = getView().findViewById(R.id.fragment_my_request_shop_now);
         no_recordLayout = getView().findViewById(R.id.fragment_my_request_foodie_no_record_image);
         rv = getView().findViewById(R.id.recycler_foodie_my_requests);
@@ -84,12 +96,35 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         rv.setLayoutManager(linearLayoutManager);
         myorderRequest();
 
+        iv_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), CartActivity.class).putExtra("foodie_id",
+                        sender_id));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            }
+        });
+
         txtShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getFragmentManager());
+                startActivity(new Intent(getContext(), ChefILove.class).putExtra("extra", "extra"));
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                //BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getFragmentManager());
             }
         });
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
     }
 
     private List<FoodieMyRequest.FoodieRequestDishChefDetailsBean>requestDishChefDetailsBeans ;
@@ -139,14 +174,40 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         rv.setAdapter(adatper);
     }
 
-    @Override
-    public void viewResponse(int position) {
-        receiver_id = requestDishChefDetailsBeans.get(position).getChef_id()+"";
-        request_id = requestDishChefDetailsBeans.get(position).getRequest_id()+"";
-        showDialog(position);
+    private void createChatDialog(){
+        final Dialog dialog_chat = new Dialog(getContext());
+        dialog_chat.setContentView(R.layout.dialog_chef_chat);
+        dialog_chat.setCancelable(true);
+        dialog_chat.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog_chat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_chat.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        ImageView iv_send = dialog_chat.findViewById(R.id.dialog_chef_chat_send_icon);
+        iv_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BaseClass.showToast(getContext(), "Reply Sent");
+                dialog_chat.dismiss();
+            }
+        });
+        dialog_chat.show();
     }
 
-    private   DishReqChatAdatper dishReqChatAdatper;
+/*
+    @Override
+    public void viewResponse(int position) {
+        if(requestDishChefDetailsBeans.get(position).getConversation_details().size()>0) {
+            receiver_id = requestDishChefDetailsBeans.get(position).getChef_id() + "";
+            request_id = requestDishChefDetailsBeans.get(position).getRequest_id() + "";
+            showDialog(position);
+        } else{
+            BaseClass.showToast(getContext(), "You haven't recieve any reply from the chef yet.");
+        }
+    }
+*/
+
+    private DishReqChatAdatper dishReqChatAdatper;
+
     private void showDialog(final int position){
         TextView txtMsg, txtDesc, txt_accept,txtOfferPrice, txt_decline, txt_reply;
         final EditText edtReply,txtOfferValue;
@@ -154,9 +215,10 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_view_response);
         dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
+
         txtDesc = dialog.findViewById(R.id.dialog_view_response_desc);
         txtMsg = dialog.findViewById(R.id.dialog_view_response_msg);
         txt_accept = dialog.findViewById(R.id.view_response_accept);
@@ -166,7 +228,9 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         chatrecyclerView = dialog.findViewById(R.id.dialog_view_response_recycler);
         txtOfferPrice = dialog.findViewById(R.id.dialog_view_response_offer_price);
         txtOfferValue = dialog.findViewById(R.id.dialog_view_response_offer_edt);
+
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         dialog.findViewById(R.id.view_response_cross).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,8 +260,12 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
             offer_price = conversationDetailsBeans.get(0).getConversation_offer_price();
             txtOfferValue.setText("£"+conversationDetailsBeans.get(0).getConversation_offer_price());
         }
+
         dishReqChatAdatper = new DishReqChatAdatper(getContext(),conversationDetailsBeans, chef_id, foodie_id);
         chatrecyclerView.setAdapter(dishReqChatAdatper);
+
+//        if(conversationDetailsBeans.get(position).getConversation_message().)
+
         txt_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,4 +372,22 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         }
     }
 
+    @Override
+    public void method_AdapterFoodieMyRequest(int position, String tag) {
+
+        if(tag.equals("reply")){
+            BaseClass.showToast(getContext(), "Reply");
+            createChatDialog();
+        } else if(tag.equals("accept")){
+            BaseClass.showToast(getContext(), "Accepted");
+        } else if(tag.equals("decline")){
+            BaseClass.showToast(getContext(), "Declined");
+        } else if(tag.equals("cancel")){
+            BaseClass.showToast(getContext(), "Cancel");
+        } else {
+
+        }
+
+
+    }
 }

@@ -136,8 +136,7 @@
                 android:gravity="right|bottom"
                 android:visibility="visible"
                 android:orientation="vertical"
-                android:background="@color/colorWhite"
-                >
+                android:background="@color/colorWhite">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -214,6 +213,7 @@
                         android:id="@+id/cart_tv_place_order"
                         android:textColor="@color/colorWhite"
                         android:textSize="14sp" />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -271,13 +271,13 @@
                     <com.imcooking.customtext.CustomTextView
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:text="Payment"
+                        android:id="@+id/cart_addnewaddress"
+                        android:text="Add New"
                         android:textSize="12sp"
                         android:gravity="center"
                         android:background="@drawable/button_bg4"
                         android:textColor="@color/colorBlue"
-                        android:layout_margin="5dp"
-                        android:id="@+id/activity_cart_tv_payment"/>
+                        android:layout_margin="5dp"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -289,38 +289,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:gravity="end|center_vertical"
-                        android:orientation="horizontal">
-                        <com.imcooking.customtext.CustomTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            android:singleLine="true"
-                            android:visibility="gone"
-                            android:text="Please select Your address for delivery"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="10sp" />
-                        <com.imcooking.customtext.CustomTextView
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:text="Add New"
-                            android:layout_gravity="right"
-                            android:gravity="center"
-                            android:layout_margin="5dp"
-                            android:background="@drawable/button_bg4"
-                            android:id="@+id/cart_addnewaddress"
-                            android:textSize="12sp"
-                            android:textColor="@color/colorBlue"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:id="@+id/cart_item_right1"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_margin="5dp"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"  >
 
@@ -330,9 +300,9 @@
                             android:textColorHint="@color/colorBlack"
                             android:textColor="@color/colorBlack"
                             android:text="Select an Address"
-                            android:textSize="10sp"
+                            android:textSize="@dimen/smallsize"
                             android:gravity="left"
-                            android:paddingLeft="5dp"
+                            android:padding="5dp"
                             android:layout_marginRight="5dp"
                             android:drawableRight="@drawable/ic_drop_down_arrow"
                             android:id="@+id/activity_cart_txtAddress"
@@ -346,8 +316,38 @@
                             android:layout_height="wrap_content" />-->
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="end|center_vertical"
+                        android:orientation="horizontal">
+                        <com.imcooking.customtext.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:visibility="gone"
+                            android:text="Please select Your address for delivery"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="10sp" />
+                    </LinearLayout>
 
                 </LinearLayout>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Payment"
+                    android:id="@+id/activity_cart_tv_payment"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/button_bg4"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorBlue"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -511,7 +511,7 @@
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shop Now "
+                android:text="Order Now "
                 android:textColor="@color/colorWhite"
                 android:background="@drawable/button_bg"
                 android:layout_gravity="center"

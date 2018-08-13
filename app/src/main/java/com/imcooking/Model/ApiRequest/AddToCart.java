@@ -1,8 +1,8 @@
 package com.imcooking.Model.ApiRequest;
 
 /**
- * Created by Muhib.
- * Contact Number : +91 9796173066
+ * Created by Rakhi.
+ * Contact Number : +91 9958187463
  */
 public class AddToCart {
     private String addcart_id;

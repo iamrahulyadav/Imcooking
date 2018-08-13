@@ -1,8 +1,10 @@
 package com.imcooking.activity.Sub.Foodie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -49,6 +51,7 @@ public class Payment1Activity extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             BaseClass.setLightStatusBar(getWindow().getDecorView(),Payment1Activity.this);
         }
@@ -127,14 +130,15 @@ public class Payment1Activity extends AppBaseActivity {
     }
 
 
-
-
     Dialog dialog ;
+    @SuppressLint("SetTextI18n")
     private void createMyDialog(final String booking_id){
         dialog= new Dialog(Payment1Activity.this);
         dialog.setContentView(R.layout.dialog_add_to_cart);
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+      // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         ImageView imgDia = dialog.findViewById(R.id.imageDialog);
         TextView txtDialog = dialog.findViewById(R.id.imgdialog_text);
         TextView txtOk = dialog.findViewById(R.id.txtdialog_ok);
@@ -151,7 +155,6 @@ public class Payment1Activity extends AppBaseActivity {
         });
         dialog.setCancelable(true);
         dialog.show();
-        dialog.getWindow().setBackgroundDrawable(null);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         txtOk.setOnClickListener(new View.OnClickListener() {

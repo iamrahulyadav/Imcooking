@@ -43,7 +43,6 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     resultList = mPlaceAPI.autocomplete(constraint.toString());
-
                     filterResults.values = resultList;
                     filterResults.count = resultList.size();
                 }

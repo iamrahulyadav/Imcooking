@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.OtherDish;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
@@ -26,6 +28,7 @@ import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.utils.CustomLayoutManager;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -56,10 +59,21 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
         }
 
         init();
-
     }
 
+    private LinearLayout layout_main;
+    private FrameLayout frame_main;
+    private ImageView iv_cart;
+    private TextView tv_count;
+
     private void init(){
+
+        iv_cart = findViewById(R.id.activity_other_dish_cart_icon);
+        tv_count = findViewById(R.id.activity_other_dish_cart_count);
+
+
+        layout_main = findViewById(R.id.other_dish_activity_layout);
+        frame_main = findViewById(R.id.other_dish_activity_layout_frame);
         layout = findViewById(R.id.chef_dish);
         recyclerView = findViewById(R.id.activity_other_dish_recycler);
         txtLike = findViewById(R.id.activity_other_dish_txtChefLike);
@@ -79,9 +93,31 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
         };
         recyclerView.setLayoutManager(manager);
         getChefOtherList(chef_id);
+
+
+        tinyDB = new TinyDB(getApplicationContext());
+        userDataBean = new ApiResponse.UserDataBean();
+        String s = tinyDB.getString("login_data");
+        userDataBean = new Gson().fromJson(s, ApiResponse.UserDataBean.class);
+        foodie_id = userDataBean.getUser_id();
+
+
+
+        iv_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getApplicationContext(), CartActivity.class).putExtra("foodie_id",
+                        userDataBean.getUser_id()));
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+
+            }
+        });
     }
 
-    String chef_id;
+    String chef_id; int foodie_id;
+    private TinyDB tinyDB;
+    private ApiResponse.UserDataBean userDataBean;
 
     private void getChefOtherList(String chef_id){
         layout.setVisibility(View.GONE);
@@ -148,6 +184,12 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+
+        String cart_count = tinyDB.getString("cart_count");
+        tv_count.setText(cart_count);
+
+        layout_main.setVisibility(View.VISIBLE);
+        frame_main.setVisibility(View.GONE);
     }
 
     @Override
@@ -164,15 +206,21 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
     @Override
     public void OtherDishInterfaceMethod(View view, int position, String TAG) {
         if (TAG.equalsIgnoreCase("name_detail")){
-            if(MainActivity.my_tag.equals(new HomeFragment().getClass().getName())) {
+            if(MainActivity.my_tag.equals(new HomeFragment().getClass().getName()) ||
+                    MainActivity.my_tag.equals(new HomeDetails().getClass().getName())) {
 
                 HomeDetails fragment = new HomeDetails();
                 Bundle bundle = new Bundle();
                 bundle.putString("dish_id", chefDishBeans.get(position).getDish_id() + "");
                 fragment.setArguments(bundle);
 
-                BaseClass.callFragment(fragment, fragment
-                        .getClass().getName(), getSupportFragmentManager());
+                getSupportFragmentManager().beginTransaction().replace(R.id.other_dish_activity_layout_frame, fragment)
+//                        .addToBackStack("")
+                        .commit();
+                frame_main.setVisibility(View.VISIBLE);
+                layout_main.setVisibility(View.GONE);
+//                BaseClass.callFragment(fragment, fragment
+//                        .getClass().getName(), getSupportFragmentManager());
 
             } else {
                 Intent filrestintent = new Intent();
@@ -229,6 +277,15 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+//        frame_main.setVisibility(View.GONE);
+//        layout_main.setVisibility(View.VISIBLE);
+//        int i = getSupportFragmentManager().getBackStackEntryCount();
+//        Toast.makeText(this, i + "", Toast.LENGTH_SHORT).show();
 
 
+    }
 }

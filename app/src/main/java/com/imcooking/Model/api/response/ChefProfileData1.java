@@ -78,6 +78,42 @@ public class ChefProfileData1 {
         private String chef_city;
         private String  chef_description;
         private String chef_zipcode;
+        private String user_latitude;
+        private String user_longitude;
+        private String activate_status;
+        private String default_miles;
+
+        public String getActivate_status() {
+            return activate_status;
+        }
+
+        public void setActivate_status(String activate_status) {
+            this.activate_status = activate_status;
+        }
+
+        public String getDefault_miles() {
+            return default_miles;
+        }
+
+        public void setDefault_miles(String default_miles) {
+            this.default_miles = default_miles;
+        }
+
+        public String getUser_latitude() {
+            return user_latitude;
+        }
+
+        public void setUser_latitude(String user_latitude) {
+            this.user_latitude = user_latitude;
+        }
+
+        public String getUser_longitude() {
+            return user_longitude;
+        }
+
+        public void setUser_longitude(String user_longitude) {
+            this.user_longitude = user_longitude;
+        }
 
         public String getChef_city() {
             return chef_city;

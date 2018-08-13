@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/shape_background_white_10">
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_view_response_offer_price"
+        android:textColor="@color/text_color_4"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"/>
+    <com.imcooking.customtext.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Price in (£)"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:textColorHint="@color/colorDarkGrey"
+        android:textColor="@color/text_color_4"
+        android:textSize="10sp"
+        android:padding="10dp"
+        android:layout_centerInParent="true"/>
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="SEND"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        android:background="@drawable/shape_background_theme_2"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

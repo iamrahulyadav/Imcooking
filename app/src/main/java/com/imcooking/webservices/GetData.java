@@ -48,6 +48,9 @@ public class GetData {
     private Context context;
     private Activity activity;
 //...................................  API ...................................
+    public static String LOGIN = "login";
+    public static String SIGNUP = "signup";
+    public static String CHANGE_PASS = "changepassword";
     public static String HOME ="home";
     public static String SEARCH = "search";
     public static String PROFILE_IMAGE="profileimage";
@@ -74,6 +77,14 @@ public class GetData {
     public static String DISH_LIKE_LIST ="dish_like_list";
     public static String FOODIE_MY_ORDER ="myorder";
     public static String CHEF_I_LOVE = "cheflove";
+    public static String UPLOAD_VIDEO ="upload_video";
+    public static String LOGOUT = "logout";
+    public static String DISH_LIKER = "dishlike";
+    public static String CART = "cart";
+    public static String FOODIE_PROFILE_EDIT = "foodieprofileedit";
+    public static String CHECK_FOODIE_DISTANCE = "check_chef_foodie_distance";
+    public static String SETTINGS = "setting_notification";
+    public static String PAYMENT_DETAILS_LIST = "payment_deatils_list";
 
 
     public GetData(final Context context, Activity activity) {

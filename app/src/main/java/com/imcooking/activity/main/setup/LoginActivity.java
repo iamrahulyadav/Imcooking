@@ -3,6 +3,9 @@ package com.imcooking.activity.main.setup;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,15 +35,18 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     private Dialog dialog;
     private EditText edt_passcode;
     private String user_id;
-    TinyDB tinyDB ;
-
+    private TinyDB tinyDB ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_login);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorBlack));
+        }
+
         tinyDB = new TinyDB(getApplicationContext());
 
 //        find id
@@ -73,7 +79,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         dialog = new Dialog(LoginActivity.this);
         dialog.setContentView(R.layout.dialog_verification);
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         edt_passcode = dialog.findViewById(R.id.dialog_verification_edit);
@@ -117,7 +123,10 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             data.setPassword(pass);
             data.setDevice_id("cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q");
 
-            new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data), "login", new GetData.MyCallback() {
+            Log.d("MyRequest", new Gson().toJson(data));
+
+            new GetData(getApplicationContext(), LoginActivity.this).getResponse(new Gson().toJson(data),
+                    GetData.LOGIN, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     //           Log.d("Show Response", response);
@@ -130,13 +139,14 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
                             ApiResponse apiResponse = new Gson().fromJson(response, ApiResponse.class);
 
-                            Log.d("ShowResponse", apiResponse.isStatus() + "");
-                            Log.d("ShowResponse", apiResponse.getMsg());
                             if (apiResponse.isStatus()) {
                                 if (apiResponse.getMsg().equals("Successfully login")) {
 
                                     tinyDB.putString("login_data",new Gson().toJson(apiResponse.getUser_data()));
                                  //   BaseClass.showToast(getApplicationContext(), "Login Successfull");
+                                    String loginData = tinyDB.getString("login_data");
+                                    Log.d("LoginData", loginData);
+
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                                 } else {

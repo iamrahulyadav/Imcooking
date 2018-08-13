@@ -19,11 +19,23 @@
         <com.imcooking.customtext.CustomTextViewBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/fragment_chef_dish_list_current_dishes"
             android:text="CURRENT DISHES"
             android:textSize="13sp"
             android:textStyle="bold"
             android:textColor="@color/text_color_4"
             android:layout_alignParentLeft="true"/>
+        <com.imcooking.customtext.CustomTextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_chef_dish_list_counting_current"
+            android:text="(10)"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_color_4"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/fragment_chef_dish_list_current_dishes" />
+
         <com.imcooking.customtext.CustomTextViewBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,13 +70,29 @@
             android:text="No Current Dishes Available."/>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <com.imcooking.customtext.CustomTextViewBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/fragment_chef_dish_list_old_dishes"
         android:text="OLD DISHES"
         android:textSize="13sp"
         android:textStyle="bold"
         android:textColor="@color/text_color_4"/>
+    <com.imcooking.customtext.CustomTextViewBold
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_chef_dish_list_counting_old"
+        android:text="(10)"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color_4"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/fragment_chef_dish_list_old_dishes" />
+    </RelativeLayout>
 
     <com.imcooking.utils.CustomViewPager
         android:layout_width="match_parent"

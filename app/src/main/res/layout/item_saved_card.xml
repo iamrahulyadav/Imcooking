@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="15dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/paymrnt_method_image_1"
+            android:src="@drawable/ic_visa"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4566-XXXXXXXX-5008"
+            android:textColor="@color/colorBlack"
+            android:textSize="13sp"
+            android:id="@+id/item_saved_card_no"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/paymrnt_method_image_1"
+            android:layout_marginLeft="10dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:id="@+id/item_saved_card_delete"
+            android:textColor="@color/colorWhite"
+            android:textSize="13sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_background_theme"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"/>
+
+
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

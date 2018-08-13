@@ -1,7 +1,10 @@
 package com.imcooking.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -11,10 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.imcooking.Model.api.response.HomeData;
 import com.imcooking.R;
@@ -38,13 +45,23 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         void playVideo(int pos, String tag);
     }
 
-    public DishDetailPagerAdapter(Context context, List<String> chefDishBeans,DishDetailPlayClick dishDetailPlayClick, String video) {
+    private Activity activity;
+    private int size;
+    private String video_url;
+    private ArrayList<String> arr_ = new ArrayList<>();
+
+    public DishDetailPagerAdapter(Context context, List<String> chefDishBeans,
+                                  DishDetailPlayClick dishDetailPlayClick, String video, int size,
+                                  Activity activity, String video_url, ArrayList<String> arr_) {
         this.context = context;
         this.chefDishBeans = chefDishBeans;
         this.dishDetailPlayClick = dishDetailPlayClick;
         this.video = video;
+        this.size = size;
+        this.activity = activity;
+        this.video_url = video_url;
+        this.arr_ = arr_;
         mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override
@@ -57,31 +74,43 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         return view==object;
     }
 
+//    private VideoView videoView;
+//    private ProgressBar bar;
+    private ImageView iv_dish_image, imgPlay;
+
     @SuppressLint("SetTextI18n")
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
+
         View view = mLayoutInflater.inflate(R.layout.item_dish_details_pager, container, false);
-        final ImageView iv_dish_image, imgPlay;
+
         iv_dish_image = view.findViewById(R.id.home_image);
         imgPlay = view.findViewById(R.id.item_video_play);
-        if (video.equalsIgnoreCase("no")){
-            imgPlay.setVisibility(View.GONE);
-        }
-        if (position>0){
-            imgPlay.setVisibility(View.GONE);
-        }
 
+         imgPlay.setVisibility(View.VISIBLE);
+//              iv_dish_image.setVisibility(View.VISIBLE);
+                Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
+                        .get(position)).into(iv_dish_image);
+
+       /* if(arr_.get(position).equals("video")){
+            initializePlayer();
+        }
+*/
         imgPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imgPlay.setVisibility(View.GONE);
-                dishDetailPlayClick.playVideo(position, "play");
+//                imgPlay.setVisibility(View.GONE);
+//                videoView.setVisibility(View.VISIBLE);
+//                iv_dish_image.setVisibility(View.GONE);
+
+
+//                initializePlayer();
+
+                                dishDetailPlayClick.playVideo(position, "play");
             }
         });
-        Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
-                .get(position)).into(iv_dish_image);
-        ((ViewPager)container).addView(view);
 
+        ((ViewPager)container).addView(view);
         return view;
     }
 
@@ -96,5 +125,19 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         return POSITION_NONE;
     }
 
+    private  String VIDEO_SAMPLE = "";
+    private int mCurrentPosition = 0;
 
+
+
+    private Uri getMedia(String mediaName) {
+        if (URLUtil.isValidUrl(mediaName)) {
+            // Media name is an external URL.
+            return Uri.parse(mediaName);
+        } else {
+            // Media name is a raw resource embedded in the app.
+            return Uri.parse("android.resource://" + activity.getPackageName() +
+                    "/raw/" + mediaName);
+        }
+    }
 }

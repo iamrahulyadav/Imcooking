@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.imcooking.activity.Sub.Chef.ChangePassword;
 import com.imcooking.activity.Sub.Foodie.ChefILove;
 import com.imcooking.activity.Sub.Foodie.EditProfile;
 import com.imcooking.activity.Sub.Foodie.FavoriteCusine;
@@ -65,7 +66,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private TextView tv_fullname, tv_phone_email;
-    private TextView tv_manage_address, tv_chef_i_love, tv_payment_method, tv_favorite_cuisine, tv_setting, tv_help, tv_edit;
+    private TextView tv_manage_address, tv_chef_i_love, tv_payment_method, tv_favorite_cuisine, tv_setting, tv_help,
+            tv_edit, tv_change_pass;
     private String str_fullname, str_phone_and_email, userid;
     private TinyDB tinyDB;
     private ImageView imgProfile;
@@ -85,6 +87,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         tv_setting = getView().findViewById(R.id.profile_edit_setting);
         tv_help = getView().findViewById(R.id.profile_edit_help);
         tv_edit = getView().findViewById(R.id.profile_edit);
+        tv_change_pass = getView().findViewById(R.id.profile_edit_change_pass);
 
         tv_manage_address.setOnClickListener(this);
         tv_chef_i_love.setOnClickListener(this);
@@ -93,6 +96,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         tv_setting.setOnClickListener(this);
         tv_help.setOnClickListener(this);
         tv_edit.setOnClickListener(this);
+        tv_change_pass.setOnClickListener(this);
     }
 
     private void getUserData(){
@@ -151,8 +155,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             startActivity(new Intent(getContext(), EditProfile.class));
             getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
 
-        } else{
-
+        } else if (v.getId() == R.id.profile_edit_change_pass){
+            startActivity(new Intent(getContext(), ChangePassword.class));
+            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
     }
 
@@ -170,7 +175,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
     private void getUserProfile(String str_id){
-        String request = "{\"user_id\":" + str_id + "\"}";
+        String request = "{\"user_id\":" + str_id + "}";
+        Log.d("MyRequest", request);
         try {
             JSONObject jsonObject = new JSONObject(request);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.GETPROFILE_PIC, getActivity(), new GetData.MyCallback() {

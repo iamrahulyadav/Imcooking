@@ -1,6 +1,9 @@
 package com.imcooking.fragment.chef.chefprofile;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +22,8 @@ import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.activity.main.setup.SignUpActivity;
 import com.imcooking.adapters.AdapterChefDishList;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.DishLikersFragment;
@@ -69,17 +74,11 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
     private LinearLayout layout_current_dish_no_record, layout_old_dish_no_record;
 
+    private TextView tv_current_counting, tv_old_counting;
+
     private void init(){
 
-/*
-        int i11 = new MainActivity().getSupportFragmentManager().getBackStackEntryCount();
-        String tag = new MainActivity().getSupportFragmentManager()
-                .getBackStackEntryAt(i11-1).getName();
-        if(tag.equals(new SearchFragment().getTag())){
-            Toast.makeText(getContext(), "Yes", Toast.LENGTH_SHORT).show();
-        }
-*/
-
+        createMyDialog();
 
         layout_current_dish_no_record = getView().findViewById(R.id.chef_dish_list_current_dish_no_record);
         layout_old_dish_no_record = getView().findViewById(R.id.chef_dish_list_old_dish_no_record);
@@ -139,6 +138,21 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
 
         viewPager_1.setAdapter(adapterChefDishListCurrent);
         viewPager_2.setAdapter(adapterChefDishListOld);
+
+
+        tv_current_counting = getView().findViewById(R.id.fragment_chef_dish_list_counting_current);
+        tv_old_counting = getView().findViewById(R.id.fragment_chef_dish_list_counting_old);
+
+        if(chef_dish_list_current != null && chef_dish_list_current.size() != 0) {
+            tv_current_counting.setText("(" + chef_dish_list_current.size() + ")");
+        } else {
+            tv_current_counting.setText("(0)");
+        }
+        if(chef_dish_list_old != null && chef_dish_list_old.size() != 0) {
+            tv_old_counting.setText("(" + chef_dish_list_old.size() + ")");
+        } else {
+            tv_old_counting.setText("(0)");
+        }
     }
 
     private void getMyData(){
@@ -149,22 +163,66 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         user_type = userDataBean.getUser_type();
         user_id = userDataBean.getUser_id() + "";
 
+        Log.d("UserData", loginData);
         if(user_type.equals("2")){
             tv_add_dish.setVisibility(View.GONE);
         }
+    }
+
+    private Dialog dialog;
+    private TextView tv_dialog, tv_ok_dialog, tv_cross_dialog;
+
+    private void createMyDialog(){
+
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_add_dish);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        tv_dialog = dialog.findViewById(R.id.dialog_add_dish_text);
+        tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
+        tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
+
+        tv_ok_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tv_cross_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
 
-        if(id == R.id.chef_dish_list_add_dish){
-            startActivity(new Intent(getContext(), ChefEditDish.class));
-            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
-        } else {
+        if(id == R.id.chef_dish_list_add_dish) {
+            if (ChefHome.chefProfileData1.getChef_data().getAddress().equals("") ||
+                    ChefHome.chefProfileData1.getChef_data().getAddress() == null) {
+
+                tv_dialog.setText(getResources().getString(R.string.dialog_add_dish_text_1));
+                dialog.show();
+            } else if(ChefHome.chefProfileData1.getChef_data().getCuisine_name().size() == 0) {
+                tv_dialog.setText(getResources().getString(R.string.dialog_add_dish_text_2));
+                dialog.show();
+            } else {
+                startActivityForResult(new Intent(getContext(), ChefEditDish.class), 105);
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        }else {
 
         }
     }
+
+    //    private Dialog dialog;
+//    private TextView tv_ok_dialog, tv_cross_dialog;
 
     @Override
     public void click_me_chef_dish_list(int position, String click_type) {
@@ -188,7 +246,7 @@ public class ChefDishListFragment extends Fragment implements View.OnClickListen
         try {
             JSONObject job = new JSONObject(s);
 
-            new GetData(getContext(), getActivity()).sendMyData(job, "dishlike", getActivity(), new GetData.MyCallback() {
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.DISH_LIKER, getActivity(), new GetData.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
 

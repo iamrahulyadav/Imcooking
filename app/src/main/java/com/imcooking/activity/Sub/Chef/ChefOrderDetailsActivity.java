@@ -2,7 +2,10 @@ package com.imcooking.activity.Sub.Chef;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +23,7 @@ import com.imcooking.adapters.AdapterFoodieMyOrderDetailList;
 import com.imcooking.adapters.ChefILoveAdatper;
 import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.utils.AppBaseActivity;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
@@ -40,6 +44,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_qyt, txt_price, txt_email, txt_pay_mode,txt_phone,txt_order_status,
             txt_order_id;
     private TinyDB tinyDB;
+    private NestedScrollView nestedScrollView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private Gson gson = new Gson();
 
@@ -65,6 +70,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
 
     private void init(){
 
+        nestedScrollView = findViewById(R.id.chef_order_list_scroll);
         recyclerView = findViewById(R.id.order_details_recycler);
         txt_chef_name = findViewById(R.id.item_foodie_my_order_chef);
         txt_date = findViewById(R.id.item_foodie_my_order_placed_date);
@@ -78,7 +84,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         txtAddress = findViewById(R.id.item_foodie_my_order_address);
         txt_phone = findViewById(R.id.item_foodie_my_order_foodie_phone);
         txt_order_status = findViewById(R.id.item_foodie_my_order_details_status);
-
+        nestedScrollView.setVisibility(View.GONE);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
@@ -87,17 +93,9 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_order_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (delivery_type.equals("1")){
-                        //1=delivery
-                        createDialog(delivery_type);
-                    } else if (delivery_type.equals("2")){
-                        //2=pickup
-
-                        createDialog(delivery_type);
-                    }
+                    createDialog(delivery_type);
                 }
             });
-
         }
 
         getOrderDetails();
@@ -119,6 +117,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                         @SuppressLint("SetTextI18n")
                         @Override
                         public void onSuccess(String result) {
+                            nestedScrollView.setVisibility(View.VISIBLE);
                             OrderDetailsData orderDetailsData = new OrderDetailsData();
                             orderDetailsData = new Gson().fromJson(result, OrderDetailsData.class);
                             if (orderDetailsData.getOrder_details()!=null){
@@ -150,6 +149,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     if (delivery_type.equals("1")){
                                         //1=delivery
                                         txt_order_type.setText("Delivery");
+                                        @SuppressLint("SimpleDateFormat")
                                         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                         Date myDate = null;
                                         try {
@@ -177,7 +177,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                             if (status.equals("0"))
                                                 txt_order_status.setText("New Order");
                                             else if (status.equals("1"))
-                                                txt_order_status.setText("Accept");
+                                                txt_order_status.setText("Accepted");
                                             else if (status.equals("2"))
                                                 txt_order_status.setText("Decline");
                                             else if (status.equals("3"))
@@ -185,7 +185,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                             else if (status.equals("4"))
                                                 txt_order_status.setText("Decline");
                                             else if (status.equals("5"))
-                                                txt_order_status.setText("On Way");
+                                                txt_order_status.setText("On The Way");
                                             else if (status.equals("8"))
                                                 txt_order_status.setText("Delivered");
                                             else if (status.equals("9"))
@@ -202,17 +202,18 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         }
     }
 
-    AdapterFoodieMyOrderDetailList myOrderDetailList;
     private void setOrderDetails(){
-        myOrderDetailList = new AdapterFoodieMyOrderDetailList(getApplicationContext(), orderDetailsBeans);
+        AdapterFoodieMyOrderDetailList myOrderDetailList = new AdapterFoodieMyOrderDetailList(getApplicationContext(),
+                orderDetailsBeans);
         recyclerView.setAdapter(myOrderDetailList);
     }
-    Dialog dialog;
+
+    private Dialog dialog;
     private void createDialog(String delivery_type){
         dialog = new Dialog(ChefOrderDetailsActivity.this);
         dialog.setContentView(R.layout.dialog_view_response);
         dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(null);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
         TextView txtAccept, txt_decline, txtreply, txtin_process, txt_ready, txt_on_way, txt_delivered, txt_not_delivered;
@@ -230,13 +231,16 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             dialog.findViewById(R.id.layout_accept_view).setVisibility(View.GONE);
             dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.VISIBLE);
             dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.VISIBLE);
+
         } else if (delivery_type.equals("2")){
             dialog.findViewById(R.id.layout_accept_view).setVisibility(View.VISIBLE);
             dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.VISIBLE);
             dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.VISIBLE);
         }
+
         dialog.findViewById(R.id.dialog_view_response_offer_price).setVisibility(View.GONE);
         dialog.findViewById(R.id.dialog_view_response_offer_edt).setVisibility(View.GONE);
+        dialog.findViewById(R.id.dialog_view_response_edtReply).setVisibility(View.GONE);
 
         txt_decline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,7 +263,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             public void onClick(View view) {
                 chef_status = "4";
                 updateStatus();
-
             }
         });
 
@@ -277,7 +280,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             public void onClick(View view) {
                 chef_status = "5";
                 updateStatus();
-
             }
         });
 
@@ -325,14 +327,30 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                 "}";
         Log.d("TAG", "updateStatus: "+s);
         try {
-            JSONObject jsonObject = new JSONObject(s);
+            final JSONObject jsonObject = new JSONObject(s);
 
             new GetData(getApplicationContext(), ChefOrderDetailsActivity.this).sendMyData(jsonObject,
                     GetData.CHEF_ACCEPT_REQUEST, ChefOrderDetailsActivity.this, new GetData.MyCallback() {
                         @Override
                         public void onSuccess(String result) {
-                            dialog.dismiss();
-                            Log.d(ChefOrderDetailsActivity.class.getName(), "Rakhi : "+result);
+
+                            try {
+                                JSONObject jsonObject1= new JSONObject(result);
+                                if(jsonObject1.getBoolean("status")){
+                                    if(jsonObject1.getString("msg").equals("chef status changed Successfully")){
+                                        dialog.dismiss();
+                                        finish();
+                                        Log.d(ChefOrderDetailsActivity.class.getName(), "Rakhi : "+result);
+
+                                    } else{
+                                        BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                    }
+                                } else{
+                                    BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
         } catch (JSONException e) {
