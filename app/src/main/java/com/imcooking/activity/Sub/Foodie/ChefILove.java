@@ -35,7 +35,7 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
     private Gson gson = new Gson();
     private ChefILoveAdatper chefILoveAdatper;
     private LinearLayout layoutNoRecord, layout_top;
-    private TextView txtShopNow, title;
+    private TextView  title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
         layout_top = findViewById(R.id.chef_i_love_layout_top);
         layoutNoRecord = findViewById(R.id.activity_chef_ilove_no_record_image);
         recyclerView = findViewById(R.id.activity_chef_ilove_recycler);
-        txtShopNow = findViewById(R.id.activity_chef_ilove_shop_now);
 
         Bundle bundle = new Bundle();
         bundle = getIntent().getExtras();
@@ -73,12 +72,7 @@ public class ChefILove extends AppBaseActivity implements ChefILoveAdatper.inter
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
 
         getChefLove(foodie_id);
-        txtShopNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
     }
 
     @Override

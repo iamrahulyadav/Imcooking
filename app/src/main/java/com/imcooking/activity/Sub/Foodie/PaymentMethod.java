@@ -1,5 +1,6 @@
 package com.imcooking.activity.Sub.Foodie;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentMethod extends AppBaseActivity implements View.OnClickListener{
+public class PaymentMethod extends AppCompatActivity implements View.OnClickListener{
     private RecyclerView cardRecyclerView;
     private TextView txtAddCard;
 
@@ -39,6 +40,7 @@ public class PaymentMethod extends AppBaseActivity implements View.OnClickListen
 
         init();
         getSavedcardList();
+
     }
 
 
@@ -64,7 +66,7 @@ public class PaymentMethod extends AppBaseActivity implements View.OnClickListen
     private List<SavedCardData.PaymentDetailsListBean>paymentDetailsListBeans ;
     private void getSavedcardList(){
         paymentDetailsListBeans = new ArrayList<>();
-        String foodie_id = "2";/*HomeFragment.foodie_id*/
+        String foodie_id =HomeFragment.foodie_id;
         String s ="{\"foodies_id\":\""+foodie_id+"\"\n" +
                 "\n" +
                 " }";
@@ -95,7 +97,7 @@ public class PaymentMethod extends AppBaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.activity_payment_method_txtAddCard:
-
+                startActivity(new Intent(PaymentMethod.this, AddCardActivity.class));
                 break;
         }
     }

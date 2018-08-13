@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment implements
     HomeBottomPagerAdapter homeBottomPagerAdapter;
     private TextView tv_cusine, txtCityName, txtSerach;
     private RecyclerView cuisinRecycler;
-    private LinearLayout layout, layout2;
+    private LinearLayout layout, layout2, search_layout;
     ViewPager bottomViewPager;
     ImageView imgCart, imgFilter;
     CuisionAdatper cuisionAdatper;
@@ -144,7 +144,7 @@ public class HomeFragment extends Fragment implements
 
         tv_count_latest = getView().findViewById(R.id.fragment_home_dish_count_latest);
         tv_count_choice = getView().findViewById(R.id.fragment_home_dish_count_choice);
-
+        search_layout = getView().findViewById(R.id.fragment_home_search_linearlayout);
         iv_arrow_latest = getView().findViewById(R.id.fragment_home_latest_arrow);
         iv_arrow_choice = getView().findViewById(R.id.fragment_home_choice_arrow);
 
@@ -168,6 +168,7 @@ public class HomeFragment extends Fragment implements
         imgFilter.setOnClickListener(this);
         txtSerach.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
+        search_layout.setOnClickListener(this);
         cuisinRecycler = getView().findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -553,7 +554,10 @@ public class HomeFragment extends Fragment implements
         } else if (v.getId()==R.id.fragment_home_search_img){
             BaseClass.callFragment1(new SearchFragment(), SearchFragment.class.getName()
                     , getFragmentManager());
-        } else {}
+        } else if (v.getId()==R.id.fragment_home_search_linearlayout){
+            BaseClass.callFragment1(new SearchFragment(), SearchFragment.class.getName()
+                    , getFragmentManager());
+        }
     }
 
     @Override
