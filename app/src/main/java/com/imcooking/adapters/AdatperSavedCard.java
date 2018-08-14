@@ -26,21 +26,44 @@ public class AdatperSavedCard extends RecyclerView.Adapter<AdatperSavedCard.MyVi
 
     private Context context;
     private List<SavedCardData.PaymentDetailsListBean>paymentDetailsListBeans ;
+    private AdapterSaveCardInterface saveCardInterface;
 
-    public AdatperSavedCard(Context context, List<SavedCardData.PaymentDetailsListBean> paymentDetailsListBeans) {
+    public AdatperSavedCard(Context context, List<SavedCardData.PaymentDetailsListBean> paymentDetailsListBeans,
+                            AdapterSaveCardInterface saveCardInterface) {
         this.context = context;
         this.paymentDetailsListBeans = paymentDetailsListBeans;
+        this.saveCardInterface = saveCardInterface;
+    }
+
+    public interface AdapterSaveCardInterface{
+        void clickCard(String edit, int pos);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-    public ImageView img;
-    private TextView txtCardNo, txtCardDelete;
+    public ImageView txtCardDelete, iv_edit;
+    private TextView txtCardNo;
 
         public MyViewHolder(View view) {
             super(view);
             txtCardDelete = view.findViewById(R.id.item_saved_card_delete);
+            iv_edit = view.findViewById(R.id.item_saved_card_edit);
             txtCardNo = view.findViewById(R.id.item_saved_card_no);
+
+            iv_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveCardInterface.clickCard("edit",getAdapterPosition());
+                }
+            });
+
+            txtCardDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveCardInterface.clickCard("delete", getAdapterPosition());
+                }
+            });
+
     }
 
     }
@@ -55,7 +78,9 @@ public class AdatperSavedCard extends RecyclerView.Adapter<AdatperSavedCard.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.txtCardNo.setText(paymentDetailsListBeans.get(position).getPayment_details_card_number()+"");
+
+        String str = getEncrypted(paymentDetailsListBeans.get(position).getPayment_details_card_number());
+        holder.txtCardNo.setText(str + "");
 
     }
 
@@ -63,5 +88,11 @@ public class AdatperSavedCard extends RecyclerView.Adapter<AdatperSavedCard.MyVi
     public int getItemCount() {
         return paymentDetailsListBeans.size();
 
+    }
+
+    private String getEncrypted(String s){
+
+        String str = s.substring(0, 2) + "XXXXXXXXXXXX" + s.substring(14);
+        return str;
     }
 }

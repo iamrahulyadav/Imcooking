@@ -1,4 +1,4 @@
-package com.imcooking.activity.Sub.Foodie;
+package com.imcooking;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -8,8 +8,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,44 +19,85 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.imcooking.MainActivity1;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
-import com.imcooking.R;
+import com.imcooking.activity.Sub.Foodie.Payment1Activity;
 import com.imcooking.activity.home.MainActivity;
-import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
+import com.paypal.android.sdk.payments.PayPalItem;
+import com.paypal.android.sdk.payments.PayPalOAuthScopes;
 import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalPaymentDetails;
 import com.paypal.android.sdk.payments.PayPalProfileSharingActivity;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.paypal.android.sdk.payments.ShippingAddress;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Payment1Activity extends AppBaseActivity {
+/**
+ *
+ * THIS FILE IS OVERWRITTEN BY `androidSDK/src/<general|partner>sampleAppJava.
+ * ANY UPDATES TO THIS FILE WILL BE REMOVED IN RELEASES.
+ *
+ * Basic sample using the SDK to make a payment or consent to future payments.
+ *
+ * For sample mobile backend interactions, see
+ * https://github.com/paypal/rest-api-sdk-python/tree/master/samples/mobile_backend
+ */
+
+public class MainActivity1 extends AppCompatActivity {
     private TextView txt_price, txt_place_order;
     private PlaceOrder placeOrder = new PlaceOrder();
     private Gson gson = new Gson();
     private String payment_type="cod", chef_name;
     private RadioGroup radioGroup;
 
+    private static final String TAG = "paymentExample";
+    /**
+     * - Set to PayPalConfiguration.ENVIRONMENT_PRODUCTION to move real money.
+     *
+     * - Set to PayPalConfiguration.ENVIRONMENT_SANDBOX to use your test credentials
+     * from https://developer.paypal.com
+     *
+     * - Set to PayPalConfiguration.ENVIRONMENT_NO_NETWORK to kick the tires
+     * without communicating to PayPal's servers.
+     */
+    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_NO_NETWORK;
+
+    // note that these credentials will differ between live & sandbox environments.
+    private static final String CONFIG_CLIENT_ID = "AYGjWZQjVH1JkxtJv28UEE7jEYXlA6nEHtV5FNRt5pse0pi4dPrQ84PRU7R76prbxuwvY2CJGG-NqPbm";
+    //"credentials from developer.paypal.com";
+
+    private static final int REQUEST_CODE_PAYMENT = 1;
+    private static final int REQUEST_CODE_FUTURE_PAYMENT = 2;
+    private static final int REQUEST_CODE_PROFILE_SHARING = 3;
+
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(CONFIG_ENVIRONMENT)
+            .clientId(CONFIG_CLIENT_ID)
+            // The following are only used in PayPalFuturePaymentActivity.
+            .merchantName("Example Merchant")
+            .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
+            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment);
-
+        setContentView(R.layout.activity_main1);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            BaseClass.setLightStatusBar(getWindow().getDecorView(),Payment1Activity.this);
+            BaseClass.setLightStatusBar(getWindow().getDecorView(),MainActivity1.this);
         }
         if (getIntent().hasExtra("order_details")){
             placeOrder = gson.fromJson(getIntent().getStringExtra("order_details"), PlaceOrder.class);
@@ -64,12 +106,13 @@ public class Payment1Activity extends AppBaseActivity {
             chef_name = getIntent().getStringExtra("chef_name");
         }
         init();
-    }
-
-    private void init(){
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
+    }
+
+
+    private void init(){
         txt_price = findViewById(R.id.activity_payment_total_price);
         txt_place_order = findViewById(R.id.activity_payment_btn_place);
         radioGroup = findViewById(R.id.activity_payment_radiogroup);
@@ -96,115 +139,31 @@ public class Payment1Activity extends AppBaseActivity {
                 if(payment_type.equals("cod")) {
                     makePayment(placeOrder);
                 } else {
-                    myPayPal();
+                    onBuyPressed();
                 }
             }
         });
 
     }
 
-    private void makePayment(PlaceOrder placeOrder ){
-        Log.d(Payment1Activity.class.getName(), "Rakhi "+gson.toJson(placeOrder));
 
-        try {
-            JSONObject jsonObject = new JSONObject(gson.toJson(placeOrder));
-            new GetData(getApplicationContext(), Payment1Activity.this).sendMyData(jsonObject, GetData.PLACE_ORDER,
-                    Payment1Activity.this, new GetData.MyCallback() {
-                @Override
-                public void onSuccess(final String result) {
-                    /*{"status":true,"booking_id":"CO14061939577511","msg":"Dish Booking Successfully"}*/
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                JSONObject jsonObject1 = new JSONObject(result);
-                                if (jsonObject1.getBoolean("status")){
-                                    createMyDialog(jsonObject1.getString("booking_id"));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            Log.d(Payment1Activity.class.getName(), "Rakhi "+result);
-                        }
-                    });
-                }
-            });
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    Dialog dialog ;
-    @SuppressLint("SetTextI18n")
-    private void createMyDialog(final String booking_id){
-        dialog= new Dialog(Payment1Activity.this);
-        dialog.setContentView(R.layout.dialog_add_to_cart);
-
-      // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        ImageView imgDia = dialog.findViewById(R.id.imageDialog);
-        TextView txtDialog = dialog.findViewById(R.id.imgdialog_text);
-        TextView txtOk = dialog.findViewById(R.id.txtdialog_ok);
-
-        imgDia.setImageResource(R.drawable.ordersuccess);
-
-        txtDialog.setText("Your Order has been Successfully Place with \"" +chef_name+"\" ");
-
-        TinyDB tinyDB = new TinyDB(getApplicationContext());
-        int i = Integer.parseInt(tinyDB.getString("cart_count"));
-        tinyDB.putString("cart_count", (i - 1) + "");
-
-        dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setCancelable(true);
-        dialog.show();
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-        txtOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              /*  startActivity(new Intent(Payment1Activity.this, ChefOrderDetailsActivity.class)
-                        .putExtra("order_id",booking_id));*/
-
-                startActivity(new Intent(Payment1Activity.this, MainActivity.class).putExtra("pay","payorder"));
-            }
-        });
-    }
-
-
-
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
-
-    private static final String CONFIG_CLIENT_ID = "AYGjWZQjVH1JkxtJv28UEE7jEYXlA6nEHtV5FNRt5pse0pi4dPrQ84PRU7R76prbxuwvY2CJGG-NqPbm";
-
-    private static final int REQUEST_CODE_PAYMENT = 1;
-    private static final int REQUEST_CODE_FUTURE_PAYMENT = 2;
-    private static final int REQUEST_CODE_PROFILE_SHARING = 3;
-
-    private static PayPalConfiguration config = new PayPalConfiguration()
-            .environment(CONFIG_ENVIRONMENT)
-            .clientId(CONFIG_CLIENT_ID)
-            // The following are only used in PayPalFuturePaymentActivity.
-            .merchantName("Example Merchant")
-            .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
-            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
-
-    private void myPayPal(){
-
+    public void onBuyPressed() {
+        /*
+         * PAYMENT_INTENT_SALE will cause the payment to complete immediately.
+         * Change PAYMENT_INTENT_SALE to
+         *   - PAYMENT_INTENT_AUTHORIZE to only authorize payment and capture funds later.
+         *   - PAYMENT_INTENT_ORDER to create a payment for authorization and capture
+         *     later via calls from your server.
+         *
+         * Also, to include additional payment details and an item list, see getStuffToBuy() below.
+         */
         PayPalPayment thingToBuy = getThingToBuy(PayPalPayment.PAYMENT_INTENT_SALE);
 
         /*
          * See getStuffToBuy(..) for examples of some available payment options.
          */
 
-        Intent intent = new Intent(Payment1Activity.this, PaymentActivity.class);
+        Intent intent = new Intent(MainActivity1.this, PaymentActivity.class);
 
         // send the same configuration for restart resiliency
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -212,12 +171,19 @@ public class Payment1Activity extends AppBaseActivity {
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
 
         startActivityForResult(intent, REQUEST_CODE_PAYMENT);
-
     }
 
     private PayPalPayment getThingToBuy(String paymentIntent) {
-        return new PayPalPayment(new BigDecimal(placeOrder.getTotal_price()), "GBP", "Make Payment",
+        return new PayPalPayment(new BigDecimal(placeOrder.getTotal_price()), "GBP", "sample item",
                 paymentIntent);
+    }
+
+
+    protected void displayResultText(String result) {
+        Toast.makeText(
+                getApplicationContext(),
+                result, Toast.LENGTH_LONG)
+                .show();
     }
 
     @Override
@@ -225,27 +191,34 @@ public class Payment1Activity extends AppBaseActivity {
         if (requestCode == REQUEST_CODE_PAYMENT) {
             if (resultCode == Activity.RESULT_OK) {
                 PaymentConfirmation confirm =
-                        data.getParcelableExtra(com.paypal.android.sdk.payments.PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                        data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirm != null) {
                     try {
-                        Log.i("MyPayPal", confirm.toJSONObject().toString(4));
-                        Log.i("MyPayPal", confirm.getPayment().toJSONObject().toString(4));
+                        Log.i(TAG, confirm.toJSONObject().toString(4));
+                        Log.i(TAG, confirm.getPayment().toJSONObject().toString(4));
                         JSONObject jsonObject = new JSONObject(confirm.toJSONObject().toString(4));
                         JSONObject  jsonObject1 = jsonObject.getJSONObject("response");
                         String transaction_id = jsonObject1.getString("id");
                         placeOrder.setTransaction_id(transaction_id);
                         makePayment(placeOrder);
-                        displayResultText("PaymentConfirmation info received from PayPal");
-
+                        /**
+                         *  TODO: send 'confirm' (and possibly confirm.getPayment() to your server for verification
+                         * or consent completion.
+                         * See https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                         * for more details.
+                         *
+                         * For sample mobile backend interactions, see
+                         * https://github.com/paypal/rest-api-sdk-python/tree/master/samples/mobile_backend
+                         */
                     } catch (JSONException e) {
-                        Log.e("MyPayPal", "an extremely unlikely failure occurred: ", e);
+                        Log.e(TAG, "an extremely unlikely failure occurred: ", e);
                     }
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                Log.i("MyPayPal", "The user canceled.");
-            } else if (resultCode == com.paypal.android.sdk.payments.PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Log.i(TAG, "The user canceled.");
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
                 Log.i(
-                        "MyPayPal",
+                        TAG,
                         "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
             }
         } else if (requestCode == REQUEST_CODE_FUTURE_PAYMENT) {
@@ -301,12 +274,79 @@ public class Payment1Activity extends AppBaseActivity {
         }
     }
 
-    protected void displayResultText(String result) {
-        Toast.makeText(
-                getApplicationContext(),
-                result, Toast.LENGTH_LONG)
-                .show();
+    private void makePayment(PlaceOrder placeOrder ){
+
+        try {
+            JSONObject jsonObject = new JSONObject(gson.toJson(placeOrder));
+            new GetData(getApplicationContext(), MainActivity1.this).sendMyData(jsonObject, GetData.PLACE_ORDER, MainActivity1.this, new GetData.MyCallback() {
+                @Override
+                public void onSuccess(final String result) {
+                    /*{"status":true,"booking_id":"CO14061939577511","msg":"Dish Booking Successfully"}*/
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject1 = new JSONObject(result);
+                                if (jsonObject1.getBoolean("status")){
+                                    createMyDialog(jsonObject1.getString("booking_id"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d(Payment1Activity.class.getName(), "Rakhi "+result);
+                        }
+                    });
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
+    private Dialog dialog ;
+    @SuppressLint("SetTextI18n")
+    private void createMyDialog(final String booking_id){
+        dialog= new Dialog(MainActivity1.this);
+        dialog.setContentView(R.layout.dialog_add_to_cart);
+
+        // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        ImageView imgDia = dialog.findViewById(R.id.imageDialog);
+        TextView txtDialog = dialog.findViewById(R.id.imgdialog_text);
+        TextView txtOk = dialog.findViewById(R.id.txtdialog_ok);
+
+        imgDia.setImageResource(R.drawable.ordersuccess);
+
+        txtDialog.setText("Your Order has been Successfully Place with \"" +chef_name+"\" ");
+
+        TinyDB tinyDB = new TinyDB(getApplicationContext());
+        int i = Integer.parseInt(tinyDB.getString("cart_count"));
+        tinyDB.putString("cart_count", (i - 1) + "");
+
+        dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCancelable(true);
+        dialog.show();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        txtOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              /*  startActivity(new Intent(Payment1Activity.this, ChefOrderDetailsActivity.class)
+                        .putExtra("order_id",booking_id));*/
+
+                startActivity(new Intent(MainActivity1.this, MainActivity.class).putExtra("pay","payorder"));
+            }
+        });
+    }
+
+
 
     private void sendAuthorizationToServer(PayPalAuthorization authorization) {
 
@@ -324,5 +364,11 @@ public class Payment1Activity extends AppBaseActivity {
 
     }
 
-}
 
+    @Override
+    public void onDestroy() {
+        // Stop service when done
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
+    }
+}

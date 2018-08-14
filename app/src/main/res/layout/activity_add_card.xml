@@ -16,6 +16,7 @@
         android:text="Add Card"
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
+        android:id="@+id/activity_add_card_title"
         android:gravity="center_vertical"
         android:padding="10dp"
         android:layout_marginLeft="40dp"/>
@@ -160,6 +161,7 @@
             android:layout_weight="1"
             android:layout_height="45dp"
             android:text="SAVE"
+            android:onClick="saveCard"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:layout_marginRight="10dp"

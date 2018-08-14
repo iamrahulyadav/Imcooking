@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context=".activity.Sub.Foodie.Payment1Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Payment"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginLeft="40dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_4"/>
+
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            style="@style/MyRadioButtonStyle"
+            android:id="@+id/activity_payment_radiogroup"
+            android:layout_margin="15dp">
+            <RadioButton
+                style="@style/MyRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Paypal"
+                android:id="@+id/activity_payment_radio_paypal"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:layout_margin="5dp"
+                android:background="@color/view_6"/>
+
+            <RadioButton
+                style="@style/MyRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/activity_payment_radio_cod"
+                android:text="COD"
+                android:checked="true"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.imcooking.customtext.CustomTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8,9999"
+                android:textColor="@color/colorBlack"
+                android:id="@+id/activity_payment_total_price"/>
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlue"
+                android:text="View Price Detials"
+                android:visibility="gone"
+                android:id="@+id/activity_payment_view_price_detail"/>
+        </LinearLayout>
+
+        <com.imcooking.customtext.CustomTextButtonTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/activity_payment_btn_place"
+            android:text="@string/activity_payment_txt_place_order"
+            android:background="@drawable/button_bg"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

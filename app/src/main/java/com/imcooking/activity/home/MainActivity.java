@@ -174,7 +174,7 @@ public class MainActivity extends AppBaseActivity
             }
 //            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
         } else if (getIntent().hasExtra("pay")) {
-            BaseClass.callFragment(new FoodieMyOrderFragment(), FoodieMyOrderFragment.class.getName(), getSupportFragmentManager());
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FoodieMyOrderFragment()).commit();
         } else { // 2
 //            setTheme(R.style.AppTheme1);
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());

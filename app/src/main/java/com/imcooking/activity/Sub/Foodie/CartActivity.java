@@ -40,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.imcooking.MainActivity1;
 import com.imcooking.Model.ApiRequest.AddToCart;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
 import com.imcooking.Model.api.response.AddCart;
@@ -408,6 +409,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         PlaceOrder placeOrder = new PlaceOrder();
         Date currentTime = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = format.format(currentTime);
         placeOrder.setChef_id(chef_id);
@@ -422,7 +424,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         placeOrder.setBookdate(date);
         placeOrder.setPayment_type("");
         placeOrder.setTransaction_id("COD");
-        startActivity(new Intent(CartActivity.this, Payment1Activity.class)
+        startActivity(new Intent(CartActivity.this, MainActivity1.class)
                 .putExtra("order_details", new Gson().toJson(placeOrder))
                 .putExtra("chef_name", txtChef_Name.getText().toString().trim()));
 

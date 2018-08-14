@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,7 +29,7 @@ import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
-public class LoginActivity extends AppBaseActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     LinearLayout layout;
     TextView txtRegister, txtLogin;
     private EditText edt_uname, edt_pass;
@@ -42,7 +43,6 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorBlack));
         }
@@ -74,7 +74,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
     }
 
-    private void createMyDialog(){
+    private void createMyDialog() {
 
         dialog = new Dialog(LoginActivity.this);
         dialog.setContentView(R.layout.dialog_verification);

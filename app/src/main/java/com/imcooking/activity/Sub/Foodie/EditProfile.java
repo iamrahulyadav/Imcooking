@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -60,7 +61,7 @@ import java.net.URLConnection;
 
 import okhttp3.internal.Util;
 
-public class EditProfile extends AppBaseActivity {
+public class EditProfile extends AppCompatActivity {
     private ImageView imgProfile;
     private JSONObject jsonData;
 
