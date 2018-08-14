@@ -108,8 +108,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         getMyintentData();
 
         userDataBean = new ApiResponse.UserDataBean();
@@ -122,13 +120,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
 
         init();
-/*
-        getchefProfile();
-        getCuisines();
-*/
-//        getUserProfile(foodie_id);
 
-//        setMyData();
     }
 
     private void getMyintentData() {

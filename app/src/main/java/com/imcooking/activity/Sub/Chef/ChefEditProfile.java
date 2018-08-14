@@ -67,9 +67,9 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     //    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
     public static int SELECT_LOC =2;
-    private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about, edt_phn;
+    private EditText edt_name, edt_address, edt_city,  edt_zipcoede, edt_about, edt_phn;
     private Spinner sp_miles/*, sp_cuisine*/;
-    private TextView tv_select_cuisine;
+    private TextView tv_select_cuisine,edt_email;
     private SwitchCompat /*sw_notification,*/ sw_available;
     private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles,
             str_cuisine = "Indian Food"/*, str_notification*/,
@@ -86,7 +86,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme1);
+      //  setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_chef_edit_profile);
 
         init();
