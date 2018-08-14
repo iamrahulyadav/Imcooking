@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".activity.Sub.Chef.ChefOrderDetailsActivity">
 
-    <TextView
+    <com.imcooking.customtext.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:id="@+id/chef_edit_dish_title"
@@ -169,12 +169,12 @@
                             android:visibility="visible"
                             android:id="@+id/item_foodie_my_order_details_status"
                             android:textColor="@color/colorWhite"
-                            android:textSize="10sp"
+                            android:textSize="@dimen/smallsize"
                             android:background="@drawable/shape_green_background"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
-                            android:paddingTop="3dp"
-                            android:paddingBottom="3dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
                             android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>

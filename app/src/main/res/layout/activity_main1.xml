@@ -80,16 +80,17 @@
             <com.imcooking.customtext.CustomTextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8,9999"
                 android:textColor="@color/colorBlack"
                 android:id="@+id/activity_payment_total_price"/>
+
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlue"
-                android:text="View Price Detials"
+                android:text="View Price Details"
                 android:visibility="gone"
                 android:id="@+id/activity_payment_view_price_detail"/>
+
         </LinearLayout>
 
         <com.imcooking.customtext.CustomTextButtonTextView

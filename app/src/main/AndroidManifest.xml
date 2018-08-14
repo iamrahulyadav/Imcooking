@@ -72,7 +72,7 @@
         <activity android:name=".activity.Sub.Foodie.Help1" />
         <activity
             android:name=".activity.Sub.Foodie.EditProfile"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".activity.Sub.Foodie.ChefProfile"
             android:windowSoftInputMode="stateVisible|adjustResize" />
@@ -87,7 +87,7 @@
         <activity android:name=".activity.Sub.Foodie.OtherDishDishActivity" />
         <activity
             android:name=".activity.Sub.Foodie.AddAddressActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity android:name=".activity.Sub.Foodie.SelectLocActivity" />
         <activity android:name=".activity.Sub.Foodie.CartActivity" />
         <activity

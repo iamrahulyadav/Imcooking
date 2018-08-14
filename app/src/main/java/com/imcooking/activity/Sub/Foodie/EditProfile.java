@@ -68,19 +68,19 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme1);
+    //    setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_edit_profile);
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorBlack));
         }
 
         init();
         getUserData();
     }
 
-    private TextView tv_fullname, tv_email, tv_phone, btn;
-    private EditText edt_full_name, edt_email, edt_phone;
+    private TextView tv_fullname, tv_email, tv_phone, edt_email,btn;
+    private EditText edt_full_name,  edt_phone;
     private String str_id, str_uname;
     private ProgressBar progressBar;
 
@@ -146,9 +146,8 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-
     }
+
     JSONObject jsonObject;
 
     public void foodie_profile_update(View view){

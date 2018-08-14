@@ -96,13 +96,8 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_add_address);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            BaseClass.setLightStatusBar(getWindow().getDecorView(),AddAddressActivity.this);
-            }
         mContext = this;
         tinyDB = new TinyDB(mContext);
         String  login_data = tinyDB.getString("login_data");
@@ -112,7 +107,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            /*Toast.makeText(getContext(), "...", Toast.LENGTH_SHORT).show();*/
             ActivityCompat.requestPermissions(AddAddressActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     1);
