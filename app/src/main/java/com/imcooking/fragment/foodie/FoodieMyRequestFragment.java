@@ -176,6 +176,8 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         rv.setAdapter(adatperFoodieMyRequest);
     }
 
+    private RecyclerView dialog_chat_rv;
+
     private void createChatDialog(){
         final Dialog dialog_chat = new Dialog(getContext());
         dialog_chat.setContentView(R.layout.dialog_chef_chat);
@@ -189,13 +191,26 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
             @Override
             public void onClick(View view) {
                 BaseClass.showToast(getContext(), "Reply Sent");
-                dialog_chat.dismiss();
+
+//                dialog_chat.dismiss();
             }
         });
+
+        dialog_chat_rv = dialog_chat.findViewById(R.id.dialog_chat_recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        dialog_chat_rv.setLayoutManager(layoutManager);
+
+        getConversationDetails();
+
         dialog_chat.show();
     }
 
-/*
+    private void getConversationDetails(){
+
+    }
+
+
+    /*
     @Override
     public void viewResponse(int position) {
         if(requestDishChefDetailsBeans.get(position).getConversation_details().size()>0) {
@@ -347,6 +362,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
 
     }
 
+    // No Use
     private void sendreply(){
         if (msg.isEmpty()){
             msg = " ";

@@ -153,12 +153,6 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
             }
         }
 
-
-
-
-
-
-
         holder.txt_name.setText(list.get(position).getChef_name());
         holder.txt_address.setText(list.get(position).getChef_address());
         holder.txt_email.setText(list.get(position).getChef_email());

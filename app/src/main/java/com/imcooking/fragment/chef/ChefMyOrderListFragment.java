@@ -56,7 +56,7 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-         View view= inflater.inflate(R.layout.fragment_chef_order_list, container, false);
+        View view= inflater.inflate(R.layout.fragment_chef_order_list, container, false);
         init(view);
         return view;
     }

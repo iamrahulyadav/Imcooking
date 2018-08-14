@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -415,6 +416,7 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         }
     }
 
+    private RecyclerView dialog_chat_rv;
     private void createChatDialog(){
         final Dialog dialog_chat = new Dialog(getContext());
         dialog_chat.setContentView(R.layout.dialog_chef_chat);
@@ -431,6 +433,10 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                 dialog_chat.dismiss();
             }
         });
+
+        dialog_chat_rv = dialog_chat.findViewById(R.id.dialog_chat_recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        dialog_chat_rv.setLayoutManager(layoutManager);
 
         dialog_chat.show();
     }
@@ -464,4 +470,3 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         }
     }
 }
-
