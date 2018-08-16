@@ -124,6 +124,16 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
                 holder.layout_offered_price.setVisibility(View.VISIBLE);
                 holder.tv_offered_price.setText("Price Offered:- £" + list.get(position).getRequest_price());
 
+                if(list.get(position).getFoodie_response() != null){
+                    if(list.get(position).getFoodie_response().equals("2")){
+                        holder.tv_status.setVisibility(View.VISIBLE);
+                        holder.tv_status.setText("Accepted");
+                        holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+                    } else if(list.get(position).getFoodie_response().equals("1")){
+
+                    }
+                }
+
             } else if (list.get(position).getChef_response().equals("0")) {
 //                holder.tv_decline.setVisibility(View.VISIBLE);
 //                holder.tv_offer.setVisibility(View.VISIBLE);
@@ -133,6 +143,7 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             }
         }
 
+/*
         if(list.get(position).getFoodie_response() != null){
             if(list.get(position).getFoodie_response().equals("2")){
                 holder.tv_status.setVisibility(View.VISIBLE);
@@ -142,6 +153,7 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
 
             }
         }
+*/
 
 
 
