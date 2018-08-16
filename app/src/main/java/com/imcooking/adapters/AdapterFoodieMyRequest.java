@@ -113,6 +113,14 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
        // FoodieMyRequest foodie=new FoodieMyRequest();
 
+        if(list.get(position).getConversation_details()!=null){
+            if(list.get(position).getConversation_details().size()>0){
+                holder.tv_reply.setVisibility(View.VISIBLE);
+            } else{
+                holder.tv_reply.setVisibility(View.GONE);
+            }
+        }
+
         if(list.get(position).getChef_response()!=null) {
             if (list.get(position).getChef_response().equals("0")){
                 holder.txt_status.setText("New Request");
@@ -134,6 +142,14 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
                 if(list.get(position).getOffered_price()!=null){
                     holder.tv_offered_price.setText("Price Offered:- £" + list.get(position).getOffered_price());
                 }
+                if(list.get(position).getFoodie_response() != null){
+                    if(list.get(position).getFoodie_response().equals("2")){
+                        holder.layout_accept_decline.setVisibility(View.GONE);
+                    } else if (list.get(position).getFoodie_response().equals("1")){
+                        holder.layout_accept_decline.setVisibility(View.VISIBLE);
+                    } else {}
+                }
+
             } else if(list.get(position).getChef_response().equals("2")) {
                 holder.txt_status.setText("Declined");
                 holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorRed));
@@ -145,20 +161,16 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
             }
         }
 
-        if(list.get(position).getConversation_details()!=null){
-            if(list.get(position).getConversation_details().size()>0){
-                holder.tv_reply.setVisibility(View.VISIBLE);
-            } else{
-                holder.tv_reply.setVisibility(View.GONE);
-            }
+/*
+        if(list.get(position).getFoodie_response() != null){
+            if(list.get(position).getFoodie_response().equals("2")){
+                holder.layout_accept_decline.setVisibility(View.GONE);
+            } else if (list.get(position).getFoodie_response().equals("1")){
+                holder.layout_accept_decline.setVisibility(View.VISIBLE);
+
+            } else {}
         }
-
-
-
-
-
-
-
+*/
         holder.txt_name.setText(list.get(position).getChef_name());
         holder.txt_address.setText(list.get(position).getChef_address());
         holder.txt_email.setText(list.get(position).getChef_email());

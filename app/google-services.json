@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "855294649405",
+    "firebase_url": "https://imcooking-ebe64.firebaseio.com",
+    "project_id": "imcooking-ebe64",
+    "storage_bucket": "imcooking-ebe64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855294649405:android:ccdab1343c1292eb",
+        "android_client_info": {
+          "package_name": "com.imcooking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855294649405-88v4c374aj7ii0k3a5s4ljnogsvbl5eo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFe_cEWNtyqJ0wI_M9cj6pVUXcR3VnlkY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

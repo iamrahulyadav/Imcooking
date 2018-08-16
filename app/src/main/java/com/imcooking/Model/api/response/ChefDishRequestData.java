@@ -58,6 +58,16 @@ public class ChefDishRequestData {
         private String chef_response;
         private String request_price;
 
+        public String getFoodie_response() {
+            return foodie_response;
+        }
+
+        public void setFoodie_response(String foodie_response) {
+            this.foodie_response = foodie_response;
+        }
+
+        private String foodie_response;
+
         public String getRequest_price() {
             return request_price;
         }

@@ -135,6 +135,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private ImageView iv_settings, cart_image, iv_settings_1;
 
     private TextView tv_count;
+
     private void init() {
         cartFrameLayout = getView().findViewById(R.id.fragment_chef_cart_icon_layout);
         tv_count  =  getView().findViewById(R.id.chef_home_cart_count);

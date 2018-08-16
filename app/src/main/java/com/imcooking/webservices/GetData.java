@@ -91,6 +91,8 @@ public class GetData {
     public static String CHEF_DECLINE = "checf_decline";
     public static String CHEF_OFFER_PRICE = "checf_offer_price";
     public static String FOODIE_DECLINE = "foodie_decline";
+    public static String CHAT_DISPLAY = "conversation_chat_display";
+    public static String FOODIE_ACCEPT = "foodie_accept";
 
 
     public GetData(final Context context, Activity activity) {

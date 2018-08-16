@@ -4,9 +4,10 @@ import java.util.List;
 
 public class ConversationData {
 
+
     /**
      * status : true
-     * conversation_msg : [{"conversation_sender_id":104,"conversation_request_id":2,"conversation_reciver_id":72,"conversation_message":"gud nd u","conversation_offer_price":"100.00","conversation_staus":"1","conversation_date":"06/20/2018 09:05:51 am"},{"conversation_sender_id":104,"conversation_request_id":2,"conversation_reciver_id":72,"conversation_message":"gud nd u","conversation_offer_price":"100.00","conversation_staus":"1","conversation_date":"06/20/2018 08:55:51 am"},{"conversation_sender_id":104,"conversation_request_id":2,"conversation_reciver_id":72,"conversation_message":"gud nd u","conversation_offer_price":"100.00","conversation_staus":"1","conversation_date":"06/20/2018 07:18:25 am"},{"conversation_sender_id":104,"conversation_request_id":2,"conversation_reciver_id":72,"conversation_message":"gud nd ","conversation_offer_price":"100.00","conversation_staus":"1","conversation_date":"06/13/2018 10:19:08 am"},{"conversation_sender_id":104,"conversation_request_id":2,"conversation_reciver_id":72,"conversation_message":"gud nd u","conversation_offer_price":"100.00","conversation_staus":"1","conversation_date":"06/13/2018 10:10:55 am"}]
+     * conversation_msg : [{"conversation_sender_id":10,"conversation_request_id":4,"conversation_reciver_id":21,"conversation_message":" ","conversation_staus":"yes","conversation_date":"08/09/2018 04:36:23 pm"},{"conversation_sender_id":21,"conversation_request_id":4,"conversation_reciver_id":10,"conversation_message":" ","conversation_staus":"yes","conversation_date":"08/07/2018 07:08:53 pm"},{"conversation_sender_id":21,"conversation_request_id":4,"conversation_reciver_id":10,"conversation_message":"thanks tony","conversation_staus":"reply","conversation_date":"08/07/2018 07:08:42 pm"},{"conversation_sender_id":10,"conversation_request_id":4,"conversation_reciver_id":21,"conversation_message":" ","conversation_staus":"yes","conversation_date":"08/07/2018 07:05:11 pm"},{"conversation_sender_id":10,"conversation_request_id":4,"conversation_reciver_id":21,"conversation_message":"hi, thank you. Will get it done","conversation_staus":"reply","conversation_date":"08/07/2018 07:04:40 pm"},{"conversation_sender_id":10,"conversation_request_id":4,"conversation_reciver_id":21,"conversation_message":"hi, thank you. Will get it done","conversation_staus":"yes","conversation_date":"08/07/2018 07:04:33 pm"}]
      */
 
     private boolean status;
@@ -30,44 +31,42 @@ public class ConversationData {
 
     public static class ConversationMsgBean {
         /**
-         * conversation_sender_id : 104
-         * conversation_request_id : 2
-         * conversation_reciver_id : 72
-         * conversation_message : gud nd u
-         * conversation_offer_price : 100.00
-         * conversation_staus : 1
-         * conversation_date : 06/20/2018 09:05:51 am
+         * conversation_sender_id : 10
+         * conversation_request_id : 4
+         * conversation_reciver_id : 21
+         * conversation_message :
+         * conversation_staus : yes
+         * conversation_date : 08/09/2018 04:36:23 pm
          */
 
-        private int conversation_sender_id;
-        private int conversation_request_id;
-        private int conversation_reciver_id;
+        private String conversation_sender_id;
+        private String conversation_request_id;
+        private String conversation_reciver_id;
         private String conversation_message;
-        private String conversation_offer_price;
         private String conversation_staus;
         private String conversation_date;
 
-        public int getConversation_sender_id() {
+        public String getConversation_sender_id() {
             return conversation_sender_id;
         }
 
-        public void setConversation_sender_id(int conversation_sender_id) {
+        public void setConversation_sender_id(String conversation_sender_id) {
             this.conversation_sender_id = conversation_sender_id;
         }
 
-        public int getConversation_request_id() {
+        public String getConversation_request_id() {
             return conversation_request_id;
         }
 
-        public void setConversation_request_id(int conversation_request_id) {
+        public void setConversation_request_id(String conversation_request_id) {
             this.conversation_request_id = conversation_request_id;
         }
 
-        public int getConversation_reciver_id() {
+        public String getConversation_reciver_id() {
             return conversation_reciver_id;
         }
 
-        public void setConversation_reciver_id(int conversation_reciver_id) {
+        public void setConversation_reciver_id(String conversation_reciver_id) {
             this.conversation_reciver_id = conversation_reciver_id;
         }
 
@@ -77,14 +76,6 @@ public class ConversationData {
 
         public void setConversation_message(String conversation_message) {
             this.conversation_message = conversation_message;
-        }
-
-        public String getConversation_offer_price() {
-            return conversation_offer_price;
-        }
-
-        public void setConversation_offer_price(String conversation_offer_price) {
-            this.conversation_offer_price = conversation_offer_price;
         }
 
         public String getConversation_staus() {
