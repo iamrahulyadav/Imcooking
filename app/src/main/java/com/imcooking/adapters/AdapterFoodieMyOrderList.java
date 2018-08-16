@@ -109,15 +109,15 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         if (list.get(position).getOrder_status()!=null){
             String status = list.get(position).getOrder_status();
             if (status.equals("0"))
-            holder.tv_status.setText("New Order");
+            holder.tv_status.setText("Order Placed");
             else if (status.equals("1"))
                 holder.tv_status.setText("Accept");
             else if (status.equals("2"))
                 holder.tv_status.setText("Decline");
             else if (status.equals("3"))
-                holder.tv_status.setText("In Process");
+                holder.tv_status.setText("In Prepration");
             else if (status.equals("4"))
-                holder.tv_status.setText("Ready");
+                holder.tv_status.setText("Ready to Delivery");
             else if (status.equals("5"))
                 holder.tv_status.setText("On Way");
             else if (status.equals("8"))
