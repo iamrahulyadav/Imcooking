@@ -342,7 +342,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+//a
     }
 
     private void cancel_request(final int position){
