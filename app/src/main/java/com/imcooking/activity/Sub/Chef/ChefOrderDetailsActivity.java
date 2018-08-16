@@ -175,17 +175,17 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         if (orderDetailsBeans.get(0).getOrder_status() != null) {
                                             String status = orderDetailsBeans.get(0).getOrder_status();
                                             if (status.equals("0"))
-                                                txt_order_status.setText("New Order");
+                                                txt_order_status.setText("Order Placed");
                                             else if (status.equals("1"))
                                                 txt_order_status.setText("Accepted");
                                             else if (status.equals("2"))
                                                 txt_order_status.setText("Decline");
                                             else if (status.equals("3"))
-                                                txt_order_status.setText("In Process");
+                                                txt_order_status.setText("In Prepration");
                                             else if (status.equals("4"))
                                                 txt_order_status.setText("Decline");
                                             else if (status.equals("5"))
-                                                txt_order_status.setText("On The Way");
+                                                txt_order_status.setText("On Way");
                                             else if (status.equals("8"))
                                                 txt_order_status.setText("Delivered");
                                             else if (status.equals("9"))

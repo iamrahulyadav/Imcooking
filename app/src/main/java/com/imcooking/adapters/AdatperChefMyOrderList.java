@@ -96,15 +96,15 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
         if (list.get(position).getOrder_status()!=null){
             String status = list.get(position).getOrder_status();
             if (status.equals("0"))
-                holder.txt_order_status.setText("New Order");
+                holder.txt_order_status.setText("Order Placed");
             else if (status.equals("1"))
                 holder.txt_order_status.setText("Accept");
             else if (status.equals("2"))
                 holder.txt_order_status.setText("Decline");
             else if (status.equals("3"))
-                holder.txt_order_status.setText("In Process");
+                holder.txt_order_status.setText("In Prepration");
             else if (status.equals("4"))
-                holder.txt_order_status.setText("Ready");
+                holder.txt_order_status.setText("Ready to Delivery");
             else if (status.equals("5"))
                 holder.txt_order_status.setText("On Way");
             else if (status.equals("8"))
