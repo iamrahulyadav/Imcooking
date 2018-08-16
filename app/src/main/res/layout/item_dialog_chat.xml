@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:layout_marginBottom="5dp">
 
     <com.imcooking.customtext.CustomTextView
         android:layout_width="wrap_content"
@@ -16,6 +17,7 @@
         android:paddingBottom="5dp"
         android:paddingRight="@dimen/margin_10"
         android:paddingLeft="@dimen/margin_10"
+        android:layout_marginRight="50dp"
         android:background="@drawable/shape_border_grey_1"
         android:layout_alignParentLeft="true"/>
     <com.imcooking.customtext.CustomTextView
@@ -29,6 +31,7 @@
         android:paddingBottom="5dp"
         android:paddingRight="@dimen/margin_10"
         android:paddingLeft="@dimen/margin_10"
+        android:layout_marginLeft="50dp"
         android:background="@drawable/shape_border_theme_1"
         android:layout_alignParentRight="true"/>
 

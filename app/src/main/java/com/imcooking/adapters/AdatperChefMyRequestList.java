@@ -40,7 +40,8 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public TextView txt_reply, txtTime, txtAddress,txtTotalAmnt,txtEmail,
-                txtCategory,/*txt_view,*/txtPhone, txtfoodiename,txtdishname,txtqty, tv_offer, tv_decline;
+                txtCategory,/*txt_view,*/txtPhone, txtfoodiename,txtdishname,txtqty, tv_offer, tv_decline,
+                tv_status;
         public ImageView img;
         public LinearLayout layout_decline_offer, layout_offered_price;
         public TextView tv_offered_price;
@@ -64,6 +65,7 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             layout_decline_offer = view.findViewById(R.id.item_chef_my_request_layout_decline_offer);
             layout_offered_price = view.findViewById(R.id.item_chef_my_request_layout_offer_price);
             tv_offered_price = view.findViewById(R.id.item_chef_my_request_offered_price);
+            tv_status = view.findViewById(R.id.item_chef_my_request_status);
 
 //            tv_message = view.findViewById(R.id.item_chef_my_request_message);
 //            txt_view = view.findViewById(R.id.item_chef_my_request_view);
@@ -128,6 +130,16 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
                 holder.layout_decline_offer.setVisibility(View.VISIBLE);
                 holder.layout_offered_price.setVisibility(View.GONE);
             } else {
+            }
+        }
+
+        if(list.get(position).getFoodie_response() != null){
+            if(list.get(position).getFoodie_response().equals("2")){
+                holder.tv_status.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("Accepted");
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+            } else if(list.get(position).getFoodie_response().equals("1")){
+
             }
         }
 
