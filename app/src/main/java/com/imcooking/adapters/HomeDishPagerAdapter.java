@@ -128,8 +128,14 @@ public class HomeDishPagerAdapter extends PagerAdapter{
         tv_chef_likes.setText(chefDishBeans.get(position).getDishlikeno() + "");//
         // (String.valueOf(chefDishBeans.get(position).getLike()));
         tv_chef_followers.setText(chefDishBeans.get(position).getFollow()+"");
-        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles()+" miles");
-
+        if (chefDishBeans.get(position).getDistance()!=null){
+            if (chefDishBeans.get(position).getDistance().equals("0")){
+                tv_dish_distance.setText("0.00"+" miles");
+            } else {
+                String distnace = BaseClass.df2.format(Double.parseDouble(chefDishBeans.get(position).getDistance()))+"";
+                tv_dish_distance.setText(distnace + " miles");
+            }
+        }
         if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("No")){
             tv_dish_delivery.setText("Pickup");
             imgPickUp.setVisibility(View.VISIBLE);

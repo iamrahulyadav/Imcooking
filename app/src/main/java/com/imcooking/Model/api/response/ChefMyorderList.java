@@ -56,6 +56,15 @@ public class ChefMyorderList {
         private String dish_name;
         private String dish_qyt;
         private String rating;
+        private String delivery_type;
+
+        public String getDelivery_type() {
+            return delivery_type;
+        }
+
+        public void setDelivery_type(String delivery_type) {
+            this.delivery_type = delivery_type;
+        }
 
         public String getDish_name() {
             return dish_name;

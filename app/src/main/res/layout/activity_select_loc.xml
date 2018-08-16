@@ -41,9 +41,9 @@
                     android:background="@drawable/shape_white"
                     android:padding="10dp"
                     android:maxLines="1"
+                    android:imeOptions="actionDone"
                     android:ellipsize="end"
                     android:textSize="@dimen/smallsize"
-                    android:visibility="visible"
                     android:textColorHint="@color/colorBlack"
                     android:textColor="@color/colorBlack"
                     android:hint="Type in your Location" />

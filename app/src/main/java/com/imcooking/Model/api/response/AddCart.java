@@ -106,6 +106,24 @@ public class AddCart {
         private String dish_quantity_selected;
         private String dish_from;
         private String dish_to;
+        private String dish_homedeliver;
+        private String dish_pickup;
+
+        public String getDish_homedeliver() {
+            return dish_homedeliver;
+        }
+
+        public void setDish_homedeliver(String dish_homedeliver) {
+            this.dish_homedeliver = dish_homedeliver;
+        }
+
+        public String getDish_pickup() {
+            return dish_pickup;
+        }
+
+        public void setDish_pickup(String dish_pickup) {
+            this.dish_pickup = dish_pickup;
+        }
 
         public String getDish_from() {
             return dish_from;

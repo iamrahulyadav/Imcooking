@@ -210,142 +210,142 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
 
     private DishReqChatAdatper dishReqChatAdatper;
 
-    private void showDialog(final int position){
-        TextView txtMsg, txtDesc, txt_accept,txtOfferPrice, txt_decline, txt_reply;
-        final EditText edtReply,txtOfferValue;
-        RecyclerView chatrecyclerView;
-        final Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_view_response);
-        dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.show();
-
-        txtDesc = dialog.findViewById(R.id.dialog_view_response_desc);
-        txtMsg = dialog.findViewById(R.id.dialog_view_response_msg);
-        txt_accept = dialog.findViewById(R.id.view_response_accept);
-        txt_decline = dialog.findViewById(R.id.view_response_decline);
-        txt_reply = dialog.findViewById(R.id.view_response_reply);
-        edtReply = dialog.findViewById(R.id.dialog_view_response_edtReply);
-        chatrecyclerView = dialog.findViewById(R.id.dialog_view_response_recycler);
-        txtOfferPrice = dialog.findViewById(R.id.dialog_view_response_offer_price);
-        txtOfferValue = dialog.findViewById(R.id.dialog_view_response_offer_edt);
-
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        dialog.findViewById(R.id.view_response_cross).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        txtDesc.setText(requestDishChefDetailsBeans.get(position).getChef_description());
-        CustomLayoutManager manager = new CustomLayoutManager(getContext()){
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-
-        chatrecyclerView.setLayoutManager(manager);
-        txtDesc.setVisibility(View.VISIBLE);
-        txtMsg.setVisibility(View.VISIBLE);
-        dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.GONE);
-        dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.GONE);
-        final List<FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean> conversationDetailsBeans
-                = new ArrayList<>(requestDishChefDetailsBeans.get(position).getConversation_details());
-        final String chef_id = requestDishChefDetailsBeans.get(position).getChef_id()+"";
-        final String foodie_id = HomeFragment.foodie_id;
-
-        if (conversationDetailsBeans.size() > 0){
-            offer_price = conversationDetailsBeans.get(0).getConversation_offer_price();
-            txtOfferValue.setText("£"+conversationDetailsBeans.get(0).getConversation_offer_price());
-        }
-
-        dishReqChatAdatper = new DishReqChatAdatper(getContext(),conversationDetailsBeans, chef_id, foodie_id);
-        chatrecyclerView.setAdapter(dishReqChatAdatper);
-
-//        if(conversationDetailsBeans.get(position).getConversation_message().)
-
-        txt_accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    msg = edtReply.getText().toString().trim();
-
-                    FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean detailsBean
-                            = new FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean();
-                    detailsBean.setConversation_message(msg);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
-                    String date = spf.format(currentTime);
-                    detailsBean.setConversation_sender_id(Integer.parseInt(foodie_id));
-                    detailsBean.setConversation_reciver_id(Integer.parseInt(chef_id));
-                    detailsBean.setConversation_date(date);
-                    detailsBean.setConversation_staus("1");
-                    detailsBean.setConversation_offer_price("");
-                    conversationDetailsBeans.add(detailsBean);
-                    edtReply.setText("");
-                    status = "yes";
-                    sendreply();
-
-            }
-        });
-
-        txt_decline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    msg = edtReply.getText().toString().trim();
-
-                    FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean detailsBean
-                            = new FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean();
-                    detailsBean.setConversation_message(msg);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
-                    String date = spf.format(currentTime);
-                    detailsBean.setConversation_sender_id(Integer.parseInt(foodie_id));
-                    detailsBean.setConversation_reciver_id(Integer.parseInt(chef_id));
-                    detailsBean.setConversation_date(date);
-                    detailsBean.setConversation_staus("1");
-                    detailsBean.setConversation_offer_price("");
-                    conversationDetailsBeans.add(detailsBean);
-                    edtReply.setText("");
-                    status = "no";
-                    sendreply();
-
-            }
-        });
-
-        edtReply.setVisibility(View.VISIBLE);
-
-        txt_reply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!edtReply.getText().toString().isEmpty()){
-                    msg = edtReply.getText().toString().trim();
-
-                    FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean detailsBean
-                            = new FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean();
-                    detailsBean.setConversation_message(msg);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
-                    String date = spf.format(currentTime);
-                    detailsBean.setConversation_sender_id(Integer.parseInt(foodie_id));
-                    detailsBean.setConversation_reciver_id(Integer.parseInt(chef_id));
-                    detailsBean.setConversation_date(date);
-                    detailsBean.setConversation_staus("1");
-                    detailsBean.setConversation_offer_price("");
-                    conversationDetailsBeans.add(detailsBean);
-                    edtReply.setText("");
-                    status = "reply";
-                    sendreply();
-                }  else BaseClass.showToast(getContext(), "Please enter message");
-            }
-        });
-
-    }
+//    private void showDialog(final int position){
+//        TextView txtMsg, txtDesc, txt_accept,txtOfferPrice, txt_decline, txt_reply;
+//        final EditText edtReply,txtOfferValue;
+//        RecyclerView chatrecyclerView;
+//        final Dialog dialog = new Dialog(getContext());
+//        dialog.setContentView(R.layout.dialog_view_response);
+//        dialog.setCancelable(true);
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+//        dialog.show();
+//
+//        txtDesc = dialog.findViewById(R.id.dialog_view_response_desc);
+//        txtMsg = dialog.findViewById(R.id.dialog_view_response_msg);
+//        txt_accept = dialog.findViewById(R.id.view_response_accept);
+//        txt_decline = dialog.findViewById(R.id.view_response_decline);
+//        txt_reply = dialog.findViewById(R.id.view_response_reply);
+//        edtReply = dialog.findViewById(R.id.dialog_view_response_edtReply);
+//        chatrecyclerView = dialog.findViewById(R.id.dialog_view_response_recycler);
+//        txtOfferPrice = dialog.findViewById(R.id.dialog_view_response_offer_price);
+//        txtOfferValue = dialog.findViewById(R.id.dialog_view_response_offer_edt);
+//
+//        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//
+//        dialog.findViewById(R.id.view_response_cross).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        txtDesc.setText(requestDishChefDetailsBeans.get(position).getChef_description());
+//        CustomLayoutManager manager = new CustomLayoutManager(getContext()){
+//            @Override
+//            public boolean canScrollVertically() {
+//                return false;
+//            }
+//        };
+//
+//        chatrecyclerView.setLayoutManager(manager);
+//        txtDesc.setVisibility(View.VISIBLE);
+//        txtMsg.setVisibility(View.VISIBLE);
+//        dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.GONE);
+//        dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.GONE);
+//        final List<FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean> conversationDetailsBeans
+//                = new ArrayList<>(requestDishChefDetailsBeans.get(position).getConversation_details());
+//        final String chef_id = requestDishChefDetailsBeans.get(position).getChef_id()+"";
+//        final String foodie_id = HomeFragment.foodie_id;
+//
+//        if (conversationDetailsBeans.size() > 0){
+//            offer_price = conversationDetailsBeans.get(0).getConversation_offer_price();
+//            txtOfferValue.setText("£"+conversationDetailsBeans.get(0).getConversation_offer_price());
+//        }
+//
+//        dishReqChatAdatper = new DishReqChatAdatper(getContext(),conversationDetailsBeans, chef_id, foodie_id);
+//        chatrecyclerView.setAdapter(dishReqChatAdatper);
+//
+////        if(conversationDetailsBeans.get(position).getConversation_message().)
+//
+//        txt_accept.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                    msg = edtReply.getText().toString().trim();
+//
+//                    FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean detailsBean
+//                            = new FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean();
+//                    detailsBean.setConversation_message(msg);
+//                    Date currentTime = Calendar.getInstance().getTime();
+//                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+//                    String date = spf.format(currentTime);
+//                    detailsBean.setConversation_sender_id(Integer.parseInt(foodie_id));
+//                    detailsBean.setConversation_reciver_id(Integer.parseInt(chef_id));
+//                    detailsBean.setConversation_date(date);
+//                    detailsBean.setConversation_staus("1");
+//                    detailsBean.setConversation_offer_price("");
+//                    conversationDetailsBeans.add(detailsBean);
+//                    edtReply.setText("");
+//                    status = "yes";
+//                    sendreply();
+//
+//            }
+//        });
+//
+//        txt_decline.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                    msg = edtReply.getText().toString().trim();
+//
+//                    FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean detailsBean
+//                            = new FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean();
+//                    detailsBean.setConversation_message(msg);
+//                    Date currentTime = Calendar.getInstance().getTime();
+//                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+//                    String date = spf.format(currentTime);
+//                    detailsBean.setConversation_sender_id(Integer.parseInt(foodie_id));
+//                    detailsBean.setConversation_reciver_id(Integer.parseInt(chef_id));
+//                    detailsBean.setConversation_date(date);
+//                    detailsBean.setConversation_staus("1");
+//                    detailsBean.setConversation_offer_price("");
+//                    conversationDetailsBeans.add(detailsBean);
+//                    edtReply.setText("");
+//                    status = "no";
+//                    sendreply();
+//
+//            }
+//        });
+//
+//        edtReply.setVisibility(View.VISIBLE);
+//
+//        txt_reply.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!edtReply.getText().toString().isEmpty()){
+//                    msg = edtReply.getText().toString().trim();
+//
+//                    FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean detailsBean
+//                            = new FoodieMyRequest.FoodieRequestDishChefDetailsBean.ConversationDetailsBean();
+//                    detailsBean.setConversation_message(msg);
+//                    Date currentTime = Calendar.getInstance().getTime();
+//                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
+//                    String date = spf.format(currentTime);
+//                    detailsBean.setConversation_sender_id(Integer.parseInt(foodie_id));
+//                    detailsBean.setConversation_reciver_id(Integer.parseInt(chef_id));
+//                    detailsBean.setConversation_date(date);
+//                    detailsBean.setConversation_staus("1");
+//                    detailsBean.setConversation_offer_price("");
+//                    conversationDetailsBeans.add(detailsBean);
+//                    edtReply.setText("");
+//                    status = "reply";
+//                    sendreply();
+//                }  else BaseClass.showToast(getContext(), "Please enter message");
+//            }
+//        });
+//
+//    }
 
     private void sendreply(){
         if (msg.isEmpty()){

@@ -95,22 +95,41 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
         holder.txtprice.setText("£"+list.get(position).getPrice()+"");
         if (list.get(position).getOrder_status()!=null){
             String status = list.get(position).getOrder_status();
-            if (status.equals("0"))
-                holder.txt_order_status.setText("Order Placed");
-            else if (status.equals("1"))
-                holder.txt_order_status.setText("Accept");
-            else if (status.equals("2"))
-                holder.txt_order_status.setText("Decline");
-            else if (status.equals("3"))
-                holder.txt_order_status.setText("In Prepration");
-            else if (status.equals("4"))
-                holder.txt_order_status.setText("Ready to Delivery");
-            else if (status.equals("5"))
-                holder.txt_order_status.setText("On Way");
-            else if (status.equals("8"))
-                holder.txt_order_status.setText("Delivered");
-            else if (status.equals("9"))
-                holder.txt_order_status.setText("Not Delivered");
+            String delivery_type = list.get(position).getDelivery_type();
+            if (delivery_type.equals("1")){
+                if (status.equals("0"))
+                    holder.txt_order_status.setText("Order Placed");
+                else if (status.equals("1"))
+                    holder.txt_order_status.setText("Completed");
+                else if (status.equals("2"))
+                    holder.txt_order_status.setText("Canceled ");
+                else if (status.equals("3"))
+                    holder.txt_order_status.setText("In Prepration");
+                else if (status.equals("4"))
+                    holder.txt_order_status.setText("Ready to Delivery");
+                else if (status.equals("5"))
+                    holder.txt_order_status.setText("On Way");
+                else if (status.equals("8"))
+                    holder.txt_order_status.setText("Delivered");
+                else if (status.equals("9"))
+                    holder.txt_order_status.setText("Not Delivered");
+            } else if (delivery_type.equals("2")){
+                if (status.equals("0"))
+                    holder.txt_order_status.setText("Order Placed");
+                else if (status.equals("1"))
+                    holder.txt_order_status.setText("Completed");
+                else if (status.equals("2"))
+                    holder.txt_order_status.setText("Canceled ");
+                else if (status.equals("3"))
+                    holder.txt_order_status.setText("In Prepration");
+                else if (status.equals("4"))
+                    holder.txt_order_status.setText("Ready to Pick");
+                else if (status.equals("8"))
+                    holder.txt_order_status.setText("Picked");
+                else if (status.equals("9"))
+                    holder.txt_order_status.setText("Not Picked by client");
+            }
+
         }
 
         holder.txtqty.setText("Qyt : "+list.get(position).getDish_qyt());

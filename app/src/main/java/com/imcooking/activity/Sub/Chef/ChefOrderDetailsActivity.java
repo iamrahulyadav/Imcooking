@@ -154,11 +154,9 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         Date myDate = null;
                                         try {
                                             myDate = timeFormat.parse(orderDetailsBeans.get(0).getBooking_date());
-
                                         } catch (ParseException e) {
                                             e.printStackTrace();
                                         }
-
                                         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(
                                                 "MMM dd, yyyy HH:mm a");
                                         String finalDate = dateFormat.format(myDate);
@@ -174,22 +172,40 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     } else {
                                         if (orderDetailsBeans.get(0).getOrder_status() != null) {
                                             String status = orderDetailsBeans.get(0).getOrder_status();
-                                            if (status.equals("0"))
-                                                txt_order_status.setText("Order Placed");
-                                            else if (status.equals("1"))
-                                                txt_order_status.setText("Accepted");
-                                            else if (status.equals("2"))
-                                                txt_order_status.setText("Decline");
-                                            else if (status.equals("3"))
-                                                txt_order_status.setText("In Prepration");
-                                            else if (status.equals("4"))
-                                                txt_order_status.setText("Decline");
-                                            else if (status.equals("5"))
-                                                txt_order_status.setText("On Way");
-                                            else if (status.equals("8"))
-                                                txt_order_status.setText("Delivered");
-                                            else if (status.equals("9"))
-                                                txt_order_status.setText("Not Delivered");
+                                            if (delivery_type.equals("1")){
+                                                if (status.equals("0"))
+                                                    txt_order_status.setText("Order Placed");
+                                                else if (status.equals("1"))
+                                                    txt_order_status.setText("Completed");
+                                                else if (status.equals("2"))
+                                                    txt_order_status.setText("Canceled ");
+                                                else if (status.equals("3"))
+                                                    txt_order_status.setText("In Prepration");
+                                                else if (status.equals("4"))
+                                                    txt_order_status.setText("Ready to Delivery");
+                                                else if (status.equals("5"))
+                                                    txt_order_status.setText("On Way");
+                                                else if (status.equals("8"))
+                                                    txt_order_status.setText("Delivered");
+                                                else if (status.equals("9"))
+                                                    txt_order_status.setText("Not Delivered");
+                                            } else if (delivery_type.equals("2")){
+                                                if (status.equals("0"))
+                                                    txt_order_status.setText("Order Placed");
+                                                else if (status.equals("1"))
+                                                    txt_order_status.setText("Completed");
+                                                else if (status.equals("2"))
+                                                    txt_order_status.setText("Canceled ");
+                                                else if (status.equals("3"))
+                                                    txt_order_status.setText("In Prepration");
+                                                else if (status.equals("4"))
+                                                    txt_order_status.setText("Ready to Pick");
+                                                else if (status.equals("8"))
+                                                    txt_order_status.setText("Picked");
+                                                else if (status.equals("9"))
+                                                    txt_order_status.setText("Not Picked by client");
+                                            }
+
                                         }
                                     }
                                     setOrderDetails();
@@ -216,55 +232,29 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
-        TextView txtAccept, txt_decline, txtreply, txtin_process, txt_ready, txt_on_way, txt_delivered, txt_not_delivered;
+        TextView txtin_process, txt_ready, txt_on_way, txt_delivered, txt_not_delivered, txt_canceled, tv_completed;
 
-        txtAccept = dialog.findViewById(R.id.view_response_accept);
-        txt_decline = dialog.findViewById(R.id.view_response_decline);
-        txtreply = dialog.findViewById(R.id.view_response_reply);
         txtin_process = dialog.findViewById(R.id.view_response_in_process);
         txt_ready = dialog.findViewById(R.id.view_response_ready);
         txt_on_way = dialog.findViewById(R.id.view_response_on_way);
         txt_delivered = dialog.findViewById(R.id.view_response_delivered);
         txt_not_delivered = dialog.findViewById(R.id.view_response_not_delivered);
+        txt_canceled = dialog.findViewById(R.id.view_response_canceled);
+        tv_completed = dialog.findViewById(R.id.view_response_completed);
 
         if (delivery_type.equals("1")){
-            dialog.findViewById(R.id.layout_accept_view).setVisibility(View.GONE);
-            dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.VISIBLE);
-            dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.VISIBLE);
-
+            txt_ready.setText("Ready to Delivery");
+            txt_on_way.setText("On Way");
+            txt_delivered.setText("Delivered");
+            txt_not_delivered.setText("Not Delivered");
         } else if (delivery_type.equals("2")){
-            dialog.findViewById(R.id.layout_accept_view).setVisibility(View.VISIBLE);
-            dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.VISIBLE);
-            dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.VISIBLE);
+            txt_ready.setText("Ready to Pick");
+            txt_on_way.setVisibility(View.GONE);
+            txt_delivered.setText("Picked");
+            txt_not_delivered.setText("Not Picked by client");
+        } else {
         }
 
-        dialog.findViewById(R.id.dialog_view_response_offer_price).setVisibility(View.GONE);
-        dialog.findViewById(R.id.dialog_view_response_offer_edt).setVisibility(View.GONE);
-        dialog.findViewById(R.id.dialog_view_response_edtReply).setVisibility(View.GONE);
-
-        txt_decline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chef_status = "2";
-                updateStatus();
-            }
-        });
-
-        txtAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chef_status = "1";
-                updateStatus();
-            }
-        });
-
-        txtreply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chef_status = "4";
-                updateStatus();
-            }
-        });
 
         txtin_process.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,6 +299,24 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             }
         });
 
+        tv_completed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chef_status = "1";
+                updateStatus();
+            }
+        });
+
+
+        txt_canceled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chef_status = "2";
+                updateStatus();
+
+            }
+        });
+
         dialog.findViewById(R.id.view_response_cross).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -316,7 +324,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             }
         });
     }
-
 
     private void updateStatus(){
         String s ="{\n" +
@@ -341,7 +348,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         dialog.dismiss();
                                         finish();
                                         Log.d(ChefOrderDetailsActivity.class.getName(), "Rakhi : "+result);
-
                                     } else{
                                         BaseClass.showToast(getApplicationContext(), "Something Went Wrong");
                                     }
@@ -356,7 +362,5 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 }

@@ -86,9 +86,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,
             linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
     private TextView txtTax,txtTotalprice;
-    RecyclerView recyclerView;
-    private String type="", delivery_type="1" ;// 1 = delivery 2 = pickup
-
+    private RecyclerView recyclerView;
+    private String type="",isPickup, isHome,delivery_type="1" ;// 1 = delivery 2 = pickup
     private ApiResponse.UserDataBean userDataBean;
     private TinyDB tinyDB;
     private String login_data, user_phone;
@@ -292,7 +291,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             }
                                             ratingBar.setRating(apiResponse.getAdd_cart().getRating());
                                             dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
-
                                             update_total_price();
                                             setMyAdapter(dishDetails);
                                         }
@@ -357,21 +355,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 setTime(type);
                 break;
             case R.id.activity_cart_tv_payment:
-                /*
-                 * chef_id : 7
-                 * foodie_id : 2
-                 * dishorder : [{"dish_id":"2","quantity":"2","price":"100"},{"dish_id":"2","quantity":"2","price":"100"}]
-                 * delivery_type : 2
-                 * tax : 2.00
-                 * total_price : 200
-                 * address : 2
-                 * from_time : 245
-                 * to_time : 2
-                 * payment_type : cod
-                 * transaction_id : 45645645456
-                 * bookdate : 1
-                 */
-
                 if(delivery_type.equals("1")) {
                     if (txt_address.getText().toString().equals("Select an Address")) {
                         BaseClass.showToast(getApplicationContext(), "Please select an address");

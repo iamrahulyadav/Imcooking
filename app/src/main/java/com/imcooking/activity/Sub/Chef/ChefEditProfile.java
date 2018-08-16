@@ -67,9 +67,9 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     //    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
     public static int SELECT_LOC =2;
-    private EditText edt_name, edt_address, edt_city,  edt_zipcoede, edt_about, edt_phn;
+    private EditText edt_name, edt_address, edt_city,edt_email,  edt_zipcoede, edt_about, edt_phn;
     private Spinner sp_miles/*, sp_cuisine*/;
-    private TextView tv_select_cuisine,edt_email;
+    private TextView tv_select_cuisine;
     private SwitchCompat /*sw_notification,*/ sw_available;
     private String str_id, str_name, str_address, str_city, str_email, str_zipcode, str_miles,
             str_cuisine = "Indian Food"/*, str_notification*/,
@@ -625,9 +625,13 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                     str_address = data.getStringExtra("name");
                     edt_address.setText(str_address);
                     edt_city.setText(str_city);
-                    edt_zipcoede.setText(str_zipcode);
+                    if (str_zipcode!=null&&str_zipcode.length()>0){
+                        edt_zipcoede.setText(str_zipcode);
+                    } else {
+                        edt_zipcoede.setEnabled(true);
+                    }
 
-                    Log.d("TAG", "Rakhi: "+latitudeq+"\n"+longitudeq+"\n");
+                    Log.d("TAG", "Rakhi: "+str_zipcode+"\n"+longitudeq+"\n");
                 }
                 else{
 
@@ -704,7 +708,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             startActivityForResult(i, 112);
 
         }
-//        BaseClass.showToast(getApplicationContext(), "k");
     }
 
     public class GetImage extends AsyncTask<String, Void, Bitmap> {

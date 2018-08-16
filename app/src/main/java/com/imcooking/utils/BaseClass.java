@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,7 +62,7 @@ public class BaseClass {
         }
         return false;
     }
-
+    public static DecimalFormat df2 = new DecimalFormat(".###");
     public static BitmapDescriptor bitmapDescriptorFromVectorR(Context context) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_placeholder);
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());

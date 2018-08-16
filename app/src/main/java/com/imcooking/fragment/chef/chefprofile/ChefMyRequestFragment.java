@@ -146,7 +146,7 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     private Dialog dialog;
     private DishReqChefChatAdatper dishReqChatAdatper;
 
-    private void showDialog(final int position, final String receiver_id, final String request_id){
+  /*  private void showDialog(final int position, final String receiver_id, final String request_id){
         TextView txtMsg, txtDesc, txt_accept, txt_decline, txt_reply;
         final EditText edtPrice;
         final EditText edtReply;
@@ -289,15 +289,11 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             }
         });
 
-    }
+    }*/
 
     @Override
     public void setresponse(int pos, String TAG) {
-        if (TAG.equals("reply")){
-            receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
-            request_id = chefDishDetailsBeans.get(pos).getRequest_id();
-            showDialog(pos,receiver_id,request_id);
-        } else if (TAG.equals("offer")){
+        if (TAG.equals("offer")){
             createOfferDialog(pos);
         } else if(TAG.equals("chat")){
             createChatDialog();
@@ -391,10 +387,11 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                                 if(apiResponse.getMsg().equals("offer price update successfully")){
 
                                     BaseClass.showToast(getContext(), "Offer has been sent successfully.");
-
                                     chefDishDetailsBeans.get(pos).setRequest_price(edt);
                                     chefDishDetailsBeans.get(pos).setChef_response("1");
                                     chefMyRequestsAdatper.notifyDataSetChanged();
+                                    dialog_offer.dismiss();
+
                                 } else{
                                     BaseClass.showToast(getContext(), "Something Went Wrong.");
                                 }

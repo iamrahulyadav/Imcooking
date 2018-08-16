@@ -87,7 +87,7 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         iv_dish_image = view.findViewById(R.id.home_image);
         imgPlay = view.findViewById(R.id.item_video_play);
 
-         imgPlay.setVisibility(View.VISIBLE);
+         imgPlay.setVisibility(View.GONE);
 //              iv_dish_image.setVisibility(View.VISIBLE);
                 Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                         .get(position)).into(iv_dish_image);

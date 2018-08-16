@@ -105,8 +105,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         if (savedInstanceState != null) {
             mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
         }
-
-
     }
 
     @Override
@@ -345,8 +343,16 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                         isVideo = "yes";
                                     else isVideo = "no";
                                     txtLike.setText(dishDetails.getDish_details().getDish_total_like() + "");
+                                    if (dishDetails.getDish_details().getDistance()!=null){
+                                        if (dishDetails.getDish_details().getDistance().equals("0.00")){
+                                            txtDistance.setText("0.00"+" mile");
+                                        }else {
+                                            String distnace = BaseClass.df2.format(Double.parseDouble(dishDetails.getDish_details().getDistance()))+"";
+                                            txtDistance.setText(distnace+" miles");
+                                        }
 
-                                    txtDistance.setText(dishDetails.getDish_details().getDish_deliverymiles()+" miles");
+                                    }
+
                                     if (dishDetails.getDish_details().getDish_video()!=null
                                             &&dishDetails.getDish_details().getDish_video().toString().length()>0)
                                         imageList.add(dishDetails.getDish_details().getDish_image().get(0));
@@ -356,7 +362,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
                                     setAdapter();
                                     /*After setting the adapter use the timer */
-                                    /*final Handler handler = new Handler();
+                                    final Handler handler = new Handler();
                                     final Runnable Update = new Runnable() {
                                         public void run() {
                                             if (currentPage == imageList.size()-1) {
@@ -374,7 +380,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                             handler.post(Update);
                                         }
                                     }, DELAY_MS, PERIOD_MS);
-*/
                                     adapter=new Pager1(getContext(), nameList);
                                     pager.setAdapter(adapter);
                                     pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

@@ -250,7 +250,6 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
 
     }
 
-
     @Override
     public void getDetails(int position, String TAG) {
        if (TAG.equals("current")){

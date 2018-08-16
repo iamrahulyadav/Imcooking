@@ -82,6 +82,7 @@ public class OrderDetailsData {
         private String order_transaction_id;
         private String order_status;
         private String order_createdate;
+
         private List<OrderDishImageBean> order_dish_image;
 
         public int getOrder_id() {

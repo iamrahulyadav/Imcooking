@@ -32,115 +32,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="10dp"/>
 
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Message"
-                        android:visibility="gone"
-                        android:id="@+id/dialog_view_response_msg"
-                        android:textColor="@color/text_color_4"
-                        android:textSize="13sp"/>
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Description"
-                        android:id="@+id/dialog_view_response_desc"
-                        android:visibility="gone"
-                        android:textColor="@color/text_color_4"
-                        android:textSize="10sp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"/>
 
-                    <com.imcooking.customtext.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dialog_view_response_offer_price"
-                        android:id="@+id/dialog_view_response_offer_price"
-                        android:textColor="@color/text_color_4"
-                        android:textSize="13sp"/>
-                    <com.imcooking.customtext.CustomEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Price in (£)"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:textColorHint="@color/colorDarkGrey"
-                        android:enabled="false"
-                        android:id="@+id/dialog_view_response_offer_edt"
-                        android:textColor="@color/text_color_4"
-                        android:textSize="10sp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"/>
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/dialog_view_response_recycler"
-                        android:scrollbars="none"/>
-                    <com.imcooking.customtext.CustomEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Reply"
-                        android:visibility="visible"
-                        android:imeOptions="actionDone"
-                        android:textColor="@color/text_color_10"
-                        android:backgroundTint="@color/colorBlue"
-                        android:textSize="13sp"
-                        android:textColorHint="@color/text_color_10"
-                        android:id="@+id/dialog_view_response_edtReply"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="5dp"
-                        android:id="@+id/layout_accept_view"
-                        android:layout_marginBottom="15dp">
-                        <com.imcooking.customtext.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="35dp"
-                            android:id="@+id/view_response_accept"
-                            android:text="Accept"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="12sp"
-                            android:drawableLeft="@drawable/ic_right"
-                            android:drawablePadding="3dp"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:background="@drawable/shape_response_one"
-                            />
-                        <com.imcooking.customtext.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="35dp"
-                            android:id="@+id/view_response_decline"
-                            android:text="Decline"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="12sp"
-                            android:drawableLeft="@drawable/ic_cross"
-                            android:drawablePadding="3dp"
-                            android:gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="5dp"
-                            android:background="@drawable/shape_response_two"/>
-                        <com.imcooking.customtext.CustomTextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="35dp"
-                            android:id="@+id/view_response_reply"
-                            android:text="Reply"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="12sp"
-                            android:drawableLeft="@drawable/ic_reply"
-                            android:drawablePadding="3dp"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:background="@drawable/shape_response_three"/>
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/layout_accept_in_process"
@@ -250,6 +142,21 @@
                             android:drawableLeft="@drawable/ic_cross" />
 
                     </LinearLayout>
+
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/view_response_completed"
+                        android:text="Completed"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp"
+                        android:drawableLeft="@drawable/ic_right"
+                        android:drawablePadding="3dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:background="@drawable/shape_response_one"
+                        android:layout_gravity="center"/>
+
                 </LinearLayout>
 
             </android.support.v4.widget.NestedScrollView>
