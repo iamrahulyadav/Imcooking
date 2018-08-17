@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
+import com.imcooking.activity.Sub.Foodie.PayActivity;
 import com.imcooking.activity.Sub.Foodie.Payment1Activity;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.utils.BaseClass;
@@ -83,7 +84,7 @@ public class MainActivity1 extends AppCompatActivity {
     private static final int REQUEST_CODE_PAYMENT = 1;
     private static final int REQUEST_CODE_FUTURE_PAYMENT = 2;
     private static final int REQUEST_CODE_PROFILE_SHARING = 3;
-
+    public static final int REQUEST_CODE_PAYSTACK = 4;
     private static PayPalConfiguration config = new PayPalConfiguration()
             .environment(CONFIG_ENVIRONMENT)
             .clientId(CONFIG_CLIENT_ID)
@@ -121,7 +122,7 @@ public class MainActivity1 extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId==R.id.activity_payment_radio_paypal){
-                    payment_type = "paypal";
+                    payment_type = "paystack";
                 }
                 else if(checkedId==R.id.activity_payment_radio_cod){
                     payment_type = "cod";
@@ -139,13 +140,20 @@ public class MainActivity1 extends AppCompatActivity {
                 if(payment_type.equals("cod")) {
                     makePayment(placeOrder);
                 } else {
-                    onBuyPressed();
+
+                    //onBuyPressed();
+
+                    pay();
                 }
             }
         });
 
     }
 
+
+    private void pay(){
+        startActivityForResult(new Intent(MainActivity1.this, PayActivity.class),REQUEST_CODE_PAYSTACK);
+    }
 
     public void onBuyPressed() {
         /*
@@ -270,6 +278,14 @@ public class MainActivity1 extends AppCompatActivity {
                 Log.i(
                         "ProfileSharingExample",
                         "Probably the attempt to previously start the PayPalService had an invalid PayPalConfiguration. Please see the docs.");
+            }
+
+
+        }
+        else if (requestCode == REQUEST_CODE_PAYSTACK){
+            if (data!=null) {
+                placeOrder.setTransaction_id("TW29843AWESS");
+                makePayment(placeOrder);
             }
         }
     }

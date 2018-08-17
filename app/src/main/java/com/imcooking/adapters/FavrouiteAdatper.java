@@ -61,10 +61,9 @@ public class FavrouiteAdatper extends RecyclerView.Adapter<FavrouiteAdatper.MyVi
 
        /* holder.txtChefName.setText(dishDetails.get(position).getChef_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL + dishDetails.get(position).getChef_image()).into(holder.imgDish);
-
         holder.tv_distance.setTag(position);
+        */
 
-*/
     }
 
     @Override

@@ -62,6 +62,7 @@ dependencies {
 
     // dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'
+    implementation 'co.paystack.android:paystack:3.0.10'
 
 }
 apply plugin: 'com.google.gms.google-services'

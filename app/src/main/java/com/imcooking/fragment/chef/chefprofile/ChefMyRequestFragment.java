@@ -308,7 +308,6 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         dialog_chat_rv.setLayoutManager(layoutManager);
 
         getChat(pos);
-
         dialog_chat.show();
     }
 

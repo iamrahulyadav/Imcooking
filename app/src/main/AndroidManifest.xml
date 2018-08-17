@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".utils.App"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -115,9 +116,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Sub.Foodie.AddCardActivity"></activity>
-        <activity android:name=".MainActivity1"></activity>
-        <activity android:name=".activity.home.MyActivity"></activity>
+        <activity android:name=".activity.Sub.Foodie.AddCardActivity"/>
+        <activity android:name=".MainActivity1"/>
+        <meta-data
+            android:name="co.paystack.android.PublicKey"
+            android:value="pk_test_d4898dae685e33fbcc8f4326d824980b611fab1d"/>
+        <activity android:name=".activity.Sub.Foodie.PayActivity" />
+
 
         <!-- Firebase Notifications -->
         <service android:name=".notification.MyFirebaseMessagingService">
@@ -132,7 +137,8 @@
             </intent-filter>
         </service>
         <!-- ./Firebase Notifications -->
-
+        <activity android:name=".activity.home.MyActivity"
+/>
     </application>
 
 </manifest>

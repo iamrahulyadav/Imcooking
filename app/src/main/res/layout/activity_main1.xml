@@ -40,7 +40,7 @@
                 style="@style/MyRadioButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Paypal"
+                android:text="PayStack"
                 android:id="@+id/activity_payment_radio_paypal"
                 android:padding="10dp"
                 android:textStyle="bold"

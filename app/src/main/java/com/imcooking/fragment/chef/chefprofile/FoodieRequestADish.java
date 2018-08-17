@@ -115,7 +115,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
 
         createMyDialog();
         createMyDatePicker();
-        setMyCuisines(ChefHome.cuisineData);
+          setMyCuisines(ChefHome.cuisineData);
     }
 
     private void createMyDatePicker(){
