@@ -105,15 +105,13 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     @Override
     public void onResume() {
         super.onResume();
-
+        getorderList();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init(view);
-
-        getorderList();
 
     }
 
@@ -197,7 +195,6 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
                     list, this,"current");
             recyclerView.setAdapter(adatperChefMyOrderList);
             currentLayout.setVisibility(View.VISIBLE);
-            adatperChefMyOrderList.notifyDataSetChanged();
         } else currentLayout.setVisibility(View.GONE);
 
 

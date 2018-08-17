@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -168,6 +170,8 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         txt_order_type.setText("Pickup");
                                     }
                                     if (user_type.equalsIgnoreCase("1")){
+                                        chef_status =  orderDetailsBeans.get(0).getOrder_status();
+                                        Toast.makeText(ChefOrderDetailsActivity.this, ""+chef_status, Toast.LENGTH_SHORT).show();
                                         txt_order_status.setText("Change Status");
                                     } else {
                                         if (orderDetailsBeans.get(0).getOrder_status() != null) {
@@ -225,6 +229,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
     }
 
     private Dialog dialog;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void createDialog(String delivery_type){
         dialog = new Dialog(ChefOrderDetailsActivity.this);
         dialog.setContentView(R.layout.dialog_view_response);
@@ -243,6 +248,50 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         tv_completed = dialog.findViewById(R.id.view_response_completed);
 
         if (delivery_type.equals("1")){
+
+            /*  if (delivery_type.equals("1")){
+                if (status.equals("0"))
+                    holder.txt_order_status.setText("New Order");
+                else if (status.equals("1"))
+                    holder.txt_order_status.setText("Completed");
+                else if (status.equals("2"))
+                    holder.txt_order_status.setText("Canceled ");
+                else if (status.equals("3"))
+                    holder.txt_order_status.setText("In Prepration");
+                else if (status.equals("4"))
+                    holder.txt_order_status.setText("Ready to Delivery");
+                else if (status.equals("5"))
+                    holder.txt_order_status.setText("On Way");
+                else if (status.equals("8"))
+                    holder.txt_order_status.setText("Delivered");
+                else if (status.equals("9"))
+                    holder.txt_order_status.setText("Not Delivered");
+            }
+            else if (delivery_type.equals("2")){
+                if (status.equals("0"))
+                    holder.txt_order_status.setText("Order Placed");
+                else if (status.equals("1"))
+                    holder.txt_order_status.setText("Completed");
+                else if (status.equals("2"))
+                    holder.txt_order_status.setText("Canceled ");
+                else if (status.equals("3"))
+                    holder.txt_order_status.setText("In Prepration");
+                else if (status.equals("4"))
+                    holder.txt_order_status.setText("Ready to Pick");
+                else if (status.equals("8"))
+                    holder.txt_order_status.setText("Picked");
+                else if (status.equals("9"))
+                    holder.txt_order_status.setText("Not Picked by client");
+            }*/
+
+
+           /* if (chef_status.equals("1")){
+                txt_canceled.setClickable(false);
+                txt_canceled.setBackground(getDrawable(R.drawable.shape_response_disable));
+            } else if (chef_status.equals("4")){
+
+            }*/
+
             txt_ready.setText("Ready to Delivery");
             txt_on_way.setText("On Way");
             txt_delivered.setText("Delivered");
@@ -252,16 +301,13 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_on_way.setVisibility(View.GONE);
             txt_delivered.setText("Picked");
             txt_not_delivered.setText("Not Picked by client");
-        } else {
-        }
-
+        } else { }
 
         txtin_process.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chef_status = "3";
                 updateStatus();
-
             }
         });
 

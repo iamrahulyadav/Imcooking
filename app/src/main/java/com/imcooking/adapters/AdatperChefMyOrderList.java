@@ -98,7 +98,7 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
             String delivery_type = list.get(position).getDelivery_type();
             if (delivery_type.equals("1")){
                 if (status.equals("0"))
-                    holder.txt_order_status.setText("Order Placed");
+                    holder.txt_order_status.setText("New Order");
                 else if (status.equals("1"))
                     holder.txt_order_status.setText("Completed");
                 else if (status.equals("2"))
@@ -113,9 +113,10 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
                     holder.txt_order_status.setText("Delivered");
                 else if (status.equals("9"))
                     holder.txt_order_status.setText("Not Delivered");
-            } else if (delivery_type.equals("2")){
+            }
+            else if (delivery_type.equals("2")){
                 if (status.equals("0"))
-                    holder.txt_order_status.setText("Order Placed");
+                    holder.txt_order_status.setText("New Order");
                 else if (status.equals("1"))
                     holder.txt_order_status.setText("Completed");
                 else if (status.equals("2"))
@@ -136,6 +137,7 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
         holder.txtqty.setVisibility(View.VISIBLE);
         float price = Integer.parseInt(list.get(position).getDish_qyt())*Float.parseFloat(list.get(position).getPrice());
         holder.txtTotalAmnt.setText("£"+price);
+
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date myDate = null;
@@ -146,7 +148,7 @@ public class AdatperChefMyOrderList extends RecyclerView.Adapter<AdatperChefMyOr
             e.printStackTrace();
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "MMM dd, yyyy HH:mm a");
         String finalDate = dateFormat.format(myDate);
         holder.txtTime.setText(finalDate);

@@ -245,7 +245,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         return aTime;
     }
 
-    private void setdetails() {
+    private void setdetails()  {
 
         cartLayout.setVisibility(View.GONE);
         dishDetails = new ArrayList<>();
@@ -640,11 +640,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         getAddress();
     }
 
-
-
     private JSONObject jsonObject2;
-    private LatLng latLng;
-    double latitude,longitude;
+    private double latitude,longitude;
+
     private void getLatLong(String place){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
@@ -686,7 +684,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         requestQueue.add(jsonObjectRequest);
 
     }
-
 
     private void getAvailability(){
 
@@ -732,7 +729,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     private void createPayDialog(){
         final Dialog dialog= new Dialog(this);
         dialog.setContentView(R.layout.dialog_payment_confm);
@@ -751,6 +747,5 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
 
     }
-
 
 }
