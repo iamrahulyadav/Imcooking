@@ -113,6 +113,7 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
        // FoodieMyRequest foodie=new FoodieMyRequest();
 
+/*
         if(list.get(position).getConversation_details()!=null){
             if(list.get(position).getConversation_details().size()>0){
                 holder.tv_reply.setVisibility(View.VISIBLE);
@@ -120,6 +121,7 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
                 holder.tv_reply.setVisibility(View.GONE);
             }
         }
+*/
 
         if(list.get(position).getChef_response()!=null) {
             if (list.get(position).getChef_response().equals("0")){
@@ -158,6 +160,14 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
                 holder.layout_accept_decline.setVisibility(View.GONE);
                 holder.tv_reply.setVisibility(View.GONE);
                 holder.tv_offered_price.setVisibility(View.GONE);
+            }
+        }
+
+        if(list.get(position).getConversation_details()!=null){
+            if(list.get(position).getConversation_details().size()>0){
+                holder.tv_reply.setVisibility(View.VISIBLE);
+            } else{
+                holder.tv_reply.setVisibility(View.GONE);
             }
         }
 

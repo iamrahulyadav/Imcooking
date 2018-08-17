@@ -278,6 +278,8 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     }
 
     private RecyclerView dialog_chat_rv;
+    private EditText dialog_chat_edt;
+
     private void createChatDialog(final int pos){
         final Dialog dialog_chat = new Dialog(getContext());
         dialog_chat.setContentView(R.layout.dialog_chef_chat);
@@ -286,22 +288,14 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         dialog_chat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_chat.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        final EditText edt = dialog_chat.findViewById(R.id.dialog_chef_chat_edittext);
+        dialog_chat_edt = dialog_chat.findViewById(R.id.dialog_chef_chat_edittext);
         ImageView iv_send = dialog_chat.findViewById(R.id.dialog_chef_chat_send_icon);
         iv_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!edt.getText().toString().isEmpty()) {
-                    ConversationData.ConversationMsgBean conversationMsgBean = new ConversationData.ConversationMsgBean();
-                    conversationMsgBean.setConversation_date("");
-                    conversationMsgBean.setConversation_message(edt.getText().toString());
-                    conversationMsgBean.setConversation_reciver_id(chefDishDetailsBeans.get(pos)
-                            .getFoodie_id() + "");
-                    conversationMsgBean.setConversation_sender_id(sender_id);
-                    conversationMsgBean.setConversation_staus("reply");
-                    conversationData.getConversation_msg().add(conversationMsgBean);
+                if(!dialog_chat_edt.getText().toString().isEmpty()) {
 
-                    adapterChat.notifyDataSetChanged();
+                    sendMessage(pos);
 
                 } else {
                     BaseClass.showToast(getContext(), "You can not send an empty message.");
@@ -318,6 +312,66 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         dialog_chat.show();
     }
 
+    private void sendMessage(final int pos){
+
+        String s = "{\n" +
+                "  \"sender_id\":\"" + sender_id + "\",\n" +
+                "  \"receiver_id\":" + chefDishDetailsBeans.get(pos).getFoodie_id() + ",\n" +
+                "  \"request_id\":" + chefDishDetailsBeans.get(pos).getRequest_id() + ",\n" +
+                "  \"message\":\"" + dialog_chat_edt.getText().toString().trim() + "\",\n" +
+                "  \"offer_price\":\"" + chefDishDetailsBeans.get(pos).getRequest_price() + "\",\n" +
+                "\"status\":\"" + "reply" + "\"\n" +
+                "}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.CONVERSATION_CHAT,
+                    getActivity(), new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            try {
+                                JSONObject jsonObject1 = new JSONObject(result);
+                                if(jsonObject1.getBoolean("status")){
+                                    ConversationData.ConversationMsgBean conversationMsgBean = new ConversationData.ConversationMsgBean();
+                                    conversationMsgBean.setConversation_date("");
+                                    conversationMsgBean.setConversation_message(dialog_chat_edt.getText()
+                                            .toString().trim());
+                                    conversationMsgBean.setConversation_reciver_id(chefDishDetailsBeans.get(pos)
+                                            .getFoodie_id() + "");
+                                    conversationMsgBean.setConversation_sender_id(sender_id);
+                                    conversationMsgBean.setConversation_staus("reply");
+                                    conversationMsgBean.setConversation_request_id(chefDishDetailsBeans
+                                            .get(pos).getRequest_id() + ""); // 6
+
+                                    if(conversationData.getConversation_msg()!=null) {
+                                        conversationData.getConversation_msg().add(conversationMsgBean);
+                                    } else {
+                                        List<ConversationData.ConversationMsgBean> conversationMsgBeans = new ArrayList<>();
+                                        conversationMsgBeans.add(conversationMsgBean);
+                                        conversationData.setConversation_msg(conversationMsgBeans);
+                                    }
+
+                                    if(adapterChat!=null) {
+                                        adapterChat.notifyDataSetChanged();
+                                    } else{
+                                        showChat(pos);
+                                    }
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                }
+                                dialog_chat_edt.setText("");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private ConversationData conversationData;
 
     private void getChat(final int pos){
@@ -330,8 +384,8 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                         public void onSuccess(String result) {
                             try {
                                 JSONObject job = new JSONObject(result);
+                                conversationData = new ConversationData();
                                 if(job.getBoolean("status")){
-                                    conversationData = new ConversationData();
                                     conversationData = new Gson().fromJson(result, ConversationData.class);
 
                                     if(conversationData.isStatus()){
