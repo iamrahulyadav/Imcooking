@@ -57,8 +57,11 @@ dependencies {
     implementation files('libs/httpmime-4.3.6.jar')
 
     implementation 'com.google.firebase:firebase-messaging:10.2.1'
+//    implementation 'com.google.firebase:firebase-core:16.0.1'
+//    implementation 'com.google.firebase:firebase-messaging:17.3.0'
 
     // dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'
 
 }
+apply plugin: 'com.google.gms.google-services'

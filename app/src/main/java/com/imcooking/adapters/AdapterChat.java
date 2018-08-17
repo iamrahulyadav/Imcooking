@@ -57,7 +57,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        int pos = conversationData.getConversation_msg().size() - 1 - position;
+        int pos = /*conversationData.getConversation_msg().size() - 1 - */position;
         Log.d("ConversationMessage", pos + "");
 
         if(conversationData.getConversation_msg().get(pos)
