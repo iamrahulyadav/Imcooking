@@ -252,6 +252,14 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
                                         conversationData.setConversation_msg(conversationMsgBeans);
                                     }
 
+/*
+                                    for(int i=0; i<conversationData.getConversation_msg().size(); i++){
+                                        if(i == 0){
+
+                                        }
+                                    }
+*/
+
                                     if(adapterChat!=null) {
                                         adapterChat.notifyDataSetChanged();
                                     } else{

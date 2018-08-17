@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.activity.home.MyActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -167,7 +168,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (tinyDB.contains("login_data")) {
                             tinyDB.putDouble("lat",latitude);
                             tinyDB.putDouble("lang",longitude);
-                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                            startActivity(new Intent(SplashActivity.this, MyActivity.class));
                             overridePendingTransition(R.anim.enter, R.anim.exit);
                             finish();//2
                         } else {

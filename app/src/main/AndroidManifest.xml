@@ -114,14 +114,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".activity.Sub.Foodie.AddCardActivity">
-
-        </activity>
-        <activity android:name=".MainActivity1">
-
-        </activity>
-  </application>
+        <activity android:name=".activity.Sub.Foodie.AddCardActivity"></activity>
+        <activity android:name=".MainActivity1"></activity>
+        <activity android:name=".activity.home.MyActivity"></activity>
+    </application>
 
 </manifest>
