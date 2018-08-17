@@ -3,6 +3,7 @@ package com.imcooking.activity.home;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -60,6 +61,7 @@ import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.foodie.FoodieMyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
+import com.imcooking.notification.Config;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -86,11 +88,23 @@ public class MainActivity extends AppBaseActivity
     public static TextView tv_name, tv_phone;
     public static double longitude, latitude;
 
+    private String device_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
+
+
+        // Get Device Id From Shared Prefwrences
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+        Log.d("MyDeviceId", regId);
+        device_id = regId;
+
+
+
 
         drawerLayout1 = findViewById(R.id.drawer_layout);
 
@@ -429,7 +443,7 @@ public class MainActivity extends AppBaseActivity
         int id = item.getItemId();
         switch (id){
             case R.id.navigation_logout:
-                String s = "{\"device_id\":\"cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q\", \"user_name\":"
+                String s = "{\"device_id\":\"" + device_id +"\", \"user_name\":"
                         + user_user_name + "}";
                 Log.d("MyRequest", s);
                 try {

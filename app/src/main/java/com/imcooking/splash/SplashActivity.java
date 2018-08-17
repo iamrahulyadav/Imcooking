@@ -3,8 +3,12 @@ package com.imcooking.splash;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -13,8 +17,10 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -38,10 +44,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.activity.home.MyActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.notification.Config;
+import com.imcooking.notification.NotificationUtils;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -55,6 +64,9 @@ import java.util.Date;
 
 public class SplashActivity extends AppCompatActivity {
     private ImageView imgSplash, imgLogo;
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
 
     TinyDB tinyDB;
     public double longitude, latitude;
@@ -90,11 +102,55 @@ public class SplashActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
+
+        // Notifications -----GetDeviceId
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+//                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+//
+//                    txtMessage.setText(message);
+                }
+            }
+        };
+
+        displayFirebaseRegId();
+
+
+
         init();
         startLocationButtonClick();
 
         // restore the values from saved instance state
         restoreValuesFromBundle(savedInstanceState);
+
+
+    }
+
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e(TAG, "Firebase reg id: " + regId);
+
+//        if (!TextUtils.isEmpty(regId))
+//            txtRegId.setText("Firebase Reg Id: " + regId);
+//        else
+//            txtRegId.setText("Firebase Reg Id is not received yet!");
     }
 
 
@@ -168,7 +224,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (tinyDB.contains("login_data")) {
                             tinyDB.putDouble("lat",latitude);
                             tinyDB.putDouble("lang",longitude);
-                            startActivity(new Intent(SplashActivity.this, MyActivity.class));
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
                             overridePendingTransition(R.anim.enter, R.anim.exit);
                             finish();//2
                         } else {
@@ -317,12 +373,28 @@ public class SplashActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+//        NotificationUtils.clearNotifications(getApplicationContext());
+
+
+
+
         // Resuming location updates depending on button state and
         // allowed permissions
         if (mRequestingLocationUpdates && checkPermissions()) {
 //            startLocationUpdates();
         }
         updateLocationUI();
+
 
 
     }
@@ -336,6 +408,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
 
         if (mRequestingLocationUpdates) {
