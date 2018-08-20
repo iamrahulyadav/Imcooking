@@ -116,15 +116,23 @@ public class SplashActivity extends AppCompatActivity {
 
                     displayFirebaseRegId();
 
-                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                }
+                if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
                     // new push notification is received
+                    Toast.makeText(getApplicationContext(), "heyo", Toast.LENGTH_SHORT).show();
 
                     String message = intent.getStringExtra("message");
+                    Log.d("NotificationStuff", message);
+
+                    Toast.makeText(getApplicationContext(), "Hii You had Recieved a notification",
+                            Toast.LENGTH_SHORT).show();
 
 //                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 //
-//                    txtMessage.setText(message);
+//                    txtMessage.setText(message);s
                 }
+
+//                Toast.makeText(getApplicationContext(), intent.getAction() + "", Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -170,8 +178,6 @@ public class SplashActivity extends AppCompatActivity {
 
         updateLocationUI();
     }
-
-
 
     public void startLocationButtonClick() {
         // Requesting ACCESS_FINE_LOCATION using Dexter library

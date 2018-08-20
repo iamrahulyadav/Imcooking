@@ -100,8 +100,10 @@ public class MainActivity extends AppBaseActivity
         // Get Device Id From Shared Prefwrences
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
-        Log.d("MyDeviceId", regId);
+//        if(regId != null)
         device_id = regId;
+
+        Log.d("MyDeviceId", device_id + "");
 
 
 
@@ -156,36 +158,60 @@ public class MainActivity extends AppBaseActivity
 
         init();
         getUserData();
+
+
+//        if(user_type.equals("1")) {
+//        }
+
+
         if (user_type.equals("1")) {
-            if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            Intent i = new Intent();
+            i = getIntent();
+            if (i != null) {
+                Bundle bundle = i.getExtras();
+                if (bundle != null) {
+                    String type = bundle.getString("NotificationType");
+                    if (type.equals("1")) {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame, new ChefMyOrderListFragment())
+                                .commit();
+                    } else {
 
-                String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-                if (tag1.equals(ChefHome.class.getName())) {
-
+                    }
                 } else {
+                    if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
 
-                    ChefHome fragment = new ChefHome();
+                        String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                        if (tag1.equals(ChefHome.class.getName())) {
 
-                    Bundle args = new Bundle();
-                    args.putString("chef_id", user_id);
-                    args.putString("foodie_id", "4");
+                        } else {
 
-                    fragment.setArguments(args);
+                            ChefHome fragment = new ChefHome();
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                            Bundle args = new Bundle();
+                            args.putString("chef_id", user_id);
+                            args.putString("foodie_id", "4");
+
+                            fragment.setArguments(args);
+
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                        }
+                    } else {
+                        ChefHome fragment = new ChefHome();
+
+                        Bundle args = new Bundle();
+                        args.putString("chef_id", user_id);
+                        args.putString("foodie_id", "4");
+
+                        fragment.setArguments(args);
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+                    }
                 }
-            } else {
-                ChefHome fragment = new ChefHome();
-
-                Bundle args = new Bundle();
-                args.putString("chef_id", user_id);
-                args.putString("foodie_id", "4");
-
-                fragment.setArguments(args);
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
-
             }
+
+
 //            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
         } else if (getIntent().hasExtra("pay")) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FoodieMyOrderFragment()).commit();
@@ -193,6 +219,7 @@ public class MainActivity extends AppBaseActivity
 //            setTheme(R.style.AppTheme1);
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
+
     }
 
     public static ImageView iv_home, iv_profile, iv_my_order, iv_notification;
@@ -456,6 +483,14 @@ public class MainActivity extends AppBaseActivity
                                     if(apiResponse.isStatus()){
                                         if (apiResponse.getMsg().equals("device_id deleted Successfully ")){
                                             new TinyDB(getApplicationContext()).remove("login_data");
+
+                                            SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+//                                            pref.edit().remove("regId");
+                                            String regId = pref.getString("regId", null);
+
+                                            if(regId!=null) {
+                                                Log.d("MyDeviceId", regId);
+                                            }
                                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                             finish();
 

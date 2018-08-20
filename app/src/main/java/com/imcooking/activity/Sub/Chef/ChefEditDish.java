@@ -421,6 +421,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         Log.d("Base64Size", base.size() + "");
         ArrayList<String> base1 = new ArrayList<>();
+//        base1.add("a");
+
         for(int i=0; i<base.size(); i++) {
             if (!base.get(i).equals("MyBase64String")) {
                 base1.add(base.get(i));

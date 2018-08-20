@@ -312,7 +312,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setEmail(str_email);
         data.setZipcode(str_zipcode);
         data.setDefault_miles(str_miles);
-        data.setAvailable(str_available);           // No Use
+        data.setAvailable(str_available);           // No Use       Always 0
         data.setCuisine_list(str_cuisine_ids);
         data.setAbout(str_about);
         data.setPhone(str_phn);
