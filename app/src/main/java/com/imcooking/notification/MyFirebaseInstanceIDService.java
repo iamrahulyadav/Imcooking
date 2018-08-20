@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -34,6 +35,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(final String token) {
+//        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         // sending gcm token to server
         Log.e(TAG, "sendRegistrationToServer: " + token);
     }
@@ -45,4 +47,3 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         editor.commit();
     }
 }
-

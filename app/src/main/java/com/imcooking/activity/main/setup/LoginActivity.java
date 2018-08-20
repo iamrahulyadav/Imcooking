@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Get Device Id From Shared Prefwrences
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);
-        Log.d("MyDeviceId", regId);
+//        if(regId != null)
 
         if (!TextUtils.isEmpty(regId)) {
 //            txtRegId.setText("Firebase Reg Id: " + regId);
@@ -65,6 +65,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //            txtRegId.setText("Firebase Reg Id is not received yet!");
             device_id = "123";
         }
+
+        Log.d("MyDeviceId", device_id + "");
 
         tinyDB = new TinyDB(getApplicationContext());
 

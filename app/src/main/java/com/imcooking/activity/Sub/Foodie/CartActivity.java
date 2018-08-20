@@ -303,10 +303,22 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         });
     }
 
+    boolean quantity_status = true;
+    String name_status;
     private void setMyAdapter(List<AddCart.AddDishBean> dishDetails){
         cartAdatper = new CartAdatper(getApplicationContext(),
                 dishDetails, this);
         recyclerView.setAdapter(cartAdatper);
+
+
+        for(int i=0; i<dishDetails.size(); i++){
+            if(dishDetails.get(i).getDish_quantity().equals("0")){
+                quantity_status = false;
+                name_status = dishDetails.get(i).getDish_name();
+            }
+        }
+
+//        if(!quantity_status)
 //        cartAdatper.CartInterfaceMethod(this);
     }
 
@@ -332,7 +344,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 if(user_phone == null){
                     dialog_alert.show();
                 } else {
-                    checkDishAvailableTime();
+                    if(quantity_status)
+                        checkDishAvailableTime();
+                    else{
+                        BaseClass.showToast(getApplicationContext(), "The Dish " + name_status +
+                                " is not available at this time. Please remove this dish from your cart or you can place your order with dish after sometime.");
+                    }
                 }
                 break;
             case R.id.cart_tv_addnewitem:

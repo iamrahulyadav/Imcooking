@@ -174,7 +174,15 @@ public class CartAdatper extends RecyclerView.Adapter<CartAdatper.MyViewHolder> 
             }
         });*//*
 */
-        holder.txt_DishCount.setText(dishDetails.get(position).getDish_quantity_selected());
+
+
+
+
+//        if(dishDetails.get(position).getDish_quantity().equals("0")){
+//            holder.txt_DishCount.setText("0");
+//        } else {
+            holder.txt_DishCount.setText(dishDetails.get(position).getDish_quantity_selected());
+//        }
         holder.txtDishName.setText(dishDetails.get(position).getDish_name());
         Picasso.with(context).load(GetData.IMG_BASE_URL +
                 dishDetails.get(position).getDish_image()).into(holder.imgDish);

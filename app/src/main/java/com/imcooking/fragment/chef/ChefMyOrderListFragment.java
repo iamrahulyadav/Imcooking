@@ -158,6 +158,7 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
                                       } catch (ParseException e) {
                                           e.printStackTrace();
                                       }
+
                                       if (date2.compareTo(date1) >0||date2.compareTo(date1) ==0 &&(!status.equals("2") && !status.equals("8")&&
                                               !status.equals("9"))) {
                                           currentOrderListBeans.add(orderListBean);

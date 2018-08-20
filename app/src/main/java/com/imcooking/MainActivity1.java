@@ -294,7 +294,8 @@ public class MainActivity1 extends AppCompatActivity {
 
         try {
             JSONObject jsonObject = new JSONObject(gson.toJson(placeOrder));
-            new GetData(getApplicationContext(), MainActivity1.this).sendMyData(jsonObject, GetData.PLACE_ORDER, MainActivity1.this, new GetData.MyCallback() {
+            new GetData(getApplicationContext(), MainActivity1.this).sendMyData(jsonObject,
+                    GetData.PLACE_ORDER, MainActivity1.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(final String result) {
                     /*{"status":true,"booking_id":"CO14061939577511","msg":"Dish Booking Successfully"}*/
@@ -379,7 +380,6 @@ public class MainActivity1 extends AppCompatActivity {
          */
 
     }
-
 
     @Override
     public void onDestroy() {

@@ -8,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.imcooking.Model.api.response.ChefFollowers;
-import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
-import com.imcooking.customtext.CustomTextView;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
