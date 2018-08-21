@@ -85,8 +85,6 @@ public class PayActivity extends AppCompatActivity {
                 else if (str_year.equals("Expiry YYYY") || str_year.equals("")){
                     Toast.makeText(getApplicationContext(), "Select Expiry year", Toast.LENGTH_SHORT).show();
                 } else {
-
-
                     try {
                         email = "rakhi.askonline@gmail.com";
                         cardNumber = edtCardNo.getText().toString().trim();

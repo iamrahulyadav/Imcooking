@@ -43,11 +43,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -91,6 +95,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
     private Gson gson = new Gson();
     private String name="", address_id;
     private boolean isEdit;
+    private static int REQUEST_CODE_AUTOCOMPLETE = 10;
     AutoCompleteTextView autocompleteView;
 
     @Override
@@ -109,7 +114,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
 
             ActivityCompat.requestPermissions(AddAddressActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
+                    REQUEST_CODE_AUTOCOMPLETE);
             return;
         }
         mMapView = (MapView) findViewById(R.id.mapView);
@@ -164,8 +169,8 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         } else {
             Toast.makeText(mContext, "Location not supported in this device", Toast.LENGTH_SHORT).show();
         }
-        autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
-        autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      //  autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
+     /*   autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get data associated with the specified position
@@ -173,7 +178,16 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                 String description = (String) parent.getItemAtPosition(position);
                 Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
             }
+        });*/
+
+
+        autocompleteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findPlace(REQUEST_CODE_AUTOCOMPLETE);
+            }
         });
+
 
         txtConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,15 +197,27 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         });
     }
 
+
+    /*find place */
+    public void findPlace(int requestcode) {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete
+                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(AddAddressActivity.this);
+            startActivityForResult(intent, requestcode);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
+
     Dialog dialog;
     EditText edtMsg;
     RadioButton radioHome, radioOffice,radioOther;
     TextView txtCanel, txtSave, txtCancleIcon;
     private RadioGroup radioGroup;
-
-
-
-
 
     private void createMyDialog(){
 
@@ -296,8 +322,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
             }
         }
     }
-
-
 
     private LatLng latLng=mCenterLatLong;
     private JSONObject jsonObject2;
@@ -420,8 +444,6 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
                     break;
         }
     }
-
-
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
@@ -641,6 +663,39 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_AUTOCOMPLETE == 10) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(AddAddressActivity.this, data);
+                Log.e("Tag", "Place: pick" + place.getLocale() + place.getLatLng());
+
+                if (place.getLatLng()!=null){
+                    autocompleteView.setText(place.getAddress());
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(place.getLatLng()).zoom(19f).tilt(70).build();
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    mMap.setMyLocationEnabled(true);
+                    mMap.animateCamera(CameraUpdateFactory
+                            .newCameraPosition(cameraPosition));
+                }
+            }
+        }
+
+    }
 }
 
 

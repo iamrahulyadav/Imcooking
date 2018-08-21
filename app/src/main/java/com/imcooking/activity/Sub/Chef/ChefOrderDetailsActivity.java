@@ -93,6 +93,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
 
         if (user_type.equalsIgnoreCase("1")){
             txt_order_status.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View view) {
                     createDialog(delivery_type);

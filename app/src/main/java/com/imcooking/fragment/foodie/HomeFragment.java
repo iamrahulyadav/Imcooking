@@ -141,6 +141,7 @@ public class HomeFragment extends Fragment implements
         foodie_id = userDataBean.getUser_id() + "";
         latitudeq = tinyDB.getDouble("lat",0);
         longitudeq = tinyDB.getDouble("lang",0);
+        selectedmiles = userDataBean.getUser_milesdistance();
 
         tv_count_latest = getView().findViewById(R.id.fragment_home_dish_count_latest);
         tv_count_choice = getView().findViewById(R.id.fragment_home_dish_count_choice);
@@ -176,12 +177,18 @@ public class HomeFragment extends Fragment implements
         if (spinnerData != null) {
             spinnerData.clear();
         }
+        if (spinnerData != null) {
+             if (selectedmiles!=null){
+             //    spinnerData.add(selectedmiles+" miles ");
+                max_miles = selectedmiles;
+             }
+            spinnerData.add("5 miles ");
 
-        spinnerData.add("10 miles ");
-        spinnerData.add("20 miles ");
-        spinnerData.add("30 miles ");
-        spinnerData.add("50 miles ");
-
+            spinnerData.add("10 miles ");
+            spinnerData.add("20 miles ");
+            spinnerData.add("30 miles ");
+            spinnerData.add("50 miles ");
+        }
 
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
         //    cuisinRecycler.setAdapter(cuisionAdatper);
@@ -207,8 +214,6 @@ public class HomeFragment extends Fragment implements
             int spinnerPosition = arrayAdapter.getPosition(selectedValue);
             sp.setSelection(spinnerPosition);
         }
-
-        sp.setSelection(2);
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -252,6 +257,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));

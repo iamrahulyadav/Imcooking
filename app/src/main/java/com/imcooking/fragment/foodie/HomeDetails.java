@@ -156,10 +156,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         dialog.show();
     }
 
+    private double latitude, longitude;
     private TextView tv_count;
 
     private void init(){
-
+        latitude = tinyDB.getDouble("lat",0);
+        longitude = tinyDB.getDouble("lang",0);
         tv_count = getView().findViewById(R.id.foodie_dish_details_cart_count);
 
         iv_cart = getView().findViewById(R.id.foodie_home_details_img_cart);
@@ -263,7 +265,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         if (nameList!=null){
             nameList.clear();
         }
-        String detailRequest = "{\"dish_id\":" + id + ",\"foodie_id\":"+foodie_id+"}";
+
+        String detailRequest = "{\"dish_id\":" + id + ",\"foodie_id\":" + foodie_id + ",\"latitude\":\"" + latitude +
+                "\",\"longitude\":\"" + longitude + "\"}";
+
         Log.d("MyRequest", detailRequest);
         new GetData(getContext(), getActivity()).getResponse(detailRequest, GetData.DISH_DETAILS,
                 new GetData.MyCallback() {
@@ -344,13 +349,12 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                     else isVideo = "no";
                                     txtLike.setText(dishDetails.getDish_details().getDish_total_like() + "");
                                     if (dishDetails.getDish_details().getDistance()!=null){
-                                        if (dishDetails.getDish_details().getDistance().equals("0.00")){
-                                            txtDistance.setText("0.00"+" mile");
+                                        if (dishDetails.getDish_details().getDistance().equals("0")){
+                                            txtDistance.setText("0.00"+" miles");
                                         }else {
                                             String distnace = BaseClass.df2.format(Double.parseDouble(dishDetails.getDish_details().getDistance()))+"";
                                             txtDistance.setText(distnace+" miles");
                                         }
-
                                     }
 
                                     if (dishDetails.getDish_details().getDish_video()!=null

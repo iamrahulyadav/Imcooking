@@ -96,7 +96,6 @@ public class MainActivity extends AppBaseActivity
         setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
 
-
         // Get Device Id From Shared Prefwrences
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         String regId = pref.getString("regId", null);

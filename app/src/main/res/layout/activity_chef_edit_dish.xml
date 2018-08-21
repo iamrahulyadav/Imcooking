@@ -39,51 +39,46 @@
             android:paddingRight="10dp"
             android:paddingTop="15dp">
 
-            <com.imcooking.customtext.CustomEditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_dish_name"
-                android:hint="Dish Name"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:textColorHint="@color/text_color_7"
-                android:textSize="16sp"
-                android:textColor="@color/text_color_4"
-                android:background="@android:color/transparent"/>
-            <!--    <View
-                android:layout_width="match_parent"
-                android:layout_height=".3dp"
-                android:background="@color/view_6"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"/>
-            <com.imcooking.customtext.CustomEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_dish_cuisine"
-                android:hint="Cuisine"
-                android:textColorHint="@color/text_color_7"
-                android:textSize="16sp"
-                android:textColor="@color/text_color_4"
-                android:background="@android:color/transparent" />
-     -->
+                android:textColorHint="@color/text_color_7">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_dish_name"
+                    android:hint="Dish Name"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:textColorHint="@color/text_color_7"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_color_4"
+                    android:background="@android:color/transparent"/>
+            </android.support.design.widget.TextInputLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
                 android:background="@color/view_6"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"/>
-            <com.imcooking.customtext.CustomEditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_dish_price"
-                android:hint="Price (in £)"
-                android:inputType="number"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:textColorHint="@color/text_color_7"
-                android:textSize="16sp"
-                android:textColor="@color/text_color_4"
-                android:background="@android:color/transparent"  />
+                android:textColorHint="@color/text_color_7">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_dish_price"
+                    android:hint="Price (in £)"
+                    android:inputType="number"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:textColorHint="@color/text_color_7"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_color_4"
+                    android:background="@android:color/transparent"  />
+            </android.support.design.widget.TextInputLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
@@ -91,31 +86,42 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"/>
 
-            <com.imcooking.customtext.CustomEditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_dish_description"
-                android:hint="Ingredients of Recipe"
-                android:textSize="16sp"
-                android:imeOptions="actionNext"
-                android:textColorHint="@color/text_color_7"
-                android:textColor="@color/text_color_4"
-                android:background="@android:color/transparent"  />
+                android:textColorHint="@color/text_color_7">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_dish_description"
+                    android:hint="Ingredients of Recipe"
+                    android:textSize="16sp"
+                    android:imeOptions="actionNext"
+                    android:textColorHint="@color/text_color_7"
+                    android:textColor="@color/text_color_4"
+                    android:background="@android:color/transparent"  />
+            </android.support.design.widget.TextInputLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
                 android:background="@color/view_6"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"/>
-            <com.imcooking.customtext.CustomEditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_dish_special_note"
-                android:hint="Special Note"
-                android:textSize="16sp"
-                android:textColorHint="@color/text_color_7"
-                android:textColor="@color/text_color_4"
-                android:background="@android:color/transparent" />
+                android:textColorHint="@color/text_color_7">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_dish_special_note"
+                    android:hint="Special Note"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/text_color_7"
+                    android:textColor="@color/text_color_4"
+                    android:background="@android:color/transparent" />
+
+            </android.support.design.widget.TextInputLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
@@ -123,18 +129,24 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"/>
 
-            <com.imcooking.customtext.CustomEditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_dish_qyt"
-                android:hint="Quantity"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColorHint="@color/text_color_7"
-                android:textSize="16sp"
-                android:textColor="@color/text_color_4"
-                android:background="@android:color/transparent"  />
+                android:textColorHint="@color/text_color_7">
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chef_edit_dish_qyt"
+                    android:hint="Quantity"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColorHint="@color/text_color_7"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_color_4"
+                    android:background="@android:color/transparent"  />
+
+            </android.support.design.widget.TextInputLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"

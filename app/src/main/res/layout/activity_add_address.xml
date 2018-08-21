@@ -33,6 +33,8 @@
                 android:textSize="@dimen/smallsize"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:editable="false"
+                android:singleLine="true"
                 android:textColorHint="@color/colorBlack"
                 android:textColor="@color/colorBlack"
                 android:hint="Type in your Location" />
