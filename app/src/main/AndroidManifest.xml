@@ -35,23 +35,21 @@
 
         <activity android:name=".utils.AppBaseActivity" />
         <activity android:name=".activity.home.HomeSearchActivity1" />
-        <activity
-            android:name=".activity.main.setup.LoginActivity"
+        <activity android:name=".activity.main.setup.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity
-            android:name=".activity.main.setup.SignUpActivity"
+        <activity android:name=".activity.main.setup.SignUpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity
-            android:name=".activity.main.setup.ForgotPassActivity"
+        <activity android:name=".activity.main.setup.ForgotPassActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".activity.home.MainActivity"
+        <activity android:name=".activity.home.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Design.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+
+        </activity>
         <activity
             android:name=".activity.Sub.Foodie.ManageAddress"
             android:screenOrientation="portrait" />
@@ -116,6 +114,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".activity.Sub.Foodie.AddCardActivity"/>
         <activity android:name=".MainActivity1"/>
@@ -126,6 +125,7 @@
 
 
         <!-- Firebase Notifications -->
+
         <service android:name=".notification.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -137,9 +137,10 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <!-- ./Firebase Notifications -->
-        <activity android:name=".activity.home.MyActivity"
-/>
+        <activity android:name=".activity.home.MyActivity">
+        </activity>
     </application>
 
 </manifest>

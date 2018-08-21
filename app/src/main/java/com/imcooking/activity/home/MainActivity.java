@@ -1,8 +1,10 @@
 package com.imcooking.activity.home;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,6 +22,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -44,6 +48,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
@@ -62,6 +67,7 @@ import com.imcooking.fragment.foodie.FoodieMyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.notification.Config;
+import com.imcooking.notification.NotificationUtils;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -75,7 +81,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainActivity extends AppBaseActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private float lastTranslate = 0.0f;
@@ -95,6 +101,38 @@ public class MainActivity extends AppBaseActivity
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
+
+
+        // Notifications -----GetDeviceId
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+//                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    tv_notification_dot.setVisibility(View.VISIBLE);
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(getApplicationContext(), "Hii Main", Toast.LENGTH_SHORT).show();
+//                    txtMessage.setText(message);
+                }
+            }
+        };
+
+
+
+
 
         // Get Device Id From Shared Prefwrences
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
@@ -164,12 +202,13 @@ public class MainActivity extends AppBaseActivity
 
 
         if (user_type.equals("1")) {
+/*
             Intent i = new Intent();
             i = getIntent();
             if (i != null) {
                 Bundle bundle = i.getExtras();
                 if (bundle != null) {
-                    String type = bundle.getString("NotificationType");
+                    String type = bundle.getString("message");
                     if (type.equals("1")) {
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.frame, new ChefMyOrderListFragment())
@@ -178,38 +217,40 @@ public class MainActivity extends AppBaseActivity
 
                     }
                 } else {
-                    if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-
-                        String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-                        if (tag1.equals(ChefHome.class.getName())) {
-
-                        } else {
-
-                            ChefHome fragment = new ChefHome();
-
-                            Bundle args = new Bundle();
-                            args.putString("chef_id", user_id);
-                            args.putString("foodie_id", "4");
-
-                            fragment.setArguments(args);
-
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
-                        }
-                    } else {
-                        ChefHome fragment = new ChefHome();
-
-                        Bundle args = new Bundle();
-                        args.putString("chef_id", user_id);
-                        args.putString("foodie_id", "4");
-
-                        fragment.setArguments(args);
-
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
-
-                    }
                 }
             }
+*/
 
+
+            if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+
+                String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                if (tag1.equals(ChefHome.class.getName())) {
+
+                } else {
+
+                    ChefHome fragment = new ChefHome();
+
+                    Bundle args = new Bundle();
+                    args.putString("chef_id", user_id);
+                    args.putString("foodie_id", "4");
+
+                    fragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+                }
+            } else {
+                ChefHome fragment = new ChefHome();
+
+                Bundle args = new Bundle();
+                args.putString("chef_id", user_id);
+                args.putString("foodie_id", "4");
+
+                fragment.setArguments(args);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
+
+            }
 
 //            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
         } else if (getIntent().hasExtra("pay")) {
@@ -219,17 +260,22 @@ public class MainActivity extends AppBaseActivity
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
 
+
     }
 
     public static ImageView iv_home, iv_profile, iv_my_order, iv_notification;
-    public static TextView tv_home, tv_profile, tv_my_order, tv_notification;
+    public static TextView tv_home, tv_profile, tv_my_order, tv_notification, tv_notification_dot;
 
     private String loginData;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private String user_type, user_id;
 //    public static boolean isProfile;
 
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
     private void init() {
+
+
 
         tinyDB = new TinyDB(getApplicationContext());
 
@@ -242,6 +288,7 @@ public class MainActivity extends AppBaseActivity
         tv_profile = findViewById(R.id.bottom_profile_text);
         tv_my_order = findViewById(R.id.bottom_my_order_text);
         tv_notification = findViewById(R.id.bottom_notification_text);
+        tv_notification_dot = findViewById(R.id.main_notification_dot);
     }
 
     private String user_name, user_phone, user_user_name;
@@ -384,6 +431,7 @@ public class MainActivity extends AppBaseActivity
         } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
             iv_notification.setImageResource(R.drawable.ic_ring_1);
+            tv_notification_dot.setVisibility(View.GONE);
             BaseClass.callFragment(new NotificationFragment(), new NotificationFragment().getClass().getName(), getSupportFragmentManager());
 
         } else{
@@ -409,11 +457,30 @@ public class MainActivity extends AppBaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
+
 /*
         Bitmap bitmap = BaseClass.getBitmapFromURL1("S");
 
         String s = BaseClass.BitMapToString(bitmap);
         Log.d("MyBase64", s);*/
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
     }
 
     public void open_menu(View view){

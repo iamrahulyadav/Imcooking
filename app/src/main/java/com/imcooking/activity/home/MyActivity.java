@@ -57,6 +57,9 @@ public class MyActivity extends AppCompatActivity {
         };
 
         displayFirebaseRegId();
+
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.framee, new BlankFragment()).commit();
     }
 
     // Fetches reg id from shared preferences

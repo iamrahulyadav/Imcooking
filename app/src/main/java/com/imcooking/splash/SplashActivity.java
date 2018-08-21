@@ -116,8 +116,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     displayFirebaseRegId();
 
-                }
-                if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
                     // new push notification is received
                     Toast.makeText(getApplicationContext(), "heyo", Toast.LENGTH_SHORT).show();
 
