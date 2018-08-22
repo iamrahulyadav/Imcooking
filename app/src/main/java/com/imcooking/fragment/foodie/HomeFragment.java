@@ -205,6 +205,7 @@ public class HomeFragment extends Fragment implements
         }
 
     }
+
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
                 R.layout.spinner_row, spinnerData);
@@ -221,21 +222,26 @@ public class HomeFragment extends Fragment implements
                 switch (position){
                     case 0:
                         min_miles = "0";
-                        max_miles = "10";
+                        max_miles = "5";
                         getHomeData(latitudeq, longitudeq);
 
                         break;
                     case 1:
                         min_miles = "0";
-                        max_miles = "20";
+                        max_miles = "10";
                         getHomeData(latitudeq, longitudeq);
                         break;
                     case 2:
                         min_miles = "0";
-                        max_miles = "30";
+                        max_miles = "20";
                         getHomeData(latitudeq, longitudeq);
                         break;
                     case 3:
+                        min_miles = "0";
+                        max_miles = "30";
+                        getHomeData(latitudeq, longitudeq);
+                        break;
+                    case 4:
                         min_miles = "0";
                         max_miles = "50";
                         getHomeData(latitudeq, longitudeq);
@@ -329,7 +335,6 @@ public class HomeFragment extends Fragment implements
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject!=null&&jsonObject.has("add_acrt_count")){
                                 cart_icon.setText(jsonObject.getString("add_acrt_count"));
-
                                 tinyDB.putString("cart_count", jsonObject.getString("add_acrt_count"));
                             }
                         } catch (JSONException e) {
@@ -587,6 +592,9 @@ public class HomeFragment extends Fragment implements
             } else if (requestCode==113){
                 latitudeq = data.getDoubleExtra("latitude",0);
                 longitudeq = data.getDoubleExtra("longitude",0);
+                tinyDB.putDouble("lat",latitudeq);
+                tinyDB.putDouble("lang",longitudeq);
+
                 txtCityName.setText(data.getStringExtra("name"));
                 Log.d(TAG, "onActivityResult: "+latitudeq+"\n"+longitudeq+"\n");
                 getHomeData(latitudeq, longitudeq);

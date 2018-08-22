@@ -252,10 +252,12 @@
                             android:layout_height="wrap_content"
                             android:text="Delivery"
                             android:checked="true"
+                            android:visibility="gone"
                             android:padding="5dp"
                             android:textColor="@color/colorBlack"
                             android:textSize="12sp" />
                         <RadioButton
+                            android:visibility="gone"
                             android:layout_marginLeft="10dp"
                             android:id="@+id/radioButtonPick"
                             style="@style/MyRadioButtonStyle"

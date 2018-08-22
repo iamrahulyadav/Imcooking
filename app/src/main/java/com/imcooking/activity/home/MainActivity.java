@@ -511,6 +511,8 @@ public class MainActivity extends AppCompatActivity
             finishAffinity();
 //            finish();
         } else{
+//            tinyDB.remove("lat");
+//            tinyDB.remove("lang");
             super.onBackPressed();
         }
     }

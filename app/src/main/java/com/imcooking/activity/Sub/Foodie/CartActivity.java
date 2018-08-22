@@ -76,18 +76,18 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,
             txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
-
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
     RadioGroup radioGroup;
+
 //    private Spinner addressSpi;
-    RadioButton radioButtoncheck;
+    private RadioButton deliverRadioButton, pickRadioButton;
     LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,
             linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
     private TextView txtTax,txtTotalprice;
     private RecyclerView recyclerView;
-    private String type="",isPickup, isHome,delivery_type="1" ;// 1 = delivery 2 = pickup
+    private String type="",isPickup="no", isHome="no",delivery_type="1" ;// 1 = delivery 2 = pickup
     private ApiResponse.UserDataBean userDataBean;
     private TinyDB tinyDB;
     private String login_data, user_phone;
@@ -147,12 +147,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         tvAdditem=findViewById(R.id.cart_tv_addnewitem);
         tvplaceorder=findViewById(R.id.cart_tv_place_order);
         linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
-
+        deliverRadioButton = findViewById(R.id.radioButtonDelivery);
+        pickRadioButton = findViewById(R.id.radioButtonPick);
         //       set listener
         setListener();
 
         createMyDialog();
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -291,6 +291,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             }
                                             ratingBar.setRating(apiResponse.getAdd_cart().getRating());
                                             dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
+
                                             update_total_price();
                                             setMyAdapter(dishDetails);
                                         }
@@ -325,10 +326,32 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void update_total_price(){
         double total_price = 0;
         for(int i=0; i<dishDetails.size(); i++){
+
             Double s_q = Double.parseDouble(dishDetails.get(i).getDish_quantity_selected());
             Double d_p = Double.parseDouble(dishDetails .get(i).getDish_price());
             Double s_price = d_p * s_q;
             total_price = total_price + s_price;
+
+            if (dishDetails.get(i).getDish_homedeliver().equalsIgnoreCase("yes")){
+                isHome = "yes";
+            }
+            if (dishDetails.get(i).getDish_pickup().equalsIgnoreCase("yes")){
+                isPickup = "yes";
+            }
+
+            if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
+                deliverRadioButton.setVisibility(View.VISIBLE);
+                pickRadioButton.setVisibility(View.VISIBLE);
+            } else if (isPickup.equalsIgnoreCase("yes")){
+                pickRadioButton.setVisibility(View.VISIBLE);
+                deliverRadioButton.setVisibility(View.GONE);
+            } else if (isHome.equalsIgnoreCase("yes")){
+                pickRadioButton.setVisibility(View.GONE);
+                deliverRadioButton.setVisibility(View.VISIBLE);
+            } else {
+                pickRadioButton.setVisibility(View.GONE);
+                deliverRadioButton.setVisibility(View.GONE);
+            }
         }
 
         txtTotalprice.setText("£" + total_price + "");
@@ -605,6 +628,28 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     int i = Integer.parseInt(tinyDB.getString("cart_count"));
                     tinyDB.putString("cart_count", (i - 1) + "");
 
+                    for (int j =0;j<dishDetails.size();j++){
+                        if (dishDetails.get(j).getDish_homedeliver().equalsIgnoreCase("yes")){
+                            isHome = "yes";
+                        }
+                        if (dishDetails.get(j).getDish_pickup().equalsIgnoreCase("yes")){
+                            isPickup = "yes";
+                        }
+
+                        if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
+                            deliverRadioButton.setVisibility(View.VISIBLE);
+                            pickRadioButton.setVisibility(View.VISIBLE);
+                        } else if (isPickup.equalsIgnoreCase("yes")){
+                            pickRadioButton.setVisibility(View.VISIBLE);
+                            deliverRadioButton.setVisibility(View.GONE);
+                        } else if (isHome.equalsIgnoreCase("yes")){
+                            pickRadioButton.setVisibility(View.GONE);
+                            deliverRadioButton.setVisibility(View.VISIBLE);
+                        } else {
+                            pickRadioButton.setVisibility(View.GONE);
+                            deliverRadioButton.setVisibility(View.GONE);
+                        }
+                    }
                     BaseClass.showToast(getApplicationContext(), "Item successfully removed from your cart.");
                     update_total_price();
                     if (dishDetails.size()==0){
