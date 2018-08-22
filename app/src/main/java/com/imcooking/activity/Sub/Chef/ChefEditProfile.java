@@ -128,6 +128,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 //        sw_available.setOnCheckedChangeListener(this);
 
         ArrayList<String> spinnerData =new ArrayList<>();
+        spinnerData.add("05 miles ");
         spinnerData.add("10 miles ");
         spinnerData.add("20 miles ");
         spinnerData.add("30 miles ");

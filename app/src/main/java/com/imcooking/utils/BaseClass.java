@@ -287,7 +287,7 @@ public class BaseClass {
         String dish_hour = time.substring(0, 2);
         String dish_minute = time.substring(3, 5);
 
-        if(current_am_pm.equals("AM") && dish_am_pm.equals("AM")){
+        if(current_am_pm.contains("AM") && dish_am_pm.contains("AM")){
             if(Integer.parseInt(current_hour) == Integer.parseInt(dish_hour)){
                 if(Integer.parseInt(current_minute) <= Integer.parseInt(dish_minute)){
                     return 1;
@@ -297,14 +297,14 @@ public class BaseClass {
             } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
                 return 1;
             } else {
-                if(current_hour.equals("12")){
+                if(current_hour.contains("12")){
                     return 1;
                 } else {
                     return 0;
                 }
                 // return 0;
             }
-        } else if(current_am_pm.equals("PM") && dish_am_pm.equals("PM")){
+        } else if(current_am_pm.contains("PM") && dish_am_pm.contains("PM")){
             if(Integer.parseInt(current_hour) == Integer.parseInt(dish_hour)){
                 if(Integer.parseInt(current_minute) <= Integer.parseInt(dish_minute)){
                     return 1;
@@ -314,16 +314,16 @@ public class BaseClass {
             } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
                 return 1;
             } else {
-                if(current_hour.equals("12")){
+                if(current_hour.contains("12")){
                     return 1;
                 } else {
                     return 0;
                 }
 //                return 0;
             }
-        } else if (current_am_pm.equals("AM") && dish_am_pm.equals("PM")){
+        } else if (current_am_pm.contains("AM") && dish_am_pm.contains("PM")){
             return 1;
-        } else if(current_am_pm.equals("PM") && dish_am_pm.equals("AM")){
+        } else if(current_am_pm.contains("PM") && dish_am_pm.contains("AM")){
             if(dish_hour.equals("00")){
                 return 1;
             } else {

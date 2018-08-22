@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -20,11 +23,14 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Setting extends AppBaseActivity implements CompoundButton.OnCheckedChangeListener {
     private String miles="10", foodie_id;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private TinyDB tinyDB;
     private Gson gson;
+    private Spinner sp_miles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,7 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
     private EditText edt_miles;
     private SwitchCompat sw_notification;
     private String str_notification;
+    private ArrayList<String> spinnerData = new ArrayList<>();
 
     private void init(){
         tinyDB = new TinyDB(getApplicationContext());
@@ -47,6 +54,7 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
         miles = userDataBean.getUser_milesdistance();
         str_notification = userDataBean.getUser_notification();
         foodie_id = userDataBean.getUser_id()+"";
+        sp_miles = findViewById(R.id.setting_spinner_miles);
 
         edt_miles = findViewById(R.id.foodie_settings_miles);
         sw_notification = findViewById(R.id.foodie_settings_notification);
@@ -54,6 +62,41 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
 
         if (miles!=null)
             edt_miles.setText(miles);
+
+        if (spinnerData != null) {
+            spinnerData.clear();
+        }
+        if (spinnerData != null) {
+
+            spinnerData.add("05 miles ");
+            spinnerData.add("10 miles ");
+            spinnerData.add("20 miles ");
+            spinnerData.add("30 miles ");
+            spinnerData.add("50 miles ");
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>  (this,R.layout.spinner_row, spinnerData);
+
+        dataAdapter.setDropDownViewResource(R.layout.spinner_row);
+        sp_miles.setAdapter(dataAdapter);
+
+
+        if (miles != null) {
+            int spinnerPosition = dataAdapter.getPosition(miles+" miles ");
+            sp_miles.setSelection(spinnerPosition);
+        }
+        sp_miles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                miles = adapterView.getItemAtPosition(i)+"";
+                miles.replace("miles","");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         getMyData();
     }

@@ -118,6 +118,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         init();
         getMyCuisines();
         getMyIntentData();
+        availabilitySpinner();
+
     }
 
     private TextView tv_photo_name;
@@ -136,7 +138,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     private SeekBar seekBar_available_time;
     private TextView tv_seekbar_text, tv_time_1, tv_time_2;
-    private String str_time_from = "00:00 AM", str_time_to = "04:00 AM";
+    private String str_time_from /*= "00:00 AM"*/, str_time_to /*= "04:00 AM"*/;
 
     private void init(){
 
@@ -222,7 +224,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         setMyAdapter(arr_photos);
         createMyDialog();
-        availabilitySpinner();
     }
 
     private ArrayList<String> toList, fromList;
@@ -230,26 +231,32 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         toList = new ArrayList<>();
         fromList = new ArrayList<>();
         int j=1;
-        for (int i=1;i<=24;i++){
+        for (int i=0;i<=24;i++){
             if (i<=12){
                 if (i<=9){
-                    toList.add("0"+i+":00 AM ");
+                    toList.add("0"+i+":00 AM");
                     fromList.add("0"+i+":00 AM");
                 } else{
-                    toList.add(i+":00 AM ");
-                    fromList.add(i+":00 AM");
+
+                    if (i==12){
+                        toList.add(i+":00 PM");
+                        fromList.add(i+":00 PM");
+                    } else {
+                        toList.add(i+":00 AM");
+                        fromList.add(i+":00 AM");
+                    }
                 }
             } else {
-
-                if (j<=9){
-
-                    toList.add("0"+j+":00 PM ");
-                    fromList.add("0"+j+":00 PM");
-                } else{
-                    toList.add(j+":00 PM ");
-                    fromList.add(j+":00 PM");
+                if (i<24){
+                    if (j<=9){
+                        toList.add("0"+j+":00 PM");
+                        fromList.add("0"+j+":00 PM");
+                    } else{
+                        toList.add(j+":00 PM");
+                        fromList.add(j+":00 PM");
+                    }
+                    j++;
                 }
-                j++;
             }
         }
 
@@ -259,14 +266,18 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         toSpinner.setAdapter(arrayAdapter);
         ArrayAdapter<String> fromAdapter=new ArrayAdapter<String>(ChefEditDish.this,
                 R.layout.spinner_row, fromList);
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_row);
+        fromAdapter.setDropDownViewResource(R.layout.spinner_row);
 
         fromSpinner.setAdapter(fromAdapter);
 
-     /*   if (selectedmiles != null) {
-            int spinnerPosition = arrayAdapter.getPosition(selectedValue);
-            sp.setSelection(spinnerPosition);
-        }*/
+        if (str_time_from != null) {
+            int spinnerPosition = fromAdapter.getPosition(str_time_from);
+            fromSpinner.setSelection(spinnerPosition);
+        }
+        if (str_time_to != null) {
+            int spinnerPosition = arrayAdapter.getPosition(str_time_to);
+            toSpinner.setSelection(spinnerPosition);
+        }
 
 
      toSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -316,6 +327,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             time_2 = getIntent().getExtras().getString("time2");
             tv_time_1.setText(time_1);
             tv_time_2.setText(time_2);
+            str_time_from = time_1;
+            str_time_to = time_2;
+
             tv_seekbar_text.setText("From:" + time_1 + "\t To:" + time_2);
             setMySeekbarProgress("From:" + time_1 + " \t To:" + time_2);
 

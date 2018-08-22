@@ -160,6 +160,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 if(checkedId==R.id.radioButtonDelivery){
                     linearLayout_delivery.setVisibility(View.VISIBLE);
                     linearLayout_pickup.setVisibility(View.GONE);
+                    txt_add_address.setVisibility(View.VISIBLE);
                     delivery_type = "1";
                 }
                 else if(checkedId==R.id.radioButtonPick){
@@ -332,26 +333,31 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             Double s_price = d_p * s_q;
             total_price = total_price + s_price;
 
-            if (dishDetails.get(i).getDish_homedeliver().equalsIgnoreCase("yes")){
-                isHome = "yes";
-            }
-            if (dishDetails.get(i).getDish_pickup().equalsIgnoreCase("yes")){
-                isPickup = "yes";
-            }
 
-            if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
-                deliverRadioButton.setVisibility(View.VISIBLE);
-                pickRadioButton.setVisibility(View.VISIBLE);
-            } else if (isPickup.equalsIgnoreCase("yes")){
-                pickRadioButton.setVisibility(View.VISIBLE);
-                deliverRadioButton.setVisibility(View.GONE);
-            } else if (isHome.equalsIgnoreCase("yes")){
-                pickRadioButton.setVisibility(View.GONE);
-                deliverRadioButton.setVisibility(View.VISIBLE);
-            } else {
-                pickRadioButton.setVisibility(View.GONE);
-                deliverRadioButton.setVisibility(View.GONE);
-            }
+                if (dishDetails.get(i).getDish_homedeliver().equalsIgnoreCase("yes")){
+                    isHome = "yes";
+                }
+                if (dishDetails.get(i).getDish_pickup().equalsIgnoreCase("yes")){
+                    isPickup = "yes";
+                }
+
+                if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
+                    deliverRadioButton.setVisibility(View.VISIBLE);
+                    pickRadioButton.setVisibility(View.VISIBLE);
+                } else if (isPickup.equalsIgnoreCase("yes")){
+                    pickRadioButton.setVisibility(View.VISIBLE);
+                    deliverRadioButton.setVisibility(View.GONE);
+                    pickRadioButton.setChecked(true);
+                    linearLayout_delivery.setVisibility(View.GONE);
+                    linearLayout_pickup.setVisibility(View.VISIBLE);
+                    delivery_type = "2";
+                } else if (isHome.equalsIgnoreCase("yes")){
+                    pickRadioButton.setVisibility(View.GONE);
+                    deliverRadioButton.setVisibility(View.VISIBLE);
+                } else {
+                    pickRadioButton.setVisibility(View.GONE);
+                    deliverRadioButton.setVisibility(View.GONE);
+                }
         }
 
         txtTotalprice.setText("£" + total_price + "");
@@ -461,17 +467,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             String time_to = dishDetails.get(i).getDish_to();
 
             int time_status = BaseClass.compareToCurrentTime(time_to);
-            Log.d("CurrentTime", time_status + "");
+            Log.d("CurrentTime", time_status + "  "+ time_to);
             if(time_status == 1){
 //                st = true;
-                } else if (time_status == 0){
+            } else if (time_status == 0){
                 st = false;
                 Toast.makeText(CartActivity.this, "The dish " +
                         dishDetails.get(i).getDish_name().toUpperCase() +
                         " is not available after " + time_to + ". Please remove this dish from your cart to place your order now.", Toast.LENGTH_LONG).show();
-//                BaseClass.showToast(getApplicationContext(), "");
             }
-
         }
         if(st){
             linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
@@ -627,29 +631,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                     int i = Integer.parseInt(tinyDB.getString("cart_count"));
                     tinyDB.putString("cart_count", (i - 1) + "");
-
-                    for (int j =0;j<dishDetails.size();j++){
-                        if (dishDetails.get(j).getDish_homedeliver().equalsIgnoreCase("yes")){
-                            isHome = "yes";
-                        }
-                        if (dishDetails.get(j).getDish_pickup().equalsIgnoreCase("yes")){
-                            isPickup = "yes";
-                        }
-
-                        if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
-                            deliverRadioButton.setVisibility(View.VISIBLE);
-                            pickRadioButton.setVisibility(View.VISIBLE);
-                        } else if (isPickup.equalsIgnoreCase("yes")){
-                            pickRadioButton.setVisibility(View.VISIBLE);
-                            deliverRadioButton.setVisibility(View.GONE);
-                        } else if (isHome.equalsIgnoreCase("yes")){
-                            pickRadioButton.setVisibility(View.GONE);
-                            deliverRadioButton.setVisibility(View.VISIBLE);
-                        } else {
-                            pickRadioButton.setVisibility(View.GONE);
-                            deliverRadioButton.setVisibility(View.GONE);
-                        }
-                    }
                     BaseClass.showToast(getApplicationContext(), "Item successfully removed from your cart.");
                     update_total_price();
                     if (dishDetails.size()==0){
@@ -763,9 +744,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         try {
-
                             JSONObject obj = new JSONObject(result);
-
                             Log.d("My App", obj.toString());
 
                             boolean status = obj.getBoolean("status");

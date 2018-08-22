@@ -180,7 +180,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         viewPager = getView().findViewById(R.id.chef_home_viewpager);
         tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
         tabLayout.setupWithViewPager(viewPager);
-        setupViewPager(viewPager);
 
 
 
@@ -277,6 +276,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                         } else {
                                             txtFollowers.setText(" 0 Follower");
                                         }
+                                        setupViewPager(viewPager);
 
                                     } else {
                                         BaseClass.showToast(getContext(), getResources().getString(R.string.error));

@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity
                     anim.setDuration(0);
                     anim.setFillAfter(true);
                     frame_view.startAnimation(anim);
-
                     lastTranslate = moveFactor;
                 }
             }
@@ -195,11 +194,6 @@ public class MainActivity extends AppCompatActivity
 
         init();
         getUserData();
-
-
-//        if(user_type.equals("1")) {
-//        }
-
 
         if (user_type.equals("1")) {
 /*
@@ -221,22 +215,17 @@ public class MainActivity extends AppCompatActivity
             }
 */
 
-
             if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
 
                 String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 if (tag1.equals(ChefHome.class.getName())) {
 
                 } else {
-
                     ChefHome fragment = new ChefHome();
-
                     Bundle args = new Bundle();
                     args.putString("chef_id", user_id);
                     args.putString("foodie_id", "4");
-
                     fragment.setArguments(args);
-
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
                 }
             } else {
@@ -275,15 +264,12 @@ public class MainActivity extends AppCompatActivity
 
     private void init() {
 
-
-
         tinyDB = new TinyDB(getApplicationContext());
 
         iv_home = findViewById(R.id.bottom_home_image);
         iv_profile = findViewById(R.id.bottom_profile_image);
         iv_my_order = findViewById(R.id.bottom_my_order_image);
         iv_notification = findViewById(R.id.bottom_notification_image);
-
         tv_home = findViewById(R.id.bottom_home_text);
         tv_profile = findViewById(R.id.bottom_profile_text);
         tv_my_order = findViewById(R.id.bottom_my_order_text);

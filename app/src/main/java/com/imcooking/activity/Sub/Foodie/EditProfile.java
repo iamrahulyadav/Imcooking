@@ -79,8 +79,8 @@ public class EditProfile extends AppCompatActivity {
         getUserData();
     }
 
-    private TextView tv_fullname, tv_email, tv_phone, edt_email,btn;
-    private EditText edt_full_name,  edt_phone;
+    private TextView tv_fullname, tv_email, tv_phone, btn;
+    private EditText edt_full_name,  edt_phone,edt_email;
     private String str_id, str_uname;
     private ProgressBar progressBar;
 

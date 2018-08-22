@@ -182,8 +182,7 @@ public class HomeFragment extends Fragment implements
              //    spinnerData.add(selectedmiles+" miles ");
                 max_miles = selectedmiles;
              }
-            spinnerData.add("5 miles ");
-
+            spinnerData.add("05 miles ");
             spinnerData.add("10 miles ");
             spinnerData.add("20 miles ");
             spinnerData.add("30 miles ");

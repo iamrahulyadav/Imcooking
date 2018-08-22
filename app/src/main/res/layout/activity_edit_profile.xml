@@ -147,13 +147,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextLabel">
-                    <com.imcooking.customtext.CustomTextView
+                    <com.imcooking.customtext.CustomEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/foodie_edit_profile_email_edit"
                         android:hint="@string/txtEmail"
                         android:textSize="@dimen/extra_smallsize"
                         android:enabled="false"
+                        android:editable="false"
                         android:background="@android:color/transparent"
                         android:textColor="@color/colorBlack"
                         android:paddingLeft="10dp"
