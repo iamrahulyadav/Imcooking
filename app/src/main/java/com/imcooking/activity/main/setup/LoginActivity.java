@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText edt_passcode;
     private String user_id;
     private TinyDB tinyDB ;
-
     private String device_id;
 
     @Override

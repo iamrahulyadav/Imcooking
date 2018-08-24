@@ -115,7 +115,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             foodie_id = extras.getInt("foodie_id");
         }
 */
-
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
         txtPayment = findViewById(R.id.activity_cart_tv_payment);
         txtShopNow = findViewById(R.id.activity_cart_shop_now);
@@ -149,6 +148,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
         deliverRadioButton = findViewById(R.id.radioButtonDelivery);
         pickRadioButton = findViewById(R.id.radioButtonPick);
+
         //       set listener
         setListener();
 
@@ -173,6 +173,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         setdetails();
+
     }
 
     private void setListener(){
@@ -333,33 +334,30 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             Double s_price = d_p * s_q;
             total_price = total_price + s_price;
 
-
-                if (dishDetails.get(i).getDish_homedeliver().equalsIgnoreCase("yes")){
-                    isHome = "yes";
-                }
-                if (dishDetails.get(i).getDish_pickup().equalsIgnoreCase("yes")){
-                    isPickup = "yes";
-                }
-
-                if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
-                    deliverRadioButton.setVisibility(View.VISIBLE);
-                    pickRadioButton.setVisibility(View.VISIBLE);
-                } else if (isPickup.equalsIgnoreCase("yes")){
-                    pickRadioButton.setVisibility(View.VISIBLE);
-                    deliverRadioButton.setVisibility(View.GONE);
-                    pickRadioButton.setChecked(true);
-                    linearLayout_delivery.setVisibility(View.GONE);
-                    linearLayout_pickup.setVisibility(View.VISIBLE);
-                    delivery_type = "2";
-                } else if (isHome.equalsIgnoreCase("yes")){
-                    pickRadioButton.setVisibility(View.GONE);
-                    deliverRadioButton.setVisibility(View.VISIBLE);
-                } else {
-                    pickRadioButton.setVisibility(View.GONE);
-                    deliverRadioButton.setVisibility(View.GONE);
-                }
+            if (dishDetails.get(i).getDish_homedeliver().equalsIgnoreCase("yes")){
+                isHome = "yes";
+            }
+            if (dishDetails.get(i).getDish_pickup().equalsIgnoreCase("yes")){
+                isPickup = "yes";
+            }
+            if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
+                deliverRadioButton.setVisibility(View.VISIBLE);
+                pickRadioButton.setVisibility(View.VISIBLE);
+            } else if (isPickup.equalsIgnoreCase("yes")){
+                pickRadioButton.setVisibility(View.VISIBLE);
+                deliverRadioButton.setVisibility(View.GONE);
+                pickRadioButton.setChecked(true);
+                linearLayout_delivery.setVisibility(View.GONE);
+                linearLayout_pickup.setVisibility(View.VISIBLE);
+                delivery_type = "2";
+            } else if (isHome.equalsIgnoreCase("yes")){
+                pickRadioButton.setVisibility(View.GONE);
+                deliverRadioButton.setVisibility(View.VISIBLE);
+            } else {
+                pickRadioButton.setVisibility(View.GONE);
+                deliverRadioButton.setVisibility(View.GONE);
+            }
         }
-
         txtTotalprice.setText("£" + total_price + "");
     }
 

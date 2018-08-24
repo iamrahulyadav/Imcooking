@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -63,6 +67,8 @@ dependencies {
     // dexter runtime permissions
     implementation 'com.karumi:dexter:4.2.0'
     implementation 'co.paystack.android:paystack:3.0.10'
-
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+        transitive = true;
+    }
 }
 apply plugin: 'com.google.gms.google-services'

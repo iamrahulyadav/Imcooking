@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -61,6 +62,8 @@ import com.mukesh.tinydb.TinyDB;
 
 import java.text.DateFormat;
 import java.util.Date;
+
+import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity {
     private ImageView imgSplash, imgLogo;
@@ -100,6 +103,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
           getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
 
 
@@ -169,12 +173,10 @@ public class SplashActivity extends AppCompatActivity {
             if (savedInstanceState.containsKey("is_requesting_updates")) {
                 mRequestingLocationUpdates = savedInstanceState.getBoolean("is_requesting_updates");
             }
-
             if (savedInstanceState.containsKey("last_known_location")) {
                 mCurrentLocation = savedInstanceState.getParcelable("last_known_location");
             }
         }
-
         updateLocationUI();
     }
 
@@ -216,6 +218,7 @@ public class SplashActivity extends AppCompatActivity {
      * Update the UI displaying the location data
      * and toggling the buttons
      */
+
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
 
@@ -284,9 +287,7 @@ public class SplashActivity extends AppCompatActivity {
         imgSplash.startAnimation(animation);
         imgLogo.startAnimation(animationLogo);
 
-
     }
-
 
     /**
      * Starting location updates
@@ -301,10 +302,6 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         Log.i(TAG, "All location settings are satisfied.");
-
-                      //  Toast.makeText(getApplicationContext(), "Started location updates!", Toast.LENGTH_SHORT).show();
-
-                        //noinspection MissingPermission
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
 
@@ -389,17 +386,12 @@ public class SplashActivity extends AppCompatActivity {
         // clear the notification area when the app is opened
 //        NotificationUtils.clearNotifications(getApplicationContext());
 
-
-
-
         // Resuming location updates depending on button state and
         // allowed permissions
         if (mRequestingLocationUpdates && checkPermissions()) {
 //            startLocationUpdates();
         }
         updateLocationUI();
-
-
 
     }
 

@@ -106,6 +106,7 @@
         android:textColor="@color/colorWhite"
         android:textSize="18dp"
         android:gravity="center"
+        android:onClick="foodie_settings_update"
         android:background="@drawable/shape_background_theme"
         android:layout_margin="30dp" />
 

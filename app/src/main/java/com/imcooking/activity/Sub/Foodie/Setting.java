@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.AddressListData;
@@ -88,6 +89,7 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 miles = adapterView.getItemAtPosition(i)+"";
+                Toast.makeText(Setting.this, ""+miles, Toast.LENGTH_SHORT).show();
                 miles.replace("miles","");
             }
 
@@ -96,7 +98,6 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
 
             }
         });
-
 
         getMyData();
     }
@@ -108,7 +109,6 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
             else if (str_notification.equals("0"))
                 sw_notification.setChecked(false);
         }else sw_notification.setChecked(true);
-
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
     }
 
     public void foodie_settings_update(View view){
-        miles = edt_miles.getText().toString().trim();
+     //   miles = edt_miles.getText().toString().trim();
         if (!miles.isEmpty()){
             setMiles();
         } else {
@@ -137,8 +137,7 @@ public class Setting extends AppBaseActivity implements CompoundButton.OnChecked
     private void setMiles(){
         final String request = "{\"notification\":\""+str_notification+"\",\n" +
                 " \"user_id\":\""+foodie_id+"\",\n" +
-                " \"miles\":\""+miles+"\"\n" +
-                "\n" +
+                " \"miles\":\""+miles.replace("miles","")+"\"\n" +
                 "}";
         Log.d("TAG", "rakhi: "+request);
 
