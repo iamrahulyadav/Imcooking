@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.imcooking.R;
 import com.imcooking.adapters.AdapterFoodieMyOrderDetailList;
 import com.imcooking.adapters.ChefILoveAdatper;
 import com.imcooking.fragment.chef.ChefHome;
+import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -46,6 +48,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_qyt, txt_price, txt_email, txt_pay_mode,txt_phone,txt_order_status,
             txt_order_id;
     private TinyDB tinyDB;
+    private RatingBar ratingBar;
     private NestedScrollView nestedScrollView;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private Gson gson = new Gson();
@@ -71,7 +74,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
     }
 
     private void init(){
-
+        ratingBar  = findViewById(R.id.chef_order_details_rate);
         nestedScrollView = findViewById(R.id.chef_order_list_scroll);
         recyclerView = findViewById(R.id.order_details_recycler);
         txt_chef_name = findViewById(R.id.item_foodie_my_order_chef);
@@ -100,6 +103,17 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                 }
             });
         }
+
+
+
+
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                rateChef(chef_id,ratingBar.getRating()+"");
+            }
+        });
 
         getOrderDetails();
     }
@@ -132,7 +146,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         txtAddress.setText(orderDetailsBeans.get(0).getChef_address());
                                         txt_phone.setText(orderDetailsBeans.get(0).getChef_phone());
                                         txt_email.setText(orderDetailsBeans.get(0).getChef_email());
-
                                     } else {
                                         if (orderDetailsBeans.get(0).getOrder_foodie_name()!=null)
                                             txt_chef_name.setText(orderDetailsBeans.get(0).
@@ -140,17 +153,15 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         txt_phone.setText(orderDetailsBeans.get(0).getOrder_foodie_phone());
                                         txtAddress.setText(orderDetailsBeans.get(0).getOrder_addres());
                                         txt_email.setText(orderDetailsBeans.get(0).getOrder_foodie_email());
-
                                     }
-
                                     txt_order_id.setText("#"+orderDetailsBeans.get(0).getOrder_order_id());
                                     txt_order_type.setText(orderDetailsBeans.get(0).getOrder_payment_type());
                                     txt_pay_mode.setText(orderDetailsBeans.get(0).getOrder_payment_type());
                                     txt_total_price.setText("£"+orderDetailsBeans.get(0).getOrder_total_price());
                                     delivery_type = orderDetailsBeans.get(0).getDelivery_type();
-
+                                    //ratingBar.setRating(orderDetailsData.getOrder_details());
                                     if (delivery_type.equals("1")){
-                                        //1=delivery
+                                        //1 = delivery
                                         txt_order_type.setText("Delivery");
                                         @SuppressLint("SimpleDateFormat")
                                         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -166,13 +177,13 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         txt_date.setText(finalDate);
 
                                     } else if (delivery_type.equals("2")){
-                                        //2=pickup
+                                        // 2 = pickup
                                         txt_date.setText(orderDetailsBeans.get(0).getOrder_from_time()+" - "+orderDetailsBeans.get(0).getOrder_to_time());
                                         txt_order_type.setText("Pickup");
                                     }
                                     if (user_type.equalsIgnoreCase("1")){
                                         chef_status =  orderDetailsBeans.get(0).getOrder_status();
-                                        Toast.makeText(ChefOrderDetailsActivity.this, ""+chef_status, Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(ChefOrderDetailsActivity.this, ""+chef_status, Toast.LENGTH_SHORT).show();
                                         txt_order_status.setText("Change Status");
                                     } else {
                                         if (orderDetailsBeans.get(0).getOrder_status() != null) {
@@ -410,4 +421,36 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             e.printStackTrace();
         }
     }
+
+    private void rateChef(String chef_id, String rating){
+        final String request = "{\"chef_id\":\""+chef_id+"\",\"foodie_id\":\""+foodie_id+"\",\"rating\":\""+rating+"\"}";
+        Log.d("MyRequest", request);
+
+
+        new GetData(getApplicationContext(), ChefOrderDetailsActivity.this).getResponse(request,
+                GetData.CHEF_RATIING, new GetData.MyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+                        try {
+                           if (result!=null){
+                               JSONObject jsonObject = new JSONObject(result);
+                               boolean status = jsonObject.getBoolean("status");
+                               if (status){
+                                   runOnUiThread(new Runnable() {
+                                       @Override
+                                       public void run() {
+                                           BaseClass.showToast(getApplicationContext(), "Thanks for rating !");
+                                       }
+                                   });
+                               }
+                           }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+    }
+
+
 }

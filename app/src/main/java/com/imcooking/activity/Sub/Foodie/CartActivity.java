@@ -729,13 +729,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getAvailability(){
-
         String request = "{\"chef_id\":\""+chef_id+"\",\n" +
                 " \"foodie_lat\":\""+latitude+"\",\n" +
                 " \"foodie_lang\":\""+longitude+"\"\n" +
                 "}";
         Log.d(TAG, "MyRequest: "+request);
-
         new GetData(getApplicationContext(), CartActivity.this).getResponse(request,
                 GetData.CHECK_FOODIE_DISTANCE, new GetData.MyCallback() {
             @Override
@@ -746,22 +744,18 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         try {
                             JSONObject obj = new JSONObject(result);
                             Log.d("My App", obj.toString());
-
                             boolean status = obj.getBoolean("status");
                             if (status){
                                 String msg = obj.getString("msg");
                                 if (msg.equalsIgnoreCase("No")){
                                     createPayDialog();
-                               //      Toast.makeText(CartActivity.this, "dish not available", Toast.LENGTH_SHORT).show();
                                 } else {
                                     click_payment();
                                 }
                             }
-
                         } catch (Throwable t) {
                             Log.e("My App", "Could not parse malformed JSON: \"" + result + "\"");
                         }
-
                     }
                 });
             }

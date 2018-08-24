@@ -354,7 +354,8 @@ public class MainActivity extends AppCompatActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
             }
-            else{ // chef
+            else{
+                // chef
 /*
                 if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
                     String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
@@ -455,10 +456,8 @@ public class MainActivity extends AppCompatActivity
 
         // clear the notification area when the app is opened
         NotificationUtils.clearNotifications(getApplicationContext());
-
 /*
         Bitmap bitmap = BaseClass.getBitmapFromURL1("S");
-
         String s = BaseClass.BitMapToString(bitmap);
         Log.d("MyBase64", s);*/
     }

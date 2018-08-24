@@ -265,6 +265,12 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
        } else {
 
        }
+    }
+
+    private void rateChef(){
 
     }
+
+
+
 }

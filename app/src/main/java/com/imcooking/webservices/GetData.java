@@ -93,7 +93,9 @@ public class GetData {
     public static String FOODIE_DECLINE = "foodie_decline";
     public static String CHAT_DISPLAY = "conversation_chat_display";
     public static String FOODIE_ACCEPT = "foodie_accept";
+    public static String CHEF_RATIING  = "chef_rating";
 
+    /*http://webdevelopmentreviews.net/imcooking/api/chef_rating*/
 
     public GetData(final Context context, Activity activity) {
 /*
