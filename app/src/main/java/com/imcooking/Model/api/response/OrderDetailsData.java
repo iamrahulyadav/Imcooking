@@ -82,8 +82,17 @@ public class OrderDetailsData {
         private String order_payment_type;
         private String order_transaction_id;
         private String order_status;
+        private String rating;
         private String order_createdate;
         private List<OrderDishImageBean> order_dish_image;
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
+        }
 
         public String getChef_id() {
             return chef_id;

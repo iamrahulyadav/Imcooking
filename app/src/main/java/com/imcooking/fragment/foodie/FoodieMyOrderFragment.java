@@ -261,7 +261,7 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                    .putExtra("order_id",prevoiusOrderListBeans.get(position).getOrder_order_id()));
            adapterFoodieMyOrder1.notifyDataSetChanged();
        } else if (TAG.equals("ratingbar")){
-           BaseClass.showToast(getContext(), "Rate & Review");
+         //  BaseClass.showToast(getContext(), "Rate & Review");
        } else {
 
        }

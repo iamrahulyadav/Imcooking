@@ -96,7 +96,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:id="@+id/activity_cart_rating"
                                 style="@style/Widget.AppCompat.RatingBar.Small"
-                                android:progressTint="#FEF200" />
+                                android:theme="@style/AppThemeRatingBar" />
 
                             <TextView
                                 android:id="@+id/chef_name"

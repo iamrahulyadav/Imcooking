@@ -247,7 +247,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                             tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                         }
 
-                                        if (chefProfileData1.getChef_data().getRating() != null) {
+                                        if (chefProfileData1.getChef_data().getRating() != null&&chefProfileData1.getChef_data().getRating() .length()>0) {
                                             ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
                                         }
                                         if (chefProfileData1

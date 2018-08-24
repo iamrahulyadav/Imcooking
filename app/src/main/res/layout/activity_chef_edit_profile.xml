@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
-                    android:transformPivotX="0dp"
+                    android:theme="@style/AppThemeRatingBar"
                     style="?android:attr/ratingBarStyleSmall"
                     android:id="@+id/activity_chef_edit_profile_rating"/>
 

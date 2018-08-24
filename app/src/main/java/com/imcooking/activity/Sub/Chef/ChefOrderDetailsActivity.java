@@ -158,7 +158,10 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     txt_pay_mode.setText(orderDetailsBeans.get(0).getOrder_payment_type());
                                     txt_total_price.setText("£"+orderDetailsBeans.get(0).getOrder_total_price());
                                     delivery_type = orderDetailsBeans.get(0).getDelivery_type();
-                                    //ratingBar.setRating(orderDetailsData.getOrder_details());
+                                    if (orderDetailsBeans.get(0).getRating()!=null && orderDetailsBeans.get(0).getRating().length()>0){
+                                        ratingBar.setRating(Float.parseFloat(orderDetailsBeans.get(0).getRating()));
+                                    }
+
                                     if (delivery_type.equals("1")){
                                         //1 = delivery
                                         txt_order_type.setText("Delivery");

@@ -174,16 +174,17 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
         int selected_position = 0;
         if(miles != null) {
-            if (miles.contains("10")) {
+            if (miles.contains("5")) {
                 selected_position = 0;
-            } else if (miles.contains("20")) {
+            } else if (miles.contains("10")) {
                 selected_position = 1;
-            } else if (miles.contains("30")) {
+            } else if (miles.contains("20")) {
                 selected_position = 2;
-            } else if (miles.contains("50")) {
+            } else if (miles.contains("30")) {
                 selected_position = 3;
-            } else {
-            }
+            } else if (miles.contains("50")) {
+                selected_position = 4;
+            } else { }
         }
         sp_miles.setSelection(selected_position);
 
@@ -204,8 +205,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         if(cuisineList.size() == 0){
             tv_select_cuisine.setText("");
         }
-
-
         edt_email.setText(str_email);
         if (str_name!=null && !str_name.equalsIgnoreCase("null")){
             edt_name.setText(str_name);
@@ -231,8 +230,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         if (str_phn!=null){
             edt_phn.setText(str_phn);
         }
-
-        if (chefProfileData1.getChef_data().getRating()!=null){
+        if (chefProfileData1.getChef_data().getRating()!=null&&chefProfileData1.getChef_data().getRating().length()>0){
+            Toast.makeText(this, ""+chefProfileData1.getChef_data().getRating(), Toast.LENGTH_SHORT).show();
             ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
         }
         progressBar.setVisibility(View.VISIBLE);

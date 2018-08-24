@@ -174,11 +174,11 @@
                                     android:paddingRight="20dp" />
 
                                 <RatingBar
+                                    android:theme="@style/AppThemeRatingBar"
                                     style="?android:attr/ratingBarStyleSmall"
                                     android:id="@+id/fragment_chef_home_rating"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:progressTint="@color/colorYellow"
                                     android:visibility="visible"
                                     android:layout_gravity="center"/>
                                 <com.imcooking.customtext.CustomTextView
