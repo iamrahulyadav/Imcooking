@@ -250,6 +250,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Rate Us "
+                android:id="@+id/txt_rate"
                 android:gravity="center"
                 android:padding="10dp"
                 android:textColor="@color/colorBlue"

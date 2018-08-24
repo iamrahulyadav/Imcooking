@@ -385,7 +385,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.radioGroup:
                 //if(){}
-
                 break;
             case R.id.actvity_cart_txtFromTime:
                 type = "from";

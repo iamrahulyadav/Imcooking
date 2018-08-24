@@ -46,7 +46,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
     private String order_id, delivery_type, chef_status, chef_id, foodie_id="107", user_type;
     private TextView txt_chef_name, txt_order_type,txt_date, txtAddress, txt_total_price,
             txt_qyt, txt_price, txt_email, txt_pay_mode,txt_phone,txt_order_status,
-            txt_order_id;
+            txt_order_id, txt_rate;
     private TinyDB tinyDB;
     private RatingBar ratingBar;
     private NestedScrollView nestedScrollView;
@@ -64,7 +64,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         tinyDB = new TinyDB(getApplicationContext());
         userDataBean = gson.fromJson(tinyDB.getString("login_data"), ApiResponse.UserDataBean.class);
 
-        chef_id = userDataBean.getUser_id()+"";
+        foodie_id = userDataBean.getUser_id()+"";
         user_type = userDataBean.getUser_type();
 
         if (getIntent().hasExtra("order_id"))
@@ -74,6 +74,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
     }
 
     private void init(){
+        txt_rate = findViewById(R.id.txt_rate);
         ratingBar  = findViewById(R.id.chef_order_details_rate);
         nestedScrollView = findViewById(R.id.chef_order_list_scroll);
         recyclerView = findViewById(R.id.order_details_recycler);
@@ -102,11 +103,9 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                     createDialog(delivery_type);
                 }
             });
+            ratingBar.setVisibility(View.GONE);
+            txt_rate.setVisibility(View.GONE);
         }
-
-
-
-
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
             @Override
@@ -140,8 +139,8 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                             if (orderDetailsData.getOrder_details()!=null){
                                 orderDetailsBeans.addAll(orderDetailsData.getOrder_details());
                                 if (orderDetailsBeans.size()>0){
-                                    foodie_id = orderDetailsBeans.get(0).getOrder_foodie_id()+"";
                                     if (user_type.equals("2")){
+                                        chef_id = orderDetailsBeans.get(0).getChef_id()+"";
                                         txt_chef_name.setText(orderDetailsBeans.get(0).getChef_name()+"");
                                         txtAddress.setText(orderDetailsBeans.get(0).getChef_address());
                                         txt_phone.setText(orderDetailsBeans.get(0).getChef_phone());
@@ -425,7 +424,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
     private void rateChef(String chef_id, String rating){
         final String request = "{\"chef_id\":\""+chef_id+"\",\"foodie_id\":\""+foodie_id+"\",\"rating\":\""+rating+"\"}";
         Log.d("MyRequest", request);
-
 
         new GetData(getApplicationContext(), ChefOrderDetailsActivity.this).getResponse(request,
                 GetData.CHEF_RATIING, new GetData.MyCallback() {

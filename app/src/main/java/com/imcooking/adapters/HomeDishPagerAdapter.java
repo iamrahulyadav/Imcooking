@@ -220,8 +220,9 @@ public class HomeDishPagerAdapter extends PagerAdapter{
 
             }
         });
-
-        ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()+""));
+        if (chefDishBeans.get(position).getRating()!=null){
+            ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()+""));
+        }
         container.addView(view);
         return view;
     }

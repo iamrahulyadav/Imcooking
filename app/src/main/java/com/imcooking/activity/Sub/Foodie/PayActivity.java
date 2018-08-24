@@ -32,12 +32,6 @@ public class PayActivity extends AppCompatActivity {
     //variables
     private Card card;
     private Charge charge;
-
-/*    private EditText emailField;
-    private EditText cardNumberField;
-    private EditText expiryMonthField;
-    private EditText expiryYearField;
-    private EditText cvvField;*/
     private String email, cardNumber, cvv;
     private int expiryMonth, expiryYear;
 
