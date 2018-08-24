@@ -245,7 +245,6 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-
     @SuppressLint("RestrictedApi")
     private void init() {
         tinyDB = new TinyDB(getApplicationContext());

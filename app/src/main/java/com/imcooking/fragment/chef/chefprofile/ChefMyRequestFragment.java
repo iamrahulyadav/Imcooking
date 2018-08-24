@@ -81,12 +81,12 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             public boolean canScrollVertically() {
                 return false;
             }
-
         };
         if (strtext!=null){
             layoutToolbar.setVisibility(View.VISIBLE);
         }
         requestRecyclerView.setLayoutManager(manager);
+
         getorderList();
 
     }

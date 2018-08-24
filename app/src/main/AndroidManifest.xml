@@ -139,8 +139,10 @@
         </service>
 
         <!-- ./Firebase Notifications -->
-        <activity android:name=".activity.home.MyActivity">
-        </activity>
+        <activity android:name=".activity.home.MyActivity"/>
+
+
+
     </application>
 
 </manifest>

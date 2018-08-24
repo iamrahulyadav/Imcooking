@@ -184,15 +184,14 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
             request();
 
         } else if (id == R.id.foodie_request_a_dish_date_icon) {
-
-            new DatePickerDialog(getContext(), date, myCalendar
+            DatePickerDialog datePickerDialog;
+            datePickerDialog=new DatePickerDialog(getContext(), date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-//            dob_pick();
+                    myCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.show();
 
         } else if (id == R.id.foodie_request_a_dish_time_icon) {
-
-
             Calendar mcurrentTime = Calendar.getInstance();
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -201,7 +200,6 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//                    eReminderTime.setText( selectedHour + ":" + selectedMinute);
                     tv_time.setText(selectedHour + " : " + selectedMinute);
                 }
             }, hour, minute, true);//Yes 24 hour time

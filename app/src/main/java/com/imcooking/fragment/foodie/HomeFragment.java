@@ -182,6 +182,7 @@ public class HomeFragment extends Fragment implements
              //    spinnerData.add(selectedmiles+" miles ");
                 max_miles = selectedmiles;
              }
+
             spinnerData.add("05 miles ");
             spinnerData.add("10 miles ");
             spinnerData.add("20 miles ");
@@ -214,6 +215,7 @@ public class HomeFragment extends Fragment implements
             int spinnerPosition = arrayAdapter.getPosition(selectedValue);
             sp.setSelection(spinnerPosition);
         }
+        sp.setSelection(1);
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
