@@ -169,6 +169,7 @@ public class AddAddressActivity extends AppBaseActivity implements OnMapReadyCal
         } else {
             Toast.makeText(mContext, "Location not supported in this device", Toast.LENGTH_SHORT).show();
         }
+
       //  autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
      /*   autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

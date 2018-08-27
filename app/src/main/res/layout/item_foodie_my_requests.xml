@@ -50,14 +50,30 @@
                     android:textSize="12sp"
                     android:drawablePadding="5dp"
                     android:layout_marginBottom="3dp"/>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+91-7737284476"
-                    android:id="@+id/item_foodie_my_request_mob_number"
-                    android:textColor="@color/text_color_13"
-                    android:textSize="9sp"
-                    android:gravity="center"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+91-7737284476"
+                        android:id="@+id/item_foodie_my_request_mob_number"
+                        android:textColor="@color/text_color_13"
+                        android:textSize="9sp"
+                        android:layout_alignParentLeft="true"/>
+
+
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Confirmed"
+                        android:id="@+id/item_foodie_my_request_confirmed"
+                        android:textColor="@color/theme_color"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

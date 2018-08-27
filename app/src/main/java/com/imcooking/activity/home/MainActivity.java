@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity
         setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
 
+        if(getIntent().getExtras()!= null){
+            Toast.makeText(this, getIntent().getExtras().getString("message"), Toast.LENGTH_SHORT).show();
+        }
 
         // Notifications -----GetDeviceId
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
