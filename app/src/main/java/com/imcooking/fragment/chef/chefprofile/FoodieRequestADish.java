@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.ModelFoodieRequestADish;
 import com.imcooking.Model.api.response.ApiResponse;
+import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
@@ -46,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -116,7 +118,8 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
 
         createMyDialog();
         createMyDatePicker();
-          setMyCuisines(ChefHome.cuisineData);
+//        setMyCuisines(ChefHome.cuisineData);
+        setMyCuisines(ChefHome.chefProfileData1.getChef_data().getCuisine_name());
     }
 
     private void createMyDatePicker(){
@@ -137,6 +140,21 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
     }
 
 
+    private void setMyCuisines(List<ChefProfileData1.ChefDataBean.CuisineNameBean> cus){
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        for(int i=0; i<cus.size(); i++){
+            arrayList.add(cus.get(i).getCuisine_name());
+        }
+
+        if(getContext() != null) {
+            ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(getContext(),
+                    R.layout.spinner_row_1, arrayList);
+            arrayAdapter1.setDropDownViewResource(R.layout.spinner_row_1);
+            sp.setAdapter(arrayAdapter1);
+        }
+    }
+/*
     private void setMyCuisines(CuisineData cuisines){
 
         ArrayList<String> arrayList = new ArrayList<>();
@@ -151,6 +169,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
             sp.setAdapter(arrayAdapter1);
         }
     }
+*/
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
