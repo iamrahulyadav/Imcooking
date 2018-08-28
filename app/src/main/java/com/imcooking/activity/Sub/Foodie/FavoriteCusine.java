@@ -96,9 +96,25 @@ public class FavoriteCusine extends AppBaseActivity {
                             data = new ModelFoodieFavCuisines();
                             data = new Gson().fromJson(result, ModelFoodieFavCuisines.class);
 
-                            if(data.isStatus()){
-                                setMyAdapter(data.getCuisine_data());
-                            }
+//                            if(data.isStatus()){
+//                                setMyAdapter(data.getCuisine_data());
+//                            } else{
+                                try {
+                                    JSONObject jsonObject1 = new JSONObject(result);
+                                    if(jsonObject1.has("msg")) {
+                                        if (jsonObject1.get("msg").equals("Not record found")) {
+                                            recyclerView.setVisibility(View.GONE);
+                                            BaseClass.showToast(getApplicationContext(), "Your Favorite Cuisine List is Empty.");
+                                        } else {
+                                        }
+                                    } else if(jsonObject1.has("cuisine_data")){
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                        setMyAdapter(data.getCuisine_data());
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+//                            }
                         }
                     });
         } catch (JSONException e) {

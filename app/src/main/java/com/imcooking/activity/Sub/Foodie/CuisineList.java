@@ -115,18 +115,20 @@ public class CuisineList extends AppBaseActivity implements AdapterCuisineList.c
     public void click_adapter_cuisine_list_m(int position) {
 
         callApi(cuisineData.getCuisine_data().get(position).getCuisine_id(),
-                cuisineData.getCuisine_data().get(position).getCuisine_name());
+                cuisineData.getCuisine_data().get(position).getCuisine_name(), position);
 //        BaseClass.showToast(getApplicationContext(), position + "");
+/*
         if(arrayList.get(position).equals("1")) {
             arrayList.set(position, "0");
         } else {
             arrayList.set(position, "1");
         }
         adapter.notifyDataSetChanged();
+*/
 
     }
 
-    private void callApi(int cuisine_id, final String cuisine_name){
+    private void callApi(int cuisine_id, final String cuisine_name, final int position){
 
         Log.d("foodie_id", foodie_id);
         String s = "{\"foodie_id\":" + foodie_id + ", \"cuisine_id\":" + cuisine_id + "}" ;
@@ -144,12 +146,16 @@ public class CuisineList extends AppBaseActivity implements AdapterCuisineList.c
                                     if(job.getString("msg").equals("Add favourite Successfully")){
                                         BaseClass.showToast(getApplicationContext(),
                                                 cuisine_name + " has been added to your favourite cuisine list");
+                                        arrayList.set(position, "1");
+                                        adapter.notifyDataSetChanged();
                                         finish();
                                     } else {}
                                 }else {
                                     if (job.getString("msg").equals(" Dislike cuisine!")) {
                                         BaseClass.showToast(getApplicationContext(),
                                                 cuisine_name + " has been removed from your favourite cuisine list");
+                                        arrayList.set(position, "0");
+                                        adapter.notifyDataSetChanged();
                                         finish();
                                     } else {
                                         BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
