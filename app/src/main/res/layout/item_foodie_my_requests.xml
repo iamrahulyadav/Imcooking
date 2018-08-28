@@ -89,7 +89,8 @@
                     <RatingBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:rating="5"
+                        android:numStars="5"
+                        android:theme="@style/AppThemeRatingBar"
                         android:id="@+id/item_foodie_my_request_rating"
                         style="@style/Widget.AppCompat.RatingBar.Small"
                         android:layout_alignParentLeft="true"

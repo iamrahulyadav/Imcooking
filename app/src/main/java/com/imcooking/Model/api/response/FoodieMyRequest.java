@@ -56,7 +56,7 @@ public class FoodieMyRequest {
         private String chef_image;
         private String chef_description;
         private String chef_request_datetime;
-        private int chef_rating;
+        private String chef_rating;
         private String chef_response;
         private String request_cusine_name;
         private String request_dishname;
@@ -186,11 +186,11 @@ public class FoodieMyRequest {
             this.chef_request_datetime = chef_request_datetime;
         }
 
-        public int getChef_rating() {
+        public String getChef_rating() {
             return chef_rating;
         }
 
-        public void setChef_rating(int chef_rating) {
+        public void setChef_rating(String chef_rating) {
             this.chef_rating = chef_rating;
         }
 

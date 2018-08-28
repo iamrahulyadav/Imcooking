@@ -1,5 +1,6 @@
 package com.imcooking.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -214,6 +215,20 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
         holder.txt_address.setText(list.get(position).getChef_address());
         holder.txt_email.setText(list.get(position).getChef_email());
         holder.txt_phn.setText(list.get(position).getChef_phone()+"");
+
+/*
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date myDate = null;
+        try {
+            myDate = timeFormat.parse(list.get(position).getChef_request_datetime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "MMM dd, yyyy HH:mm a");
+        String finalDate = dateFormat.format(myDate);*/
+
         holder.txt_time.setText(list.get(position).getChef_request_datetime());
         holder.txt_dish_name.setText(list.get(position).getRequest_dishname());
 

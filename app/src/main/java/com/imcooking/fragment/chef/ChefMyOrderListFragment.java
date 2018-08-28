@@ -47,10 +47,12 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView ;
     private RelativeLayout currentLayout;
-   private View view;
-   public ChefMyOrderListFragment() {
+    private View view;
+
+    public ChefMyOrderListFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

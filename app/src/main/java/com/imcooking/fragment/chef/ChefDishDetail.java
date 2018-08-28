@@ -284,8 +284,8 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                                             }
                                         };
 
-                                        if (str_like!=null){
-                                            tv_dish_likes.setText(str_like);
+                                        if (str_likes!=null){
+                                            tv_dish_likes.setText(str_likes);
                                         } else tv_dish_likes.setText("0");
 
                                         timer = new Timer(); // This will create a new Thread

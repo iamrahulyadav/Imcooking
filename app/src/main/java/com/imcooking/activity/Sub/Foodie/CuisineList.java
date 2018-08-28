@@ -144,9 +144,13 @@ public class CuisineList extends AppBaseActivity implements AdapterCuisineList.c
                                     if(job.getString("msg").equals("Add favourite Successfully")){
                                         BaseClass.showToast(getApplicationContext(),
                                                 cuisine_name + " has been added to your favourite cuisine list");
-                                    } else if (job.getString("msg").equals(" Dislike cuisine!")){
+                                        finish();
+                                    } else {}
+                                }else {
+                                    if (job.getString("msg").equals(" Dislike cuisine!")) {
                                         BaseClass.showToast(getApplicationContext(),
                                                 cuisine_name + " has been removed from your favourite cuisine list");
+                                        finish();
                                     } else {
                                         BaseClass.showToast(getApplicationContext(), "Something Went Wrong.");
                                     }
@@ -154,7 +158,6 @@ public class CuisineList extends AppBaseActivity implements AdapterCuisineList.c
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     });
         } catch (JSONException e) {

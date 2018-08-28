@@ -273,6 +273,9 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                         } else {
                                             txtFollowers.setText(" 0 Follower");
                                         }
+                                        if (user_type.equals("1")){
+                                            txtFollowers.setTextColor(getResources().getColor(R.color.colorBlue));
+                                        } else txtFollowers.setTextColor(getResources().getColor(R.color.colorWhite));
                                         setupViewPager(viewPager);
 
                                     } else {
