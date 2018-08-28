@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -192,15 +193,32 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
             datePickerDialog.show();
 
         } else if (id == R.id.foodie_request_a_dish_time_icon) {
-            Calendar mcurrentTime = Calendar.getInstance();
+            final Calendar mcurrentTime = Calendar.getInstance();
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-            int minute = mcurrentTime.get(Calendar.MINUTE);
+            final int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
             mTimePicker = new TimePickerDialog(getContext(),
                     new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+
+                    String myFormat = "dd/MM/yy"; //In which you need put here
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                  /*  Date date = new Date(tv_date.getText().toString());
+                    if (tv_date.getText().toString().trim()!=null && tv_date.getText().toString().trim()
+                            .equalsIgnoreCase(sdf.format(myCalendar.getTime()))){
+                        Toast.makeText(getContext(), "Invalid time", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "graT", Toast.LENGTH_SHORT).show();
+
+                    }
+                    if (mcurrentTime.getTimeInMillis() >= myCalendar.getTimeInMillis()) {
+                    } else {
+                        //it's before current'
+                        Toast.makeText(getContext(), "Invalid Time", Toast.LENGTH_LONG).show();
+                   }*/
                     tv_time.setText(selectedHour + " : " + selectedMinute);
+
                 }
             }, hour, minute, true);//Yes 24 hour time
             mTimePicker.setTitle("Select Time");

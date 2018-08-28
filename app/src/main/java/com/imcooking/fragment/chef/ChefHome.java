@@ -181,8 +181,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
-
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -238,7 +236,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                                             }
                                         }
 
-
                                         if (chefProfileData1.getChef_data().getChef_phone() != null) {
                                             if (user_type.equals("1")) {
                                                 MainActivity.tv_phone.setText(chefProfileData1.getChef_data().getChef_phone() + "");
@@ -293,12 +290,10 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private void getCuisines(){
         try {
             JSONObject jsonObject = new JSONObject("{}");
-//            layout.setVisibility(View.GONE);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, "cuisine",
                     getActivity(), new GetData.MyCallback() {
                         @Override
-                        public void onSuccess(String result) {
-
+                         public void onSuccess(String result) {
                             cuisineData = new Gson().fromJson(result, CuisineData.class);
                         }
                     });
@@ -476,7 +471,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             int height = displayMetrics.heightPixels;
             int width = displayMetrics.widthPixels;
-
             if(width == 720 && height == 1184){
                 dialog.show();
             } else {
@@ -550,7 +544,9 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                 startActivity(intent);
             }
         } else if (id == R.id.activity_chef_txtFollower){
-            BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+            if (user_type.equals("1")){
+                BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+            }
         }
     }
 

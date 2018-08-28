@@ -94,6 +94,9 @@ public class GetData {
     public static String CHAT_DISPLAY = "conversation_chat_display";
     public static String FOODIE_ACCEPT = "foodie_accept";
     public static String CHEF_RATIING  = "chef_rating";
+    public static String NOTIFICATION = "notification";
+    public static String READ_NOTIFI = "readNotification";
+    public static String FOODIE_MY_REQ_DISH_CHEF_DETAIL ="foodie_myrequestdish_chefdetails";
 
     /*http://webdevelopmentreviews.net/imcooking/api/chef_rating*/
 

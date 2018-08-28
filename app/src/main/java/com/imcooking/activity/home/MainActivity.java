@@ -124,18 +124,14 @@ public class MainActivity extends AppCompatActivity
 
                     tv_notification_dot.setVisibility(View.VISIBLE);
                     String message = intent.getStringExtra("message");
-
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-
-                    Toast.makeText(getApplicationContext(), "Hii Main", Toast.LENGTH_SHORT).show();
+//
+//                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+//
+//                    Toast.makeText(getApplicationContext(), "Hii Main", Toast.LENGTH_SHORT).show();
 //                    txtMessage.setText(message);
                 }
             }
         };
-
-
-
-
 
         // Get Device Id From Shared Prefwrences
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);

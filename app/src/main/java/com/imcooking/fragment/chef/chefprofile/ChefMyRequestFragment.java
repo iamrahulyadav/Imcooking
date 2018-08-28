@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -117,6 +118,7 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                                     requestRecyclerView.setVisibility(View.VISIBLE);
                                     no_recordLayout.setVisibility(View.GONE);
                                     chefDishDetailsBeans.addAll(chefMyorderList.getChef_dish_details());
+                                    Collections.reverse(chefDishDetailsBeans);
                                     setDishAdapter(chefDishDetailsBeans);
                                 }
                                 else {

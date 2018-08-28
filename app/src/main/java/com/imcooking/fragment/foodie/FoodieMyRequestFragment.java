@@ -42,6 +42,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -135,7 +136,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
         String s = "{\"foodie_id\":" + user_id + "}";
         try {
             JSONObject job = new JSONObject(s);
-            new GetData(getContext(), getActivity()).sendMyData(job, "foodie_myrequestdish_chefdetails",
+            new GetData(getContext(), getActivity()).sendMyData(job, GetData.FOODIE_MY_REQ_DISH_CHEF_DETAIL,
                     getActivity(), new GetData.MyCallback() {
                 @Override
                 public void onSuccess(final String result) {
@@ -151,6 +152,7 @@ public class FoodieMyRequestFragment extends Fragment implements AdapterFoodieMy
                                         rv.setVisibility(View.VISIBLE);
                                         no_recordLayout.setVisibility(View.GONE);
                                         requestDishChefDetailsBeans.addAll(foodieMyRequest.getFoodie_request_dish_chef_details());
+//                                        Collections.reverse(requestDishChefDetailsBeans);
                                         setMyAdapter(requestDishChefDetailsBeans);
                                     }
                                     else {

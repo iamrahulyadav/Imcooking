@@ -274,7 +274,7 @@
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/cart_addnewaddress"
-                        android:text="Add New"
+                        android:text="Add New Address"
                         android:textSize="12sp"
                         android:gravity="center"
                         android:background="@drawable/button_bg4"

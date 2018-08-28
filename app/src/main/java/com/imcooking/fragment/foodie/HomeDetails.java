@@ -353,7 +353,14 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                             txtDistance.setText("0.00"+" miles");
                                         }else {
                                             String distnace = BaseClass.df2.format(Double.parseDouble(dishDetails.getDish_details().getDistance()))+"";
-                                            txtDistance.setText(distnace+" miles");
+//                                            txtDistance.setText(distnace+" miles");
+
+                                            double dis = Double.parseDouble(BaseClass.df2.format(Double.parseDouble(dishDetails.getDish_details().getDistance())));
+                                            if (dis>0){
+                                                txtDistance.setText(dis + " miles");
+                                            } else {
+                                                txtDistance.setText("0.00"+" miles");
+                                            }
                                         }
                                     }
 

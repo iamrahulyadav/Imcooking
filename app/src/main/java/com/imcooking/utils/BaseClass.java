@@ -1,5 +1,6 @@
 package com.imcooking.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -62,7 +64,7 @@ public class BaseClass {
         }
         return false;
     }
-    public static DecimalFormat df2 = new DecimalFormat(".###");
+    public static DecimalFormat df2 = new DecimalFormat(".#");
     public static BitmapDescriptor bitmapDescriptorFromVectorR(Context context) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_placeholder);
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
@@ -72,6 +74,23 @@ public class BaseClass {
         //  vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+
+    @SuppressLint("SimpleDateFormat")
+    public static String convertSimpleDate(String dateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+        // use SimpleDateFormat to define how to PARSE the INPUT
+        Date date = null;
+        try {
+            date = sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        sdf = new SimpleDateFormat("MMMM d, yyyy ");
+        return sdf.format(date);
+    }
+
+
 
     private static Toast t;
     public static void showToast(Context context, String msg){

@@ -17,7 +17,7 @@ public class AddCart {
     private int chef_id;
     private String chef_name;
     private String chef_image;
-    private float rating;
+    private String rating;
     private int follow;
     private String chef_address;
     private List<AddDishBean> add_dish;
@@ -64,11 +64,11 @@ public class AddCart {
         this.chef_image = chef_image;
     }
 
-    public float getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 

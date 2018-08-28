@@ -53,7 +53,7 @@ public class OtherDish {
         private String chef_name;
         private String chef_phone;
         private String chef_image;
-        private int rating;
+        private String rating;
         private int ratingno;
         private int follow;
         private int like;
@@ -83,11 +83,11 @@ public class OtherDish {
             this.chef_image = chef_image;
         }
 
-        public int getRating() {
+        public String getRating() {
             return rating;
         }
 
-        public void setRating(int rating) {
+        public void setRating(String rating) {
             this.rating = rating;
         }
 

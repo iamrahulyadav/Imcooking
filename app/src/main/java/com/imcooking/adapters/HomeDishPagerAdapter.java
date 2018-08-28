@@ -132,8 +132,16 @@ public class HomeDishPagerAdapter extends PagerAdapter{
             if (chefDishBeans.get(position).getDistance().equals("0")){
                 tv_dish_distance.setText("0.00"+" miles");
             } else {
-                String distnace = BaseClass.df2.format(Double.parseDouble(chefDishBeans.get(position).getDistance()))+"";
-                tv_dish_distance.setText(distnace + " miles");
+
+                double dis = Double.parseDouble(BaseClass.df2.format(Double.parseDouble(chefDishBeans.get(position).getDistance())));
+                if (dis>0){
+                    String distnace = BaseClass.df2.format(Double.parseDouble(chefDishBeans.get(position).getDistance()))+"";
+                    tv_dish_distance.setText(dis + " miles");
+                } else {
+                    tv_dish_distance.setText("0.00"+" miles");
+                }
+
+
             }
         }
         if (chefDishBeans.get(position).getDish_homedelivery().equalsIgnoreCase("No")){

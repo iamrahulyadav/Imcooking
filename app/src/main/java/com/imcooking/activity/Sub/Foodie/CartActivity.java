@@ -291,7 +291,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             } else {
                                                 imgChefImg.setBackgroundResource(R.drawable.details_profile);
                                             }
-                                            ratingBar.setRating(apiResponse.getAdd_cart().getRating());
+                                            if (apiResponse.getAdd_cart().getRating()!=null && apiResponse.getAdd_cart().getRating().length()>0)
+                                            ratingBar.setRating(Float.parseFloat(apiResponse.getAdd_cart().getRating()));
                                             dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
 
                                             update_total_price();
@@ -518,7 +519,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
 //                Toast.makeText(CartActivity.this, "h", Toast.LENGTH_SHORT).show();
+
+                if (addressBeanList!=null&&addressBeanList.size()>0)
                 openDialog(addressBeanList);
+                else BaseClass.showToast(getApplicationContext(), "No record available , Please add address ");
             }
         });
     }

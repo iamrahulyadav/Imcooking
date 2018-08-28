@@ -630,8 +630,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                     } else {
                         edt_zipcoede.setEnabled(true);
                     }
-
-                    Log.d("TAG", "Rakhi: "+str_zipcode+"\n"+longitudeq+"\n");
                 }
                 else{
 

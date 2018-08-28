@@ -19,8 +19,11 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.imcooking.MainActivity1;
+import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
+import com.mukesh.tinydb.TinyDB;
 
 import co.paystack.android.Paystack;
 import co.paystack.android.PaystackSdk;
@@ -34,7 +37,9 @@ public class PayActivity extends AppCompatActivity {
     private Charge charge;
     private String email, cardNumber, cvv;
     private int expiryMonth, expiryYear;
-
+    private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
+    private Gson gson = new Gson();
+    private TinyDB tinyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +48,13 @@ public class PayActivity extends AppCompatActivity {
         //init paystack sdk
         PaystackSdk.initialize(getApplicationContext());
         setContentView(R.layout.activity_pay);
+
+        tinyDB = new TinyDB(getApplicationContext());
+        String login = tinyDB.getString("login_data");
+        userDataBean = gson.fromJson(login,ApiResponse.UserDataBean.class);
+        email = userDataBean.getUser_email();
+
         //init view
-
-
-
         Button payBtn = (Button) findViewById(R.id.pay_button);
        /* emailField = (EditText) findViewById(R.id.edit_email_address);
         cardNumberField = (EditText) findViewById(R.id.edit_card_number);
@@ -80,7 +88,7 @@ public class PayActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Select Expiry year", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
-                        email = "rakhi.askonline@gmail.com";
+//                        email = "rakhi.askonline@gmail.com";
                         cardNumber = edtCardNo.getText().toString().trim();
                    /* expiryMonth = Integer.parseInt(expiryMonthField.getText().toString().trim());
                     expiryYear = Integer.parseInt(expiryYearField.getText().toString().trim());*/

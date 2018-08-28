@@ -145,8 +145,8 @@ public class OtherDishDishActivity extends AppBaseActivity implements OtherDishA
                                 if (otherDish.getChef().getLike()>0){
                                     txtLike.setText(otherDish.getChef().getLike()+" Likes ");
                                 } else txtLike.setText(0 +" Like");
-
-                                ratingBar.setRating(otherDish.getChef().getRating());
+                                if (otherDish.getChef().getRating()!=null && otherDish.getChef().getRating().length()>0)
+                                ratingBar.setRating(Float.parseFloat(otherDish.getChef().getRating()));
                                 txtcall.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

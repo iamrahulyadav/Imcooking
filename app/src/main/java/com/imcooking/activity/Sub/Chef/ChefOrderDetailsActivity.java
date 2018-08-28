@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,17 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.OrderDetailsData;
 import com.imcooking.R;
 import com.imcooking.adapters.AdapterFoodieMyOrderDetailList;
-import com.imcooking.adapters.ChefILoveAdatper;
-import com.imcooking.fragment.chef.ChefHome;
-import com.imcooking.fragment.foodie.ProfileFragment;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -37,7 +31,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -107,12 +100,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_rate.setVisibility(View.GONE);
         }
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                rateChef(chef_id,ratingBar.getRating()+"");
-            }
-        });
+
 
         getOrderDetails();
     }
@@ -146,6 +134,8 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         txt_phone.setText(orderDetailsBeans.get(0).getChef_phone());
                                         txt_email.setText(orderDetailsBeans.get(0).getChef_email());
                                     } else {
+                                        foodie_id = orderDetailsBeans.get(0).getOrder_foodie_id()+"";
+                                        chef_id = orderDetailsBeans.get(0).getChef_id()+"";
                                         if (orderDetailsBeans.get(0).getOrder_foodie_name()!=null)
                                             txt_chef_name.setText(orderDetailsBeans.get(0).
                                                     getOrder_foodie_name()+"");
@@ -161,6 +151,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     if (orderDetailsBeans.get(0).getRating()!=null && orderDetailsBeans.get(0).getRating().length()>0){
                                         ratingBar.setRating(Float.parseFloat(orderDetailsBeans.get(0).getRating()));
                                     }
+                                
 
                                     if (delivery_type.equals("1")){
                                         //1 = delivery
@@ -321,7 +312,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             @Override
             public void onClick(View view) {
                 chef_status = "3";
-                updateStatus();
+                updateStatus(chef_status);
             }
         });
 
@@ -329,7 +320,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             @Override
             public void onClick(View view) {
                 chef_status = "5";
-                updateStatus();
+                updateStatus(chef_status);
             }
         });
 
@@ -337,7 +328,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             @Override
             public void onClick(View view) {
                 chef_status = "4";
-                updateStatus();
+                updateStatus(chef_status);
 
             }
         });
@@ -346,7 +337,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             @Override
             public void onClick(View view) {
                 chef_status = "8";
-                updateStatus();
+                updateStatus(chef_status);
             }
         });
 
@@ -354,7 +345,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             @Override
             public void onClick(View view) {
                 chef_status = "9";
-                updateStatus();
+                updateStatus(chef_status);
 
             }
         });
@@ -363,7 +354,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             @Override
             public void onClick(View view) {
                 chef_status = "1";
-                updateStatus();
+                updateStatus(chef_status);
             }
         });
 
@@ -372,7 +363,7 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             @Override
             public void onClick(View view) {
                 chef_status = "2";
-                updateStatus();
+                updateStatus(chef_status);
 
             }
         });
@@ -385,12 +376,12 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
         });
     }
 
-    private void updateStatus(){
+    private void updateStatus(String chef_status){
         String s ="{\n" +
                 " \"chef_id\":\""+chef_id+"\",\n" +
                 "   \"foodie_id\":\""+foodie_id+"\",\n" +
                 "   \"request_id\":\""+order_id+"\",\n" +
-                "   \"status\":\""+chef_status+"\" \n" +
+                "   \"status\":\""+ chef_status +"\" \n" +
                 "}";
         Log.d("TAG", "updateStatus: "+s);
         try {
