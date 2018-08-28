@@ -106,6 +106,10 @@ public class SplashActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
 
+        if(getIntent().getExtras()!= null){
+            Toast.makeText(this, getIntent().getExtras().getString("message"), Toast.LENGTH_SHORT).show();
+        }
+
 
         // Notifications -----GetDeviceId
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -274,6 +278,7 @@ public class SplashActivity extends AppCompatActivity {
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
+
         mLocationSettingsRequest = builder.build();
 
         //        find id
@@ -424,5 +429,4 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

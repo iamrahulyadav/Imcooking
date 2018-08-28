@@ -103,7 +103,6 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             }
     }
 
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -120,6 +119,7 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             if (list.get(position).getChef_response().equals("1")) {
 //                holder.tv_decline.setVisibility(View.GONE);
 //                holder.tv_offer.setVisibility(View.GONE);
+//                holder.txt_reply.setVisibility(View.VISIBLE);
                 holder.layout_decline_offer.setVisibility(View.GONE);
                 holder.layout_offered_price.setVisibility(View.VISIBLE);
                 holder.tv_offered_price.setText("Price Offered:- £" + list.get(position).getRequest_price());
@@ -139,6 +139,9 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
 //                holder.tv_offer.setVisibility(View.VISIBLE);
                 holder.layout_decline_offer.setVisibility(View.VISIBLE);
                 holder.layout_offered_price.setVisibility(View.GONE);
+                holder.tv_status.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("New Request");
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.theme_color));
             } else {
             }
         }

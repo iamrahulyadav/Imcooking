@@ -46,7 +46,7 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
         public RatingBar ratingBar;
         public ImageView img_profile;
         public LinearLayout layout_accept_decline, layout_cancel;
-        public TextView tv_reply, tv_accept, tv_declie, tv_offered_price, tv_cancel;
+        public TextView tv_reply, tv_accept, tv_declie, tv_offered_price, tv_cancel, tv_confirmed;
 
         public MyViewHolder(View view) {
             super(view);
@@ -59,7 +59,7 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
             tv_accept = view.findViewById(R.id.item_foodie_my_requests_accept);
             tv_declie = view.findViewById(R.id.item_foodie_my_requests_decline);
             tv_offered_price = view.findViewById(R.id.item_foodie_my_request_offered_price);
-
+            tv_confirmed = view.findViewById(R.id.item_foodie_my_request_confirmed);
 
             txtCategory =view.findViewById(R.id.item_chef_my_request_food_category);
             txtqty=view.findViewById(R.id.item_chef_my_request_qty);
@@ -147,9 +147,12 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
                 if(list.get(position).getFoodie_response() != null){
                     if(list.get(position).getFoodie_response().equals("2")){
                         holder.layout_accept_decline.setVisibility(View.GONE);
+                        holder.tv_confirmed.setVisibility(View.VISIBLE);
+                        holder.txt_status.setVisibility(View.GONE);
                     } else if (list.get(position).getFoodie_response().equals("1")){
                         holder.layout_accept_decline.setVisibility(View.VISIBLE);
-                    } else {}
+
+                       } else {}
                 }
 
             } else if(list.get(position).getChef_response().equals("2")) {
@@ -163,11 +166,14 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
             }
         }
 
-        if(list.get(position).getConversation_details()!=null){
-            if(list.get(position).getConversation_details().size()>0){
-                holder.tv_reply.setVisibility(View.VISIBLE);
-            } else{
-                holder.tv_reply.setVisibility(View.GONE);
+
+        if (!list.get(position).getChef_response().equals("1")) {
+            if (list.get(position).getConversation_details() != null) {
+                if (list.get(position).getConversation_details().size() > 0) {
+                    holder.tv_reply.setVisibility(View.VISIBLE);
+                } else {
+                    holder.tv_reply.setVisibility(View.GONE);
+                }
             }
         }
 

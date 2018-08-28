@@ -527,7 +527,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                     latLng = new LatLng(mCenterLatLong.latitude, mCenterLatLong.longitude);
                     StringBuffer stringBuffer  = new StringBuffer();
                     try {
-                        stringBuffer=getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
+                        stringBuffer = getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
                         autocompleteView.setText(stringBuffer);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -539,5 +539,3 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         });
     }
 }
-
-

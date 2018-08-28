@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -68,8 +69,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleDataMessage(JSONObject json) {
         Log.e(TAG, "push json: " + json.toString());
 
+
+
         try {
+
+
             JSONObject data = json.getJSONObject("data");
+//            String type = data.getString("type");
 
             String title = data.getString("title");
             String message = data.getString("message");
@@ -78,12 +84,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String timestamp = data.getString("timestamp");
             JSONObject payload = data.getJSONObject("payload");
 
+
+            message = json.getString("type");
+
             Log.e(TAG, "title: " + title);
             Log.e(TAG, "message: " + message);
             Log.e(TAG, "isBackground: " + isBackground);
             Log.e(TAG, "payload: " + payload.toString());
             Log.e(TAG, "imageUrl: " + imageUrl);
             Log.e(TAG, "timestamp: " + timestamp);
+
+            message = json.getString("type");
 
 
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
