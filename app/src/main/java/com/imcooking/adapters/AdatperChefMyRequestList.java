@@ -115,6 +115,12 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
+        // Chef Response = 2 Should never come (means chef has declined the request, so it should not come in list.)
+        // Chef Response = 1 (means Chef had Offered Price)
+        // Chef Response = 0 (Means Chef has did not response yet)
+        // Foodie Response = 2 (Foodie has confirmed the order)
+        // Foodie Response = 1 (Foodie didn't response yet)
+
         if(list.get(position).getChef_response()!=null) {
             if (list.get(position).getChef_response().equals("1")) {
 //                holder.tv_decline.setVisibility(View.GONE);
@@ -124,11 +130,15 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
                 holder.layout_offered_price.setVisibility(View.VISIBLE);
                 holder.tv_offered_price.setText("Price Offered:- £" + list.get(position).getRequest_price());
 
+                holder.tv_status.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("Accepted");
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+
                 if(list.get(position).getFoodie_response() != null){
                     if(list.get(position).getFoodie_response().equals("2")){
                         holder.tv_status.setVisibility(View.VISIBLE);
-                        holder.tv_status.setText("Accepted");
-                        holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+                        holder.tv_status.setText("Confirmed");
+                        holder.tv_status.setTextColor(context.getResources().getColor(R.color.theme_color));
                     } else if(list.get(position).getFoodie_response().equals("1")){
 
                     }

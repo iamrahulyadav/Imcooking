@@ -123,18 +123,35 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
         }
 */
 
+        // Chef Response = 2 (means chef had declined the request.)
+        // Chef Response = 1 (means Chef had Offered Price)
+        // Chef Response = 0 (Means Chef has did not response yet)
+        // Foodie Response = 2 (Foodie has confirmed the order)
+        // Foodie Response = 1 (Foodie didn't response yet)
+
+
+        holder.txt_status.setVisibility(View.GONE);
+
         if(list.get(position).getChef_response()!=null) {
             if (list.get(position).getChef_response().equals("0")){
-                holder.txt_status.setText("New Request");
-                holder.txt_status.setTextColor(context.getResources().getColor(R.color.theme_color));
+//                holder.txt_status.setText("New Request");
+//                holder.txt_status.setTextColor(context.getResources().getColor(R.color.theme_color));
+                holder.tv_confirmed.setVisibility(View.VISIBLE);
+                holder.tv_confirmed.setText("New Request");
+                holder.tv_confirmed.setTextColor(context.getResources().getColor(R.color.theme_color));
+
                 holder.layout_cancel.setVisibility(View.VISIBLE);
                 holder.tv_cancel.setText("Cancel Request");
                 holder.layout_accept_decline.setVisibility(View.GONE);
                 holder.tv_reply.setVisibility(View.GONE);
                 holder.tv_offered_price.setVisibility(View.GONE);
             } else if (list.get(position).getChef_response().equals("1")){
-                holder.txt_status.setText("Accepted");
-                holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+//                holder.txt_status.setText("Accepted");
+//                holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+                holder.tv_confirmed.setVisibility(View.VISIBLE);
+                holder.tv_confirmed.setText("Accepted");
+                holder.tv_confirmed.setTextColor(context.getResources().getColor(R.color.colorGreen));
+
                 holder.layout_cancel.setVisibility(View.GONE);
                 holder.layout_accept_decline.setVisibility(View.VISIBLE);
                 holder.tv_accept.setText("Accept Offer");
@@ -148,6 +165,8 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
                     if(list.get(position).getFoodie_response().equals("2")){
                         holder.layout_accept_decline.setVisibility(View.GONE);
                         holder.tv_confirmed.setVisibility(View.VISIBLE);
+                        holder.tv_confirmed.setText("Confimed");
+                        holder.tv_confirmed.setTextColor(context.getResources().getColor(R.color.theme_color));
                         holder.txt_status.setVisibility(View.GONE);
                     } else if (list.get(position).getFoodie_response().equals("1")){
                         holder.layout_accept_decline.setVisibility(View.VISIBLE);
@@ -156,8 +175,12 @@ public class AdapterFoodieMyRequest extends RecyclerView.Adapter<AdapterFoodieMy
                 }
 
             } else if(list.get(position).getChef_response().equals("2")) {
-                holder.txt_status.setText("Declined");
-                holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorRed));
+//                holder.txt_status.setText("Declined");
+//                holder.txt_status.setTextColor(context.getResources().getColor(R.color.colorRed));
+                holder.tv_confirmed.setVisibility(View.VISIBLE);
+                holder.tv_confirmed.setText("Declined");
+                holder.tv_confirmed.setTextColor(context.getResources().getColor(R.color.colorRed));
+
                 holder.layout_cancel.setVisibility(View.VISIBLE);
                 holder.tv_cancel.setText("Delete Request");
                 holder.layout_accept_decline.setVisibility(View.GONE);

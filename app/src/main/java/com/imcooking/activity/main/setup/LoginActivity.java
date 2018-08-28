@@ -168,6 +168,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     String loginData = tinyDB.getString("login_data");
                                     Log.d("LoginData", loginData);
 
+                                    edt_uname.setText("");
+                                    edt_pass.setText("");
+
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                                 } else {
