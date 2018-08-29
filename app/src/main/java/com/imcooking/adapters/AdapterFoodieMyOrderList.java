@@ -73,6 +73,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             tv_orderid = view.findViewById(R.id.item_foodie_my_order_orderid);
             txtQyt = view.findViewById(R.id.item_foodie_my_order_qyt);
             tv_price = view.findViewById(R.id.item_foodie_my_order_price);
+
             tv_status = view.findViewById(R.id.item_foodie_my_order_status);
             chefProfile = view.findViewById(R.id.item_foodie_my_order_chef_profile_image);
             ratingBar=view.findViewById(R.id.item_foodie_my_order_rating);
@@ -112,8 +113,11 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             if (delivery_type.equals("1")){
                 if (status.equals("0"))
                     holder.tv_status.setText("Order Placed");
-                else if (status.equals("1"))
+                else if (status.equals("1")){
                     holder.tv_status.setText("Completed");
+                    holder.tv_status.setBackground(context.getResources().getDrawable(R.drawable.shape_background_green_25));
+                }
+
                 else if (status.equals("2"))
                     holder.tv_status.setText("Canceled ");
                 else if (status.equals("3"))
@@ -129,8 +133,10 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             } else if (delivery_type.equals("2")){
                 if (status.equals("0"))
                     holder.tv_status.setText("Order Placed");
-                else if (status.equals("1"))
+                else if (status.equals("1")){
                     holder.tv_status.setText("Completed");
+                    holder.tv_status.setBackground(context.getResources().getDrawable(R.drawable.shape_background_green_25));
+                }
                 else if (status.equals("2"))
                     holder.tv_status.setText("Canceled ");
                 else if (status.equals("3"))

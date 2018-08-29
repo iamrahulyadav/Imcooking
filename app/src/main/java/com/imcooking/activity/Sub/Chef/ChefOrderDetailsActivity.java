@@ -100,8 +100,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
             txt_rate.setVisibility(View.GONE);
         }
 
-
-
         getOrderDetails();
     }
 
@@ -151,7 +149,13 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     if (orderDetailsBeans.get(0).getRating()!=null && orderDetailsBeans.get(0).getRating().length()>0){
                                         ratingBar.setRating(Float.parseFloat(orderDetailsBeans.get(0).getRating()));
                                     }
-                                
+                                    ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                        public void onRatingChanged(RatingBar ratingBar, float rating,
+                                                                    boolean fromUser) {
+                                            ratingBar.setRating(rating);
+                                            rateChef(chef_id,String.valueOf(rating));
+                                        }
+                                    });
 
                                     if (delivery_type.equals("1")){
                                         //1 = delivery

@@ -322,7 +322,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
            /* mMap.addMarker(new MarkerOptions().position(latLong)
                     .icon(BaseClass.bitmapDescriptorFromVectorR(getApplicationContext())));*/
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(latLong).zoom(21f).tilt(60).build();
+                    .target(latLong).zoom(18f).tilt(60).build();
          /*   CircleOptions circleOptions = new CircleOptions()
                     .center(latLong)
                     .strokeWidth(2)

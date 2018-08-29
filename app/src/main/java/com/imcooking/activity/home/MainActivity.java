@@ -102,9 +102,6 @@ public class MainActivity extends AppCompatActivity
         setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
 
-        if(getIntent().getExtras()!= null){
-            Toast.makeText(this, getIntent().getExtras().getString("message"), Toast.LENGTH_SHORT).show();
-        }
 
         // Notifications -----GetDeviceId
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -213,7 +210,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 */
-
             if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
 
                 String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
@@ -229,25 +225,20 @@ public class MainActivity extends AppCompatActivity
                 }
             } else {
                 ChefHome fragment = new ChefHome();
-
                 Bundle args = new Bundle();
                 args.putString("chef_id", user_id);
                 args.putString("foodie_id", "4");
-
                 fragment.setArguments(args);
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
 
             }
 
-//            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
-        } else if (getIntent().hasExtra("pay")) {
+        } else if (getIntent().hasExtra("payment")) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FoodieMyOrderFragment()).commit();
         } else { // 2
 //            setTheme(R.style.AppTheme1);
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
-
 
     }
 

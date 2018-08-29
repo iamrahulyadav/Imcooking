@@ -60,7 +60,7 @@ public class MainActivity1 extends AppCompatActivity {
     private Gson gson = new Gson();
     private String payment_type="cod", chef_name;
     private RadioGroup radioGroup;
-    private RadioButton radioCard;
+    private RadioButton radioPayStack, radioPayPal, radioStripe;
 
     private static final String TAG = "paymentExample";
     /**
@@ -124,35 +124,39 @@ public class MainActivity1 extends AppCompatActivity {
         txt_price = findViewById(R.id.activity_payment_total_price);
         txt_place_order = findViewById(R.id.activity_payment_btn_place);
         radioGroup = findViewById(R.id.activity_payment_radiogroup);
-        radioCard = findViewById(R.id.activity_payment_radio_paystack);
+        radioPayStack = findViewById(R.id.activity_payment_radio_paystack);
+        radioPayPal = findViewById(R.id.activity_payment_radio_paypal);
+        radioStripe = findViewById(R.id.activity_payment_radio_stripe);
 
         Locale defaultLocale = Locale.getDefault();
         String currency = displayCurrencyInfoForLocale(defaultLocale);
-        currency = "NGN";
-        switch (currency){
-            case "INR":
-                radioCard.setText("PayPal");
-                break;
-            case "NGN":
-                radioCard.setText("PayStack");
-                break;
-            case "EUR":
-                radioCard.setText("Strip");
-                break;
+
+
+        if (currency.equals("NGN")){
+            radioStripe.setVisibility(View.GONE);
+            radioPayPal.setVisibility(View.GONE);
+            radioPayStack.setVisibility(View.VISIBLE);
+        } else if (currency.equals("EUR")){
+            radioStripe.setVisibility(View.VISIBLE);
+            radioPayPal.setVisibility(View.VISIBLE);
+            radioPayStack.setVisibility(View.GONE);
+        } else {
+            radioPayPal.setVisibility(View.VISIBLE);
+            radioStripe.setVisibility(View.GONE);
+            radioPayStack.setVisibility(View.GONE);
         }
+
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId==R.id.activity_payment_radio_paystack){
-                    if (radioCard.getText().equals("PayStack")){
-                        payment_type = "paystack";
-                    }
-                    else if (radioCard.getText().equals("PayPal")){
-                        payment_type = "paypal";
-                    }  else if (radioCard.getText().equals("Strip")){
-                        payment_type = "strip";
-                    }
+                    payment_type = "paystack";
+                }  else if(checkedId==R.id.activity_payment_radio_paypal){
+                    payment_type = "paypal";
+                }  else if(checkedId==R.id.activity_payment_radio_stripe){
+                    payment_type = "strip";
                 }
                 else if(checkedId==R.id.activity_payment_radio_cod){
                     payment_type = "cod";
@@ -175,7 +179,6 @@ public class MainActivity1 extends AppCompatActivity {
                     
                 } else if (payment_type.equals("paystack")){
                     payStack();
-
                 }
 
             }
@@ -389,7 +392,7 @@ public class MainActivity1 extends AppCompatActivity {
               /*  startActivity(new Intent(Payment1Activity.this, ChefOrderDetailsActivity.class)
                         .putExtra("order_id",booking_id));*/
 
-                startActivity(new Intent(MainActivity1.this, MainActivity.class).putExtra("payStack","payorder"));
+                startActivity(new Intent(MainActivity1.this, MainActivity.class).putExtra("payment","payorder"));
             }
         });
     }

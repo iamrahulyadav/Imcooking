@@ -49,6 +49,38 @@
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
                 android:layout_margin="5dp"
+                android:visibility="gone"
+                android:background="@color/view_6"/>
+
+            <RadioButton
+                style="@style/MyRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PayPal"
+                android:id="@+id/activity_payment_radio_paypal"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:visibility="gone"
+                android:layout_margin="5dp"
+                android:background="@color/view_6"/>
+            <RadioButton
+                style="@style/MyRadioButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stripe"
+                android:id="@+id/activity_payment_radio_stripe"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height=".3dp"
+                android:layout_margin="5dp"
+                android:visibility="gone"
                 android:background="@color/view_6"/>
 
             <RadioButton

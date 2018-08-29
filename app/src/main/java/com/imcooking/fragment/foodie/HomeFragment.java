@@ -204,34 +204,29 @@ public class HomeFragment extends Fragment implements
         try {
             stringBuffer = getAddress(new LatLng(latitudeq,
                     longitudeq));
-            stringBuffer = null;
             if (stringBuffer!=null && !stringBuffer.equals("null")){
                 txtCityName.setText(stringBuffer.toString());
             } else {
-              //  createMyDialog();
+                createMyDialog();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void createMyDialog(){
         final Dialog dialog= new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_no_address);
 
-        dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
 
         dialog.findViewById(R.id.txtdialog_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                Intent i = new Intent(getContext(), SelectLocActivity.class);
+                i.putExtra("enter_address", 113);
+                startActivityForResult(i, 113);
             }
         });
         dialog.setCancelable(false);
