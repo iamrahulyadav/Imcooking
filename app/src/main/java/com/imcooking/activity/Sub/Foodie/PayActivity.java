@@ -223,7 +223,7 @@ public class PayActivity extends AppCompatActivity {
 
         charge.setEmail(email); //dummy email address
 
-        charge.setAmount(100); //test amount
+        charge.setAmount(10000); //test amount
 
 
         PaystackSdk.chargeCard(PayActivity.this, charge, new Paystack.TransactionCallback() {
@@ -239,7 +239,6 @@ public class PayActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("paymentReference", paymentReference);
                 setResult(MainActivity1.REQUEST_CODE_PAYSTACK, intent);
-
                 finish();
             }
 
@@ -301,7 +300,7 @@ public class PayActivity extends AppCompatActivity {
 //            valid = false;
 //        } else {
 //            cvvField.setError(null);
-//        }
+//            }
 //
 //        return valid;
 //    }

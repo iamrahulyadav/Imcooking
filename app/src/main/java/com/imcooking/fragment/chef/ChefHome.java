@@ -324,7 +324,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                             FollowUnfollow followUnfollow = new Gson().fromJson(result, FollowUnfollow.class);
                             if(followUnfollow.isStatus()){
                                 if (followUnfollow.getMsg().equals("Successfully follow")){
-//                                    Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
                                     BaseClass.showToast(getContext(), "Successfully Followed");
                                     btn_follow.setText("Unfollow");
 

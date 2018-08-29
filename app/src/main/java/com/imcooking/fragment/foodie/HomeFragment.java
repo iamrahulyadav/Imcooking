@@ -3,7 +3,10 @@ package com.imcooking.fragment.foodie;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -25,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
@@ -159,18 +163,19 @@ public class HomeFragment extends Fragment implements
         tv_cusine = getView().findViewById(R.id.home_cuisine);
         bottomViewPager = getView().findViewById(R.id.fragment_home_bottom);
         imgFilter = getView().findViewById(R.id.fragment_home_img_filter);
-        tv_cusine.setOnClickListener(this);
+
         viewPager = getView().findViewById(R.id.home_viewPager);
         txtSerach = getView().findViewById(R.id.fragment_home_search_img);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
         imgCart = getView().findViewById(R.id.fragment_home_img_cart);
-        imgCart.setOnClickListener(this);
+        cuisinRecycler = getView().findViewById(R.id.fragment_home_cuisine_recycler);
 
+        imgCart.setOnClickListener(this);
+        tv_cusine.setOnClickListener(this);
         imgFilter.setOnClickListener(this);
         txtSerach.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
         search_layout.setOnClickListener(this);
-        cuisinRecycler = getView().findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         cuisinRecycler.setLayoutManager(horizontalLayoutManagaer);
@@ -199,12 +204,43 @@ public class HomeFragment extends Fragment implements
         try {
             stringBuffer = getAddress(new LatLng(latitudeq,
                     longitudeq));
-            txtCityName.setText(stringBuffer.toString());
+            stringBuffer = null;
+            if (stringBuffer!=null && !stringBuffer.equals("null")){
+                txtCityName.setText(stringBuffer.toString());
+            } else {
+              //  createMyDialog();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
+
+    private void createMyDialog(){
+        final Dialog dialog= new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_no_address);
+
+        dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.findViewById(R.id.txtdialog_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
+
+    }
+
 
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),

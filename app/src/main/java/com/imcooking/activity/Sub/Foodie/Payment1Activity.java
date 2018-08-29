@@ -18,8 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.imcooking.MainActivity1;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
@@ -77,7 +75,7 @@ public class Payment1Activity extends AppBaseActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId==R.id.activity_payment_radio_paypal){
+                if(checkedId==R.id.activity_payment_radio_paystack){
                     payment_type = "paypal";
                 }
                 else if(checkedId==R.id.activity_payment_radio_cod){

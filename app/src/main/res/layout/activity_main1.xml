@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="PayStack"
-                android:id="@+id/activity_payment_radio_paypal"
+                android:id="@+id/activity_payment_radio_paystack"
                 android:padding="10dp"
                 android:textStyle="bold"
                 android:textColor="@color/colorBlack"/>

@@ -102,10 +102,8 @@ public class DishDetailPagerAdapter extends PagerAdapter{
 //                imgPlay.setVisibility(View.GONE);
 //                videoView.setVisibility(View.VISIBLE);
 //                iv_dish_image.setVisibility(View.GONE);
-                
 //                initializePlayer();
-
-                                dishDetailPlayClick.playVideo(position, "play");
+                dishDetailPlayClick.playVideo(position, "play");
             }
         });
 

@@ -107,7 +107,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         if(getIntent().getExtras()!= null){
-            Toast.makeText(this, getIntent().getExtras().getString("message"), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(this, getIntent().getExtras().getString("message"), Toast.LENGTH_SHORT).show();
         }
 
 

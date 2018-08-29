@@ -139,7 +139,6 @@ public class FavoriteCusine extends AppBaseActivity {
                                 setMyAdapter(data.getCuisine_data());
                             } else {
                                 try {
-
                                     BaseClass.showToast(getApplicationContext(), new JSONObject(result).getString("msg"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();

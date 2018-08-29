@@ -385,7 +385,6 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
                                     timer = new Timer(); // This will create a new Thread
                                     timer .schedule(new TimerTask() { // task to be scheduled
-
                                         @Override
                                         public void run() {
                                             handler.post(Update);

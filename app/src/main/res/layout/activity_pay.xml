@@ -272,6 +272,7 @@
                 android:layout_height="wrap_content"
                 android:text="Saved Card"
                 android:padding="10dp"
+                android:visibility="gone"
                 android:textColor="@color/colorBlack"/>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"

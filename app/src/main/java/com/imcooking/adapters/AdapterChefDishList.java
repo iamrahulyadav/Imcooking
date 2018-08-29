@@ -123,7 +123,6 @@ public class AdapterChefDishList extends PagerAdapter{
          dish_count.setText(chef_dish_list.get(position).getDish_quantity()+"");
         else dish_count.setText("0");
         dish_price.setText("£" + chef_dish_list.get(position).getDish_price());
-        BaseClass.showToast(context, chef_dish_list.get(position).getLike_no() + "");
         dish_likes.setText(chef_dish_list.get(position).getLike_no() + "");
 
         if (chef_dish_list.get(position).getDish_homedelivery().equals("Yes")) {

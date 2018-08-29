@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,23 +30,18 @@ import com.mukesh.tinydb.TinyDB;
 import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
-import com.paypal.android.sdk.payments.PayPalItem;
-import com.paypal.android.sdk.payments.PayPalOAuthScopes;
 import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalPaymentDetails;
 import com.paypal.android.sdk.payments.PayPalProfileSharingActivity;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.paypal.android.sdk.payments.ShippingAddress;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Currency;
+import java.util.Locale;
 
 /**
  *
@@ -64,6 +60,7 @@ public class MainActivity1 extends AppCompatActivity {
     private Gson gson = new Gson();
     private String payment_type="cod", chef_name;
     private RadioGroup radioGroup;
+    private RadioButton radioCard;
 
     private static final String TAG = "paymentExample";
     /**
@@ -113,16 +110,49 @@ public class MainActivity1 extends AppCompatActivity {
     }
 
 
+    public static String displayCurrencyInfoForLocale(Locale locale) {
+        System.out.println("Locale: " + locale.getDisplayName());
+        Currency currency = Currency.getInstance(locale);
+       /* System.out.println("Currency Code: " + currency.getCurrencyCode());
+        System.out.println("Symbol: " + currency.getSymbol());
+        System.out.println("Default Fraction Digits: " + currency.getDefaultFractionDigits());
+        System.out.println();*/
+        return currency.getCurrencyCode();
+    }
+
     private void init(){
         txt_price = findViewById(R.id.activity_payment_total_price);
         txt_place_order = findViewById(R.id.activity_payment_btn_place);
         radioGroup = findViewById(R.id.activity_payment_radiogroup);
+        radioCard = findViewById(R.id.activity_payment_radio_paystack);
+
+        Locale defaultLocale = Locale.getDefault();
+        String currency = displayCurrencyInfoForLocale(defaultLocale);
+        currency = "NGN";
+        switch (currency){
+            case "INR":
+                radioCard.setText("PayPal");
+                break;
+            case "NGN":
+                radioCard.setText("PayStack");
+                break;
+            case "EUR":
+                radioCard.setText("Strip");
+                break;
+        }
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId==R.id.activity_payment_radio_paypal){
-                    payment_type = "paystack";
+                if(checkedId==R.id.activity_payment_radio_paystack){
+                    if (radioCard.getText().equals("PayStack")){
+                        payment_type = "paystack";
+                    }
+                    else if (radioCard.getText().equals("PayPal")){
+                        payment_type = "paypal";
+                    }  else if (radioCard.getText().equals("Strip")){
+                        payment_type = "strip";
+                    }
                 }
                 else if(checkedId==R.id.activity_payment_radio_cod){
                     payment_type = "cod";
@@ -139,23 +169,26 @@ public class MainActivity1 extends AppCompatActivity {
 
                 if(payment_type.equals("cod")) {
                     makePayment(placeOrder);
-                } else {
+                } else if (payment_type.equals("paypal")){
+                    paypal();
+                } else if (payment_type.equals("strip")){ 
+                    
+                } else if (payment_type.equals("paystack")){
+                    payStack();
 
-                    //onBuyPressed();
-
-                    pay();
                 }
+
             }
         });
 
     }
 
 
-    private void pay(){
+    private void payStack(){
         startActivityForResult(new Intent(MainActivity1.this, PayActivity.class),REQUEST_CODE_PAYSTACK);
     }
 
-    public void onBuyPressed() {
+    public void paypal() {
         /*
          * PAYMENT_INTENT_SALE will cause the payment to complete immediately.
          * Change PAYMENT_INTENT_SALE to
@@ -182,7 +215,7 @@ public class MainActivity1 extends AppCompatActivity {
     }
 
     private PayPalPayment getThingToBuy(String paymentIntent) {
-        return new PayPalPayment(new BigDecimal(placeOrder.getTotal_price()), "GBP", "sample item",
+        return new PayPalPayment(new BigDecimal(placeOrder.getTotal_price()), "GBP", "Dish item",
                 paymentIntent);
     }
 
@@ -279,8 +312,6 @@ public class MainActivity1 extends AppCompatActivity {
                         "ProfileSharingExample",
                         "Probably the attempt to previously start the PayPalService had an invalid PayPalConfiguration. Please see the docs.");
             }
-
-
         }
         else if (requestCode == REQUEST_CODE_PAYSTACK){
             if (data!=null) {
@@ -358,7 +389,7 @@ public class MainActivity1 extends AppCompatActivity {
               /*  startActivity(new Intent(Payment1Activity.this, ChefOrderDetailsActivity.class)
                         .putExtra("order_id",booking_id));*/
 
-                startActivity(new Intent(MainActivity1.this, MainActivity.class).putExtra("pay","payorder"));
+                startActivity(new Intent(MainActivity1.this, MainActivity.class).putExtra("payStack","payorder"));
             }
         });
     }
