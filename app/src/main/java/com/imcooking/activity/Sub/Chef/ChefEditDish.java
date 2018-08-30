@@ -607,7 +607,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDish_video("abc");
         requestData.setDish_image(base1);
         requestData.setDish_qyt(qyt);
-
+//
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
