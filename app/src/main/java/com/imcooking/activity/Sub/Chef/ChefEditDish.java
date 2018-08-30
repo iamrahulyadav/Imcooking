@@ -3,6 +3,7 @@ package com.imcooking.activity.Sub.Chef;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,11 +30,13 @@ import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -541,9 +544,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                                 dish_id = job.getString("last_insertid");
                                                 dialog.show();
 
-                                                /*if (selectedPath!=null){
+                                              /*  if (selectedPath!=null){
                                                     if (duration<=20000) {
-//                                                        new UploadFileToServer(selectedPath).execute();
+                                                        new UploadFileToServer(selectedPath).execute();
                                                     }
                                                 } else {
                                                     // finish();
@@ -605,10 +608,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         requestData.setDish_image(base1);
         requestData.setDish_qyt(qyt);
 
-        if (selectedPath!=null){
-//            if (duration<=20000)
-//                new UploadFileToServer().execute();
-        }
         try {
             JSONObject jsonObject = new JSONObject(new Gson().toJson(requestData));
             Log.d("MyRequest", jsonObject.toString());
@@ -625,6 +624,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                             if(job.getString("message").equals("update dish Successfully")){
                                                 BaseClass.showToast(getApplicationContext(), "Dish Updated Successfully" );
                                                 finish();
+
+                                               /* if (selectedPath!=null){
+                                                    if (duration<=20000)
+                                                        new UploadFileToServer(selectedPath).execute();
+                                                }*/
+
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(   ), getResources().getString(R.string.error));
                                             }
@@ -1024,7 +1029,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
                 arr_photos.set(pos, filePath.substring(filePath.lastIndexOf("/") + 1));
                 adapterEditDishPhotos.notifyDataSetChanged();
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -1032,7 +1036,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         bitmap = bm;
         bitmapString = BaseClass.BitMapToString(bitmap);
-        base.set(pos, bitmapString);
+        if (base!=null){
+            base.set(pos, bitmapString);
+        }
 
     }
 
@@ -1094,7 +1100,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         int id = compoundButton.getId();
         if(id == R.id.edit_dish_switch_current_available){
-
             if(b){
                 sw_1 = "Yes";
             } else{
@@ -1106,14 +1111,12 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             } else{
                 sw_2 = "No";
             }
-
         } else if(id == R.id.edit_dish_switch_pickup){
             if(b){
                 sw_3 = "Yes";
             } else{
                 sw_3 = "No";
             }
-
         } else {}
     }
 
@@ -1135,7 +1138,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
     @Override
     public void browse_my_photo(View view, int position) {
-
         pos = position;
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
@@ -1152,14 +1154,16 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             result = true;
         }
         selectImage();
-
     }
+
+
+    ProgressBar progressBar;
 
     private long totalSize = 0;
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
         String filePath = null;
         String sessionId, contentData;
-
+//        ProgressDialog uploading;
 
         public UploadFileToServer(String filePath) {
             this.filePath = filePath;
@@ -1168,12 +1172,22 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         @Override
         protected void onPreExecute() {
+//            progressBar = new ProgressBar(ChefEditDish.this, null, android.R.attr.h);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(30, 30, 30, 30);
+            progressBar.setLayoutParams(layoutParams);
+            progressBar.setIndeterminate(true);
 
-
+         /*   LinearLayout linearLayout = findViewById(R.id.rootContainer);
+            // Add horizontal ProgressBar to LinearLayout
+            if (linearLayout != null) {
+                linearLayout.addView(progressBar);
+            }*/
 
             // setting progress bar to zero
-//            progressBar.setProgress(0);
-            BaseClass.showToast(getApplicationContext(), "0%");
+            progressBar.setProgress(0);
+         //   BaseClass.showToast(getApplicationContext(), "0%");
+          //  uploading = ProgressDialog.show(ChefEditDish.this, "Uploading File", "Please wait...", false, false);
 
 
             super.onPreExecute();
@@ -1185,7 +1199,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 //            progressBar.setVisibility(View.VISIBLE);
 
             // updating progress bar value
-//            progressBar.setProgress(progress[0]);
+            progressBar.setProgress(progress[0]);
 
 
             BaseClass.showToast(getApplicationContext(), progress[0] + "%");
@@ -1273,8 +1287,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         @Override
         protected void onPostExecute(String result) {
-//            Log.e(TAG, "Response from server: " + result);
-
+            Log.e("TAG", "Response from server: " + result);
             // showing the server response in an alert dialog
             showAlert(result);
 
@@ -1291,6 +1304,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                         // do nothing
                     }
                 });
+        progressBar.setVisibility(View.GONE);
+
         AlertDialog alert = builder.create();
         alert.show();
     }
