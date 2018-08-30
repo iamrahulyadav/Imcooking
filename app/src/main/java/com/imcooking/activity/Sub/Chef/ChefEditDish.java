@@ -992,7 +992,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
-
+///
     public String getPath(Uri uri) {
         String path = null;
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
