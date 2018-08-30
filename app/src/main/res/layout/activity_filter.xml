@@ -49,6 +49,7 @@
                 android:id="@+id/filter_ratingbar"
                 android:layout_gravity="center"
                 android:numStars="5"
+                android:stepSize="1"
                 android:theme="@style/RatingBar"
                 android:progressTint="@color/theme_color"/>
 
@@ -66,6 +67,52 @@
                 android:textColor="@color/text_color_4"
                 android:textSize="13sp"
                 android:layout_marginBottom="10dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_max_text"
+                    android:text="From: "
+                    android:textColor="@color/text_color_4"
+                    android:textSize="@dimen/margin_10"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"/>
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_edt_max_price"
+                    android:hint="select max price"
+                    android:textColorHint="@color/text_color_7"
+                    android:textSize="@dimen/margin_10"
+                    android:background="@android:color/transparent"
+                    android:layout_toRightOf="@+id/filter_max_text"/>
+                <com.imcooking.customtext.CustomEditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_edt_min_price"
+                    android:hint="select min price"
+                    android:textColorHint="@color/text_color_7"
+                    android:textSize="@dimen/margin_10"
+                    android:background="@android:color/transparent"
+                    android:layout_alignParentRight="true"/>
+                <com.imcooking.customtext.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To: "
+                    android:textColor="@color/text_color_4"
+                    android:textSize="@dimen/margin_10"
+                    android:layout_toLeftOf="@+id/filter_edt_min_price"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"/>
+
+            </RelativeLayout>
+
+<!--
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
@@ -79,6 +126,7 @@
                 android:paddingRight="15dp"
                 android:paddingTop="10dp"
                 android:text="0" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
@@ -96,19 +144,13 @@
 
             </LinearLayout>
 
+-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height=".3dp"
                 android:background="@color/view_6"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"/>
-
-            <com.imcooking.customtext.CustomTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_4"
-                android:textSize="13sp"
-                android:layout_marginBottom="10dp"/>
 
             <LinearLayout
                 android:layout_marginRight="20dp"

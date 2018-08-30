@@ -599,7 +599,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
-    private String str_cuisine_ids="";
+    private String str_cuisine_ids = "";
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -638,7 +639,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
 
     }
-
 
     private void uploadProfile(String base64){
         String request = "{\"user_id\":" + str_id + ",\"image\":\"" + base64 + "\"}";

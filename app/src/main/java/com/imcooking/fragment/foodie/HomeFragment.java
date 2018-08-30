@@ -139,6 +139,7 @@ public class HomeFragment extends Fragment implements
     private TextView tv_count_latest, tv_count_choice;
 
     private void init() {
+
         tinyDB = new TinyDB(getContext());
         String s = tinyDB.getString("login_data");
         userDataBean = gson.fromJson(s, ApiResponse.UserDataBean.class);
@@ -234,7 +235,6 @@ public class HomeFragment extends Fragment implements
         dialog.show();
 
     }
-
 
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
@@ -606,16 +606,13 @@ public class HomeFragment extends Fragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data!=null){
-            if(resultCode == 0143)
+            if(requestCode == 0143)
             {
-                String str_rating = data.getExtras().getString("rating");
-                String str_min_price = data.getExtras().getString("min_price");
-                String str_max_price = data.getExtras().getString("max_price");
-                String str_check_home = data.getExtras().getString("check_home");
-                String str_check_pickup = data.getExtras().getString("check_pickup");
-
-                filterData(str_rating, str_min_price, str_max_price, str_check_home, str_check_pickup);
-
+                if(resultCode == 01) {
+                    filterData(data);
+                } else {
+                    BaseClass.showToast(getContext(), "No Filter Applied");
+                }
 
 
                 //                filter_data(data.getFloatExtra("ratingvalue", 0),
@@ -633,8 +630,24 @@ public class HomeFragment extends Fragment implements
         }
     }
 
-    private void filterData(String str_rating, String str_min_price, String str_max_price,
-                            String str_check_home, String str_check_pickup){
+    private void filterData(Intent data){
+        String str_rating = "", str_min_price = "", str_max_price = "", str_check_home = "", str_check_pickup = "";
+
+        if (data.getExtras().containsKey("rating")) {
+            str_rating = data.getExtras().getString("rating");
+        }
+        if (data.getExtras().containsKey("min_price")) {
+            str_min_price = data.getExtras().getString("min_price");
+        }
+        if (data.getExtras().containsKey("max_price")) {
+            str_max_price = data.getExtras().getString("max_price");
+        }
+        if (data.getExtras().containsKey("check_home")) {
+            str_check_home = data.getExtras().getString("check_home");
+        }
+        if (data.getExtras().containsKey("check_pickup")) {
+            str_check_pickup = data.getExtras().getString("check_pickup");
+        }
 
         Log.d("FilteredData", str_rating);
         Log.d("FilteredData", str_min_price);
@@ -642,62 +655,291 @@ public class HomeFragment extends Fragment implements
         Log.d("FilteredData", str_check_home);
         Log.d("FilteredData", str_check_pickup);
 
-        if(str_rating.equals("0.0") && str_min_price.equals("0") && str_max_price.equals("0") &&
-                str_check_home.equals("0") && str_check_pickup.equals("0")){
+        boolean isRatingSelected = false;
+        boolean isMaxPriceSelected = false;
+        boolean isMinPriceSelected = false;
+        boolean isPriceSelected = false;
+        boolean isHomeDeliverySelected = false;
+        boolean isPickupSelected = false;
 
-            BaseClass.showToast(getContext(), "No Filter Applied");
-        } else {
-            List<HomeData.ChefDishBean> cDB = new ArrayList<>();
-            boolean data_added = false;
-            for (HomeData.ChefDishBean bean : chefDishBeans) {
-                if (bean.getDish_cuisine()!=null && bean.getDish_cuisine().size()>0) {
-                    data_added = false;
-                    if(str_rating.equals(bean.getRating())){
-                        data_added = true;
-                    }
-                    if(Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
-                            Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price)){
-                        data_added = true;
-                    }
-                    if(str_check_home.equals("0") && str_check_pickup.equals("1")) {
-                        if (bean.getDish_homedelivery().equalsIgnoreCase("No") && bean.getDish_pickup().equalsIgnoreCase("Yes")) {
-                            data_added = true;
-                        }
-                    } else if(str_check_home.equals("1") && str_check_pickup.equals("0")) {
-                        if(bean.getDish_homedelivery().equalsIgnoreCase("Yes") && bean.getDish_pickup().equalsIgnoreCase("No")){
-                            data_added = true;
-                        }
-                    } else if(str_check_home.equals("1") && str_check_pickup.equals("1")){
-                        if(bean.getDish_homedelivery().equalsIgnoreCase("Yes") && bean.getDish_pickup().equalsIgnoreCase("Yes")){
-                            data_added = true;
-                        }
-                    }
-                }
-                if(data_added) {
-                    cDB.add(bean);
-                }
-            }
-
-            arr_like_status_1_filter_all.clear();
-            chefDishBeans_filter_all.clear();
-            chefDishBeans_filter_all.addAll(cDB);
-            for(int i=0; i<cDB.size(); i++){
-                arr_like_status_1_filter_all.add(cDB.get(i).getDishlike());
-            }
-            adapter.notifyDataSetChanged();
-
-            if(cDB != null && cDB.size()>0){
-                viewPager.setVisibility(View.VISIBLE);
-                layout_no_record_found.setVisibility(View.GONE);
-                iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
-            } else{
-                viewPager.setVisibility(View.GONE);
-                layout_no_record_found.setVisibility(View.VISIBLE);
-                iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
-            }
-
-            Log.d("FilteredData", arr_like_status_1_filter_all.size() + "\n" + chefDishBeans_filter_all.size());
+        if(!str_rating.equals("0")){
+            isRatingSelected = true;
         }
+        if(!str_max_price.equals("")){
+            isMaxPriceSelected = true;
+        }
+        if(!str_min_price.equals("")){
+            isMinPriceSelected = true;
+        }
+        if(!str_min_price.equals("") || !str_max_price.equals("") ){
+            isPriceSelected = true;
+        }
+        if(str_check_home.equals("1")){
+            isHomeDeliverySelected = true;
+        }
+        if(str_check_pickup.equals("1")){
+            isPickupSelected = true;
+        }
+        List<HomeData.ChefDishBean> cDB = new ArrayList<>();
+        boolean data_added;
+        for (HomeData.ChefDishBean bean : chefDishBeans) {
+            data_added = false;
+            if (!isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+
+            } else if (!isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getDish_pickup().equals("1")) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getDish_homedelivery().equals("1")) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price)) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price)) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        bean.getDish_homedelivery().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price)
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (!isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating)) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        bean.getDish_pickup().equals("1")) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        bean.getDish_homedelivery().equals("1")) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price)) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price)) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        bean.getDish_homedelivery().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price)
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    !isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && !isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
+                    isHomeDeliverySelected && isPickupSelected) {
+                if (bean.getRating().equals(str_rating) &&
+                        Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
+                        bean.getDish_homedelivery().equals("1") &&
+                        bean.getDish_pickup().equals("1")
+                        ) {
+                    data_added = true;
+                }
+            } else {
+            }
+
+            if(data_added){
+                cDB.add(bean);
+            }
+        }
+
+        arr_like_status_1_filter_all.clear();
+        chefDishBeans_filter_all.clear();
+        chefDishBeans_filter_all.addAll(cDB);
+        for(int i=0; i<cDB.size(); i++){
+            arr_like_status_1_filter_all.add(cDB.get(i).getDishlike());
+        }
+        adapter.notifyDataSetChanged();
+
+        if(cDB != null && cDB.size()>0){
+            viewPager.setVisibility(View.VISIBLE);
+            layout_no_record_found.setVisibility(View.GONE);
+            iv_arrow_latest.setVisibility(View.VISIBLE);//GONE
+        } else{
+            viewPager.setVisibility(View.GONE);
+            layout_no_record_found.setVisibility(View.VISIBLE);
+            iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
+        }
+
+        Log.d("FilteredData", arr_like_status_1_filter_all.size() + "\n" + chefDishBeans_filter_all.size());
     }
 
     public StringBuffer getAddress(LatLng latLng) throws IOException {

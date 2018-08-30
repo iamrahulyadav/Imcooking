@@ -9,13 +9,14 @@ import android.support.v7.widget.AppCompatRatingBar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.imcooking.R;
 import com.imcooking.utils.BaseClass;
 
-public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
+public class FilterActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,91 +24,98 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
         setContentView(R.layout.activity_filter);
 
         BaseClass.setLightStatusBar(getWindow().getDecorView(),FilterActivity.this);
-
         init();
     }
 
     private AppCompatRatingBar ratingBar;
-    private TextView tv_seekbar_text;
     private CheckBox checkBox_home, checkBox_pickup;
-    private SeekBar seekBar;
+    private EditText edt_max, edt_min;
     private String str_ratings = "0.0", str_min_price = "0", str_max_price = "0",
             str_check_home = "0", str_check_pickup = "0";
 
     private void init(){
 
         ratingBar = findViewById(R.id.filter_ratingbar);
-        tv_seekbar_text = findViewById(R.id.filter_seekbar_text);
+
         checkBox_home = findViewById(R.id.filter_check_home);
         checkBox_pickup = findViewById(R.id.filter_check_pickup);
-        seekBar = findViewById(R.id.filter_seekbar);
 
-        ShapeDrawable thumb = new ShapeDrawable( new RectShape() );
-        thumb.getPaint().setColor(getResources().getColor(R.color.theme_color));
-        thumb.setIntrinsicHeight( 80 );
-        thumb.setIntrinsicWidth( 200 );
-        seekBar.setThumb( thumb );
+        edt_max = findViewById(R.id.filter_edt_max_price);
+        edt_min = findViewById(R.id.filter_edt_min_price);
 
-        seekBar.setMax(490);
-
-        seekBar.setOnSeekBarChangeListener(this);
         checkBox_home.setOnCheckedChangeListener(this);
         checkBox_pickup.setOnCheckedChangeListener(this);
     }
 
-    public void filter_apply(View view){
-        /*if(str_check_home.equals("0") && str_check_pickup.equals("0")){
-            BaseClass.showToast(getApplicationContext(), "Please Select either \"Home Delivery\" or \"Pick-up\" or both.");
-        } else {*/
-            str_ratings = ratingBar.getRating() + "";
+    private boolean isRatingSelected;
+    private boolean isMaxPriceSelected;
+    private boolean isMinPriceSelected;
+    private boolean isHomeDeliverySelected;
+    private boolean isPickupSelected;
 
-            Intent intent = new Intent();
-            intent.putExtra("rating", str_ratings);
-            intent.putExtra("min_price", str_min_price);
-            intent.putExtra("max_price", str_max_price);
-            intent.putExtra("check_home", str_check_home);
-            intent.putExtra("check_pickup", str_check_pickup);
-            setResult(0143, intent);
+    public void filter_apply(View view){
+
+        isRatingSelected = false;
+        isMaxPriceSelected = false;
+        isMinPriceSelected = false;
+        isHomeDeliverySelected = false;
+        isPickupSelected = false;
+
+        if(ratingBar.getRating() != 0.0){
+            isRatingSelected = true;
+        }
+        if(!edt_max.getText().toString().trim().equals("")){
+            isMaxPriceSelected = true;
+        }
+        if(!edt_min.getText().toString().trim().equals("")){
+            isMinPriceSelected = true;
+        }
+        if(str_check_home.equals("1")){
+            isHomeDeliverySelected = true;
+        }
+        if(str_check_pickup.equals("1")){
+            isPickupSelected = true;
+        }
+
+        int i = (int)ratingBar.getRating();
+        str_ratings = i + "";
+        str_max_price = edt_max.getText().toString().trim();
+        str_min_price = edt_max.getText().toString().trim();
+
+        Intent intent = new Intent();
+        if(isRatingSelected || isMaxPriceSelected || isMinPriceSelected || isHomeDeliverySelected ||
+                isPickupSelected) {
+            if(isRatingSelected) {
+                intent.putExtra("rating", str_ratings);
+            }
+            if(isMinPriceSelected){
+                intent.putExtra("min_price", str_min_price);
+            }
+            if(isMaxPriceSelected){
+                intent.putExtra("max_price", str_max_price);
+            }
+            if(isHomeDeliverySelected){
+                intent.putExtra("check_home", str_check_home);
+            }
+            if(isPickupSelected){
+                intent.putExtra("check_pickup", str_check_pickup);
+            }
+            setResult(01, intent);
             finish();
-//        }
+        } else {
+            setResult(02, intent);
+            finish();
+        }
     }
 
     public void filter_reset(View view){
         ratingBar.setRating(0);
-        seekBar.setProgress(0);
         checkBox_home.setChecked(false);
         checkBox_pickup.setChecked(false);
+        edt_max.setText("");
+        edt_min.setText("");
 
-        str_ratings = "0.0"; str_min_price = "0"; str_max_price = "0"; str_check_home = "0"; str_check_pickup = "0";
-        tv_seekbar_text.setText("0");
-
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        if (i == 0) {
-            tv_seekbar_text.setText("0");
-        } else {
-            if (i >= 20) {
-                tv_seekbar_text.setText("£" + (i - 10) + " To " + "£" + (i + 10));
-                str_min_price = (i - 10) + "";
-                str_max_price = (i + 10) + "";
-            } else {
-                tv_seekbar_text.setText("£" + "0" + " To " + "£" + "20");
-                str_min_price = "0";
-                str_max_price = "20";
-            }
-        }
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
+        str_ratings = "0"; str_min_price = ""; str_max_price = ""; str_check_home = "0"; str_check_pickup = "0";
     }
 
     @Override
@@ -132,6 +140,8 @@ public class FilterActivity extends AppCompatActivity implements SeekBar.OnSeekB
     public void onBackPressed() {
         super.onBackPressed();
 
+        Intent intent = new Intent();
+        setResult(02, intent);
         finish();
     }
 }
