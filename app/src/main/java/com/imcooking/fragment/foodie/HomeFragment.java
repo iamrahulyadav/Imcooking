@@ -938,7 +938,7 @@ public class HomeFragment extends Fragment implements
             layout_no_record_found.setVisibility(View.VISIBLE);
             iv_arrow_latest.setVisibility(View.GONE);//VISIBLE
         }
-
+//
         Log.d("FilteredData", arr_like_status_1_filter_all.size() + "\n" + chefDishBeans_filter_all.size());
     }
 
