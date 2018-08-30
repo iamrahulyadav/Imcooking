@@ -113,7 +113,7 @@
                         android:rating="5"
                         android:id="@+id/item_foodie_my_order_rating"
                         style="@style/Widget.AppCompat.RatingBar.Small"
-                        android:progressTint="#c7c7c7" />
+                        android:theme="@style/AppThemeRatingBar"/>
 
                 </LinearLayout>
 

@@ -71,6 +71,15 @@ public class DishDetails {
         private String chef_image;
         private String foodie_dish_like;
         private String dish_total_like;
+        private String distance;
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
 
         public String getDish_total_like() {
             return dish_total_like;

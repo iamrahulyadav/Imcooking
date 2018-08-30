@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
-                    android:transformPivotX="0dp"
+                    android:theme="@style/AppThemeRatingBar"
                     style="?android:attr/ratingBarStyleSmall"
                     android:id="@+id/activity_chef_edit_profile_rating"/>
 
@@ -250,11 +250,11 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_email"
                     android:hint="Email"
-                    android:editable="false"
                     android:singleLine="true"
                     android:textSize="@dimen/extra_smallsize"
-                    android:imeOptions="actionDone"
                     android:background="@android:color/transparent"
+                    android:imeOptions="actionDone"
+                    android:enabled="false"
                     android:textColor="@color/colorBlack"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"/>
@@ -278,12 +278,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/chef_edit_profile_zipcode"
                     android:hint="ZIP CODE"
+                    android:inputType="number"
+                    android:maxLines="1"
                     android:textSize="@dimen/extra_smallsize"
                     android:background="@android:color/transparent"
                     android:textColor="@color/colorBlack"
                     android:paddingLeft="10dp"
                     android:paddingTop="10dp"
-                    android:editable="false"/>
+                    android:enabled="false"/>
 
             </android.support.design.widget.TextInputLayout>
             <View
@@ -382,61 +384,6 @@
                 android:background="@color/view_2"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
-
-            <!--
-                        <android.support.v7.widget.SwitchCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/chef_edit_profile_notification"
-                            app:track="@drawable/switch_track"
-                            android:thumb="@drawable/switch_thumb"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/extra_smallsize"
-                            android:text="NOTIFICATION"
-                            android:paddingLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="@color/colorBlack"/>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height=".5dp"
-                            android:background="@color/view_2"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"/>
-            -->
-
-<!--
-            <android.support.v7.widget.SwitchCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chef_edit_profile_available"
-                app:track="@drawable/switch_track"
-                android:thumb="@drawable/switch_thumb"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/extra_smallsize"
-                android:text="AVAILABLE"
-                android:paddingLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/colorBlack"/>
--->
-
-<!--
-            <View
-                android:layout_width="match_parent"
-                android:layout_height=".5dp"
-                android:background="@color/view_2"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
-
-            <Spinner
-                android:id="@+id/chef_edit_profile_spinner_select_cuisines"
-                style="@style/SpinnerTheme1"
-                android:spinnerMode="dropdown"
-                android:textAlignment="textStart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:paddingRight="20dp"/>
--->
 
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="match_parent"

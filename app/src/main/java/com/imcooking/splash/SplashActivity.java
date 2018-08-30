@@ -3,8 +3,12 @@ package com.imcooking.splash;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -13,8 +17,10 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -23,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -38,9 +45,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.activity.home.MyActivity;
 import com.imcooking.activity.main.setup.LoginActivity;
+import com.imcooking.notification.Config;
+import com.imcooking.notification.NotificationUtils;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -52,8 +63,13 @@ import com.mukesh.tinydb.TinyDB;
 import java.text.DateFormat;
 import java.util.Date;
 
+import io.fabric.sdk.android.Fabric;
+
 public class SplashActivity extends AppCompatActivity {
     private ImageView imgSplash, imgLogo;
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
 
     TinyDB tinyDB;
     public double longitude, latitude;
@@ -87,13 +103,69 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
           getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
+
+        if(getIntent().getExtras()!= null){
+          //  Toast.makeText(this, getIntent().getExtras().getString("message"), Toast.LENGTH_SHORT).show();
+        }
+
+
+        // Notifications -----GetDeviceId
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+                    Toast.makeText(getApplicationContext(), "heyo", Toast.LENGTH_SHORT).show();
+
+                    String message = intent.getStringExtra("message");
+                    Log.d("NotificationStuff", message);
+
+                    Toast.makeText(getApplicationContext(), "Hii You had Recieved a notification",
+                            Toast.LENGTH_SHORT).show();
+
+//                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+//
+//                    txtMessage.setText(message);s
+                }
+
+//                Toast.makeText(getApplicationContext(), intent.getAction() + "", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        displayFirebaseRegId();
+
+
 
         init();
         startLocationButtonClick();
 
         // restore the values from saved instance state
         restoreValuesFromBundle(savedInstanceState);
+
+
+    }
+
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e(TAG, "Firebase reg id: " + regId);
+
+//        if (!TextUtils.isEmpty(regId))
+//            txtRegId.setText("Firebase Reg Id: " + regId);
+//        else
+//            txtRegId.setText("Firebase Reg Id is not received yet!");
     }
 
 
@@ -105,16 +177,12 @@ public class SplashActivity extends AppCompatActivity {
             if (savedInstanceState.containsKey("is_requesting_updates")) {
                 mRequestingLocationUpdates = savedInstanceState.getBoolean("is_requesting_updates");
             }
-
             if (savedInstanceState.containsKey("last_known_location")) {
                 mCurrentLocation = savedInstanceState.getParcelable("last_known_location");
             }
         }
-
         updateLocationUI();
     }
-
-
 
     public void startLocationButtonClick() {
         // Requesting ACCESS_FINE_LOCATION using Dexter library
@@ -154,6 +222,7 @@ public class SplashActivity extends AppCompatActivity {
      * Update the UI displaying the location data
      * and toggling the buttons
      */
+
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
 
@@ -183,7 +252,6 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-
     @SuppressLint("RestrictedApi")
     private void init() {
         tinyDB = new TinyDB(getApplicationContext());
@@ -210,6 +278,7 @@ public class SplashActivity extends AppCompatActivity {
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
+
         mLocationSettingsRequest = builder.build();
 
         //        find id
@@ -223,9 +292,7 @@ public class SplashActivity extends AppCompatActivity {
         imgSplash.startAnimation(animation);
         imgLogo.startAnimation(animationLogo);
 
-
     }
-
 
     /**
      * Starting location updates
@@ -240,10 +307,6 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         Log.i(TAG, "All location settings are satisfied.");
-
-                      //  Toast.makeText(getApplicationContext(), "Started location updates!", Toast.LENGTH_SHORT).show();
-
-                        //noinspection MissingPermission
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
 
@@ -316,13 +379,24 @@ public class SplashActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+//        NotificationUtils.clearNotifications(getApplicationContext());
+
         // Resuming location updates depending on button state and
         // allowed permissions
         if (mRequestingLocationUpdates && checkPermissions()) {
 //            startLocationUpdates();
         }
         updateLocationUI();
-
 
     }
 
@@ -335,6 +409,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
 
         if (mRequestingLocationUpdates) {
@@ -354,5 +429,4 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

@@ -250,7 +250,6 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
 
     }
 
-
     @Override
     public void getDetails(int position, String TAG) {
        if (TAG.equals("current")){
@@ -262,10 +261,16 @@ public class FoodieMyOrderFragment extends Fragment implements AdapterFoodieMyOr
                    .putExtra("order_id",prevoiusOrderListBeans.get(position).getOrder_order_id()));
            adapterFoodieMyOrder1.notifyDataSetChanged();
        } else if (TAG.equals("ratingbar")){
-           BaseClass.showToast(getContext(), "Rate & Review");
+         //  BaseClass.showToast(getContext(), "Rate & Review");
        } else {
 
        }
+    }
+
+    private void rateChef(){
 
     }
+
+
+
 }

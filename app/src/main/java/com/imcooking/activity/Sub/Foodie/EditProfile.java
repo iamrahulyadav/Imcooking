@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -60,18 +61,18 @@ import java.net.URLConnection;
 
 import okhttp3.internal.Util;
 
-public class EditProfile extends AppBaseActivity {
+public class EditProfile extends AppCompatActivity {
     private ImageView imgProfile;
     private JSONObject jsonData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme1);
+    //    setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_edit_profile);
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorBlack));
         }
 
         init();
@@ -79,7 +80,7 @@ public class EditProfile extends AppBaseActivity {
     }
 
     private TextView tv_fullname, tv_email, tv_phone, btn;
-    private EditText edt_full_name, edt_email, edt_phone;
+    private EditText edt_full_name,  edt_phone,edt_email;
     private String str_id, str_uname;
     private ProgressBar progressBar;
 
@@ -145,9 +146,8 @@ public class EditProfile extends AppBaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-
     }
+
     JSONObject jsonObject;
 
     public void foodie_profile_update(View view){

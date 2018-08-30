@@ -66,6 +66,7 @@ public class OrderDetailsData {
         private String chef_phone;
         private String chef_address;
         private int order_foodie_id;
+        private String chef_id;
         private String order_foodie_name;
         private String order_foodie_email;
         private String order_foodie_phone;
@@ -81,8 +82,25 @@ public class OrderDetailsData {
         private String order_payment_type;
         private String order_transaction_id;
         private String order_status;
+        private String rating;
         private String order_createdate;
         private List<OrderDishImageBean> order_dish_image;
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
+        }
+
+        public String getChef_id() {
+            return chef_id;
+        }
+
+        public void setChef_id(String chef_id) {
+            this.chef_id = chef_id;
+        }
 
         public int getOrder_id() {
             return order_id;

@@ -20,6 +20,7 @@ import com.imcooking.fragment.chef.ChefHome;
 import com.imcooking.fragment.chef.chefprofile.AboutChefFragment;
 import com.imcooking.fragment.chef.chefprofile.ChefDishListFragment;
 import com.imcooking.utils.AppBaseActivity;
+import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.squareup.picasso.Picasso;
 
@@ -32,8 +33,11 @@ public class ChefProfile extends AppBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_profile);
-
-        chefId = getIntent().getExtras().getString("chef_id");
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorBlack));
+        }
+*/
+        BaseClass.setLightStatusBar(getWindow().getDecorView(),ChefProfile.this);  chefId = getIntent().getExtras().getString("chef_id");
         foodie_id = getIntent().getExtras().getString("foodie_id");
 
         ChefHome fragment = new ChefHome();
@@ -51,11 +55,11 @@ public class ChefProfile extends AppBaseActivity {
     protected void onResume() {
         super.onResume();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        }*/
 //        getchefProfile();
     }
 
@@ -63,31 +67,31 @@ public class ChefProfile extends AppBaseActivity {
     protected void onStart() {
         super.onStart();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        }*/
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        }*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        }*/
     }
 }

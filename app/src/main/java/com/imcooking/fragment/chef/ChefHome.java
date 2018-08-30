@@ -108,8 +108,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
         getMyintentData();
 
         userDataBean = new ApiResponse.UserDataBean();
@@ -122,13 +120,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
 
 
         init();
-/*
-        getchefProfile();
-        getCuisines();
-*/
-//        getUserProfile(foodie_id);
 
-//        setMyData();
     }
 
     private void getMyintentData() {
@@ -143,6 +135,7 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private ImageView iv_settings, cart_image, iv_settings_1;
 
     private TextView tv_count;
+
     private void init() {
         cartFrameLayout = getView().findViewById(R.id.fragment_chef_cart_icon_layout);
         tv_count  =  getView().findViewById(R.id.chef_home_cart_count);
@@ -187,9 +180,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
         viewPager = getView().findViewById(R.id.chef_home_viewpager);
         tabLayout = (TabLayout) getView().findViewById(R.id.chef_home_tablayout);
         tabLayout.setupWithViewPager(viewPager);
-        setupViewPager(viewPager);
-
-
 
     }
 
@@ -221,75 +211,80 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                     Log.d(TAG, "onSuccess: ChefData"+result);
                     chefProfileData1 = new ChefProfileData1();
                     chefProfileData1 = new Gson().fromJson(result, ChefProfileData1.class);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void run() {
-                            if (chefProfileData1 != null) {
-                                if (chefProfileData1.isStatus()) {
-                                    layout.setVisibility(View.VISIBLE);
+                    if(getActivity()!=null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void run() {
+                                if (chefProfileData1 != null) {
+                                    if (chefProfileData1.isStatus()) {
+                                        layout.setVisibility(View.VISIBLE);
                                    /* if (chefProfileData1.getChef_data().getAddress()==null
                                             &&chefProfileData1.getChef_data().getAddress().equalsIgnoreCase("null")){
                                         txtAddress.setText("Your address");
                                     } else
                                        */
 
-                                    //    else txtAddress.setText("Your Address");
-                                     createMyDialog();
-                                    if (chefProfileData1.getChef_data().getChef_full_name()!=null) {
-                                        txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
-                                        txtAddress.setText(chefProfileData1.getChef_data().getAddress() + " " +
-                                                chefProfileData1.getChef_data().getChef_city());
-                                        if (user_type.equals("1")) {
-                                            MainActivity.tv_name.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
+                                        //    else txtAddress.setText("Your Address");
+                                        createMyDialog();
+                                        if (chefProfileData1.getChef_data().getChef_full_name() != null) {
+                                            txtName.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
+                                            txtAddress.setText(chefProfileData1.getChef_data().getAddress() + " " +
+                                                    chefProfileData1.getChef_data().getChef_city());
+                                            if (user_type.equals("1")) {
+                                                MainActivity.tv_name.setText(chefProfileData1.getChef_data().getChef_full_name() + "");
+                                            }
                                         }
-                                    }
 
-
-                                    if (chefProfileData1.getChef_data().getChef_phone()!=null){
-                                        if(user_type.equals("1")) {
-                                            MainActivity.tv_phone.setText(chefProfileData1.getChef_data().getChef_phone() + "");
-                                            cartFrameLayout.setVisibility(View.GONE);
+                                        if (chefProfileData1.getChef_data().getChef_phone() != null) {
+                                            if (user_type.equals("1")) {
+                                                MainActivity.tv_phone.setText(chefProfileData1.getChef_data().getChef_phone() + "");
+                                                cartFrameLayout.setVisibility(View.GONE);
+                                            }
+                                            tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
                                         }
-                                        tv_phoneno.setText(chefProfileData1.getChef_data().getChef_phone() + "");
-                                    }
 
-                                    if (chefProfileData1.getChef_data().getRating() != null) {
-                                        ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
-                                    }
-                                    if (chefProfileData1
-                                            .getChef_data().getChef_image()!=null&&!chefProfileData1
-                                            .getChef_data().getChef_image().equalsIgnoreCase("null")){
-                                        Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
-                                                .getChef_data().getChef_image())
-                                                .into(imgChef);
-                                    } else {
-                                        imgChef.setImageResource(R.drawable.details_profile);
-                                    }
+                                        if (chefProfileData1.getChef_data().getRating() != null&&chefProfileData1.getChef_data().getRating() .length()>0) {
+                                            ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
+                                        }
+                                        if (chefProfileData1
+                                                .getChef_data().getChef_image() != null && !chefProfileData1
+                                                .getChef_data().getChef_image().equalsIgnoreCase("null")) {
+                                            Picasso.with(getContext()).load(GetData.IMG_BASE_URL + chefProfileData1
+                                                    .getChef_data().getChef_image())
+                                                    .into(imgChef);
+                                        } else {
+                                            imgChef.setImageResource(R.drawable.details_profile);
+                                        }
 //                                    tv_deactivate.setText(chefProfileData1.getChef_data().get);
 
-                                    if (chefProfileData1.getChef_data().getChef_foodie_follow() == 0)
-                                        btn_follow.setText("Follow");
-                                    else if (chefProfileData1.getChef_data().getChef_foodie_follow() == 1) {
-                                        btn_follow.setText("Unfollow");
-                                    } else {
-                                        btn_follow.setText("");
-                                    }
+                                        if (chefProfileData1.getChef_data().getChef_foodie_follow() == 0)
+                                            btn_follow.setText("Follow");
+                                        else if (chefProfileData1.getChef_data().getChef_foodie_follow() == 1) {
+                                            btn_follow.setText("Unfollow");
+                                        } else {
+                                            btn_follow.setText("");
+                                        }
 
-                                    if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) == 1) {
-                                        txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
-                                    } else if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) > 1) {
-                                        txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
-                                    } else {
-                                        txtFollowers.setText(" 0 Follower");
-                                    }
+                                        if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) == 1) {
+                                            txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
+                                        } else if (Integer.parseInt(chefProfileData1.getChef_data().getFollow()) > 1) {
+                                            txtFollowers.setText(chefProfileData1.getChef_data().getFollow() + " Followers");
+                                        } else {
+                                            txtFollowers.setText(" 0 Follower");
+                                        }
+                                        if (user_type.equals("1")){
+                                            txtFollowers.setTextColor(getResources().getColor(R.color.colorBlue));
+                                        } else txtFollowers.setTextColor(getResources().getColor(R.color.colorWhite));
+                                        setupViewPager(viewPager);
 
-                                   } else {
-                                    BaseClass.showToast(getContext(), getResources().getString(R.string.error));
+                                    } else {
+                                        BaseClass.showToast(getContext(), getResources().getString(R.string.error));
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
         });
@@ -298,12 +293,10 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
     private void getCuisines(){
         try {
             JSONObject jsonObject = new JSONObject("{}");
-//            layout.setVisibility(View.GONE);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, "cuisine",
                     getActivity(), new GetData.MyCallback() {
                         @Override
-                        public void onSuccess(String result) {
-
+                         public void onSuccess(String result) {
                             cuisineData = new Gson().fromJson(result, CuisineData.class);
                         }
                     });
@@ -331,7 +324,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                             FollowUnfollow followUnfollow = new Gson().fromJson(result, FollowUnfollow.class);
                             if(followUnfollow.isStatus()){
                                 if (followUnfollow.getMsg().equals("Successfully follow")){
-//                                    Toast.makeText(getContext(), followUnfollow.getMsg(), Toast.LENGTH_SHORT).show();
                                     BaseClass.showToast(getContext(), "Successfully Followed");
                                     btn_follow.setText("Unfollow");
 
@@ -481,7 +473,6 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             int height = displayMetrics.heightPixels;
             int width = displayMetrics.widthPixels;
-
             if(width == 720 && height == 1184){
                 dialog.show();
             } else {
@@ -555,7 +546,9 @@ public class ChefHome extends Fragment implements View.OnClickListener, PopupMen
                 startActivity(intent);
             }
         } else if (id == R.id.activity_chef_txtFollower){
-            BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+            if (user_type.equals("1")){
+                BaseClass.callFragment(new ChefFollowersFragment(),ChefFollowersFragment.class.getName(),getFragmentManager());
+            }
         }
     }
 

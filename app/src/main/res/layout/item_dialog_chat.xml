@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:layout_marginBottom="5dp">
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_dialog_chat_message_left"
+        android:text="Hii, This Is Vaibhav"
+        android:textSize="12dp"
+        android:textColor="@color/text_color_4"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingLeft="@dimen/margin_10"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/shape_border_grey_1"
+        android:layout_alignParentLeft="true"/>
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_dialog_chat_message_right"
+        android:text="Hii, This Is VK"
+        android:textSize="12dp"
+        android:textColor="@color/colorWhite"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="@dimen/margin_10"
+        android:paddingLeft="@dimen/margin_10"
+        android:layout_marginLeft="50dp"
+        android:background="@drawable/shape_border_theme_1"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

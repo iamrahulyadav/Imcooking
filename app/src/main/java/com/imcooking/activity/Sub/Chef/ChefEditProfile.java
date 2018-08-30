@@ -67,7 +67,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     //    private RecyclerView cuisineRecycler;
     private RatingBar ratingBar;
     public static int SELECT_LOC =2;
-    private EditText edt_name, edt_address, edt_city, edt_email, edt_zipcoede, edt_about, edt_phn;
+    private EditText edt_name, edt_address, edt_city,edt_email,  edt_zipcoede, edt_about, edt_phn;
     private Spinner sp_miles/*, sp_cuisine*/;
     private TextView tv_select_cuisine;
     private SwitchCompat /*sw_notification,*/ sw_available;
@@ -86,7 +86,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme1);
+      //  setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_chef_edit_profile);
 
         init();
@@ -128,6 +128,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 //        sw_available.setOnCheckedChangeListener(this);
 
         ArrayList<String> spinnerData =new ArrayList<>();
+        spinnerData.add("05 miles ");
         spinnerData.add("10 miles ");
         spinnerData.add("20 miles ");
         spinnerData.add("30 miles ");
@@ -173,16 +174,17 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
 
         int selected_position = 0;
         if(miles != null) {
-            if (miles.contains("10")) {
+            if (miles.contains("5")) {
                 selected_position = 0;
-            } else if (miles.contains("20")) {
+            } else if (miles.contains("10")) {
                 selected_position = 1;
-            } else if (miles.contains("30")) {
+            } else if (miles.contains("20")) {
                 selected_position = 2;
-            } else if (miles.contains("50")) {
+            } else if (miles.contains("30")) {
                 selected_position = 3;
-            } else {
-            }
+            } else if (miles.contains("50")) {
+                selected_position = 4;
+            } else { }
         }
         sp_miles.setSelection(selected_position);
 
@@ -203,8 +205,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         if(cuisineList.size() == 0){
             tv_select_cuisine.setText("");
         }
-
-
         edt_email.setText(str_email);
         if (str_name!=null && !str_name.equalsIgnoreCase("null")){
             edt_name.setText(str_name);
@@ -230,8 +230,8 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         if (str_phn!=null){
             edt_phn.setText(str_phn);
         }
-
-        if (chefProfileData1.getChef_data().getRating()!=null){
+        if (chefProfileData1.getChef_data().getRating()!=null&&chefProfileData1.getChef_data().getRating().length()>0){
+            Toast.makeText(this, ""+chefProfileData1.getChef_data().getRating(), Toast.LENGTH_SHORT).show();
             ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
         }
         progressBar.setVisibility(View.VISIBLE);
@@ -312,7 +312,7 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
         data.setEmail(str_email);
         data.setZipcode(str_zipcode);
         data.setDefault_miles(str_miles);
-        data.setAvailable(str_available);           // No Use
+        data.setAvailable(str_available);           // No Use       Always 0
         data.setCuisine_list(str_cuisine_ids);
         data.setAbout(str_about);
         data.setPhone(str_phn);
@@ -625,9 +625,11 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
                     str_address = data.getStringExtra("name");
                     edt_address.setText(str_address);
                     edt_city.setText(str_city);
-                    edt_zipcoede.setText(str_zipcode);
-
-                    Log.d("TAG", "Rakhi: "+latitudeq+"\n"+longitudeq+"\n");
+                    if (str_zipcode!=null&&str_zipcode.length()>0){
+                        edt_zipcoede.setText(str_zipcode);
+                    } else {
+                        edt_zipcoede.setEnabled(true);
+                    }
                 }
                 else{
 
@@ -704,7 +706,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             startActivityForResult(i, 112);
 
         }
-//        BaseClass.showToast(getApplicationContext(), "k");
     }
 
     public class GetImage extends AsyncTask<String, Void, Bitmap> {

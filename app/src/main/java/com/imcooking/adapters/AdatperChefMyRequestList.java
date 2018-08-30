@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.imcooking.Model.api.response.ChefDishRequestData;
-import com.imcooking.Model.api.response.ChefMyorderList;
 import com.imcooking.R;
-import com.imcooking.webservices.GetData;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +40,11 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public TextView txt_reply, txtTime, txtAddress,txtTotalAmnt,txtEmail,
-                txtCategory,/*txt_view,*/txtPhone, txtfoodiename,txtdishname,txtqty, tv_offer;
+                txtCategory,/*txt_view,*/txtPhone, txtfoodiename,txtdishname,txtqty, tv_offer, tv_decline,
+                tv_status;
         public ImageView img;
+        public LinearLayout layout_decline_offer, layout_offered_price;
+        public TextView tv_offered_price;
 
         public MyViewHolder(View view) {
             super(view);
@@ -60,6 +61,12 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             txtPhone = view.findViewById(R.id.item_chef_my_request_phone);
             txt_reply = view.findViewById(R.id.item_chef_my_request_reply);
             tv_offer = view.findViewById(R.id.item_chef_my_request_offer);
+            tv_decline = view.findViewById(R.id.item_chef_my_request_decline);
+            layout_decline_offer = view.findViewById(R.id.item_chef_my_request_layout_decline_offer);
+            layout_offered_price = view.findViewById(R.id.item_chef_my_request_layout_offer_price);
+            tv_offered_price = view.findViewById(R.id.item_chef_my_request_offered_price);
+            tv_status = view.findViewById(R.id.item_chef_my_request_status);
+
 //            tv_message = view.findViewById(R.id.item_chef_my_request_message);
 //            txt_view = view.findViewById(R.id.item_chef_my_request_view);
 
@@ -77,6 +84,13 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
                 }
             });
 
+            tv_decline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    chefMyrequestInterface.setresponse(getAdapterPosition(), "decline");
+                }
+            });
+
 
 /*
             txt_view.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +103,6 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
             }
     }
 
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -101,6 +114,61 @@ public class AdatperChefMyRequestList extends RecyclerView.Adapter<AdatperChefMy
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
+        // Chef Response = 2 Should never come (means chef has declined the request, so it should not come in list.)
+        // Chef Response = 1 (means Chef had Offered Price)
+        // Chef Response = 0 (Means Chef has did not response yet)
+        // Foodie Response = 2 (Foodie has confirmed the order)
+        // Foodie Response = 1 (Foodie didn't response yet)
+
+        if(list.get(position).getChef_response()!=null) {
+            if (list.get(position).getChef_response().equals("1")) {
+//                holder.tv_decline.setVisibility(View.GONE);
+//                holder.tv_offer.setVisibility(View.GONE);
+//                holder.txt_reply.setVisibility(View.VISIBLE);
+                holder.layout_decline_offer.setVisibility(View.GONE);
+                holder.layout_offered_price.setVisibility(View.VISIBLE);
+                holder.tv_offered_price.setText("Price Offered:- £" + list.get(position).getRequest_price());
+
+                holder.tv_status.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("Accepted");
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+
+                if(list.get(position).getFoodie_response() != null){
+                    if(list.get(position).getFoodie_response().equals("2")){
+                        holder.tv_status.setVisibility(View.VISIBLE);
+                        holder.tv_status.setText("Confirmed");
+                        holder.tv_status.setTextColor(context.getResources().getColor(R.color.theme_color));
+                    } else if(list.get(position).getFoodie_response().equals("1")){
+
+                    }
+                }
+
+            } else if (list.get(position).getChef_response().equals("0")) {
+//                holder.tv_decline.setVisibility(View.VISIBLE);
+//                holder.tv_offer.setVisibility(View.VISIBLE);
+                holder.layout_decline_offer.setVisibility(View.VISIBLE);
+                holder.layout_offered_price.setVisibility(View.GONE);
+                holder.tv_status.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("New Request");
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.theme_color));
+            } else {
+            }
+        }
+
+/*
+        if(list.get(position).getFoodie_response() != null){
+            if(list.get(position).getFoodie_response().equals("2")){
+                holder.tv_status.setVisibility(View.VISIBLE);
+                holder.tv_status.setText("Accepted");
+                holder.tv_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+            } else if(list.get(position).getFoodie_response().equals("1")){
+
+            }
+        }
+*/
+
+
 
         holder.txtTime.setText(list.get(position).getRequest_date());
         holder.txtAddress.setText(list.get(position).getFoodie_address()+"");

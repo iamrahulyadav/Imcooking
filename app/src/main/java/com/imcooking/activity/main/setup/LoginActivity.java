@@ -3,10 +3,13 @@ package com.imcooking.activity.main.setup;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,12 +26,13 @@ import com.imcooking.Model.ApiRequest.Login;
 import com.imcooking.Model.ApiRequest.Verification;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
+import com.imcooking.notification.Config;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
 import com.mukesh.tinydb.TinyDB;
 
-public class LoginActivity extends AppBaseActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     LinearLayout layout;
     TextView txtRegister, txtLogin;
     private EditText edt_uname, edt_pass;
@@ -36,16 +40,32 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     private EditText edt_passcode;
     private String user_id;
     private TinyDB tinyDB ;
+    private String device_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorBlack));
         }
+
+        // Get Device Id From Shared Prefwrences
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+//        if(regId != null)
+
+        if (!TextUtils.isEmpty(regId)) {
+//            txtRegId.setText("Firebase Reg Id: " + regId);
+            device_id = regId;
+        }
+        else {
+//            txtRegId.setText("Firebase Reg Id is not received yet!");
+            device_id = "123";
+        }
+
+        Log.d("MyDeviceId", device_id + "");
 
         tinyDB = new TinyDB(getApplicationContext());
 
@@ -74,7 +94,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
     }
 
-    private void createMyDialog(){
+    private void createMyDialog() {
 
         dialog = new Dialog(LoginActivity.this);
         dialog.setContentView(R.layout.dialog_verification);
@@ -121,7 +141,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             Login data = new Login();
             data.setUser_name(uname);
             data.setPassword(pass);
-            data.setDevice_id("cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q");
+            data.setDevice_id(device_id);
+//            data.setDevice_id("cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q");
 
             Log.d("MyRequest", new Gson().toJson(data));
 
@@ -146,6 +167,9 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                                  //   BaseClass.showToast(getApplicationContext(), "Login Successfull");
                                     String loginData = tinyDB.getString("login_data");
                                     Log.d("LoginData", loginData);
+
+                                    edt_uname.setText("");
+                                    edt_pass.setText("");
 
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
 

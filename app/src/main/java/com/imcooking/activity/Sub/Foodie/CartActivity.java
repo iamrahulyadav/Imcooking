@@ -40,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.imcooking.MainActivity1;
 import com.imcooking.Model.ApiRequest.AddToCart;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
 import com.imcooking.Model.api.response.AddCart;
@@ -68,26 +69,27 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
+public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface,
+        CartAddListAdatper.AddInterfaceMethod{
 
     TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,
             txt_add_address, txt_time_picker,txt_pick_add,
             txt_to_time_value,txtPayment;
-
     ImageView imgChefImg;
     int foodie_id;
     RatingBar ratingBar;
     RadioGroup radioGroup;
+
 //    private Spinner addressSpi;
-    RadioButton radioButtoncheck;
+    private RadioButton deliverRadioButton, pickRadioButton;
     LinearLayout cartLayout, linearLayoutplaceorde,no_record_Layout,linearLayoutpayment,
             linearLayout_delivery,linearLayout_pickup, linear_time_picker, linearTo;
     private TextView txtTax,txtTotalprice;
-    RecyclerView recyclerView;
-    private String type="", delivery_type="1" ;// 1 = delivery 2 = pickup
-
+    private RecyclerView recyclerView;
+    private String type="",isPickup="no", isHome="no",delivery_type="1" ;// 1 = delivery 2 = pickup
     private ApiResponse.UserDataBean userDataBean;
     private TinyDB tinyDB;
     private String login_data, user_phone;
@@ -115,7 +117,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             foodie_id = extras.getInt("foodie_id");
         }
 */
-
         linearTo = findViewById(R.id.actvity_cart_txtToLayout);
         txtPayment = findViewById(R.id.activity_cart_tv_payment);
         txtShopNow = findViewById(R.id.activity_cart_shop_now);
@@ -147,12 +148,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         tvAdditem=findViewById(R.id.cart_tv_addnewitem);
         tvplaceorder=findViewById(R.id.cart_tv_place_order);
         linear_time_picker = findViewById(R.id.actvity_cart_txtFromTime);
+        deliverRadioButton = findViewById(R.id.radioButtonDelivery);
+        pickRadioButton = findViewById(R.id.radioButtonPick);
 
         //       set listener
         setListener();
 
         createMyDialog();
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -160,6 +162,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 if(checkedId==R.id.radioButtonDelivery){
                     linearLayout_delivery.setVisibility(View.VISIBLE);
                     linearLayout_pickup.setVisibility(View.GONE);
+                    txt_add_address.setVisibility(View.VISIBLE);
                     delivery_type = "1";
                 }
                 else if(checkedId==R.id.radioButtonPick){
@@ -172,6 +175,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         setdetails();
+
     }
 
     private void setListener(){
@@ -245,7 +249,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         return aTime;
     }
 
-    private void setdetails() {
+    private void setdetails()  {
 
         cartLayout.setVisibility(View.GONE);
         dishDetails = new ArrayList<>();
@@ -289,7 +293,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                             } else {
                                                 imgChefImg.setBackgroundResource(R.drawable.details_profile);
                                             }
-                                            ratingBar.setRating(apiResponse.getAdd_cart().getRating());
+                                            if (apiResponse.getAdd_cart().getRating()!=null && apiResponse.getAdd_cart().getRating().length()>0)
+                                            ratingBar.setRating(Float.parseFloat(apiResponse.getAdd_cart().getRating()));
                                             dishDetails.addAll(apiResponse.getAdd_cart().getAdd_dish());
 
                                             update_total_price();
@@ -304,22 +309,58 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         });
     }
 
+    boolean quantity_status = true;
+    String name_status;
     private void setMyAdapter(List<AddCart.AddDishBean> dishDetails){
         cartAdatper = new CartAdatper(getApplicationContext(),
                 dishDetails, this);
         recyclerView.setAdapter(cartAdatper);
+
+
+        for(int i=0; i<dishDetails.size(); i++){
+            if(dishDetails.get(i).getDish_quantity().equals("0")){
+                quantity_status = false;
+                name_status = dishDetails.get(i).getDish_name();
+            }
+        }
+
+//        if(!quantity_status)
 //        cartAdatper.CartInterfaceMethod(this);
     }
 
     private void update_total_price(){
         double total_price = 0;
         for(int i=0; i<dishDetails.size(); i++){
+
             Double s_q = Double.parseDouble(dishDetails.get(i).getDish_quantity_selected());
             Double d_p = Double.parseDouble(dishDetails .get(i).getDish_price());
             Double s_price = d_p * s_q;
             total_price = total_price + s_price;
-        }
 
+            if (dishDetails.get(i).getDish_homedeliver().equalsIgnoreCase("yes")){
+                isHome = "yes";
+            }
+            if (dishDetails.get(i).getDish_pickup().equalsIgnoreCase("yes")){
+                isPickup = "yes";
+            }
+            if (isHome.equalsIgnoreCase("yes")&&isPickup.equalsIgnoreCase("yes")){
+                deliverRadioButton.setVisibility(View.VISIBLE);
+                pickRadioButton.setVisibility(View.VISIBLE);
+            } else if (isPickup.equalsIgnoreCase("yes")){
+                pickRadioButton.setVisibility(View.VISIBLE);
+                deliverRadioButton.setVisibility(View.GONE);
+                pickRadioButton.setChecked(true);
+                linearLayout_delivery.setVisibility(View.GONE);
+                linearLayout_pickup.setVisibility(View.VISIBLE);
+                delivery_type = "2";
+            } else if (isHome.equalsIgnoreCase("yes")){
+                pickRadioButton.setVisibility(View.GONE);
+                deliverRadioButton.setVisibility(View.VISIBLE);
+            } else {
+                pickRadioButton.setVisibility(View.GONE);
+                deliverRadioButton.setVisibility(View.GONE);
+            }
+        }
         txtTotalprice.setText("£" + total_price + "");
     }
 
@@ -333,7 +374,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 if(user_phone == null){
                     dialog_alert.show();
                 } else {
-                    checkDishAvailableTime();
+                    if(quantity_status)
+                        checkDishAvailableTime();
+                    else{
+                        BaseClass.showToast(getApplicationContext(), "The Dish " + name_status +
+                                " is not available at this time. Please remove this dish from your cart or you can place your order with dish after sometime.");
+                    }
                 }
                 break;
             case R.id.cart_tv_addnewitem:
@@ -342,7 +388,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.radioGroup:
                 //if(){}
-
                 break;
             case R.id.actvity_cart_txtFromTime:
                 type = "from";
@@ -356,21 +401,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 setTime(type);
                 break;
             case R.id.activity_cart_tv_payment:
-                /*
-                 * chef_id : 7
-                 * foodie_id : 2
-                 * dishorder : [{"dish_id":"2","quantity":"2","price":"100"},{"dish_id":"2","quantity":"2","price":"100"}]
-                 * delivery_type : 2
-                 * tax : 2.00
-                 * total_price : 200
-                 * address : 2
-                 * from_time : 245
-                 * to_time : 2
-                 * payment_type : cod
-                 * transaction_id : 45645645456
-                 * bookdate : 1
-                 */
-
                 if(delivery_type.equals("1")) {
                     if (txt_address.getText().toString().equals("Select an Address")) {
                         BaseClass.showToast(getApplicationContext(), "Please select an address");
@@ -408,6 +438,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         PlaceOrder placeOrder = new PlaceOrder();
         Date currentTime = Calendar.getInstance().getTime();
+        @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = format.format(currentTime);
         placeOrder.setChef_id(chef_id);
@@ -422,7 +453,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         placeOrder.setBookdate(date);
         placeOrder.setPayment_type("");
         placeOrder.setTransaction_id("COD");
-        startActivity(new Intent(CartActivity.this, Payment1Activity.class)
+        startActivity(new Intent(CartActivity.this, MainActivity1.class)
                 .putExtra("order_details", new Gson().toJson(placeOrder))
                 .putExtra("chef_name", txtChef_Name.getText().toString().trim()));
 
@@ -436,17 +467,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             String time_to = dishDetails.get(i).getDish_to();
 
             int time_status = BaseClass.compareToCurrentTime(time_to);
-            Log.d("CurrentTime", time_status + "");
+            Log.d("CurrentTime", time_status + "  "+ time_to);
             if(time_status == 1){
 //                st = true;
-                } else if (time_status == 0){
+            } else if (time_status == 0){
                 st = false;
                 Toast.makeText(CartActivity.this, "The dish " +
                         dishDetails.get(i).getDish_name().toUpperCase() +
                         " is not available after " + time_to + ". Please remove this dish from your cart to place your order now.", Toast.LENGTH_LONG).show();
-//                BaseClass.showToast(getApplicationContext(), "");
             }
-
         }
         if(st){
             linearLayoutplaceorde.setVisibility(LinearLayout.GONE);
@@ -492,7 +521,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
 //                Toast.makeText(CartActivity.this, "h", Toast.LENGTH_SHORT).show();
-                openDialog(addressBeanList);
+
+                if (addressBeanList!=null&&addressBeanList.size()>0){
+                    openDialog(addressBeanList);
+                }
+                else {BaseClass.showToast(getApplicationContext(), "No record available , Please add address ");}
             }
         });
     }
@@ -500,9 +533,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private List<AddressListData.AddressBean> addressBeanList;
 
     private void getAddress(){
+
         addressBeanList = new ArrayList<>();
         new GetData(getApplicationContext(), CartActivity.this).getResponse("{\"foodie_id\":" +
-                HomeFragment.foodie_id + "}", "addresslist", new GetData.MyCallback() {
+                HomeFragment.foodie_id + "}", GetData.ADD_LIST, new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
                 runOnUiThread(new Runnable() {
@@ -602,7 +636,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                     int i = Integer.parseInt(tinyDB.getString("cart_count"));
                     tinyDB.putString("cart_count", (i - 1) + "");
-
                     BaseClass.showToast(getApplicationContext(), "Item successfully removed from your cart.");
                     update_total_price();
                     if (dishDetails.size()==0){
@@ -655,11 +688,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         getAddress();
     }
 
-
-
     private JSONObject jsonObject2;
-    private LatLng latLng;
-    double latitude,longitude;
+    private double latitude,longitude;
+
     private void getLatLong(String place){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
@@ -702,15 +733,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     private void getAvailability(){
-
         String request = "{\"chef_id\":\""+chef_id+"\",\n" +
                 " \"foodie_lat\":\""+latitude+"\",\n" +
                 " \"foodie_lang\":\""+longitude+"\"\n" +
                 "}";
         Log.d(TAG, "MyRequest: "+request);
-
         new GetData(getApplicationContext(), CartActivity.this).getResponse(request,
                 GetData.CHECK_FOODIE_DISTANCE, new GetData.MyCallback() {
             @Override
@@ -719,26 +747,20 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         try {
-
                             JSONObject obj = new JSONObject(result);
-
                             Log.d("My App", obj.toString());
-
                             boolean status = obj.getBoolean("status");
                             if (status){
                                 String msg = obj.getString("msg");
                                 if (msg.equalsIgnoreCase("No")){
                                     createPayDialog();
-                               //      Toast.makeText(CartActivity.this, "dish not available", Toast.LENGTH_SHORT).show();
                                 } else {
                                     click_payment();
                                 }
                             }
-
                         } catch (Throwable t) {
                             Log.e("My App", "Could not parse malformed JSON: \"" + result + "\"");
                         }
-
                     }
                 });
             }
@@ -746,7 +768,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
 
     private void createPayDialog(){
         final Dialog dialog= new Dialog(this);
@@ -766,6 +787,5 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
 
     }
-
 
 }

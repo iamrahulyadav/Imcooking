@@ -1,13 +1,8 @@
 package com.imcooking.customtext;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.widget.TextView;
-
-import com.imcooking.R;
 
 /**
  * Created by lenovo on 4/13/2018.

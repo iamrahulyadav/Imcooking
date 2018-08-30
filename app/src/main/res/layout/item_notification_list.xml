@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:id="@+id/item_notification_layout"
+    android:background="@color/colorLightGrey">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:src="@drawable/logo"
+            android:id="@+id/item_notification_img"/>
+        <com.imcooking.customtext.CustomTextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:layout_toLeftOf="@+id/item_notification_time"
+            android:layout_marginRight="5dp"
+            android:singleLine="true"
+            android:layout_toRightOf="@+id/item_notification_img"
+            android:textColor="@color/colorBlack"
+            android:id="@+id/item_notification_title"
+            android:textSize="@dimen/smallsize"/>
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="03:10 PM"
+            android:singleLine="true"
+            android:layout_marginTop="3dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/item_notification_time"
+            android:textColor="@color/colorBlack"
+            android:textSize="10sp"/>
+
+        <com.imcooking.customtext.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="djkfldfhkdfjhskldf"
+            android:layout_toRightOf="@+id/item_notification_img"
+            android:layout_below="@+id/item_notification_title"
+            android:textColor="@color/colorBlack"
+            android:id="@+id/item_notification_txt_heading"
+            android:textSize="@dimen/extra_smallsize"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:background="@color/colorLightGrey"/>
+
+
+</LinearLayout>

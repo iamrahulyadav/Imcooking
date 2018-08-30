@@ -34,10 +34,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -76,6 +80,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
     TinyDB  tinyDB ;
     String title,foodie_id,address;
     private Gson gson = new Gson();
+    private static int REQUEST_CODE_AUTOCOMPLETE = 20;
 
     private int get_address_code;
 
@@ -147,7 +152,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         }
 
        autocompleteView = (AutoCompleteTextView) findViewById(R.id.autocomplete);
-        autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
+       /* autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
         autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -158,7 +163,15 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
               getLatLong(description);
 
             }
-        });
+        });*/
+
+       autocompleteView.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               findPlace(REQUEST_CODE_AUTOCOMPLETE);
+           }
+       });
+
 
         txtConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +204,23 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
 
     LatLng latLng=mCenterLatLong;
     JSONObject jsonObject2;
+
+
+    /*find place */
+    public void findPlace(int requestcode) {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete
+                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(SelectLocActivity.this);
+            startActivityForResult(intent, requestcode);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
+
 
     public LatLng getLatLong(String place){
         final ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
@@ -292,7 +322,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
            /* mMap.addMarker(new MarkerOptions().position(latLong)
                     .icon(BaseClass.bitmapDescriptorFromVectorR(getApplicationContext())));*/
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(latLong).zoom(21f).tilt(60).build();
+                    .target(latLong).zoom(18f).tilt(60).build();
          /*   CircleOptions circleOptions = new CircleOptions()
                     .center(latLong)
                     .strokeWidth(2)
@@ -308,8 +338,6 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-          /*  mLocationMarkerText.setText("Lat : " + location.getLatitude() + "," + "Long : " + location.getLongitude());
-            startIntentService(location);*/
 
         } else {
             Toast.makeText(getApplicationContext(),
@@ -442,6 +470,39 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_AUTOCOMPLETE == 20) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(SelectLocActivity.this, data);
+                Log.e("Tag", "Place: pick" + place.getLocale() + place.getLatLng());
+
+                if (place.getLatLng()!=null){
+                    autocompleteView.setText(place.getAddress());
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(place.getLatLng()).zoom(19f).tilt(70).build();
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    mMap.setMyLocationEnabled(true);
+                    mMap.animateCamera(CameraUpdateFactory
+                            .newCameraPosition(cameraPosition));
+                }
+            }
+        }
+
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "OnMapReady");
         mMap = googleMap;
@@ -464,7 +525,7 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
                     latLng = new LatLng(mCenterLatLong.latitude, mCenterLatLong.longitude);
                     StringBuffer stringBuffer  = new StringBuffer();
                     try {
-                        stringBuffer=getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
+                        stringBuffer = getAddress(new LatLng(mCenterLatLong.latitude,mCenterLatLong.longitude));
                         autocompleteView.setText(stringBuffer);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -476,5 +537,3 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
         });
     }
 }
-
-

@@ -167,14 +167,15 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 
     private ViewPager viewPager;// = getView().findViewById(R.id.chef_dish_details_view_pager);
     private TabLayout tabLayout;// = getView().findViewById(R.id.chef_dish_details_tab_layout);
+    private double latitude, longitude;
 
     private void getDetails(String id){
         layout.setVisibility(View.GONE);
-
         if (nameList!=null){
             nameList.clear();
         }
-        String detailRequest = "{\"dish_id\":" + id + ",\"foodie_id\": 1}";
+        String detailRequest = "{\"dish_id\":" + id + ",\"foodie_id\":" + "1" + ",\"latitude\":\"" + latitude +
+                "\",\"longitude\":\"" + longitude + "\"}";
         Log.d("MyRequest", detailRequest);
         new GetData(getContext(), getActivity()).getResponse(detailRequest, GetData.DISH_DETAILS,
                 new GetData.MyCallback() {
@@ -283,8 +284,8 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
                                             }
                                         };
 
-                                        if (str_like!=null){
-                                            tv_dish_likes.setText(str_like);
+                                        if (str_likes!=null){
+                                            tv_dish_likes.setText(str_likes);
                                         } else tv_dish_likes.setText("0");
 
                                         timer = new Timer(); // This will create a new Thread
@@ -426,6 +427,9 @@ public class ChefDishDetail extends Fragment implements View.OnClickListener, Di
 //            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
+
+        latitude = tinyDB.getDouble("lat",0);
+        longitude = tinyDB.getDouble("lang",0);
         getMyData();
     }
 

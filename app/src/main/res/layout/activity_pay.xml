@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context=".activity.Sub.Foodie.PayActivity">
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Pay Now"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+
+        android:id="@+id/activity_add_card_title"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:layout_marginLeft="40dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/view_4"/>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/payment_card_number"
+                    android:hint="Card number(16 digits)"
+                    android:background="@drawable/button_bg_3"
+                    android:paddingTop="@dimen/padding_10"
+                    android:inputType="number"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/colorDarkGrey"
+                    android:maxLength="19"
+                    android:textColorHighlight="@color/colorBlack"
+                    android:textSize="@dimen/smallsize"
+                    android:paddingBottom="@dimen/padding_10"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginBottom="@dimen/margin_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <RelativeLayout
+                        android:id="@+id/payment_card_credit_rel_spinner_mm"
+                        android:layout_marginRight="5dp"
+                        android:padding="5dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_bg_3"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp">
+                        <Spinner
+                            android:id="@+id/payment_card_spinner_mm"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:backgroundTint="@color/colorBlue"
+                            android:spinnerMode="dialog" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/payment_card_credit_rel_spinner_yyyy"
+                        android:padding="5dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_bg_3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <Spinner
+                            android:id="@+id/payment_card_spinner_yyyy"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:backgroundTint="@color/colorBlue"
+                            android:spinnerMode="dialog" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/payment_card_cvv"
+                    android:hint="CVV"
+                    android:textSize="@dimen/smallsize"
+                    android:background="@drawable/button_bg_3"
+                    android:paddingTop="@dimen/padding_10"
+                    android:paddingBottom="@dimen/padding_10"
+                    android:inputType="numberPassword"
+                    android:maxLength="3"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHighlight="@color/colorBlack"
+                    android:textColorHint="@color/colorDarkGrey"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="10dp"/>
+
+            </LinearLayout>
+
+
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edit_email_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/email"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/colorDarkGrey"
+                    android:imeActionId="@+id/edit_expiry_month"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    tools:ignore="InvalidImeActionId" />
+                <!-- Expiry Text for credit card number-->
+
+                <EditText
+                    android:id="@+id/edit_card_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/edit_email_address"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorBlack"
+                    android:hint="@string/card_number"
+                    android:textColorHint="@color/colorDarkGrey"
+                    android:imeActionId="@+id/edit_expiry_month"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    tools:ignore="InvalidImeActionId"
+                    android:layout_alignParentStart="true" />
+
+                <!-- Divider-->
+                <View
+                    android:id="@+id/horizontal_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_centerHorizontal="true" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_expiry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/edit_card_number"
+                    android:layout_marginTop="8dp"
+                    android:layout_toLeftOf="@id/horizontal_divider">
+
+                    <!-- Expiry Text -->
+                    <TextView
+                        android:id="@+id/textview_expiry_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:textColor="@color/colorDarkGrey"
+                        android:text="@string/expiry" />
+
+                    <!-- EditText for expiry month -->
+                    <EditText
+                        android:id="@+id/edit_expiry_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textview_expiry_text"
+                        android:hint="@string/expiry_month"
+                        android:imeActionId="@+id/edit_expiry_year"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxEms="4"
+                        android:maxLength="2"
+                        android:textColorHint="@color/colorDarkGrey"
+                        android:maxLines="1"
+                        android:textColor="@color/colorBlack"
+                        android:padding="8dp"
+                        tools:ignore="InvalidImeActionId" />
+
+                    <!-- EditText for expiry year -->
+                    <EditText
+                        android:id="@+id/edit_expiry_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textview_expiry_text"
+                        android:layout_toRightOf="@id/edit_expiry_month"
+                        android:hint="@string/yy"
+                        android:textColorHint="@color/colorDarkGrey"
+                        android:imeActionId="@+id/edit_cvv"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxEms="4"
+                        android:textColor="@color/colorBlack"
+                        android:maxLength="2"
+                        android:maxLines="1"
+                        android:padding="8dp"
+                        tools:ignore="InvalidImeActionId" />
+                </RelativeLayout>
+
+                <!-- layout for cvv -->
+                <RelativeLayout
+                    android:id="@+id/layout_cvv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/edit_card_number"
+                    android:layout_marginTop="8dp"
+                    android:layout_toRightOf="@id/horizontal_divider">
+
+                    <!-- CVV text -->
+                    <TextView
+                        android:id="@+id/textview_cvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/cvv"
+                        android:textColor="@color/colorDarkGrey"
+                        android:paddingLeft="8dp"
+                        android:text="@string/cvv" />
+
+                    <!-- EditText for cvv -->
+                    <EditText
+                        android:id="@+id/edit_cvv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textview_cvv"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/colorDarkGrey"
+                        android:maxLines="1"
+                        android:padding="8dp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <!--Pay Button -->
+
+            <Button
+                android:id="@+id/pay_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:text="@string/pay"
+                android:layout_margin="10dp"
+                android:textAllCaps="true"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+            <com.imcooking.customtext.CustomTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saved Card"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:textColor="@color/colorBlack"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

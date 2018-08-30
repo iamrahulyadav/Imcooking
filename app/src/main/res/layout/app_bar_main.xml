@@ -17,16 +17,6 @@
         android:layout_alignParentTop="true"
         android:layout_above="@+id/appbar_bottom">
 
-      <!--  <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppBarOverlay"
-            app:elevation="0dp">
-
-            <include layout="@layout/toolbar" />
-
-        </android.support.design.widget.AppBarLayout>
--->
         <include layout="@layout/content_main" />
 
 
@@ -131,11 +121,24 @@
                 android:gravity="center"
                 android:onClick="bottom_click">
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/bottom_notification_image"
-                    android:src="@drawable/ic_ring"/>
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:id="@+id/main_notification_dot"
+                        android:visibility="gone"
+                        android:background="@drawable/shape_background_red_25"
+                        android:layout_gravity="end"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bottom_notification_image"
+                        android:src="@drawable/ic_ring"/>
+
+                </FrameLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

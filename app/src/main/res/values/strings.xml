@@ -75,4 +75,14 @@
     <string name="dialog_add_dish_text_3">To Request a Dish, you must need to Update your Profile first.</string>
     <string name="dialog_add_dish_text_4">Please update your Name and phone number to proceed.</string>
 
+    <!--activity pay-->
+    <string name="check">Check</string>
+    <string name="cvv">CVV</string>
+    <string name="expiry">Expiry</string>
+    <string name="card_number">Card Number</string>
+    <string name="pay">Pay</string>
+    <string name="yy">YY</string>
+    <string name="expiry_month">MM</string>
+    <string name="email">Email</string>
+
 </resources>

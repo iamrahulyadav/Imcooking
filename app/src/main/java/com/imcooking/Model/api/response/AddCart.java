@@ -17,7 +17,7 @@ public class AddCart {
     private int chef_id;
     private String chef_name;
     private String chef_image;
-    private float rating;
+    private String rating;
     private int follow;
     private String chef_address;
     private List<AddDishBean> add_dish;
@@ -64,11 +64,11 @@ public class AddCart {
         this.chef_image = chef_image;
     }
 
-    public float getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -106,6 +106,24 @@ public class AddCart {
         private String dish_quantity_selected;
         private String dish_from;
         private String dish_to;
+        private String dish_homedeliver;
+        private String dish_pickup;
+
+        public String getDish_homedeliver() {
+            return dish_homedeliver;
+        }
+
+        public void setDish_homedeliver(String dish_homedeliver) {
+            this.dish_homedeliver = dish_homedeliver;
+        }
+
+        public String getDish_pickup() {
+            return dish_pickup;
+        }
+
+        public void setDish_pickup(String dish_pickup) {
+            this.dish_pickup = dish_pickup;
+        }
 
         public String getDish_from() {
             return dish_from;

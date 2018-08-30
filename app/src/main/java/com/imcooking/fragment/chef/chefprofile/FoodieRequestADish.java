@@ -1,6 +1,7 @@
 package com.imcooking.fragment.chef.chefprofile;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.imcooking.Model.ApiRequest.ModelFoodieRequestADish;
 import com.imcooking.Model.api.response.ApiResponse;
+import com.imcooking.Model.api.response.ChefProfileData1;
 import com.imcooking.Model.api.response.CuisineData;
 import com.imcooking.R;
 import com.imcooking.activity.Sub.Chef.ChefEditDish;
@@ -42,9 +44,12 @@ import com.mukesh.tinydb.TinyDB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -115,7 +120,8 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
 
         createMyDialog();
         createMyDatePicker();
-        setMyCuisines(ChefHome.cuisineData);
+//        setMyCuisines(ChefHome.cuisineData);
+        setMyCuisines(ChefHome.chefProfileData1.getChef_data().getCuisine_name());
     }
 
     private void createMyDatePicker(){
@@ -128,7 +134,7 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 //                updateLabel();
-                String myFormat = "dd/MM/yy"; //In which you need put here
+                String myFormat = "yyyy/MM/dd"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 tv_date.setText(sdf.format(myCalendar.getTime()));
             }
@@ -136,11 +142,11 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
     }
 
 
-    private void setMyCuisines(CuisineData cuisines){
+    private void setMyCuisines(List<ChefProfileData1.ChefDataBean.CuisineNameBean> cus){
 
         ArrayList<String> arrayList = new ArrayList<>();
-        for(int i=0; i<cuisines.getCuisine_data().size(); i++){
-            arrayList.add(cuisines.getCuisine_data().get(i).getCuisine_name());
+        for(int i=0; i<cus.size(); i++){
+            arrayList.add(cus.get(i).getCuisine_name());
         }
 
         if(getContext() != null) {
@@ -184,59 +190,64 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
             request();
 
         } else if (id == R.id.foodie_request_a_dish_date_icon) {
-
-            new DatePickerDialog(getContext(), date, myCalendar
+            DatePickerDialog datePickerDialog;
+            datePickerDialog=new DatePickerDialog(getContext(), date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-//            dob_pick();
+                    myCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.show();
 
         } else if (id == R.id.foodie_request_a_dish_time_icon) {
-
-
-            Calendar mcurrentTime = Calendar.getInstance();
+            final Calendar mcurrentTime = Calendar.getInstance();
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-            int minute = mcurrentTime.get(Calendar.MINUTE);
+            final int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
             mTimePicker = new TimePickerDialog(getContext(),
                     new TimePickerDialog.OnTimeSetListener() {
+                @SuppressLint("DefaultLocale")
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//                    eReminderTime.setText( selectedHour + ":" + selectedMinute);
-                    tv_time.setText(selectedHour + " : " + selectedMinute);
+
+                    Calendar datetime = Calendar.getInstance();
+                    Calendar c = Calendar.getInstance();
+                    datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
+                    datetime.set(Calendar.MINUTE, selectedMinute);
+
+                    String selected = tv_date.getText().toString().trim();
+                    if (!selected.isEmpty()){
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy/MM/dd");
+                        Date myDate = null;
+                        try {
+                            myDate = timeFormat.parse(selected);
+                            if (myDate.before(datetime.getTime())){
+                                if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
+                                    //it's after current
+                                    int hour = selectedHour % 12;
+                                    tv_time.setText(String.format("%02d:%02d %s", hour == 0 ? 12 : hour,
+                                            selectedMinute, selectedHour < 12 ? "am" : "pm"));
+                                } else {
+                                    //it's before current'
+                                    Toast.makeText(getContext(), "Invalid Time", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                int hour = selectedHour % 12;
+                                tv_time.setText(String.format("%02d:%02d %s", hour == 0 ? 12 : hour,
+                                        selectedMinute, selectedHour < 12 ? "am" : "pm"));
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
                 }
-            }, hour, minute, true);//Yes 24 hour time
+            }, hour, minute, false);
             mTimePicker.setTitle("Select Time");
             mTimePicker.show();
         } else {
         }
     }
-
-    Calendar mCalendar = Calendar.getInstance();
-    long timeInMilliseconds;
-    private int mYear, mMonth, mDay;
-    private String dob;
-
-    private void dob_pick(){
-        // Get Current Date
-/*        final Calendar c = Calendar.getInstance();
-        mYear = Calendar.getInstance().get(Calendar.YEAR)-18;
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-        timeInMilliseconds = Utility.getTimeDate(mYear + "-" + mMonth + "-" + mDay);
-
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        dob = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                        tv_date.setText(Utility.convertSimpleDate(dob));
-                    }
-                }, mYear, mMonth, mDay);
-
-        datePickerDialog.getDatePicker().setMaxDate(timeInMilliseconds);
-   */ }
 
     private void request(){
 

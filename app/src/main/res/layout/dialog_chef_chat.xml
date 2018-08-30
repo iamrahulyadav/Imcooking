@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/shape_background_white_10"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:layout_marginTop="34dp"
+    android:layout_marginBottom="34dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_chat_recycler"
+        android:layout_above="@+id/dialog_chef_chat_view"
+        android:layout_marginBottom="5dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:id="@+id/dialog_chef_chat_view"
+        android:layout_above="@+id/dialog_chat_reply"
+        android:background="@color/view_6"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp" >
+        android:layout_height="50dp"
+        android:id="@+id/dialog_chat_reply"
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -19,6 +37,7 @@
         <com.imcooking.customtext.CustomEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/dialog_chef_chat_edittext"
             android:layout_toLeftOf="@+id/dialog_chef_chat_send_icon"
             android:layout_marginLeft="10dp"/>
 

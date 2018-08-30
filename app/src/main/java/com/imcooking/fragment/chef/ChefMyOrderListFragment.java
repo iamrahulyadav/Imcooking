@@ -47,17 +47,18 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     private LinearLayout no_record_Layout;
     private NestedScrollView nestedScrollView ;
     private RelativeLayout currentLayout;
+    private View view;
 
-   public ChefMyOrderListFragment() {
+    public ChefMyOrderListFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-         View view= inflater.inflate(R.layout.fragment_chef_order_list, container, false);
-        init(view);
+         view = inflater.inflate(R.layout.fragment_chef_order_list, container, false);
         return view;
     }
 
@@ -107,12 +108,13 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
     public void onResume() {
         super.onResume();
         getorderList();
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        init(view);
+
     }
 
     private List<ChefMyorderList.MyOrderListBean> currentOrderListBeans;
@@ -158,6 +160,7 @@ public class ChefMyOrderListFragment extends Fragment implements AdatperChefMyOr
                                       } catch (ParseException e) {
                                           e.printStackTrace();
                                       }
+
                                       if (date2.compareTo(date1) >0||date2.compareTo(date1) ==0 &&(!status.equals("2") && !status.equals("8")&&
                                               !status.equals("9"))) {
                                           currentOrderListBeans.add(orderListBean);

@@ -1,5 +1,6 @@
 package com.imcooking.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -37,6 +38,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,7 +64,7 @@ public class BaseClass {
         }
         return false;
     }
-
+    public static DecimalFormat df2 = new DecimalFormat(".#");
     public static BitmapDescriptor bitmapDescriptorFromVectorR(Context context) {
         Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_placeholder);
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
@@ -71,6 +74,23 @@ public class BaseClass {
         //  vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+
+    @SuppressLint("SimpleDateFormat")
+    public static String convertSimpleDate(String dateString){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+        // use SimpleDateFormat to define how to PARSE the INPUT
+        Date date = null;
+        try {
+            date = sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        sdf = new SimpleDateFormat("MMMM d, yyyy ");
+        return sdf.format(date);
+    }
+
+
 
     private static Toast t;
     public static void showToast(Context context, String msg){
@@ -286,7 +306,7 @@ public class BaseClass {
         String dish_hour = time.substring(0, 2);
         String dish_minute = time.substring(3, 5);
 
-        if(current_am_pm.equals("AM") && dish_am_pm.equals("AM")){
+        if(current_am_pm.contains("AM") && dish_am_pm.contains("AM")){
             if(Integer.parseInt(current_hour) == Integer.parseInt(dish_hour)){
                 if(Integer.parseInt(current_minute) <= Integer.parseInt(dish_minute)){
                     return 1;
@@ -296,14 +316,14 @@ public class BaseClass {
             } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
                 return 1;
             } else {
-                if(current_hour.equals("12")){
+                if(current_hour.contains("12")){
                     return 1;
                 } else {
                     return 0;
                 }
                 // return 0;
             }
-        } else if(current_am_pm.equals("PM") && dish_am_pm.equals("PM")){
+        } else if(current_am_pm.contains("PM") && dish_am_pm.contains("PM")){
             if(Integer.parseInt(current_hour) == Integer.parseInt(dish_hour)){
                 if(Integer.parseInt(current_minute) <= Integer.parseInt(dish_minute)){
                     return 1;
@@ -313,16 +333,16 @@ public class BaseClass {
             } else if(Integer.parseInt(current_hour) < Integer.parseInt(dish_hour)){
                 return 1;
             } else {
-                if(current_hour.equals("12")){
+                if(current_hour.contains("12")){
                     return 1;
                 } else {
                     return 0;
                 }
 //                return 0;
             }
-        } else if (current_am_pm.equals("AM") && dish_am_pm.equals("PM")){
+        } else if (current_am_pm.contains("AM") && dish_am_pm.contains("PM")){
             return 1;
-        } else if(current_am_pm.equals("PM") && dish_am_pm.equals("AM")){
+        } else if(current_am_pm.contains("PM") && dish_am_pm.contains("AM")){
             if(dish_hour.equals("00")){
                 return 1;
             } else {

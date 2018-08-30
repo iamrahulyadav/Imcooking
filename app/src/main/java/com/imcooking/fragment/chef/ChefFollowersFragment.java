@@ -91,18 +91,27 @@ public class ChefFollowersFragment extends Fragment {
                         @Override
                         public void onSuccess(String result) {
 
-                            ChefFollowers chefFollowers = new ChefFollowers();
-                            chefFollowers = new Gson().fromJson(result, ChefFollowers.class);
-                            if(chefFollowers.isStatus()){
-                                if(!chefFollowers.getFoodie_details_list().isEmpty()){
-                                    setMyAdapter(chefFollowers.getFoodie_details_list());
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                if (jsonObject.getBoolean("status")){
+                                    ChefFollowers chefFollowers = new ChefFollowers();
+                                    chefFollowers = new Gson().fromJson(result, ChefFollowers.class);
+                                    if(chefFollowers.isStatus()){
+                                        if(!chefFollowers.getFoodie_details_list().isEmpty()){
+                                            setMyAdapter(chefFollowers.getFoodie_details_list());
+                                        }
+                                        else {
+                                            Toast.makeText(getContext(), "Followers list is empty", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    else {
+                                        BaseClass.showToast(getContext(),"No Followers Found!");
+                                    }
+                                }else {
+                                    BaseClass.showToast(getContext(),"No Followers Found!");
                                 }
-                                else {
-                                    Toast.makeText(getContext(), "Followers list is empty", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else {
-                                BaseClass.showToast(getContext(),"No Followers Found!");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
                     });

@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:focusableInTouchMode="true"
     tools:context="com.imcooking.activity.Sub.Foodie.EditProfile">
 
+    <requestFocus/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -150,9 +152,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/foodie_edit_profile_email_edit"
                         android:hint="@string/txtEmail"
-                        android:singleLine="true"
                         android:textSize="@dimen/extra_smallsize"
-                        android:imeOptions="actionNext"
+                        android:enabled="false"
                         android:editable="false"
                         android:background="@android:color/transparent"
                         android:textColor="@color/colorBlack"
@@ -180,8 +181,9 @@
                         android:hint="PHONE NUMBER"
                         android:singleLine="true"
                         android:textSize="@dimen/extra_smallsize"
-                        android:imeOptions="actionDone"
                         android:inputType="phone"
+                        android:imeOptions="actionDone"
+                        android:maxLines="1"
                         android:background="@android:color/transparent"
                         android:textColor="@color/colorBlack"
                         android:paddingLeft="10dp"

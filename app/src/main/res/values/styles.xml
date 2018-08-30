@@ -57,6 +57,11 @@
         <item name="android:colorControlNormal"
             tools:ignore="NewApi">#747474</item>
     </style>
+    <style name="AppThemeRatingBar" parent="Theme.AppCompat">
+        <item name="colorAccent">#eacb00</item>
+        <item name="android:colorControlNormal">#9f9f9d</item>
+    </style>
+
     <style name="customRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/customratingstars</item>
         <item name="android:minHeight">15dip</item>

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.Model.api.response.ChefDishRequestData;
+import com.imcooking.Model.api.response.ConversationData;
 import com.imcooking.R;
+import com.imcooking.adapters.AdapterChat;
 import com.imcooking.adapters.AdatperChefMyRequestList;
 import com.imcooking.adapters.DishReqChefChatAdatper;
 import com.imcooking.utils.BaseClass;
@@ -34,6 +37,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -78,12 +82,12 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             public boolean canScrollVertically() {
                 return false;
             }
-
         };
         if (strtext!=null){
             layoutToolbar.setVisibility(View.VISIBLE);
         }
         requestRecyclerView.setLayoutManager(manager);
+
         getorderList();
 
     }
@@ -114,6 +118,7 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                                     requestRecyclerView.setVisibility(View.VISIBLE);
                                     no_recordLayout.setVisibility(View.GONE);
                                     chefDishDetailsBeans.addAll(chefMyorderList.getChef_dish_details());
+                                    Collections.reverse(chefDishDetailsBeans);
                                     setDishAdapter(chefDishDetailsBeans);
                                 }
                                 else {
@@ -131,14 +136,14 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                     });
 
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private AdatperChefMyRequestList chefMyRequestsAdatper;
     private void setDishAdapter(List<ChefDishRequestData.ChefDishDetailsBean> list) {
-        AdatperChefMyRequestList chefMyRequestsAdatper = new AdatperChefMyRequestList(getContext(),list, this);
+        chefMyRequestsAdatper = new AdatperChefMyRequestList(getContext(),list, this);
         requestRecyclerView.setAdapter(chefMyRequestsAdatper);
 
     }
@@ -146,176 +151,138 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
     private Dialog dialog;
     private DishReqChefChatAdatper dishReqChatAdatper;
 
-    private void showDialog(final int position, final String receiver_id, final String request_id){
-        TextView txtMsg, txtDesc, txt_accept, txt_decline, txt_reply;
-        final EditText edtPrice;
-        final EditText edtReply;
-        RecyclerView chatrecyclerView;
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_view_response);
-        dialog.setCancelable(true);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.show();
-
-        txtDesc = dialog.findViewById(R.id.dialog_view_response_desc);
-        txtMsg = dialog.findViewById(R.id.dialog_view_response_msg);
-        txt_accept = dialog.findViewById(R.id.view_response_accept);
-        txt_decline = dialog.findViewById(R.id.view_response_decline);
-        txt_reply = dialog.findViewById(R.id.view_response_reply);
-        edtReply = dialog.findViewById(R.id.dialog_view_response_edtReply);
-        chatrecyclerView = dialog.findViewById(R.id.dialog_view_response_recycler);
-        edtPrice = dialog.findViewById(R.id.dialog_view_response_offer_edt);
-
-
-        dialog.findViewById(R.id.view_response_cross).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-//        txtDesc.setText(chefDishDetailsBeans.get(position).getChef_description());
-
-
-
-        CustomLayoutManager manager = new CustomLayoutManager(getContext()){
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-
-        chatrecyclerView.setLayoutManager(manager);
-
-        txtDesc.setVisibility(View.VISIBLE);
-        txtMsg.setVisibility(View.VISIBLE);
-        dialog.findViewById(R.id.layout_accept_in_process).setVisibility(View.GONE);
-        dialog.findViewById(R.id.layout_accept_delivered).setVisibility(View.GONE);
-
-        final List<ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean> conversationDetailsBeans = new ArrayList<>();
-        conversationDetailsBeans.addAll(chefDishDetailsBeans.get(position).getConversation_details());
-
-        final String chef_id = sender_id ;
-        final String foodie_id = chefDishDetailsBeans.get(position).getFoodie_id()+"";
-
-        edtPrice.setEnabled(true);
-
-        dishReqChatAdatper = new DishReqChefChatAdatper(getContext(), chef_id, foodie_id,conversationDetailsBeans);
-        chatrecyclerView.setAdapter(dishReqChatAdatper);
-        if (conversationDetailsBeans!=null && conversationDetailsBeans.size()>0){
-            offer_price = conversationDetailsBeans.get(0).getConversation_offer_price();
-            edtPrice.setText(offer_price);
-        }
-
-        txt_accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    offer_price = edtPrice.getText().toString().trim();
-                    msg = edtReply.getText().toString().trim();
-
-                    ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean detailsBean
-                            = new ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean();
-                    detailsBean.setConversation_message(msg);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
-                    String date = spf.format(currentTime);
-                    detailsBean.setConversation_sender_id(Integer.parseInt(chef_id));
-                    detailsBean.setConversation_reciver_id(Integer.parseInt(foodie_id));
-                    detailsBean.setConversation_date(date);
-                    detailsBean.setConversation_staus("1");
-                    detailsBean.setConversation_offer_price("");
-                    conversationDetailsBeans.add(detailsBean);
-                    status = "yes";
-                    sendreply(receiver_id,request_id);
-
-            }
-        });
-
-        txt_decline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    offer_price = edtPrice.getText().toString().trim();
-                    msg = edtReply.getText().toString().trim();
-
-                    ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean detailsBean
-                            = new ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean();
-                    detailsBean.setConversation_message(msg);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
-                    String date = spf.format(currentTime);
-                    detailsBean.setConversation_sender_id(Integer.parseInt(chef_id));
-                    detailsBean.setConversation_reciver_id(Integer.parseInt(foodie_id));
-                    detailsBean.setConversation_date(date);
-                    detailsBean.setConversation_staus("1");
-                    detailsBean.setConversation_offer_price("");
-                    conversationDetailsBeans.add(detailsBean);
-                    edtReply.setText("");
-                    status = "no";
-                    sendreply(receiver_id,request_id);
-
-            }
-        });
-
-        edtReply.setVisibility(View.VISIBLE);
-
-        txt_reply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!edtReply.getText().toString().isEmpty()){
-                    offer_price = edtPrice.getText().toString().trim();
-                    msg = edtReply.getText().toString().trim();
-
-                    ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean detailsBean
-                            = new ChefDishRequestData.ChefDishDetailsBean.ConversationDetailsBean();
-                    detailsBean.setConversation_message(msg);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    SimpleDateFormat spf=new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa");
-                    String date = spf.format(currentTime);
-                    detailsBean.setConversation_sender_id(Integer.parseInt(chef_id));
-                    detailsBean.setConversation_reciver_id(Integer.parseInt(foodie_id));
-                    detailsBean.setConversation_date(date);
-                    detailsBean.setConversation_staus("1");
-                    detailsBean.setConversation_offer_price("");
-                    conversationDetailsBeans.add(detailsBean);
-                 //   edtReply.setText("");
-                    status = "reply";
-                    sendreply(receiver_id,request_id);
-                } else {
-                    BaseClass.showToast(getContext(), "Please enter message");
-                }
-            }
-        });
-
-    }
-
     @Override
     public void setresponse(int pos, String TAG) {
-        if (TAG.equals("reply")){
-            receiver_id =chefDishDetailsBeans.get(pos).getFoodie_id()+"";
-            request_id = chefDishDetailsBeans.get(pos).getRequest_id();
-            showDialog(pos,receiver_id,request_id);
-        } else if (TAG.equals("offer")){
-            createOfferDialog();
+        if (TAG.equals("offer")){
+            createOfferDialog(pos);
         } else if(TAG.equals("chat")){
-            createChatDialog();
+            createChatDialog(pos);
+        } else if (TAG.equals("decline")){
+            decline_request(chefDishDetailsBeans.get(pos).getRequest_id() + "", pos);
+//            BaseClass.showToast(getContext(), "Declined");
         } else {}
     }
 
-    private void createOfferDialog(){
-        Dialog dialog_offer = new Dialog(getContext());
+    private void decline_request(String req_id, final int pos){
+
+        String s = "{\"request_id\":\"" + req_id + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            new GetData(getContext(), getActivity()).sendMyData(
+                    jsonObject, GetData.CHEF_DECLINE, getActivity(), new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            ApiResponse apiResponse = new ApiResponse();
+                            apiResponse = new Gson().fromJson(result, ApiResponse.class);
+
+                            if(apiResponse.isStatus()){
+                                if(apiResponse.getMsg().equals("decline successfully")){
+                                    BaseClass.showToast(getContext(), "Request has been declined successfully and removed from your list.");
+                                    chefDishDetailsBeans.remove(pos);
+                                    chefMyRequestsAdatper.notifyDataSetChanged();
+
+                                    if(chefDishDetailsBeans.size() == 0){
+                                        requestRecyclerView.setVisibility(View.GONE);
+                                        no_recordLayout.setVisibility(View.VISIBLE);
+                                    } else {
+                                        requestRecyclerView.setVisibility(View.VISIBLE);
+                                        no_recordLayout.setVisibility(View.GONE);
+                                    }
+
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong");
+                                }
+                            } else{
+                                if(apiResponse.getMsg().equals("decline record found")){
+                                    BaseClass.showToast(getContext(), "Request Not Found.");
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong");
+                                }
+                            }
+                        }
+                    }
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private EditText dialog_offer_price_edt;
+    private Dialog dialog_offer;
+
+    private void createOfferDialog(final int pos){
+        dialog_offer = new Dialog(getContext());
         dialog_offer.setContentView(R.layout.dialog_offer_price);
         dialog_offer.setCancelable(true);
         dialog_offer.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog_offer.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_offer.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        TextView tv_send_offer = dialog_offer.findViewById(R.id.dialog_offer_price_btn);
+        dialog_offer_price_edt = dialog_offer.findViewById(R.id.dialog_offer_price_edt);
+
+        tv_send_offer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                send_offer(pos);
+
+            }
+        });
         dialog_offer.show();
 
     }
 
-    private void createChatDialog(){
+    private void send_offer(final int pos){
+        if (!dialog_offer_price_edt.getText().toString().isEmpty()) {
+            final String edt = dialog_offer_price_edt.getText().toString().trim();
+            if(!edt.contains("£")){
+                String s = "{\"request_id\":\"" + chefDishDetailsBeans.get(pos).getRequest_id() + "\"," +
+                        "\"offer_price\":\"" + edt + "\",\"key\":\"1\"}";
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+
+                    new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.CHEF_OFFER_PRICE,
+                            getActivity(),
+                            new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            ApiResponse apiResponse = new ApiResponse();
+                            apiResponse = new Gson().fromJson(result, ApiResponse.class);
+
+                            if(apiResponse.isStatus()){
+                                if(apiResponse.getMsg().equals("offer price update successfully")){
+                                    BaseClass.showToast(getContext(), "Offer has been sent successfully.");
+                                    dialog_offer.dismiss();
+                                    chefDishDetailsBeans.get(pos).setRequest_price(edt);
+                                    chefDishDetailsBeans.get(pos).setChef_response("1");
+                                    chefMyRequestsAdatper.notifyDataSetChanged();
+
+                                } else{
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                }
+                            } else{
+                                BaseClass.showToast(getContext(), "Something Went Wrong.");
+                            }
+                        }
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else{
+                BaseClass.showToast(getContext(), "Prize should be a number.");
+            }
+        } else{
+            BaseClass.showToast(getContext(), "Please Enter a Offer Price");
+        }
+    }
+
+    private RecyclerView dialog_chat_rv;
+    private EditText dialog_chat_edt;
+
+    private void createChatDialog(final int pos){
         final Dialog dialog_chat = new Dialog(getContext());
         dialog_chat.setContentView(R.layout.dialog_chef_chat);
         dialog_chat.setCancelable(true);
@@ -323,16 +290,136 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
         dialog_chat.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog_chat.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
+        dialog_chat_edt = dialog_chat.findViewById(R.id.dialog_chef_chat_edittext);
         ImageView iv_send = dialog_chat.findViewById(R.id.dialog_chef_chat_send_icon);
         iv_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BaseClass.showToast(getContext(), "Reply Sent");
-                dialog_chat.dismiss();
+                if(!dialog_chat_edt.getText().toString().isEmpty()) {
+
+                    sendMessage(pos);
+
+                } else {
+                    BaseClass.showToast(getContext(), "You can not send an empty message.");
+                }
             }
         });
 
+        dialog_chat_rv = dialog_chat.findViewById(R.id.dialog_chat_recycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        dialog_chat_rv.setLayoutManager(layoutManager);
+
+        getChat(pos);
         dialog_chat.show();
+    }
+
+    private void sendMessage(final int pos){
+
+        String s = "{\n" +
+                "  \"sender_id\":\"" + sender_id + "\",\n" +
+                "  \"receiver_id\":" + chefDishDetailsBeans.get(pos).getFoodie_id() + ",\n" +
+                "  \"request_id\":" + chefDishDetailsBeans.get(pos).getRequest_id() + ",\n" +
+                "  \"message\":\"" + dialog_chat_edt.getText().toString().trim() + "\",\n" +
+                "  \"offer_price\":\"" + chefDishDetailsBeans.get(pos).getRequest_price() + "\",\n" +
+                "\"status\":\"" + "reply" + "\"\n" +
+                "}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.CONVERSATION_CHAT,
+                    getActivity(), new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+
+                            try {
+                                JSONObject jsonObject1 = new JSONObject(result);
+                                if(jsonObject1.getBoolean("status")){
+                                    ConversationData.ConversationMsgBean conversationMsgBean = new ConversationData.ConversationMsgBean();
+                                    conversationMsgBean.setConversation_date("");
+                                    conversationMsgBean.setConversation_message(dialog_chat_edt.getText()
+                                            .toString().trim());
+                                    conversationMsgBean.setConversation_reciver_id(chefDishDetailsBeans.get(pos)
+                                            .getFoodie_id() + "");
+                                    conversationMsgBean.setConversation_sender_id(sender_id);
+                                    conversationMsgBean.setConversation_staus("reply");
+                                    conversationMsgBean.setConversation_request_id(chefDishDetailsBeans
+                                            .get(pos).getRequest_id() + ""); // 6
+
+                                    if(conversationData.getConversation_msg()!=null) {
+                                        conversationData.getConversation_msg().add(conversationMsgBean);
+                                    } else {
+                                        List<ConversationData.ConversationMsgBean> conversationMsgBeans = new ArrayList<>();
+                                        conversationMsgBeans.add(conversationMsgBean);
+                                        conversationData.setConversation_msg(conversationMsgBeans);
+                                    }
+
+                                    if(adapterChat!=null) {
+                                        adapterChat.notifyDataSetChanged();
+                                    } else{
+                                        showChat(pos);
+                                    }
+                                } else {
+                                    BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                }
+                                dialog_chat_edt.setText("");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private ConversationData conversationData;
+
+    private void getChat(final int pos){
+        String s = "{\"request_id\":\"" + chefDishDetailsBeans.get(pos).getRequest_id() + "\"}";
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.CHAT_DISPLAY, getActivity(),
+                    new GetData.MyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            try {
+                                JSONObject job = new JSONObject(result);
+                                conversationData = new ConversationData();
+                                if(job.getBoolean("status")){
+                                    conversationData = new Gson().fromJson(result, ConversationData.class);
+
+                                    if(conversationData.isStatus()){
+                                        showChat(pos);
+                                    } else{
+                                        BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                    }
+
+                                } else{
+                                    if(job.getString("conversation_msg").equals("not found records")) {
+                                        BaseClass.showToast(getContext(), "No chat yet.");
+                                    } else {
+                                        BaseClass.showToast(getContext(), "Something Went Wrong.");
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private AdapterChat adapterChat;
+
+    private void showChat(int pos){
+
+        adapterChat = new AdapterChat(conversationData,
+                sender_id,
+                chefDishDetailsBeans.get(pos).getFoodie_id() + "");
+        dialog_chat_rv.setAdapter(adapterChat);
     }
 
     private void sendreply(String receiver_id,String request_id){
@@ -363,7 +450,4 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
             e.printStackTrace();
         }
     }
-
-
 }
-

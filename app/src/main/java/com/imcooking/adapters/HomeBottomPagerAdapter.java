@@ -83,9 +83,19 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
         tv_dish_likes.setText(chefDishBeans.get(position).getDishlikeno() + "");
         tv_chef_rating.setText("("+chefDishBeans.get(position).getRatingno() + ")");
 //        tv_dish_address.setText(chefDishBeans.get(position).getAddress());
-
-        tv_dish_distance.setText(chefDishBeans.get(position).getDish_deliverymiles() + " miles");
-
+        if (chefDishBeans.get(position).getDistance()!=null&&chefDishBeans.get(position).getDistance().length()>0){
+            if (chefDishBeans.get(position).getDistance().equals("0")){
+                tv_dish_distance.setText("0.00"+" miles");
+            }else {
+                double dis = Double.parseDouble(BaseClass.df2.format(Double.parseDouble(chefDishBeans.get(position).getDistance())));
+                if (dis>0){
+                    String distnace = BaseClass.df2.format(Double.parseDouble(chefDishBeans.get(position).getDistance()))+"";
+                    tv_dish_distance.setText(dis + " miles");
+                } else {
+                    tv_dish_distance.setText("0.00"+" miles");
+                }
+            }
+        }
         if(arr_like.get(position).equals("1")){
             imgLike.setImageDrawable(context.getResources().getDrawable((R.drawable.ic_heart_red)));
         } else{
@@ -147,7 +157,7 @@ public class HomeBottomPagerAdapter extends PagerAdapter{
 
             }
         });
-        if (chefDishBeans.get(position).getRating()+""!=null){
+        if (chefDishBeans.get(position).getRating()!=null&&chefDishBeans.get(position).getRating().length()>0){
             ratingBar.setRating(Float.parseFloat(chefDishBeans.get(position).getRating()+""));
         }
         container.addView(view);

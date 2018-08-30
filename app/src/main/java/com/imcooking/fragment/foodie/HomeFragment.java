@@ -3,7 +3,10 @@ package com.imcooking.fragment.foodie;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
@@ -25,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
@@ -141,6 +145,7 @@ public class HomeFragment extends Fragment implements
         foodie_id = userDataBean.getUser_id() + "";
         latitudeq = tinyDB.getDouble("lat",0);
         longitudeq = tinyDB.getDouble("lang",0);
+        selectedmiles = userDataBean.getUser_milesdistance();
 
         tv_count_latest = getView().findViewById(R.id.fragment_home_dish_count_latest);
         tv_count_choice = getView().findViewById(R.id.fragment_home_dish_count_choice);
@@ -158,30 +163,36 @@ public class HomeFragment extends Fragment implements
         tv_cusine = getView().findViewById(R.id.home_cuisine);
         bottomViewPager = getView().findViewById(R.id.fragment_home_bottom);
         imgFilter = getView().findViewById(R.id.fragment_home_img_filter);
-        tv_cusine.setOnClickListener(this);
+
         viewPager = getView().findViewById(R.id.home_viewPager);
         txtSerach = getView().findViewById(R.id.fragment_home_search_img);
         txtCityName = getView().findViewById(R.id.fragment_home_txtcity);
         imgCart = getView().findViewById(R.id.fragment_home_img_cart);
-        imgCart.setOnClickListener(this);
+        cuisinRecycler = getView().findViewById(R.id.fragment_home_cuisine_recycler);
 
+        imgCart.setOnClickListener(this);
+        tv_cusine.setOnClickListener(this);
         imgFilter.setOnClickListener(this);
         txtSerach.setOnClickListener(this);
         txtCityName.setOnClickListener(this);
         search_layout.setOnClickListener(this);
-        cuisinRecycler = getView().findViewById(R.id.fragment_home_cuisine_recycler);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         cuisinRecycler.setLayoutManager(horizontalLayoutManagaer);
         if (spinnerData != null) {
             spinnerData.clear();
         }
-
-        spinnerData.add("10 miles ");
-        spinnerData.add("20 miles ");
-        spinnerData.add("30 miles ");
-        spinnerData.add("50 miles ");
-
+        if (spinnerData != null) {
+             if (selectedmiles!=null){
+             //    spinnerData.add(selectedmiles+" miles ");
+                max_miles = selectedmiles;
+             }
+            spinnerData.add("05 miles ");
+            spinnerData.add("10 miles ");
+            spinnerData.add("20 miles ");
+            spinnerData.add("30 miles ");
+            spinnerData.add("50 miles ");
+        }
 
 //        cuisionAdatper = new CuisionAdatper(getContext(),cuisionList);
         //    cuisinRecycler.setAdapter(cuisionAdatper);
@@ -192,12 +203,39 @@ public class HomeFragment extends Fragment implements
         try {
             stringBuffer = getAddress(new LatLng(latitudeq,
                     longitudeq));
-            txtCityName.setText(stringBuffer.toString());
+            if (stringBuffer!=null && !stringBuffer.equals("null")){
+                txtCityName.setText(stringBuffer.toString());
+            } else {
+                createMyDialog();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createMyDialog(){
+        final Dialog dialog= new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_no_address);
+
+
+        dialog.findViewById(R.id.txtdialog_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent i = new Intent(getContext(), SelectLocActivity.class);
+                i.putExtra("enter_address", 113);
+                startActivityForResult(i, 113);
+            }
+        });
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
 
     }
+
+
     private void milesSpinner() {
         ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getActivity(),
                 R.layout.spinner_row, spinnerData);
@@ -207,8 +245,7 @@ public class HomeFragment extends Fragment implements
             int spinnerPosition = arrayAdapter.getPosition(selectedValue);
             sp.setSelection(spinnerPosition);
         }
-
-        sp.setSelection(2);
+        sp.setSelection(1);
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -216,21 +253,26 @@ public class HomeFragment extends Fragment implements
                 switch (position){
                     case 0:
                         min_miles = "0";
-                        max_miles = "10";
+                        max_miles = "5";
                         getHomeData(latitudeq, longitudeq);
 
                         break;
                     case 1:
                         min_miles = "0";
-                        max_miles = "20";
+                        max_miles = "10";
                         getHomeData(latitudeq, longitudeq);
                         break;
                     case 2:
                         min_miles = "0";
-                        max_miles = "30";
+                        max_miles = "20";
                         getHomeData(latitudeq, longitudeq);
                         break;
                     case 3:
+                        min_miles = "0";
+                        max_miles = "30";
+                        getHomeData(latitudeq, longitudeq);
+                        break;
+                    case 4:
                         min_miles = "0";
                         max_miles = "50";
                         getHomeData(latitudeq, longitudeq);
@@ -252,6 +294,7 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+
 
         ((MainActivity) getActivity()).setBottomColor();
         ((MainActivity) getActivity()).tv_home.setTextColor(getResources().getColor(R.color.theme_color));
@@ -323,7 +366,6 @@ public class HomeFragment extends Fragment implements
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject!=null&&jsonObject.has("add_acrt_count")){
                                 cart_icon.setText(jsonObject.getString("add_acrt_count"));
-
                                 tinyDB.putString("cart_count", jsonObject.getString("add_acrt_count"));
                             }
                         } catch (JSONException e) {
@@ -581,6 +623,9 @@ public class HomeFragment extends Fragment implements
             } else if (requestCode==113){
                 latitudeq = data.getDoubleExtra("latitude",0);
                 longitudeq = data.getDoubleExtra("longitude",0);
+                tinyDB.putDouble("lat",latitudeq);
+                tinyDB.putDouble("lang",longitudeq);
+
                 txtCityName.setText(data.getStringExtra("name"));
                 Log.d(TAG, "onActivityResult: "+latitudeq+"\n"+longitudeq+"\n");
                 getHomeData(latitudeq, longitudeq);

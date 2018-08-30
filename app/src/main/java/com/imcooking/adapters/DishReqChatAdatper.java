@@ -45,7 +45,6 @@ public class DishReqChatAdatper extends RecyclerView.Adapter<DishReqChatAdatper.
             super(view);
             txt_foodie = view.findViewById(R.id.item_chat_view_txt_foodie);
             txt_chef=view.findViewById(R.id.item_chat_view_txt_chef);
-
         }
     }
 
@@ -61,14 +60,12 @@ public class DishReqChatAdatper extends RecyclerView.Adapter<DishReqChatAdatper.
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         if (String.valueOf(conversationDetailsBeans.get(position).getConversation_sender_id()).equalsIgnoreCase(foodie_id)){
             if (conversationDetailsBeans.get(position).getConversation_message()!=null){
-
                 holder.txt_foodie.setText(conversationDetailsBeans.get(position).getConversation_message());
             }
         } else if (String.valueOf(conversationDetailsBeans.get(position).getConversation_sender_id())
                 .equalsIgnoreCase(chef_id)){
             if (conversationDetailsBeans.get(position).getConversation_message()!=null){
                 holder.txt_chef.setText(conversationDetailsBeans.get(position).getConversation_message());
-
             }
         }
     }
@@ -77,7 +74,6 @@ public class DishReqChatAdatper extends RecyclerView.Adapter<DishReqChatAdatper.
     public int getItemCount() {
         return conversationDetailsBeans.size();
     }
-
 
 
 }

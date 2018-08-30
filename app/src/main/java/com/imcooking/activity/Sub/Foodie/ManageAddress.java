@@ -79,7 +79,7 @@ public class ManageAddress extends AppBaseActivity implements AddListAdatper.Add
             addressBeanList.clear();
         }
         new GetData(getApplicationContext(), ManageAddress.this).getResponse("{\"foodie_id\":" +
-                foodie_id + "}", "addresslist", new GetData.MyCallback() {
+                foodie_id + "}",  GetData.ADD_LIST, new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
               runOnUiThread(new Runnable() {

@@ -73,6 +73,7 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
             tv_orderid = view.findViewById(R.id.item_foodie_my_order_orderid);
             txtQyt = view.findViewById(R.id.item_foodie_my_order_qyt);
             tv_price = view.findViewById(R.id.item_foodie_my_order_price);
+
             tv_status = view.findViewById(R.id.item_foodie_my_order_status);
             chefProfile = view.findViewById(R.id.item_foodie_my_order_chef_profile_image);
             ratingBar=view.findViewById(R.id.item_foodie_my_order_rating);
@@ -108,22 +109,46 @@ public class AdapterFoodieMyOrderList extends RecyclerView.Adapter<AdapterFoodie
         holder.tv_orderid.setText("#"+list.get(position).getOrder_order_id());
         if (list.get(position).getOrder_status()!=null){
             String status = list.get(position).getOrder_status();
-            if (status.equals("0"))
-            holder.tv_status.setText("New Order");
-            else if (status.equals("1"))
-                holder.tv_status.setText("Accept");
-            else if (status.equals("2"))
-                holder.tv_status.setText("Decline");
-            else if (status.equals("3"))
-                holder.tv_status.setText("In Process");
-            else if (status.equals("4"))
-                holder.tv_status.setText("Ready");
-            else if (status.equals("5"))
-                holder.tv_status.setText("On Way");
-            else if (status.equals("8"))
-                holder.tv_status.setText("Delivered");
-            else if (status.equals("9"))
-                holder.tv_status.setText("Not Delivered");
+            String delivery_type = list.get(position).getDelivery_type();
+            if (delivery_type.equals("1")){
+                if (status.equals("0"))
+                    holder.tv_status.setText("Order Placed");
+                else if (status.equals("1")){
+                    holder.tv_status.setText("Completed");
+                    holder.tv_status.setBackground(context.getResources().getDrawable(R.drawable.shape_background_green_25));
+                }
+
+                else if (status.equals("2"))
+                    holder.tv_status.setText("Canceled ");
+                else if (status.equals("3"))
+                    holder.tv_status.setText("In Prepration");
+                else if (status.equals("4"))
+                    holder.tv_status.setText("Ready to Delivery");
+                else if (status.equals("5"))
+                    holder.tv_status.setText("On Way");
+                else if (status.equals("8"))
+                    holder.tv_status.setText("Delivered");
+                else if (status.equals("9"))
+                    holder.tv_status.setText("Not Delivered");
+            } else if (delivery_type.equals("2")){
+                if (status.equals("0"))
+                    holder.tv_status.setText("Order Placed");
+                else if (status.equals("1")){
+                    holder.tv_status.setText("Completed");
+                    holder.tv_status.setBackground(context.getResources().getDrawable(R.drawable.shape_background_green_25));
+                }
+                else if (status.equals("2"))
+                    holder.tv_status.setText("Canceled ");
+                else if (status.equals("3"))
+                    holder.tv_status.setText("In Prepration");
+                else if (status.equals("4"))
+                    holder.tv_status.setText("Ready to Pick");
+                else if (status.equals("8"))
+                    holder.tv_status.setText("Picked");
+                else if (status.equals("9"))
+                    holder.tv_status.setText("Not Picked by client");
+            }
+
         }
 
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

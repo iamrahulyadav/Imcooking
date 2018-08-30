@@ -18,13 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.imcooking.Model.ApiRequest.PlaceOrder;
 import com.imcooking.R;
 import com.imcooking.activity.home.MainActivity;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
+import com.mukesh.tinydb.TinyDB;
 import com.paypal.android.sdk.payments.PayPalAuthorization;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalFuturePaymentActivity;
@@ -65,6 +65,9 @@ public class Payment1Activity extends AppBaseActivity {
     }
 
     private void init(){
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        startService(intent);
         txt_price = findViewById(R.id.activity_payment_total_price);
         txt_place_order = findViewById(R.id.activity_payment_btn_place);
         radioGroup = findViewById(R.id.activity_payment_radiogroup);
@@ -72,7 +75,7 @@ public class Payment1Activity extends AppBaseActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId==R.id.activity_payment_radio_paypal){
+                if(checkedId==R.id.activity_payment_radio_paystack){
                     payment_type = "paypal";
                 }
                 else if(checkedId==R.id.activity_payment_radio_cod){
@@ -103,7 +106,8 @@ public class Payment1Activity extends AppBaseActivity {
 
         try {
             JSONObject jsonObject = new JSONObject(gson.toJson(placeOrder));
-            new GetData(getApplicationContext(), Payment1Activity.this).sendMyData(jsonObject, GetData.PLACE_ORDER, Payment1Activity.this, new GetData.MyCallback() {
+            new GetData(getApplicationContext(), Payment1Activity.this).sendMyData(jsonObject, GetData.PLACE_ORDER,
+                    Payment1Activity.this, new GetData.MyCallback() {
                 @Override
                 public void onSuccess(final String result) {
                     /*{"status":true,"booking_id":"CO14061939577511","msg":"Dish Booking Successfully"}*/
@@ -147,6 +151,10 @@ public class Payment1Activity extends AppBaseActivity {
 
         txtDialog.setText("Your Order has been Successfully Place with \"" +chef_name+"\" ");
 
+        TinyDB tinyDB = new TinyDB(getApplicationContext());
+        int i = Integer.parseInt(tinyDB.getString("cart_count"));
+        tinyDB.putString("cart_count", (i - 1) + "");
+
         dialog.findViewById(R.id.tv_cancel_add_to_cart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,18 +196,20 @@ public class Payment1Activity extends AppBaseActivity {
 
     private void myPayPal(){
 
-        Intent intent = new Intent(this, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-        startService(intent);
-
-
         PayPalPayment thingToBuy = getThingToBuy(PayPalPayment.PAYMENT_INTENT_SALE);
-        Intent intent1 = new Intent(Payment1Activity.this, PaymentActivity.class);
-        intent1.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
 
-        intent1.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
+        /*
+         * See getStuffToBuy(..) for examples of some available payment options.
+         */
 
-        startActivityForResult(intent1, REQUEST_CODE_PAYMENT);
+        Intent intent = new Intent(Payment1Activity.this, PaymentActivity.class);
+
+        // send the same configuration for restart resiliency
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
+
+        startActivityForResult(intent, REQUEST_CODE_PAYMENT);
 
     }
 
@@ -290,7 +300,6 @@ public class Payment1Activity extends AppBaseActivity {
     }
 
     protected void displayResultText(String result) {
-//        ((TextView)findViewById(R.id.txtResult)).setText("Result : " + result);
         Toast.makeText(
                 getApplicationContext(),
                 result, Toast.LENGTH_LONG)

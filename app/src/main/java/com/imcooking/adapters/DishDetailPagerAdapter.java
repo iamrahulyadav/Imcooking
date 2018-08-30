@@ -87,7 +87,7 @@ public class DishDetailPagerAdapter extends PagerAdapter{
         iv_dish_image = view.findViewById(R.id.home_image);
         imgPlay = view.findViewById(R.id.item_video_play);
 
-         imgPlay.setVisibility(View.VISIBLE);
+         imgPlay.setVisibility(View.GONE);
 //              iv_dish_image.setVisibility(View.VISIBLE);
                 Picasso.with(context).load(GetData.IMG_BASE_URL + chefDishBeans
                         .get(position)).into(iv_dish_image);
@@ -102,11 +102,8 @@ public class DishDetailPagerAdapter extends PagerAdapter{
 //                imgPlay.setVisibility(View.GONE);
 //                videoView.setVisibility(View.VISIBLE);
 //                iv_dish_image.setVisibility(View.GONE);
-
-
 //                initializePlayer();
-
-                                dishDetailPlayClick.playVideo(position, "play");
+                dishDetailPlayClick.playVideo(position, "play");
             }
         });
 
@@ -127,7 +124,6 @@ public class DishDetailPagerAdapter extends PagerAdapter{
 
     private  String VIDEO_SAMPLE = "";
     private int mCurrentPosition = 0;
-
 
 
     private Uri getMedia(String mediaName) {

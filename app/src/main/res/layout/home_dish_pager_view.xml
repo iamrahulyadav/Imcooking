@@ -88,14 +88,15 @@
                 android:layout_margin="5dp"
                 android:orientation="horizontal"
                 android:layout_gravity="center">
+
                 <RatingBar
-                    style="?android:attr/ratingBarStyleSmall"
+                    android:theme="@style/AppThemeRatingBar"
                     android:id="@+id/home_dish_pager_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:progressTint="@color/colorYellow"
                     android:visibility="visible"
-                    android:layout_gravity="center"/>
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_gravity="center" />
 
                <!-- <ImageView
                     android:layout_width="wrap_content"

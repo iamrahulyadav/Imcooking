@@ -66,6 +66,15 @@ public class FoodieMyorderList {
         private String rating;
         private String order_to_time;
         private String order_from_time;
+        private String delivery_type;
+
+        public String getDelivery_type() {
+            return delivery_type;
+        }
+
+        public void setDelivery_type(String delivery_type) {
+            this.delivery_type = delivery_type;
+        }
 
         public String getOrder_to_time() {
             return order_to_time;

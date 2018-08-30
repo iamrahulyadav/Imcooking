@@ -47,17 +47,32 @@
                     android:text="E-164, sector-15, Noida"
                     android:textColor="@color/text_color_13"
                     android:textSize="9sp"
-                    android:gravity="center"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"/>
-                <com.imcooking.customtext.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+91-7737284476"
-                    android:id="@+id/item_chef_my_request_phone"
-                    android:textColor="@color/text_color_13"
-                    android:textSize="9sp"
-                    android:gravity="center"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+91-7737284476"
+                        android:id="@+id/item_chef_my_request_phone"
+                        android:textColor="@color/text_color_13"
+                        android:textSize="9sp"
+                        android:layout_alignParentLeft="true"/>
+                    <com.imcooking.customtext.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Accepted"
+                        android:visibility="gone"
+                        android:id="@+id/item_chef_my_request_status"
+                        android:textColor="@color/text_color_13"
+                        android:textSize="9sp"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
                 <com.imcooking.customtext.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,14 +166,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorWhite"
-        android:layout_marginTop="5dp">
+        android:background="@color/colorWhite">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:paddingBottom="10dp">
+            android:id="@+id/item_chef_my_request_layout_decline_offer"
+            android:paddingBottom="10dp"
+            android:visibility="gone">
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="0dp"
                 android:layout_weight="3.5"
@@ -183,6 +199,25 @@
                 android:layout_marginLeft="5dp"/>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:id="@+id/item_chef_my_request_layout_offer_price"
+            android:paddingBottom="10dp"
+            android:visibility="visible"
+            android:gravity="center_vertical">
+
+            <com.imcooking.customtext.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price Offered:- $25"
+                android:id="@+id/item_chef_my_request_offered_price"
+                android:textColor="@color/theme_color"
+                android:textSize="14dp"
+                android:layout_marginLeft="70dp"/>
+
+        </LinearLayout>
 
         <View
             android:layout_width=".3dp"
@@ -193,7 +228,8 @@
             android:layout_width="0dp"
             android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp">
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp">
 
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="0dp"

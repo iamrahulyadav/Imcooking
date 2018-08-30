@@ -1,8 +1,11 @@
 package com.imcooking.activity.home;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,6 +22,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -43,6 +48,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
 import com.imcooking.R;
@@ -60,6 +66,8 @@ import com.imcooking.fragment.foodie.HomeFragment;
 import com.imcooking.fragment.foodie.FoodieMyOrderFragment;
 import com.imcooking.fragment.foodie.NotificationFragment;
 import com.imcooking.fragment.foodie.ProfileFragment;
+import com.imcooking.notification.Config;
+import com.imcooking.notification.NotificationUtils;
 import com.imcooking.utils.AppBaseActivity;
 import com.imcooking.utils.BaseClass;
 import com.imcooking.webservices.GetData;
@@ -73,7 +81,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainActivity extends AppBaseActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private float lastTranslate = 0.0f;
@@ -86,11 +94,52 @@ public class MainActivity extends AppBaseActivity
     public static TextView tv_name, tv_phone;
     public static double longitude, latitude;
 
+    private String device_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme1);
         setContentView(R.layout.activity_main);
+
+
+        // Notifications -----GetDeviceId
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+//                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    tv_notification_dot.setVisibility(View.VISIBLE);
+                    String message = intent.getStringExtra("message");
+//
+//                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+//
+//                    Toast.makeText(getApplicationContext(), "Hii Main", Toast.LENGTH_SHORT).show();
+//                    txtMessage.setText(message);
+                }
+            }
+        };
+
+        // Get Device Id From Shared Prefwrences
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+//        if(regId != null)
+        device_id = regId;
+
+        Log.d("MyDeviceId", device_id + "");
+
+
+
 
         drawerLayout1 = findViewById(R.id.drawer_layout);
 
@@ -131,7 +180,6 @@ public class MainActivity extends AppBaseActivity
                     anim.setDuration(0);
                     anim.setFillAfter(true);
                     frame_view.startAnimation(anim);
-
                     lastTranslate = moveFactor;
                 }
             }
@@ -142,52 +190,67 @@ public class MainActivity extends AppBaseActivity
 
         init();
         getUserData();
+
         if (user_type.equals("1")) {
+/*
+            Intent i = new Intent();
+            i = getIntent();
+            if (i != null) {
+                Bundle bundle = i.getExtras();
+                if (bundle != null) {
+                    String type = bundle.getString("message");
+                    if (type.equals("1")) {
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.frame, new ChefMyOrderListFragment())
+                                .commit();
+                    } else {
+
+                    }
+                } else {
+                }
+            }
+*/
             if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
 
                 String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                 if (tag1.equals(ChefHome.class.getName())) {
 
                 } else {
-
                     ChefHome fragment = new ChefHome();
-
                     Bundle args = new Bundle();
                     args.putString("chef_id", user_id);
                     args.putString("foodie_id", "4");
-
                     fragment.setArguments(args);
-
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
                 }
             } else {
                 ChefHome fragment = new ChefHome();
-
                 Bundle args = new Bundle();
                 args.putString("chef_id", user_id);
                 args.putString("foodie_id", "4");
-
                 fragment.setArguments(args);
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
 
             }
-//            BaseClass.callFragment(new ChefHome(), ChefHome.class.getName(), getSupportFragmentManager());
-        } else if (getIntent().hasExtra("pay")) {
-            BaseClass.callFragment(new FoodieMyOrderFragment(), FoodieMyOrderFragment.class.getName(), getSupportFragmentManager());
+
+        } else if (getIntent().hasExtra("payment")) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame, new FoodieMyOrderFragment()).commit();
         } else { // 2
 //            setTheme(R.style.AppTheme1);
             BaseClass.callFragment(new HomeFragment(), HomeFragment.class.getName(), getSupportFragmentManager());
         }
+
     }
 
     public static ImageView iv_home, iv_profile, iv_my_order, iv_notification;
-    public static TextView tv_home, tv_profile, tv_my_order, tv_notification;
+    public static TextView tv_home, tv_profile, tv_my_order, tv_notification, tv_notification_dot;
 
     private String loginData;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     private String user_type, user_id;
 //    public static boolean isProfile;
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     private void init() {
 
@@ -197,11 +260,11 @@ public class MainActivity extends AppBaseActivity
         iv_profile = findViewById(R.id.bottom_profile_image);
         iv_my_order = findViewById(R.id.bottom_my_order_image);
         iv_notification = findViewById(R.id.bottom_notification_image);
-
         tv_home = findViewById(R.id.bottom_home_text);
         tv_profile = findViewById(R.id.bottom_profile_text);
         tv_my_order = findViewById(R.id.bottom_my_order_text);
         tv_notification = findViewById(R.id.bottom_notification_text);
+        tv_notification_dot = findViewById(R.id.main_notification_dot);
     }
 
     private String user_name, user_phone, user_user_name;
@@ -281,7 +344,8 @@ public class MainActivity extends AppBaseActivity
             if(user_type.equals("2")) {
                 BaseClass.callFragment(new ProfileFragment(), new ProfileFragment().getClass().getName(), getSupportFragmentManager());
             }
-            else{ // chef
+            else{
+                // chef
 /*
                 if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
                     String tag1 = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
@@ -344,6 +408,7 @@ public class MainActivity extends AppBaseActivity
         } else if (id == R.id.bottom_notification_layout){
             tv_notification.setTextColor(getResources().getColor(R.color.theme_color));
             iv_notification.setImageResource(R.drawable.ic_ring_1);
+            tv_notification_dot.setVisibility(View.GONE);
             BaseClass.callFragment(new NotificationFragment(), new NotificationFragment().getClass().getName(), getSupportFragmentManager());
 
         } else{
@@ -369,11 +434,28 @@ public class MainActivity extends AppBaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
 /*
         Bitmap bitmap = BaseClass.getBitmapFromURL1("S");
-
         String s = BaseClass.BitMapToString(bitmap);
         Log.d("MyBase64", s);*/
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
     }
 
     public void open_menu(View view){
@@ -404,6 +486,8 @@ public class MainActivity extends AppBaseActivity
             finishAffinity();
 //            finish();
         } else{
+//            tinyDB.remove("lat");
+//            tinyDB.remove("lang");
             super.onBackPressed();
         }
     }
@@ -429,7 +513,7 @@ public class MainActivity extends AppBaseActivity
         int id = item.getItemId();
         switch (id){
             case R.id.navigation_logout:
-                String s = "{\"device_id\":\"cM7WiSvFCvI:APA91bHrXcZOzGoxDKT7ksLche1KAzgxStLCtgyUjD3GiXBchJPp4p0qsOG67M3KkPkvcK4OKbuvjhqHCP8CrW8UlVfI548etzPkXQu1w1tZH0IVchq23yDZ-BP13XvtjWo5yLQ-RR2hC6IHVk3Mn7AbzQPAFOqj8Q\", \"user_name\":"
+                String s = "{\"device_id\":\"" + device_id +"\", \"user_name\":"
                         + user_user_name + "}";
                 Log.d("MyRequest", s);
                 try {
@@ -442,6 +526,14 @@ public class MainActivity extends AppBaseActivity
                                     if(apiResponse.isStatus()){
                                         if (apiResponse.getMsg().equals("device_id deleted Successfully ")){
                                             new TinyDB(getApplicationContext()).remove("login_data");
+
+                                            SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+//                                            pref.edit().remove("regId");
+                                            String regId = pref.getString("regId", null);
+
+                                            if(regId!=null) {
+                                                Log.d("MyDeviceId", regId);
+                                            }
                                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                                             finish();
 

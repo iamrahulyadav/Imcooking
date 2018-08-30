@@ -56,13 +56,31 @@ public class FoodieMyRequest {
         private String chef_image;
         private String chef_description;
         private String chef_request_datetime;
-        private int chef_rating;
+        private String chef_rating;
         private String chef_response;
         private String request_cusine_name;
         private String request_dishname;
         private String request_note;
         private String request_quantity;
+        private String offered_price;
+        private String foodie_response;
         private List<ConversationDetailsBean> conversation_details;
+
+        public String getFoodie_response() {
+            return foodie_response;
+        }
+
+        public void setFoodie_response(String foodie_response) {
+            this.foodie_response = foodie_response;
+        }
+
+        public String getOffered_price() {
+            return offered_price;
+        }
+
+        public void setOffered_price(String offered_price) {
+            this.offered_price = offered_price;
+        }
 
         public String getRequest_quantity() {
             return request_quantity;
@@ -168,11 +186,11 @@ public class FoodieMyRequest {
             this.chef_request_datetime = chef_request_datetime;
         }
 
-        public int getChef_rating() {
+        public String getChef_rating() {
             return chef_rating;
         }
 
-        public void setChef_rating(int chef_rating) {
+        public void setChef_rating(String chef_rating) {
             this.chef_rating = chef_rating;
         }
 

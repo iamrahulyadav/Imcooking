@@ -26,13 +26,15 @@
             android:orientation="vertical">
             <AutoCompleteTextView
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/autocomplete"
                 android:background="@drawable/shape_white"
                 android:padding="10dp"
                 android:textSize="@dimen/smallsize"
-                android:visibility="visible"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:editable="false"
+                android:singleLine="true"
                 android:textColorHint="@color/colorBlack"
                 android:textColor="@color/colorBlack"
                 android:hint="Type in your Location" />
@@ -81,8 +83,6 @@
                 android:id="@+id/topbar"
                 android:paddingLeft="16dp">
 
-
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -102,18 +102,6 @@
                 </LinearLayout>
 
             </RelativeLayout>
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:orientation="horizontal">
-
-
-
-
-            </LinearLayout>
             <include layout="@layout/add_address_details_view"
                android:visibility="gone"/>
 

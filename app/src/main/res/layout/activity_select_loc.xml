@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorPrimary"
-    tools:context=".activity.Sub.AddAddressActivity">
+    tools:context=".activity.Sub.Foodie.SelectLocActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -36,14 +36,16 @@
                 <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/autocomplete"
                     android:background="@drawable/shape_white"
                     android:padding="10dp"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:editable="false"
+                    android:imeOptions="actionDone"
                     android:ellipsize="end"
                     android:textSize="@dimen/smallsize"
-                    android:visibility="visible"
                     android:textColorHint="@color/colorBlack"
                     android:textColor="@color/colorBlack"
                     android:hint="Type in your Location" />
@@ -88,6 +90,7 @@
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     app:srcCompat="@drawable/ic_placeholder"
                     tools:ignore="VectorDrawableCompat" />
 
