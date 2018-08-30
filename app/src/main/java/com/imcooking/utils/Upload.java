@@ -15,7 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Upload {
-    public static final String UPLOAD_URL= GetData.BASE_URL+"upload_video";
+    public static final String UPLOAD_URL = GetData.BASE_URL+"upload_video";
 
 
     private int serverResponseCode;
@@ -45,7 +45,7 @@ public class Upload {
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setUseCaches(false);
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("POST");  
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("ENCTYPE", "multipart/form-data");
             conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
@@ -102,8 +102,4 @@ public class Upload {
             return "Could not upload";
         }
     }
-
-
-
-
 }

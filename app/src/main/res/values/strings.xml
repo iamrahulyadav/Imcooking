@@ -43,7 +43,7 @@
     <!--activity filter-->
     <string name="activity_filter_txtDistance">Distance </string>
     <string name="activity_filter_txtRating">Rating </string>
-    <string name="activity_filter_txtPrice">Price </string>
+    <string name="activity_filter_txtPrice">Select Price </string>
     <string name="activity_filter_txtDeliveryType">Delivery Type </string>
 
     <string name="network_error">Please Check Your Internet Connection</string>

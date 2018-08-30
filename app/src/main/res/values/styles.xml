@@ -28,8 +28,8 @@
     </style>
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/colorAccent</item>
-     //  <item name="colorControlActivated">@color/colorLightGrey</item>
-        <item name="android:colorControlNormal" tools:ignore="NewApi">#a92727</item>
+       <item name="colorControlActivated">@color/colorLightGrey</item>
+        <!--<item name="android:colorControlNormal" tools:ignore="NewApi">#a92727</item>-->
     </style>
 
     <style name="AppThemeSkeekbar" parent="Theme.AppCompat.Light">
