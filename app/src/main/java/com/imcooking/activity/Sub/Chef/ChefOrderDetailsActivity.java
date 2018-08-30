@@ -156,7 +156,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                             rateChef(chef_id,String.valueOf(rating));
                                         }
                                     });
-
                                     if (delivery_type.equals("1")){
                                         //1 = delivery
                                         txt_order_type.setText("Delivery");
@@ -180,7 +179,6 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                     }
                                     if (user_type.equalsIgnoreCase("1")){
                                         chef_status =  orderDetailsBeans.get(0).getOrder_status();
-//                                        Toast.makeText(ChefOrderDetailsActivity.this, ""+chef_status, Toast.LENGTH_SHORT).show();
                                         txt_order_status.setText("Change Status");
                                     } else {
                                         if (orderDetailsBeans.get(0).getOrder_status() != null) {

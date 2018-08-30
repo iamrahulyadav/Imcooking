@@ -338,8 +338,6 @@ public class SelectLocActivity extends AppBaseActivity implements OnMapReadyCall
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             mMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-          /*  mLocationMarkerText.setText("Lat : " + location.getLatitude() + "," + "Long : " + location.getLongitude());
-            startIntentService(location);*/
 
         } else {
             Toast.makeText(getApplicationContext(),

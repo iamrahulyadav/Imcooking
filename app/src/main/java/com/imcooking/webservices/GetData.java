@@ -97,6 +97,7 @@ public class GetData {
     public static String NOTIFICATION = "notification";
     public static String READ_NOTIFI = "readNotification";
     public static String FOODIE_MY_REQ_DISH_CHEF_DETAIL ="foodie_myrequestdish_chefdetails";
+    public static String ADD_LIST = "addresslist";
 
     /*http://webdevelopmentreviews.net/imcooking/api/chef_rating*/
 

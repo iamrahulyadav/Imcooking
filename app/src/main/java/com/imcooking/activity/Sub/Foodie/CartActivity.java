@@ -69,9 +69,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface, CartAddListAdatper.AddInterfaceMethod{
+public class CartActivity extends AppCompatActivity implements View.OnClickListener, CartAdatper.CartInterface,
+        CartAddListAdatper.AddInterfaceMethod{
 
     TextView txtChef_Name ,txtShopNow, tvAdditem,tvplaceorder,txt_add_new_item,txtfollowers, txt_address,
             txt_add_address, txt_time_picker,txt_pick_add,
@@ -520,9 +522,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
 //                Toast.makeText(CartActivity.this, "h", Toast.LENGTH_SHORT).show();
 
-                if (addressBeanList!=null&&addressBeanList.size()>0)
-                openDialog(addressBeanList);
-                else BaseClass.showToast(getApplicationContext(), "No record available , Please add address ");
+                if (addressBeanList!=null&&addressBeanList.size()>0){
+                    openDialog(addressBeanList);
+                }
+                else {BaseClass.showToast(getApplicationContext(), "No record available , Please add address ");}
             }
         });
     }
@@ -530,9 +533,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private List<AddressListData.AddressBean> addressBeanList;
 
     private void getAddress(){
+
         addressBeanList = new ArrayList<>();
         new GetData(getApplicationContext(), CartActivity.this).getResponse("{\"foodie_id\":" +
-                HomeFragment.foodie_id + "}", "addresslist", new GetData.MyCallback() {
+                HomeFragment.foodie_id + "}", GetData.ADD_LIST, new GetData.MyCallback() {
             @Override
             public void onSuccess(final String result) {
                 runOnUiThread(new Runnable() {
