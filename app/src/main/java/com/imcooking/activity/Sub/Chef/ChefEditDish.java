@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.imcooking.Model.ApiRequest.ModelChefAddDish;
 import com.imcooking.Model.ApiRequest.ModelChefEditDish;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -203,6 +204,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                     Intent intent = new Intent();
                     intent.setType("video/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                     startActivityForResult(Intent.createChooser(intent,"Select Video"),REQUEST_TAKE_GALLERY_VIDEO);
                 }
             }
@@ -308,9 +310,6 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         });
 
     }
-
-
-
 
     private void getMyIntentData() {
         base = new ArrayList<>();
@@ -542,15 +541,16 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
                                         if(job.has("message")){
                                             if(job.getString("message").equals("Add dish Successfully")){
                                                 dish_id = job.getString("last_insertid");
-                                                dialog.show();
-
-                                              /*  if (selectedPath!=null){
+                                                BaseClass.showToast(getApplicationContext(),
+                                                        "Dish added successfully");
+                                                if (selectedPath!=null){
                                                     if (duration<=20000) {
                                                         new UploadFileToServer(selectedPath).execute();
                                                     }
                                                 } else {
-                                                    // finish();
-                                                }*/
+                                                    finish();
+                                                }
+
                                             } else {
                                                 BaseClass.showToast(getApplicationContext(), getResources().getString(R.string.error));
                                             }
@@ -654,6 +654,8 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
     }
 
     private Dialog dialog;
+    private TextView tv_dialog;
+
     private void createMyDialog(){
 
         dialog = new Dialog(ChefEditDish.this);
@@ -662,7 +664,7 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        TextView tv_dialog = dialog.findViewById(R.id.dialog_add_dish_text);
+        tv_dialog = dialog.findViewById(R.id.dialog_add_dish_text);
         TextView tv_ok_dialog = dialog.findViewById(R.id.dialog_add_dish_btn);
         TextView tv_cross_dialog = dialog.findViewById(R.id.dialog_add_dish_cross);
 
@@ -819,7 +821,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
             }
             else if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                 Uri selectedImageUri = data.getData();
+                Log.d("SelectedVidoUri", selectedImageUri + "");
                 selectedPath = getPath(selectedImageUri);
+                Log.d("SelectedVidoPath", selectedPath);
                 if (selectedPath!=null) {
                     MediaPlayer mp = MediaPlayer.create(this, Uri.parse(selectedPath));
                     duration = mp.getDuration();
@@ -1158,6 +1162,9 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
 
     ProgressBar progressBar;
+    private Dialog d;
+    private TextView t;
+    private SeekBar s;
 
     private long totalSize = 0;
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
@@ -1172,23 +1179,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 
         @Override
         protected void onPreExecute() {
-//            progressBar = new ProgressBar(ChefEditDish.this, null, android.R.attr.h);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(30, 30, 30, 30);
-            progressBar.setLayoutParams(layoutParams);
-            progressBar.setIndeterminate(true);
 
-         /*   LinearLayout linearLayout = findViewById(R.id.rootContainer);
-            // Add horizontal ProgressBar to LinearLayout
-            if (linearLayout != null) {
-                linearLayout.addView(progressBar);
-            }*/
-
-            // setting progress bar to zero
-            progressBar.setProgress(0);
-         //   BaseClass.showToast(getApplicationContext(), "0%");
-          //  uploading = ProgressDialog.show(ChefEditDish.this, "Uploading File", "Please wait...", false, false);
-
+            d = new Dialog(ChefEditDish.this);
+            d.setContentView(R.layout.dialog_uploading_video);
+            d.setCancelable(false);
+            d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            d.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            t = d.findViewById(R.id.dialog_uploading_video_count);
+            s = d.findViewById(R.id.dialog_uploading_video_seekbar);
 
             super.onPreExecute();
         }
@@ -1199,17 +1197,14 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
 //            progressBar.setVisibility(View.VISIBLE);
 
             // updating progress bar value
-            progressBar.setProgress(progress[0]);
 
 
-            BaseClass.showToast(getApplicationContext(), progress[0] + "%");
+            d.show();
 
+            t.setText("Uploading Video...     " + progress[0] + "%");
+            s.setProgress(progress[0]);
 
-            // updating percentage value
-//            txtPercentage.setText(String.valueOf(progress[0]) + "%");
-
-
-            //code to show progress in notification bar
+//            code to show progress in notification bar
 //            FileUploadNotification fileUploadNotification = new FileUploadNotification(UploadActivity.this);
 //            fileUploadNotification.updateNotification(String.valueOf(progress[0]), "Image 123.jpg", "Camera Upload");
 
@@ -1289,7 +1284,29 @@ public class ChefEditDish extends AppBaseActivity implements CompoundButton.OnCh
         protected void onPostExecute(String result) {
             Log.e("TAG", "Response from server: " + result);
             // showing the server response in an alert dialog
-            showAlert(result);
+            d.dismiss();
+
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if(jsonObject.getBoolean("status")){
+                    if(jsonObject.getString("msg").equals("video upload successfully")){
+                        tv_dialog.setText("Thank you!! \n The dish has been added to your list, and video was uploaded successfully.");
+                        BaseClass.showToast(getApplicationContext(), "Dish Video has been uploaded successfully");
+                    } else {
+                        tv_dialog.setText("Thank you!! \n The dish has been added to your list, but video uploading was failed. \n You can upload video later by editing your dish.");
+                        BaseClass.showToast(getApplicationContext(), "Dish Video uploading was failed.");
+                    }
+                } else{
+                    tv_dialog.setText("Thank you!! \n The dish has been added to your list, but video uploading was failed. \n You can upload video later by editing your dish.");
+                    BaseClass.showToast(getApplicationContext(), "Dish Video uploading was failed.");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            dialog.show();
+
+
+//            showAlert(result);
 
             super.onPostExecute(result);
         }

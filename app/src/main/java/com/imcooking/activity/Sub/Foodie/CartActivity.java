@@ -752,8 +752,20 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             boolean status = obj.getBoolean("status");
                             if (status){
                                 String msg = obj.getString("msg");
+                                String distance = obj.getString("distance");
                                 if (msg.equalsIgnoreCase("No")){
-                                    createPayDialog();
+                                    if(delivery_type.equals("1")) {
+                                        createPayDialog();
+                                    } else {
+                                        // PickUp
+//                                        BaseClass.showToast(getApplicationContext(), "Need to check distance");
+                                        // Show Dialog if chef is more than 50 miles away from foodie's selected address.
+                                        if(Double.parseDouble(distance) > 50){
+                                            createAwayDialog();
+                                        } else {
+                                            createPayDialog();
+                                        }
+                                    }
                                 } else {
                                     click_payment();
                                 }
@@ -788,4 +800,29 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void createAwayDialog(){
+        final Dialog dialog= new Dialog(this);
+        dialog.setContentView(R.layout.dialog_away);
+
+        dialog.findViewById(R.id.dialog_away_No).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.findViewById(R.id.dialog_away_yes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createPayDialog();
+            }
+        });
+
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
+
+    }
 }

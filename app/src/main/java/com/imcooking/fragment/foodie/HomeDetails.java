@@ -134,7 +134,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
     private void createVideoDialog(){
 
-        Dialog dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_video);
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -142,7 +142,9 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         progressBar.setVisibility(View.VISIBLE);
 
         videoView = dialog.findViewById(R.id.dialog_video);
-        videoView.setVideoURI(Uri.parse("http://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4"));
+//        videoView.setVideoURI(Uri.parse("http://videocdn.bodybuilding.com/video/mp4/62000/62792m.mp4"));
+        videoView.setVideoURI(Uri.parse(VIDEO_SAMPLE));
+
 
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -150,6 +152,13 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
                 progressBar.setVisibility(View.GONE);
                 videoView.start();
+            }
+        });
+
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                dialog.dismiss();
             }
         });
 
@@ -235,6 +244,10 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         tv_count.setText(cart_count);
 
         getDetails(id);
+
+        if(videoView != null){
+//            videoView.seekTo(video_current_position);
+        }
     }
 
     @Override
@@ -258,7 +271,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 2000; // time in milliseconds between successive task executions.
+    final long PERIOD_MS = 4000; // time in milliseconds between successive task executions.
 
     private void getDetails(String id){
         layout.setVisibility(View.GONE);
@@ -342,7 +355,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
                                         txtAddToCart.setText("Add To Cart");
                                     }
 
-                                    VIDEO_SAMPLE = GetData.IMG_BASE_URL+dishDetails.getDish_details().getDish_video()+"";
+                                    VIDEO_SAMPLE = GetData.IMG_BASE_URL + dishDetails.getDish_details().getDish_video()+"";
                                     String video = dishDetails.getDish_details().getDish_video()+"";
                                     if (video.length() > 0)
                                         isVideo = "yes";
@@ -729,7 +742,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
     @Override
     public void playVideo(int pos, String tag) {
-        //createVideoDialog();
+        createVideoDialog();
     }
 
     @Override
@@ -750,6 +763,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
 
     }
 
+    int video_current_position;
     @Override
     public void onPause() {
         super.onPause();
@@ -765,6 +779,7 @@ public class HomeDetails extends Fragment implements View.OnClickListener, DishD
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             if (videoView!=null)
             videoView.pause();
+//            video_current_position = videoView.getCurrentPosition();
         }
     }
 

@@ -34,8 +34,7 @@
                 android:text="Sorry, the chef is not providing delivery to your location"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"
-              android:gravity="center"
-               />
+                android:gravity="center" />
 
             <com.imcooking.customtext.CustomTextView
                 android:layout_width="match_parent"
