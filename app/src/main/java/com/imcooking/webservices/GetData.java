@@ -176,14 +176,12 @@ Toast.makeText(context,"......."+response,Toast.LENGTH_SHORT).show();
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
-
                             progressDialog.hide();
                             Log.d("CallBack", jsonObject.toString());
 
                             str = jsonObject.toString();
                             if (jsonObject.has("status"))
                                 callback.onSuccess(str);
-
                             else
                                 BaseClass.showToast(context, context.getResources().getString(R.string.error));
 

@@ -578,9 +578,8 @@ public class HomeFragment extends Fragment implements
         }
 
         else if (v.getId()==R.id.fragment_home_img_filter){
-//            startActivityForResult(new Intent(getContext(), FilterHomeActivity.class),1);
-            startActivityForResult(new Intent(getContext(), FilterActivity.class), 0143);
-            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+//            startActivityForResult(new Intent(getContext(), FilterActivity.class), 0143);
+//            getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
         }
 
         else if (v.getId() == R.id.fragment_home_img_cart)
@@ -632,7 +631,6 @@ public class HomeFragment extends Fragment implements
 
     private void filterData(Intent data){
         String str_rating = "", str_min_price = "", str_max_price = "", str_check_home = "", str_check_pickup = "";
-
         if (data.getExtras().containsKey("rating")) {
             str_rating = data.getExtras().getString("rating");
         }
@@ -811,8 +809,7 @@ public class HomeFragment extends Fragment implements
                     isHomeDeliverySelected && isPickupSelected) {
                 if (bean.getRating().equals(str_rating) &&
                         bean.getDish_homedelivery().equals("1") &&
-                        bean.getDish_pickup().equals("1")
-                        ) {
+                        bean.getDish_pickup().equals("1")){
                     data_added = true;
                 }
             } else if (isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
@@ -825,16 +822,14 @@ public class HomeFragment extends Fragment implements
                     !isHomeDeliverySelected && isPickupSelected) {
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
-                        bean.getDish_pickup().equals("1")
-                        ) {
+                        bean.getDish_pickup().equals("1")){
                     data_added = true;
                 }
             } else if (isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
                     isHomeDeliverySelected && !isPickupSelected) {
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
-                        bean.getDish_homedelivery().equals("1")
-                        ) {
+                        bean.getDish_homedelivery().equals("1")) {
                     data_added = true;
                 }
             } else if (isRatingSelected && !isMinPriceSelected && isMaxPriceSelected &&
@@ -842,8 +837,7 @@ public class HomeFragment extends Fragment implements
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
                         bean.getDish_homedelivery().equals("1") &&
-                        bean.getDish_pickup().equals("1")
-                        ) {
+                        bean.getDish_pickup().equals("1")) {
                     data_added = true;
                 }
             } else if (isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
@@ -856,16 +850,14 @@ public class HomeFragment extends Fragment implements
                     !isHomeDeliverySelected && isPickupSelected) {
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
-                        bean.getDish_pickup().equals("1")
-                        ) {
+                        bean.getDish_pickup().equals("1")) {
                     data_added = true;
                 }
             } else if (isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
                     isHomeDeliverySelected && !isPickupSelected) {
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
-                        bean.getDish_homedelivery().equals("1")
-                        ) {
+                        bean.getDish_homedelivery().equals("1")) {
                     data_added = true;
                 }
             } else if (isRatingSelected && isMinPriceSelected && !isMaxPriceSelected &&
@@ -873,16 +865,14 @@ public class HomeFragment extends Fragment implements
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
                         bean.getDish_homedelivery().equals("1") &&
-                        bean.getDish_pickup().equals("1")
-                        ) {
+                        bean.getDish_pickup().equals("1")) {
                     data_added = true;
                 }
             } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
                     !isHomeDeliverySelected && !isPickupSelected) {
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
-                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price)
-                        ) {
+                        Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price)) {
                     data_added = true;
                 }
             } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
@@ -890,8 +880,7 @@ public class HomeFragment extends Fragment implements
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
                         Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
-                        bean.getDish_pickup().equals("1")
-                        ) {
+                        bean.getDish_pickup().equals("1")) {
                     data_added = true;
                 }
             } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
@@ -899,8 +888,7 @@ public class HomeFragment extends Fragment implements
                 if (bean.getRating().equals(str_rating) &&
                         Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
                         Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
-                        bean.getDish_homedelivery().equals("1")
-                        ) {
+                        bean.getDish_homedelivery().equals("1")) {
                     data_added = true;
                 }
             } else if (isRatingSelected && isMinPriceSelected && isMaxPriceSelected &&
@@ -909,8 +897,7 @@ public class HomeFragment extends Fragment implements
                         Float.parseFloat(bean.getDish_price()) >= Float.parseFloat(str_min_price) &&
                         Float.parseFloat(bean.getDish_price()) <= Float.parseFloat(str_max_price) &&
                         bean.getDish_homedelivery().equals("1") &&
-                        bean.getDish_pickup().equals("1")
-                        ) {
+                        bean.getDish_pickup().equals("1")) {
                     data_added = true;
                 }
             } else {

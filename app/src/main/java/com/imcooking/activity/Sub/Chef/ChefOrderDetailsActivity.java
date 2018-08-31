@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.NestedScrollView;
 import android.os.Bundle;
@@ -150,10 +151,11 @@ public class ChefOrderDetailsActivity extends AppBaseActivity {
                                         ratingBar.setRating(Float.parseFloat(orderDetailsBeans.get(0).getRating()));
                                     }
                                     ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                                        public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        public void onRatingChanged(RatingBar ratingBar, final float rating,
                                                                     boolean fromUser) {
                                             ratingBar.setRating(rating);
                                             rateChef(chef_id,String.valueOf(rating));
+
                                         }
                                     });
                                     if (delivery_type.equals("1")){
