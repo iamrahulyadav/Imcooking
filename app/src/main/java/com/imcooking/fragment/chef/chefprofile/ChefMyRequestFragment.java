@@ -323,6 +323,8 @@ public class ChefMyRequestFragment extends Fragment implements AdatperChefMyRequ
                 "  \"offer_price\":\"" + chefDishDetailsBeans.get(pos).getRequest_price() + "\",\n" +
                 "\"status\":\"" + "reply" + "\"\n" +
                 "}";
+
+        Log.d("TAG", "MyRequest: "+s);
         try {
             JSONObject jsonObject = new JSONObject(s);
             new GetData(getContext(), getActivity()).sendMyData(jsonObject, GetData.CONVERSATION_CHAT,

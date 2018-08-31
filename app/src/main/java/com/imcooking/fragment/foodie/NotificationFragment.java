@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.imcooking.Model.api.response.ApiResponse;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,6 +40,7 @@ public class NotificationFragment extends Fragment implements AdatperNotificatio
     private List<NotificationList.NotificationBean>notificationBeans;
     private String userid;
     private TinyDB tinyDB;
+    private LinearLayout no_record_layout;
     private ApiResponse.UserDataBean userDataBean = new ApiResponse.UserDataBean();
     public NotificationFragment() {
         // Required empty public constructor
@@ -56,7 +59,7 @@ public class NotificationFragment extends Fragment implements AdatperNotificatio
         tinyDB = new TinyDB(getContext());
         userDataBean = new Gson().fromJson(tinyDB.getString("login_data"), ApiResponse.UserDataBean.class);
         userid = userDataBean.getUser_id()+"";
-
+        no_record_layout = getView().findViewById(R.id.fragment_notification_no_record);
         getView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         recyclerList = getView().findViewById(R.id.fragment_notification_recycler);
         LinearLayoutManager linearLayoutManager
@@ -90,11 +93,19 @@ public class NotificationFragment extends Fragment implements AdatperNotificatio
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                setMyAdapter(notificationBeans);
+                                if (notificationBeans.size()>0){
+                                    no_record_layout.setVisibility(View.GONE);
+                                    setMyAdapter(notificationBeans);
+                                }
                             }
                         });
                     } else {
-
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                no_record_layout.setVisibility(View.VISIBLE);
+                            }
+                        });
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -114,7 +125,7 @@ public class NotificationFragment extends Fragment implements AdatperNotificatio
 
     @Override
     public void clickNoti(String edit, int pos) {
-     //   readNotif(notificationBeans.get(pos).getNotification_id()+"");
+      //  readNotif(notificationBeans.get(pos).getNotification_id()+"");
     }
 
     private String TAG = NotificationFragment.class.getName();
@@ -124,7 +135,12 @@ public class NotificationFragment extends Fragment implements AdatperNotificatio
         new GetData(getContext(), getActivity()).getResponse(readRequest, GetData.READ_NOTIFI, new GetData.MyCallback() {
             @Override
             public void onSuccess(String result) {
-                adatperNotification.notifyDataSetChanged();
+               // adatperNotification.notifyDataSetChanged();
+
+                if (notificationBeans!=null&&notificationBeans.size()>0){
+                    no_record_layout.setVisibility(View.GONE);
+                } else no_record_layout.setVisibility(View.VISIBLE);
+
             }
         });
     }

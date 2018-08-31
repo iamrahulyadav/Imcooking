@@ -231,7 +231,6 @@ public class ChefEditProfile extends AppCompatActivity implements AdapterView.On
             edt_phn.setText(str_phn);
         }
         if (chefProfileData1.getChef_data().getRating()!=null&&chefProfileData1.getChef_data().getRating().length()>0){
-            Toast.makeText(this, ""+chefProfileData1.getChef_data().getRating(), Toast.LENGTH_SHORT).show();
             ratingBar.setRating(Float.parseFloat(chefProfileData1.getChef_data().getRating()));
         }
         progressBar.setVisibility(View.VISIBLE);

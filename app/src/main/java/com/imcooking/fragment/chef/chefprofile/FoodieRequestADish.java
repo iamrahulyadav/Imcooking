@@ -318,7 +318,6 @@ public class FoodieRequestADish extends Fragment implements AdapterView.OnItemSe
                                                         BaseClass.showToast(getContext(),
                                                                 "Dish not added");
                                                     }
-
                                                     edt_dish_title.setText("");
                                                     tv_qty.setText("1");
                                                     tv_date.setText("");

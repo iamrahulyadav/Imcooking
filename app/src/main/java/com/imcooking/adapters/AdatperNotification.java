@@ -91,7 +91,7 @@ public class AdatperNotification extends RecyclerView.Adapter<AdatperNotificatio
 
         holder.tv_time.setText(finalDate);
         if (notificationBeans.get(position).getNotification_status().equals("0")){
-            holder.layout.setBackgroundColor(context.getResources().getColor(R.color.colorWhite));
+            holder.layout.setBackgroundColor(context.getResources().getColor(R.color.colorLightGrey));
         } else {
             holder.layout.setBackgroundColor(context.getResources().getColor(R.color.colorWhite));
         }
