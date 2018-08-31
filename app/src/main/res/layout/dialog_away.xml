@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="270dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/colorWhite">
+
+
+    <com.imcooking.customtext.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_away_text"
+        android:text=""
+        android:textColor="@color/colorBlack"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="20dp">
+
+        <com.imcooking.customtext.CustomTextViewBold
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg"
+            android:text="Yes"
+            android:id="@+id/dialog_away_yes"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorWhite"
+            android:gravity="center"/>
+        <com.imcooking.customtext.CustomTextViewBold
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_bg"
+            android:text="No"
+            android:id="@+id/dialog_away_No"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="center|right"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
