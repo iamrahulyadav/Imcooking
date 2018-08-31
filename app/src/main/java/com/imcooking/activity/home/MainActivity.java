@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity
 
                 } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
                     // new push notification is received
-
                     tv_notification_dot.setVisibility(View.VISIBLE);
                     String message = intent.getStringExtra("message");
 //
@@ -138,21 +137,12 @@ public class MainActivity extends AppCompatActivity
 
         Log.d("MyDeviceId", device_id + "");
 
-
-
-
         drawerLayout1 = findViewById(R.id.drawer_layout);
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-
         navigationView.setNavigationItemSelectedListener(this);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            getWindow().setStatusBarColor(getResources().getColor(R.color.colorWhite));
         }
-
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
 
         frame_view = (LinearLayout) findViewById(R.id.frame_view);
 

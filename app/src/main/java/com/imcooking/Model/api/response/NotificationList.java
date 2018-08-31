@@ -49,6 +49,15 @@ public class NotificationList {
         private String notification_body;
         private String notification_date;
         private String notification_status;
+        private String notification_type;
+
+        public String getNotification_type() {
+            return notification_type;
+        }
+
+        public void setNotification_type(String notification_type) {
+            this.notification_type = notification_type;
+        }
 
         public int getNotification_id() {
             return notification_id;
